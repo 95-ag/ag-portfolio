@@ -20,16 +20,19 @@ Every commit must:
 - Represent one logical change
 - Not mix unrelated changes
 
-Prefer small, focused commits over giant dump commits.
+Prefer small, meaningful clustered commits over phase-sized commits. Separate infrastructure, routing, schemas, content pipeline, and UI shells into distinct commits when practical. Avoid giant "implement entire phase" commits — commits should be understandable from the diff without needing the full project context.
+
+Before committing, propose the planned commit clusters to the user for approval.
+
 Refactors stay behavior-safe unless intentionally changing behavior.
 Prefer incremental architectural progress over large rewrites.
 
 ## Commit message format
 
-- Prefix + colon + space + subject
-- Subject in imperative mood ("add hero section", not "added" / "adds")
-- Subject ≤ 72 chars, lowercase after the colon, no trailing period
-- If a body is needed: blank line after subject, wrap body at ~72 chars
+Use `type: short description`. Keep messages concise and readable.
+
+- Imperative mood — `add`, `fix`, `refactor`, not `added` or `adds`
+- Lowercase after the colon, no trailing period
 
 **Prefixes:**
 - `feat:` — new feature
@@ -70,6 +73,7 @@ Verify:
 - Sign commits (GPG or SSH) — verification badge matters for a portfolio
 - Use a noreply commit email (e.g. `<id>+<username>@users.noreply.github.com`) so scrapers don't get your real address from `git log`
 - Keep history clean and readable — the repo is public-facing
+- Do not add `Co-Authored-By: Claude` trailers to commit messages
 
 ## .gitignore discipline
 
