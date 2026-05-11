@@ -5,7 +5,7 @@
 ---
 
 ## Current Phase
-**Phase 1 — Foundation** (not yet started — setup complete, ready to build)
+**Phase 2 — Design System** (Phase 1 complete)
 
 See `.claude/docs/build-flow.md` for full phase requirements and verification checklist.
 
@@ -13,60 +13,56 @@ See `.claude/docs/build-flow.md` for full phase requirements and verification ch
 
 ## Current State
 
-Base Next.js 16 project initialized. Claude Code project setup is complete. No real app architecture built yet.
+Phase 1 architecture is complete and verified. All routes generate statically, MDX pipeline is wired, Zod validation fails the build on invalid frontmatter.
 
 **Installed:**
 - Next.js 16.2.6, React 19, TypeScript, Tailwind CSS v4, Biome
+- framer-motion, next-themes, gray-matter, next-mdx-remote, zod, remark-gfm
 
-**Not yet installed (Phase 1 requires):**
-- Framer Motion
-- MDX support (next-mdx-remote or @next/mdx)
-- next-themes
-- gray-matter
-- Zod
-- Font packages (Manrope, Inter, JetBrains Mono via `next/font`)
+**Architecture (complete):**
+- `src/app/fonts.ts` — Manrope (`--font-manrope`), Inter (`--font-inter`), JetBrains Mono (`--font-jetbrains`)
+- `src/app/providers.tsx` — next-themes ThemeProvider (`attribute="data-theme"`, system default)
+- `src/app/globals.css` — Tailwind v4 + minimal Phase 1 tokens (background, foreground, accent, font vars)
+- `src/app/layout.tsx` — fonts on `<html>`, suppressHydrationWarning, Providers + Nav + main + Footer
+- `src/lib/schemas/project.ts` — full ProjectFrontmatterSchema (Zod, per CONTENT-SCHEMA.md §10)
+- `src/lib/schemas/about.ts` — AboutFrontmatterSchema
+- `src/lib/content/projects.ts` — reads/validates/sorts, cross-validates featured count + relatedProjects slugs. Files starting with `_` are excluded (drafts/examples).
+- `src/lib/content/about.ts` — reads/validates about.mdx
+- `src/components/layout/nav.tsx` — bare `<nav>` shell
+- `src/components/layout/footer.tsx` — bare `<footer>` shell
+- `src/components/mdx/mdx-components.tsx` — thin stubs: Figure, Diagram, Callout, Stack
+- Routes: `/` `/work` `/work/[slug]` `/about` (all static, placeholder content)
+- `content/projects/_example.mdx` — excluded from build (underscore prefix), kept for local pipeline testing
+- `content/about/about.mdx` — valid frontmatter for AboutFrontmatterSchema
 
-**Scaffolded (app):**
-- `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css` — default Next.js scaffold only
-
-**Claude Code setup (complete):**
-- `.claude/CLAUDE.md` — project context, stack, key constraints, rules index
-- `.claude/settings.json` — permissions + all four hooks wired
-- `.claude/docs/` — PRODUCT.md, DESIGN.md, CONTENT-SCHEMA.md, build-flow.md
-- `.claude/rules/` — frontend.md, design-system.md, motion.md, content.md, accessibility.md, build-verification.md, git.md
-- `.claude/hooks/` — file-protect.mjs, code-formatter.mjs, bash-firewall.mjs, text-enforce.mjs
-- `.claude/agents/code-reviewer.md` — implementation review gate
-- `AGENTS.md` — Next.js version warning
-- `PRIMER.md` — this file
-
-**Not yet created (app):**
-- `src/components/`, `src/lib/`, `src/styles/`
-- `content/projects/`, `content/blog/`
-- MDX pipeline, Zod schemas, font config, theme provider
-- Any real layout, nav, or page structure
+**Key constraints discovered/confirmed:**
+- `--font-jetbrains` is the CSS variable name for JetBrains Mono (avoids circular `--font-mono: var(--font-mono)`)
+- `next-mdx-remote/rsc` is the correct MDX renderer for App Router (not `@next/mdx`) since content lives outside `src/`
+- biome.json excludes `.claude/` to avoid linting hook files
+- Draft/example MDX files with `_` prefix are excluded from content pipeline
 
 ---
 
 ## Last Session
-- Wrote all `.claude/rules/` files: frontend, design-system, motion, content, accessibility, build-verification, git
-- Updated `.claude/CLAUDE.md` with full project context and rules index table
-- Created four hooks: file-protect, code-formatter, bash-firewall, text-enforce
-- Wired hooks into `.claude/settings.json`
-- Rules are behavioral (how to behave) — project values live in docs
-- Added `*:Zone.Identifier` to `.gitignore`
-- Added `.claude/agents/code-reviewer.md` — project-scoped implementation review gate, runs before phase verification
+- Phase 1 architecture fully built and verified
+- `npm run build` passes — all 4 routes generate statically
+- `biome check` exits 0 (2 warnings on `<img>` stubs, not errors)
+- Zod validation failure tested — build fails with `[summary] Invalid input` when required field removed
+- Code review passed with 2 fixes applied: `--font-mono` circular reference resolved; `_` draft exclusion implemented immediately (not deferred)
+- Committed to `phase-1-foundation`
 
 ---
 
-## Next Steps
-1. Commit current branch (`phase-1-foundation`) — setup + tooling complete
-2. Install Phase 1 dependencies: Framer Motion, next-mdx-remote, next-themes, gray-matter, Zod, fonts
-3. Configure: path aliases, Tailwind design tokens, font loading, dark/light/system theme
-4. Create folder structure: `components/`, `lib/`, `styles/`, `content/projects/`
-5. Set up MDX pipeline + Zod frontmatter validation
-6. Build layout shell: nav, footer, theme provider
-7. Run `code-reviewer` agent before Phase 1 verification
-8. Verify Phase 1 checklist from `build-flow.md` before moving to Phase 2
+## Next Steps (Phase 2 — Design System)
+1. Read `.claude/docs/DESIGN.md` before any token work
+2. Implement full Tailwind v4 `@theme` token map: color, spacing, radius, z-index, motion duration
+3. Build typography system: type scale classes from DESIGN.md §3
+4. Build layout primitives: Container, Section, Grid, Stack, Divider
+5. Build core UI components: Button, Card, Heading, Tag, Callout (with design treatment), Theme toggle
+6. Build MDX component visuals: Figure (`next/image`), Diagram, Callout, Stack
+7. Build pill nav and mobile slide-out menu with proper interaction behavior
+8. Run `code-reviewer` agent before Phase 2 verification
+9. Verify Phase 2 checklist from `build-flow.md`
 
 ---
 
