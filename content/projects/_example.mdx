@@ -1,0 +1,55 @@
+---
+title: "Pipeline Validation Project"
+shortTitle: "Pipeline Check"
+summary: "A minimal project used to exercise the MDX content pipeline and Zod schema validation."
+projectType: academic
+publishedAt: "2024-01-01"
+order: 99
+heroImage: "/projects/_example/hero.jpg"
+heroAlt: "Abstract visualization of a data pipeline with connected nodes."
+tags:
+  - Machine Learning
+  - Example
+stack:
+  languages: [Python]
+  frameworks: [PyTorch]
+  libraries: [NumPy]
+  tools: [Docker]
+overview:
+  problem: |
+    The content pipeline requires end-to-end validation before any production project
+    content can be authored with confidence.
+  built: |
+    A minimal MDX file with fully-specified frontmatter, exercising gray-matter parsing,
+    Zod validation, and next-mdx-remote server-component rendering in a single pass.
+  results:
+    - "Build succeeds with valid frontmatter"
+    - "Build fails with informative Zod errors on invalid frontmatter"
+  transferableSkills:
+    - Schema-driven content architecture
+    - Build-time validation patterns
+featured: false
+---
+
+## Overview
+
+This is the MDX body. It confirms that the rendering pipeline is wired end-to-end.
+
+A paragraph with **bold** and _italic_ text, plus a [link](#).
+
+### Code example
+
+```python
+def check():
+    return "MDX pipeline operational"
+```
+
+### List
+
+- Item one
+- Item two
+- Item three
+
+<Callout type="insight" title="Pipeline check">
+If you can read this, the MDX component pipeline is wired correctly.
+</Callout>
