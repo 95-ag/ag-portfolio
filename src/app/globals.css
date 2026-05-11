@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Minimal token foundation — Phase 1 only.
+   Full DESIGN.md token map (spacing, radius, motion, z-index, surface variants) lands in Phase 2. */
+
+:root {
+  --background: #f8f9fa;
+  --foreground: #191c1d;
+  --accent: #006c49;
+}
+
+[data-theme="dark"] {
+  --background: #131313;
+  --foreground: #e5e2e1;
+  --accent: #4edea3;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Focus ring — minimal accessible base */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
