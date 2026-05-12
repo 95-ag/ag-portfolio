@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { Tag } from "@/components/ui/tag";
-import { Icon } from "@/components/ui/icon";
+import Link from "next/link";
 import { HeroMedia } from "@/components/project/hero-media";
-import { cn } from "@/lib/utils/cn";
+import { Icon } from "@/components/ui/icon";
+import { Tag } from "@/components/ui/tag";
 import type { Project } from "@/lib/content/projects";
+import { cn } from "@/lib/utils/cn";
 
 interface ProjectCardProps {
   project: Project;

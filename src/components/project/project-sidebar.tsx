@@ -1,9 +1,9 @@
 import { ExternalLink, FileText, Globe } from "lucide-react";
-import { Sticky } from "@/components/layout/sticky";
 import { Divider } from "@/components/layout/divider";
-import { Tag } from "@/components/ui/tag";
-import { Icon } from "@/components/ui/icon";
+import { Sticky } from "@/components/layout/sticky";
 import { StackSummary } from "@/components/project/stack-summary";
+import { Icon } from "@/components/ui/icon";
+import { Tag } from "@/components/ui/tag";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 function GitHubIcon() {

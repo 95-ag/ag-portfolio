@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
+import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
-import { Divider } from "@/components/layout/divider";
-import { Heading } from "@/components/ui/heading";
-import { Card } from "@/components/ui/card";
 import { ProjectCard } from "@/components/project/project-card";
-import { getFeaturedProjects } from "@/lib/content/projects";
+import { Card } from "@/components/ui/card";
+import { Heading } from "@/components/ui/heading";
 import { getAbout } from "@/lib/content/about";
+import { getFeaturedProjects } from "@/lib/content/projects";
 
 export default function HomePage() {
   const featured = getFeaturedProjects();

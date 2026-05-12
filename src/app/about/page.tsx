@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Container } from "@/components/layout/container";
+import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
-import { Divider } from "@/components/layout/divider";
 import { Sticky } from "@/components/layout/sticky";
 import { Heading } from "@/components/ui/heading";
 import { Tag } from "@/components/ui/tag";
