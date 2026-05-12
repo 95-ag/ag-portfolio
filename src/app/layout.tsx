@@ -25,7 +25,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Nav />
-          <main>{children}</main>
+          <main className="pt-[var(--spacing-2xl)]">{children}</main>
           <Footer />
         </Providers>
       </body>

@@ -57,8 +57,8 @@ export function PillNav() {
               className={cn(
                 "flex h-8 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] text-sm font-medium transition-colors duration-[var(--duration-fast)]",
                 isActive
-                  ? "bg-[var(--accent)] text-[var(--accent-on)]"
-                  : "text-[var(--on-surface)] hover:bg-[var(--accent-muted)]",
+                  ? "bg-[var(--surface-sunken)] text-[var(--on-surface)]"
+                  : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
               )}
             >
               <Icon size={16} aria-hidden />
