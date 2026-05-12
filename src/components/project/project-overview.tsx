@@ -49,7 +49,7 @@ export function ProjectOverview({ overview }: ProjectOverviewProps) {
               <li key={result} className="flex gap-[var(--spacing-sm)]">
                 <span
                   aria-hidden="true"
-                  className="mt-[6px] h-[6px] w-[6px] shrink-0 rounded-full bg-[var(--accent)]"
+                  className="mt-[6px] h-[6px] w-[6px] shrink-0 rounded-full bg-[var(--outline-variant)]"
                 />
                 {result}
               </li>
