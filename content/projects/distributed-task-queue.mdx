@@ -1,0 +1,61 @@
+---
+title: "Distributed Task Queue"
+shortTitle: "Task Queue"
+summary: "High-throughput distributed job queue processing 10k+ jobs/hour with sub-100ms scheduling latency."
+projectType: freelance
+publishedAt: "2023-11-01"
+order: 20
+heroImage: "/projects/distributed-task-queue/hero.svg"
+heroAlt: "Network graph showing worker nodes connected to a central coordinator node."
+tags:
+  - Distributed Systems
+  - Backend Engineering
+  - Python
+  - Infrastructure
+stack:
+  languages: [Python, Go]
+  frameworks: [FastAPI, Redis]
+  libraries: [Celery, Pydantic, Prometheus]
+  tools: [Docker, Kubernetes, Linux]
+overview:
+  problem: |
+    A client's data processing pipeline was bottlenecked by a cron-based scheduler
+    that could not scale beyond 500 jobs/hour without queue backlog growing unboundedly.
+  built: |
+    A Redis-backed distributed task queue with priority lanes, exponential-backoff retry
+    logic, and a FastAPI control plane for job submission, status queries, and monitoring.
+  results:
+    - "Scaled throughput from 500 to 10,000+ jobs/hour"
+    - "Sub-100ms scheduling latency at P99 under full load"
+    - "Zero job loss across a 30-day production deployment"
+  transferableSkills:
+    - Delivering production-grade infrastructure under a client timeline
+    - Designing for reliability and observability from the start
+    - Debugging distributed systems under real production load
+---
+
+## Detailed Problem
+
+The client processed incoming data events from a SaaS platform in batches via a cron job. As data volume grew, the cron approach became fragile: jobs would pile up, latency spiked unpredictably, and a single failing job could block the entire queue with no visibility into why.
+
+The constraints were strict: no changes to the upstream data source, a two-week delivery window, and a requirement to run on existing Kubernetes infrastructure.
+
+## Architecture
+
+<Callout type="tradeoff" title="Redis vs. purpose-built queue">
+Using Redis as a queue backend keeps the infrastructure footprint small — no Kafka or RabbitMQ cluster to operate. The tradeoff is that durability depends on Redis persistence configuration. For this client's SLA (best-effort, no strict durability guarantee), it was the right call.
+</Callout>
+
+The system has three components:
+
+- **FastAPI control plane** — job submission, priority assignment, status polling
+- **Redis queue** — ZSET-backed priority queue per job type
+- **Worker pool** — horizontally scalable Kubernetes Deployment consuming jobs
+
+## Results
+
+At steady state under synthetic load matching 3× the client's peak traffic, P99 scheduling latency was 87ms. Zero jobs were lost during a 30-day production run, including one Kubernetes node failure that self-healed within the retry window.
+
+## Next Steps
+
+The priority system currently supports three fixed lanes. Dynamic lane weights — adjusted based on queue depth and SLA targets — would give the client more control over throughput shaping.

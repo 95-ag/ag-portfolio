@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#f3f4f5"/>
+  <!-- Edges from coordinator to workers -->
+  <line x1="400" y1="225" x2="200" y2="100" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="400" y2="80" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="600" y2="100" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="650" y2="270" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="550" y2="380" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="250" y2="380" stroke="#bbcabf" stroke-width="1.5"/>
+  <line x1="400" y1="225" x2="150" y2="270" stroke="#bbcabf" stroke-width="1.5"/>
+  <!-- Worker nodes -->
+  <circle cx="200" cy="100" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="400" cy="80" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="600" cy="100" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="650" cy="270" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="550" cy="380" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="250" cy="380" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <circle cx="150" cy="270" r="28" fill="#f3f4f5" stroke="#bbcabf" stroke-width="1.5"/>
+  <!-- Worker node inner dots -->
+  <circle cx="200" cy="100" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="400" cy="80" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="600" cy="100" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="650" cy="270" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="550" cy="380" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="250" cy="380" r="8" fill="#3c4a42" opacity="0.4"/>
+  <circle cx="150" cy="270" r="8" fill="#3c4a42" opacity="0.4"/>
+  <!-- Coordinator node -->
+  <circle cx="400" cy="225" r="40" fill="#e6f4ed" stroke="#006c49" stroke-width="2"/>
+  <circle cx="400" cy="225" r="14" fill="#006c49"/>
+</svg>
