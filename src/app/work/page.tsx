@@ -18,18 +18,9 @@ export default function WorkPage() {
     <Section>
       <Container>
         <Stack gap="xl">
-          <div className="flex flex-col gap-[var(--spacing-xs)]">
-            <p className="type-mono-label text-[var(--on-surface-muted)]">
-              Portfolio
-            </p>
-            <Heading level={1} type="display-md">
-              Work
-            </Heading>
-            <p className="type-body-lg mt-[var(--spacing-sm)] max-w-[560px] text-[var(--on-surface-muted)]">
-              AI/ML systems, computer vision, distributed infrastructure, and
-              research projects.
-            </p>
-          </div>
+          <Heading level={1} type="display-md">
+            Work
+          </Heading>
           <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <ProjectCard

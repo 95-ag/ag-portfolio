@@ -1,6 +1,6 @@
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import { Container } from "@/components/layout/container";
-import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Sticky } from "@/components/layout/sticky";
@@ -17,8 +17,8 @@ export const metadata = {
 function GitHubIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -31,8 +31,8 @@ function GitHubIcon() {
 function LinkedInIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -41,6 +41,9 @@ function LinkedInIcon() {
     </svg>
   );
 }
+
+const socialLinkClass =
+  "inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline-variant)] px-[var(--spacing-md)] type-body-sm text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] hover:border-[var(--outline)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
 function TwoColumnRow({
   label,
@@ -72,28 +75,25 @@ export default function AboutPage() {
         <Stack gap="3xl">
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
-            <Stack gap="xs">
-              <Heading level={1} type="display-md">
+            <div className="flex flex-col gap-[var(--spacing-xs)]">
+              <Heading level={1} type="display-xl">
                 {about.name}
               </Heading>
-              <p className="type-headline-md text-[var(--on-surface-muted)]">
+              <p className="type-headline-sm text-[var(--on-surface-muted)]">
                 {about.role}
               </p>
-              <p className="type-body-lg text-[var(--on-surface-muted)]">
-                {about.positioning}
-              </p>
-            </Stack>
-            {/* Social icons */}
-            <div className="flex items-center gap-[var(--spacing-md)]">
+            </div>
+            {/* Labeled social chips */}
+            <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
                 <a
                   href={about.socials.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="GitHub profile"
-                  className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className={socialLinkClass}
                 >
                   <GitHubIcon />
+                  GitHub
                 </a>
               )}
               {about.socials.linkedin && (
@@ -101,65 +101,80 @@ export default function AboutPage() {
                   href={about.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="LinkedIn profile"
-                  className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className={socialLinkClass}
                 >
                   <LinkedInIcon />
+                  LinkedIn
                 </a>
               )}
-            </div>
-            {/* Contact quick link */}
-            <div>
               <a
                 href={`mailto:${about.contactEmail}`}
-                className="inline-flex h-11 items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className={socialLinkClass}
               >
-                Email me
+                <Mail size={16} aria-hidden="true" />
+                Email
               </a>
             </div>
           </header>
 
-          <Divider />
-
-          {/* Two-panel intro: headshot + approach */}
-          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
-            {/* Headshot */}
-            <div className="w-full shrink-0 lg:w-[280px]">
-              <div className="relative aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-[var(--radius-lg)] grayscale">
+          {/* Portrait + editorial intro */}
+          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
+            {/* Headshot — softer radius, integrated into composition */}
+            <div className="w-full shrink-0 lg:w-[240px]">
+              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-lg)] grayscale">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
                   fill
                   className="object-cover"
                   unoptimized={about.headshot.endsWith(".svg")}
-                  sizes="280px"
+                  sizes="240px"
                 />
               </div>
             </div>
-            {/* Approach */}
-            <div className="min-w-0 flex-1">
-              <p className="type-mono-label mb-[var(--spacing-lg)] text-[var(--on-surface-muted)]">
-                Approach
+
+            {/* Editorial content — sourced from about.mdx frontmatter */}
+            <div className="flex flex-col gap-[var(--spacing-lg)]">
+              <p className="type-body-lg text-[var(--on-surface-muted)]">
+                {about.positioning}
               </p>
-              <Stack gap="xl">
-                {about.approach.map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex flex-col gap-[var(--spacing-xs)]"
-                  >
-                    <p className="type-headline-sm text-[var(--on-surface)]">
-                      {item.title}
-                    </p>
+              <ul className="flex flex-col gap-[var(--spacing-sm)]">
+                {about.detailedPositioning.map((point) => (
+                  <li key={point} className="flex gap-[var(--spacing-sm)]">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[10px] h-[4px] w-[4px] shrink-0 rounded-full bg-[var(--outline-variant)]"
+                    />
                     <p className="type-body-md text-[var(--on-surface-muted)]">
-                      {item.body}
+                      {point}
                     </p>
-                  </div>
+                  </li>
                 ))}
-              </Stack>
+              </ul>
             </div>
           </div>
 
-          <Divider />
+          {/* Approach */}
+          <div className="flex flex-col gap-[var(--spacing-xl)]">
+            <Heading level={2} type="headline-md">
+              Approach
+            </Heading>
+            <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2 lg:grid-cols-3">
+              {about.approach.map((item, i) => (
+                <div
+                  key={item.title}
+                  className="flex flex-col gap-[var(--spacing-sm)]"
+                >
+                  <p className="type-mono-data text-[var(--on-surface-muted)] opacity-40">
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <p className="type-body-md text-[var(--on-surface)]">
+                    <strong>{item.title}.</strong> {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Capabilities */}
           <TwoColumnRow label="Capabilities">
@@ -184,8 +199,6 @@ export default function AboutPage() {
               ))}
             </Stack>
           </TwoColumnRow>
-
-          <Divider />
 
           {/* Experience */}
           <TwoColumnRow label="Experience">
@@ -222,8 +235,6 @@ export default function AboutPage() {
             </Stack>
           </TwoColumnRow>
 
-          <Divider />
-
           {/* Education */}
           <TwoColumnRow label="Education">
             <Stack gap="lg">
@@ -247,9 +258,7 @@ export default function AboutPage() {
             </Stack>
           </TwoColumnRow>
 
-          <Divider />
-
-          {/* Contact section */}
+          {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={2} type="headline-lg">
               Get in touch
@@ -261,16 +270,14 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
               <a
                 href={`mailto:${about.contactEmail}`}
-                className="inline-flex h-11 items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
+                <Mail size={16} aria-hidden="true" />
                 Email me
               </a>
-              <a
-                href={about.contactEmail}
-                className="type-body-sm text-[var(--on-surface-muted)]"
-              >
+              <span className="type-body-sm text-[var(--on-surface-muted)] opacity-60">
                 {about.contactEmail}
-              </a>
+              </span>
             </div>
           </div>
         </Stack>
