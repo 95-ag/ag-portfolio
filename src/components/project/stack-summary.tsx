@@ -1,4 +1,3 @@
-import { Tag } from "@/components/ui/tag";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 interface StackSummaryProps {
@@ -22,15 +21,13 @@ export function StackSummary({ stack }: StackSummaryProps) {
   return (
     <div className="flex flex-col gap-[var(--spacing-md)]">
       {entries.map(([category, items]) => (
-        <div key={category}>
-          <p className="type-mono-label mb-[var(--spacing-xs)] text-[var(--on-surface-muted)]">
+        <div key={category} className="flex flex-col gap-[var(--spacing-xs)]">
+          <p className="type-body-xs text-[var(--on-surface-muted)] opacity-50 uppercase tracking-widest">
             {CATEGORY_LABELS[category]}
           </p>
-          <div className="flex flex-wrap gap-[var(--spacing-xs)]">
-            {items.map((item) => (
-              <Tag key={item}>{item}</Tag>
-            ))}
-          </div>
+          <p className="type-body-sm text-[var(--on-surface-muted)] leading-relaxed">
+            {items.join(" · ")}
+          </p>
         </div>
       ))}
     </div>

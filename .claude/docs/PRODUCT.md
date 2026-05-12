@@ -81,7 +81,7 @@ Missing optional fields are omitted from rendering — no placeholders.
 - **Desktop:** in the pill nav (right side, after divider). Not in the footer.
 - **Mobile:** at the bottom of the slide-out menu only. Not in the mobile footer.
 
-**Footer (every page).** Left: copyright. Right: social icons (GitHub: https://github.com/95-ag, LinkedIn: https://www.linkedin.com/in/aishganesan/). No theme toggle in footer. Mobile footer is compact — copyright + socials only.
+**Footer (every page).** Left: copyright. Right: social and contact links (GitHub: https://github.com/95-ag, LinkedIn: https://www.linkedin.com/in/aishganesan/, Email: aishwaryaganesan95@gmail.com). No theme toggle in footer. Mobile footer is compact — copyright + socials only.
 
 **Floating pill nav (top-center).**
 - **Desktop (`md+`):** fixed, floating pill centered relative to the 1200px content column. Layout: `[ logo ] ─ [ About  Work ] ─ [ theme toggle ]`. Logo is a round mark linking to `/` — acts as the Home link. No separate "Home" nav item. Active page highlighted. Visual spec owned by `DESIGN.md`.
@@ -129,15 +129,9 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 **Sections, in order:**
 
-1. **Hero.** Direct headline stating role + specialization. Sub-line with 2–3 competency signals. No tagline, no manifesto. Reused on `/about`.
+1. **Hero.** Identity composition: name/role eyebrow, direct headline stating role + specialization, short subtitle. Desktop: portrait panel paired with statement block. Mobile: portrait collapses, statement remains. No CTA in the hero — action is deferred to the bottom of the page.
 2. **Featured projects.** Up to 3 cards, larger than Work-page cards. Each card shows hero image, title, one-line outcome (not just description), 2–3 tags. Full card clickable. Click affordance pattern as in §7.2.
-3. **Hire-me / CTA.** Two clear paths in a single section:
-   - **Recruiters:** "Resume (PDF)" download + "Email me".
-   - **Freelance:** "Email me" (primary).
-   - The two paths are visually distinct (separate cards / columns / labeled groups — exact treatment in `DESIGN.md`) so each audience sees a clear next step. Both resolve to email in v1.
-   - Subtle motion only on the primary email CTA.
-   - Single combined resume PDF for v1.
-   - "Schedule a call" deferred to v2.
+3. **CTA.** A single section with two actions of differentiated weight: resume download (secondary) and direct contact (primary). Both audiences share one block — differentiation comes from button weight rather than separate paths. Subtle motion on the primary CTA only. Single combined resume PDF for v1. "Schedule a call" deferred to v2.
 4. **Newsletter signup** — v2.
 
 ### 7.2 Work (`/work`)
@@ -146,11 +140,12 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 **Layout.** Grid of project cards. Each card: compact hero image or short looping video (muted, autoplay, max 4s), title, 1–2 line description, tag row.
 
-**Click affordance (mandatory, three reinforcing signals):**
-- Cursor changes to pointer over the entire card.
-- Title styles as a link (underline on hover or equivalent — see `DESIGN.md`).
-- A chevron or "View →" affordance in a consistent corner of the card.
-- Hover state on desktop: slight elevation/border shift. Skipped on touch.
+**Page header.** Single heading (`Work`) followed directly by the grid. No eyebrow label, no intro paragraph.
+
+**Click affordance:**
+- Title underlines on card-hover.
+- Card border shifts on card-hover.
+- Hover state on desktop only; touch shows resting state.
 
 **Sort order.** Default: by `projectType` priority (academic + freelance first, then personal), then `order`, then `publishedAt` descending. Tunable via frontmatter `order`.
 
@@ -158,9 +153,9 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 ### 7.3 Project Detail (`/work/[slug]`)
 
-**Purpose.** Recruiters extract role + stack + outcome in 30s; engineers read the deep dive in ~10 minutes. Non-technical HR readers can read the overview standalone and walk away informed.
+**Purpose.** Visitors scanning quickly can extract role, stack, and outcome from the overview alone. Engineers reading deeply use the deep dive. Both reading modes are supported without the page requiring either.
 
-**Layout (desktop, ≥ lg).** Sticky left sidebar (intro panel) + main content column. Main column flows vertically: hero → overview → deep dive. Overview and deep dive are visually separated (divider or spacing — exact treatment in `DESIGN.md`). The sidebar scrolls independently if its content exceeds the viewport.
+**Layout (desktop, ≥ lg).** Sticky left sidebar (intro panel) + main content column. Main column flows vertically through three labeled reading zones: **hero → OVERVIEW → DEEP DIVE → backlink**. Section transitions are marked by quiet architectural labels rather than dividers — they serve as wayfinding for visitors who arrive mid-scroll. Visual treatment in `DESIGN.md`. The sidebar scrolls independently if its content exceeds the viewport.
 
 **Layout (mobile).** Sidebar content stacks at the top, then hero, then overview, then deep dive.
 
@@ -170,7 +165,7 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 - **Hero.** Project hero image or video. Optional logo strip below.
 - **Intro sidebar (sticky).** Short title, full title (optional), tags, stack summary grouped by category, links (GitHub, demo, paper).
-- **Overview (main column, top).** Problem, what I built, results, transferable skills. ~300–500 words. Plain language. **This section is the recruiter/HR-readable summary** and must stand alone without the deep dive.
+- **Overview (main column, top).** Problem, what I built, results, transferable skills. ~300–500 words. Plain language. **This section is the high-level scannable summary** — it must stand alone without the deep dive.
 - **Deep dive (main column, below overview).** Detailed problem, background, data, model architecture, algorithm/code design, resources/constraints, optimization, deployment, full results, next steps. Each subsection is optional — omitted entirely if the MDX file doesn't include it. No "TBD" placeholders.
 - **Reading progress indicator.** Thin vertical bar on the left edge of the viewport, vertically positioned below the sticky sidebar's footprint. Appears after the user scrolls past the hero. Project pages only.
 - **Backlink.** "← Back to Work" at the end of content.
@@ -195,16 +190,15 @@ The system is uniform; honest content depth varies by project type. Personal pro
 
 **Sections, in order:**
 
-1. **Identity header.** Name (prominent), role/positioning line, social icons.
-2. **Contact quick links.** "Email me" near the top, visually distinct from the social icons.
-3. **Two-panel intro.** Desktop: left = headshot (B&W), right = approach/philosophy. Image height extends through the philosophy section. Mobile: stacked, image first.
-4. **Two-column structured layout for sections below.** Desktop: left = section heading, right = section body. Mobile: stacked.
-5. **Approach / Philosophy.** Short principles covering systems thinking, iteration, communication, modular design, balancing research and constraints. No motivational language.
-6. **Technical capabilities.** Grouped by capability area. Each group: short description + tag list. No skill-bar percentages.
-7. **Experience.** Structured entries: company, role, timeframe, 2–4 achievement bullets, optional image.
-8. **Education.** Concise: institution, degree, specialization or short note.
-9. **Testimonials** — v2.
-10. **Contact section.** Direct methods at the end. v2: conversational/chat interface.
+1. **Identity & contact.** Name (prominent), role (subordinate). Below the identity block: a row of contact and social affordances (email, GitHub, LinkedIn). Email is given ordering priority. No separate positioning statement; no standalone "contact" button — contact is accessible from the affordance row on every About page visit.
+2. **Two-panel intro.** Desktop: left = headshot (B&W), right = short intro paragraph followed by 3–4 concise engineering-focused points (e.g. systems thinking, shipping velocity, domain breadth, cross-functional work). The right column is self-contained — a quick readable picture of how this engineer works. Mobile: stacked, image first.
+3. **Two-column structured layout for sections below.** Desktop: left = section heading, right = section body. Mobile: stacked. Sections separated by spacing only — no horizontal dividers.
+4. **Approach.** Short principles: systems thinking, iteration, communication, modular design, balancing research and real-world constraints. No motivational language.
+5. **Technical capabilities.** Grouped by capability area. Each group: short description + tag list. No skill-bar percentages.
+6. **Experience.** Structured entries: company, role, timeframe, 2–4 achievement bullets, optional image.
+7. **Education.** Concise: institution, degree, specialization or short note.
+8. **Testimonials** — v2.
+9. **Contact section** — v2: conversational/chat interface.
 
 ---
 

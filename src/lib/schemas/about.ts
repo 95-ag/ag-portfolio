@@ -37,6 +37,7 @@ export const AboutFrontmatterSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
   positioning: z.string().min(1),
+  detailedPositioning: z.array(z.string().min(1)).min(1),
   headshot: z.string().startsWith("/"),
   headshotAlt: z.string().min(1),
   socials: SocialSchema.refine((val) => Object.keys(val).length >= 1, {

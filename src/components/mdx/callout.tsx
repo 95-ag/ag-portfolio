@@ -27,7 +27,7 @@ export function Callout({
     <aside
       role="note"
       className={cn(
-        "my-[var(--spacing-2xl)] rounded-[var(--radius-md)] border-l-[3px] bg-[var(--surface-raised)] p-[var(--spacing-lg)]",
+        "my-[var(--spacing-xl)] border-l-[2px] bg-[var(--surface-sunken)] py-[var(--spacing-md)] pl-[var(--spacing-lg)] pr-[var(--spacing-md)]",
         borderClass[type],
         className,
       )}

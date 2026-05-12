@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
-import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { SidebarLayout } from "@/components/layout/sidebar-layout";
 import { mdxComponents } from "@/components/mdx/mdx-components";
@@ -63,17 +62,22 @@ export default async function ProjectPage({ params }: Props) {
             <div data-reading-sentinel aria-hidden="true" />
 
             {/* Overview */}
-            <div className="mt-[var(--spacing-2xl)]">
-              <p className="type-mono-label mb-[var(--spacing-lg)] text-[var(--on-surface-muted)]">
+            <div className="mt-[var(--spacing-2xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
+              <p className="type-mono-label mb-[var(--spacing-xl)] text-[var(--on-surface-muted)] opacity-40">
                 Overview
               </p>
               <ProjectOverview overview={fm.overview} />
             </div>
 
-            <Divider className="my-[var(--spacing-2xl)]" />
+            {/* Section label — architectural divider before deep-dive prose */}
+            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
+              <p className="type-mono-label text-[var(--on-surface-muted)] opacity-40">
+                Deep Dive
+              </p>
+            </div>
 
             {/* Deep dive */}
-            <div className="prose-content">
+            <div className="prose-content mt-[var(--spacing-xl)]">
               <MDXRemote
                 source={project.body}
                 components={mdxComponents}
@@ -81,12 +85,10 @@ export default async function ProjectPage({ params }: Props) {
               />
             </div>
 
-            <Divider className="my-[var(--spacing-2xl)]" />
-
             {/* Backlink */}
             <Link
               href="/work"
-              className="type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="mt-[var(--spacing-3xl)] inline-block type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
             >
               ← Back to Work
             </Link>

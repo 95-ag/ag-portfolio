@@ -3,8 +3,8 @@ import { Container } from "@/components/layout/container";
 function GitHubIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="18"
+      height="18"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -17,8 +17,8 @@ function GitHubIcon() {
 function LinkedInIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="18"
+      height="18"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -28,15 +28,43 @@ function LinkedInIcon() {
   );
 }
 
+function MailIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-[var(--spacing-4xl)] border-t border-[var(--outline-variant)] py-[var(--spacing-xl)]">
+    <footer className="mt-[var(--spacing-4xl)] py-[var(--spacing-xl)]">
       <Container>
         <div className="flex flex-col gap-[var(--spacing-md)] md:flex-row md:items-center md:justify-between">
-          <p className="type-body-sm text-[var(--on-surface-muted)]">
-            © {year} AG. All rights reserved.
+          <p className="type-body-sm">
+            <span className="text-[var(--on-surface-muted)] opacity-40">
+              © {year} /{" "}
+            </span>
+            <span className="text-[var(--on-surface-muted)]">
+              Aishwarya Ganesan
+            </span>
+            <span className="text-[var(--on-surface-muted)] opacity-40">
+              {" "}
+              / Designed and developed by me.
+            </span>
           </p>
           <div className="flex items-center gap-[var(--spacing-md)]">
             <a
@@ -44,7 +72,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
             >
               <GitHubIcon />
             </a>
@@ -53,9 +81,16 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
             >
               <LinkedInIcon />
+            </a>
+            <a
+              href="mailto:aishwaryaganesan95@gmail.com"
+              aria-label="Send email"
+              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+            >
+              <MailIcon />
             </a>
           </div>
         </div>

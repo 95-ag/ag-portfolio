@@ -256,37 +256,46 @@ body {
   /* MDX deep-dive prose — applies inside .prose-content */
   .prose-content h2 {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
-    line-height: 32px;
-    letter-spacing: -0.01em;
+    line-height: 36px;
+    letter-spacing: -0.02em;
     color: var(--on-surface);
-    margin-top: var(--spacing-2xl);
-    margin-bottom: var(--spacing-md);
+    border-top: 1px solid var(--outline-variant);
+    padding-top: var(--spacing-xl);
+    margin-top: var(--spacing-3xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  /* Don't draw a rule if h2 is the very first element */
+  .prose-content > h2:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
   }
   .prose-content h3 {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 19px;
+    font-weight: 500;
     line-height: 28px;
+    letter-spacing: -0.01em;
     color: var(--on-surface);
-    margin-top: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
     margin-bottom: var(--spacing-sm);
   }
   .prose-content p {
     font-size: 16px;
-    line-height: 24px;
+    line-height: 26px;
     color: var(--on-surface);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
   .prose-content ul,
   .prose-content ol {
     padding-left: var(--spacing-xl);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
   .prose-content li {
     font-size: 16px;
-    line-height: 24px;
+    line-height: 26px;
     color: var(--on-surface);
     margin-bottom: var(--spacing-xs);
   }

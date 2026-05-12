@@ -1,63 +1,59 @@
+import { Download, Mail } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
-import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { ProjectCard } from "@/components/project/project-card";
-import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
-import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
 
 export default function HomePage() {
   const featured = getFeaturedProjects();
-  const { frontmatter: about } = getAbout();
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero — two-panel: portrait placeholder left, statement right */}
       <Section as="header">
         <Container>
-          <Stack gap="lg">
-            <Heading level={1} type="display-lg">
-              AG — AI/ML Engineer
-            </Heading>
-            <p className="type-body-lg max-w-[600px] text-[var(--on-surface-muted)]">
-              Building practical ML systems — from perception pipelines and
-              reinforcement learning to scalable backend infrastructure.
-            </p>
-            <div className="flex flex-wrap gap-[var(--spacing-md)]">
-              <Link
-                href="/work"
-                className="inline-flex h-11 items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-              >
-                View my work
-              </Link>
-              <a
-                href={`mailto:${about.contactEmail}`}
-                className="inline-flex h-11 items-center rounded-[var(--radius-md)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-sm font-medium text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-              >
-                Get in touch
-              </a>
+          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-end lg:gap-[var(--spacing-3xl)]">
+            {/* Portrait region — placeholder until real photo lands */}
+            <div className="hidden lg:block lg:w-[260px] lg:shrink-0">
+              <div className="aspect-[3/4] w-full rounded-[var(--radius-sm)] bg-[var(--surface-sunken)]" />
             </div>
-          </Stack>
+
+            {/* Statement block */}
+            <div className="flex flex-col gap-[var(--spacing-lg)] lg:pb-[var(--spacing-lg)]">
+              <p className="type-mono-label text-[var(--on-surface-muted)]">
+                Aishwarya Ganesan · AI/ML Engineer
+              </p>
+              <Heading level={1} type="display-lg">
+                Building practical ML systems for real-world constraints.
+              </Heading>
+              <p className="type-body-lg max-w-[480px] text-[var(--on-surface-muted)]">
+                From perception pipelines and reinforcement learning to scalable
+                backend infrastructure — end to end.
+              </p>
+              {/* hire-cta: future floating animated pill goes here */}
+            </div>
+          </div>
         </Container>
       </Section>
 
-      <Divider />
-
       {/* Featured projects */}
       {featured.length > 0 && (
-        <Section>
+        <Section className="pt-0">
           <Container>
             <Stack gap="xl">
-              <div className="flex flex-col gap-[var(--spacing-xs)]">
-                <p className="type-mono-label text-[var(--on-surface-muted)]">
-                  Selected work
-                </p>
-                <Heading level={2} type="headline-lg">
+              <div className="flex items-baseline justify-between gap-[var(--spacing-md)]">
+                <Heading level={2} type="headline-md">
                   Featured projects
                 </Heading>
+                <Link
+                  href="/work"
+                  className="type-body-sm shrink-0 text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                >
+                  View all →
+                </Link>
               </div>
               <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">
                 {featured.map((project) => (
@@ -68,89 +64,43 @@ export default function HomePage() {
                   />
                 ))}
               </div>
-              <div>
-                <Link
-                  href="/work"
-                  className="type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
-                >
-                  View all projects →
-                </Link>
-              </div>
             </Stack>
           </Container>
         </Section>
       )}
 
-      <Divider />
-
-      {/* CTA */}
-      <Section>
+      {/* CTA — centered collaboration block */}
+      <Section className="pt-0">
         <Container>
-          <Stack gap="xl">
-            <Heading level={2} type="headline-lg">
-              Work together
-            </Heading>
-            <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2">
-              {/* Recruiter path */}
-              <Card>
-                <Stack gap="lg">
-                  <div>
-                    <p className="type-mono-label mb-[var(--spacing-xs)] text-[var(--on-surface-muted)]">
-                      For recruiters
-                    </p>
-                    <p className="type-headline-sm text-[var(--on-surface)]">
-                      Full-time roles
-                    </p>
-                  </div>
-                  <p className="type-body-sm text-[var(--on-surface-muted)]">
-                    AI/ML engineer with end-to-end experience across model
-                    development, computer vision, and backend systems. Open to
-                    full-time roles.
-                  </p>
-                  <div className="flex flex-wrap gap-[var(--spacing-sm)]">
-                    <a
-                      href="/resume.pdf"
-                      download
-                      className="inline-flex h-11 items-center rounded-[var(--radius-md)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-sm font-medium text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-                    >
-                      Resume (PDF)
-                    </a>
-                    <a
-                      href={`mailto:${about.contactEmail}`}
-                      className="inline-flex h-11 items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-                    >
-                      Email me
-                    </a>
-                  </div>
-                </Stack>
-              </Card>
-
-              {/* Freelance path */}
-              <Card>
-                <Stack gap="lg">
-                  <div>
-                    <p className="type-mono-label mb-[var(--spacing-xs)] text-[var(--on-surface-muted)]">
-                      For clients
-                    </p>
-                    <p className="type-headline-sm text-[var(--on-surface)]">
-                      Freelance projects
-                    </p>
-                  </div>
-                  <p className="type-body-sm text-[var(--on-surface-muted)]">
-                    Available for scoped ML engineering and backend
-                    infrastructure projects. I work best on problems with clear
-                    constraints and real production requirements.
-                  </p>
-                  <a
-                    href={`mailto:${about.contactEmail}`}
-                    className="inline-flex h-11 w-fit items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-                  >
-                    Email me
-                  </a>
-                </Stack>
-              </Card>
+          <div className="flex flex-col items-center gap-[var(--spacing-xl)] text-center">
+            <div className="flex flex-col gap-[var(--spacing-md)]">
+              <Heading level={2} type="headline-lg">
+                Collaboration &amp; Hiring
+              </Heading>
+              <p className="type-body-lg mx-auto max-w-[560px] text-[var(--on-surface-muted)]">
+                Available for full-time roles and scoped freelance projects. I
+                specialise in bridging research and production — from model
+                development to scalable backend systems.
+              </p>
             </div>
-          </Stack>
+            <div className="flex flex-wrap items-center justify-center gap-[var(--spacing-md)]">
+              <a
+                href="/resume.pdf"
+                download
+                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-sm font-medium text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              >
+                <Download size={16} aria-hidden="true" />
+                Download Resume
+              </a>
+              <a
+                href="mailto:aishwaryaganesan95@gmail.com"
+                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              >
+                <Mail size={16} aria-hidden="true" />
+                Get in Touch
+              </a>
+            </div>
+          </div>
         </Container>
       </Section>
     </>

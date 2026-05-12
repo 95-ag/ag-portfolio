@@ -172,6 +172,27 @@ link:
   hoverDecoration: underline
   hoverDecorationOffset: 2px
 
+# Prose (MDX deep-dive body)
+prose-h2:
+  fontFamily: Manrope
+  fontSize: 28px
+  fontWeight: 600
+  lineHeight: 36px
+  letterSpacing: -0.02em
+
+prose-h3:
+  fontFamily: Manrope
+  fontSize: 19px
+  fontWeight: 500
+  lineHeight: 28px
+  letterSpacing: -0.01em
+
+prose-body:
+  fontFamily: Inter
+  fontSize: 16px
+  fontWeight: 400
+  lineHeight: 26px
+
 # Mono (metadata, code)
 mono-label:
   fontFamily: JetBrains Mono
@@ -323,7 +344,7 @@ layout:
     side-margin: 16px
 ```
 
-Long-form pages constrain reading width to `~720px` (roughly 65–75 characters per line) regardless of grid.
+Long-form pages constrain reading width to `~680px` (roughly 65–70 characters per line) regardless of grid.
 
 ---
 
@@ -331,10 +352,10 @@ Long-form pages constrain reading width to `~720px` (roughly 65–75 characters 
 
 ```yaml
 radius:
-  sm: 4px      # tags, chips, small controls
-  md: 8px      # cards, buttons, code blocks
-  lg: 12px     # large containers
-  pill: 9999px # pill nav, status pills
+  sm: 4px      # tags, chips, buttons, project cards, callouts (default for most surfaces)
+  md: 8px      # code blocks
+  lg: 12px     # headshot, large containers
+  pill: 9999px # pill nav, status pills, theme toggle, scroll-to-top
 ```
 
 Use of fully sharp corners (0px) and very large rounds (>12px) is reserved for specific intentional cases — flag them rather than defaulting.
@@ -456,11 +477,13 @@ pill-nav-item:
   fontWeight: 500
 
 pill-nav-item-active:
-  background: accent
-  color: accent-on
+  background: surface-sunken
+  color: on-surface
+  # Intentionally not using accent — accent is reserved within the nav for the
+  # logo mark, keeping the active highlight tonal and quiet.
 
 pill-nav-item-hover:
-  background: accent-muted
+  background: surface-sunken
   color: on-surface
   transition: background 150ms
 
@@ -583,54 +606,49 @@ The pulse is on the icon only, never the entire button. Stops if the button is h
 project-card:
   background: surface-raised
   border: 1px solid outline-variant
-  borderRadius: md           # 8px
-  padding: 24px
+  borderRadius: sm                    # 4px
   display: flex
   flexDirection: column
-  gap: 16px
-  cursor: pointer
-  position: relative
-  transition: border-color 150ms, transform 150ms
+  transition: border-color 150ms
 
-project-card-hover:
-  borderColor: outline
-  # no transform on the card itself — the chevron moves instead
-
-project-card-content:
-  - header-row:
-      icon (top-left, 20px)
-      number (top-right of icon area, mono-label, on-surface-muted)
-      chevron (top-right corner of card)
-  - title:           headline-md
-  - description:     body-md, on-surface-muted, max 3 lines
-  - tag-row:         mono-label tags, gap sm
-
-project-card-chevron:
-  position: absolute
-  top: 24px
-  right: 24px
-  size: 20px
-  color: on-surface-muted
-  transition: transform 200ms, color 200ms
-  
-  # On card hover (not chevron hover):
   hover:
-    transform: translate(2px, -2px)
-    color: accent
+    borderColor: outline
 
-project-card-title:
-  color: on-surface
-  # On card hover:
-  hover:
-    color: accent
-    textDecoration: underline
-    textDecorationOffset: 3px
+  variants:
+    compact:   heroAspect 1/1         # default — Work grid
+    featured:  heroAspect 4/3         # homepage featured
+    text:      no hero, categoryIcon visible
+      # Intentional editorial variant for text-led projects.
+      # NOT a fallback when heroImage is missing — heroImage is required by schema.
+
+project-card-hero:
+  # Hero is inset with breathing room — not edge-to-edge
+  wrapperPadding: spacing-md
+  innerBackground: surface-sunken
+  innerBorderRadius: sm
+
+project-card-body:
+  paddingX: spacing-lg
+  paddingBottom: spacing-lg
+  gap: spacing-sm
+  - title:    body-lg (compact) or headline-sm (featured), on-surface, font-semibold
+              hover: underline (decoration: accent, offset 2px)
+  - summary:  body-sm, on-surface-muted, line-clamp-2
+  - tag-row:  Tag variant="filled", gap xs, max 3 tags
+
+project-card-text-variant:
+  # No hero. Category icon mapped from projectType (academic|freelance|personal):
+  #   academic → FlaskConical, freelance → Briefcase, personal → Code2 (lucide-react)
+  iconSize: 18px
+  iconColor: on-surface-muted at opacity 60
+  layout: icon → title (headline-sm) → summary → tags
 ```
 
-**Three click-affordance signals (per PRODUCT.md §7.2):**
-1. Cursor pointer over the entire card.
-2. Title shifts to accent + underline on card-hover (not just title-hover).
-3. Chevron in top-right corner shifts up-right + accent on card-hover.
+**Click affordances on card-hover:**
+- Title underline (decoration uses `accent`).
+- Border color shifts from `outline-variant` → `outline`.
+
+No card number, no chevron, no "View case study →" text.
 
 ### Buttons
 
@@ -642,7 +660,7 @@ button-primary:
   color: accent-on
   fontSize: 14px
   fontWeight: 500
-  borderRadius: md
+  borderRadius: sm
   border: none
   
   hover:
@@ -657,7 +675,7 @@ button-secondary:
   background: transparent
   color: on-surface
   border: 1px solid outline
-  borderRadius: md
+  borderRadius: sm
   
   hover:
     background: accent-muted
@@ -672,37 +690,61 @@ button-icon-leading:
 
 Buttons rely on spacing, type, and contrast. No shadows. No gradients.
 
+### Tag
+
+```yaml
+tag:
+  type: mono-label, normal-case (overrides default uppercase)
+  letterSpacing: normal
+  paddingX: spacing-sm
+  paddingY: 2px
+  borderRadius: sm
+
+  variants:
+    outline:
+      background: transparent
+      border: 1px solid outline-variant
+      color: on-surface-muted
+
+    filled:
+      background: surface-sunken
+      color: on-surface               # brighter than outline variant
+      border: none
+```
+
+Project cards use `filled`. Project sidebars render metadata as plain inline dot-separated text rather than tag chips (see Project sticky sidebar below). `outline` remains available for contexts that need a chip with a hairline border.
+
 ### Project sticky sidebar
 
 PRODUCT.md §7.3 mandates this layout. Visual spec:
 
 ```yaml
 project-sidebar:
-  width: 280px
+  width: 260px
   position: sticky
   top: 96px               # clears the pill nav (24px top + 56px height + 16px gap)
   alignSelf: flex-start
-  paddingRight: 32px
-  borderRight: 1px solid outline-variant
+  paddingRight: spacing-lg
+  borderRight: none        # no hard divider — separation comes from column gap
   maxHeight: calc(100vh - 96px)
   overflowY: auto
 
 project-sidebar-section:
-  marginBottom: 24px
-  
+  marginBottom: spacing-xl
+
   - short-title:         headline-sm
   - full-title:          body-sm, on-surface-muted, italic (optional)
-  - tag-row:             mono-label, wrap, gap sm
+  - tag-row (Topics):    body-sm, on-surface-muted, dot-separated ("tag · tag · tag")
   - stack-summary:
-      group-label:       mono-label, on-surface-muted, marginBottom xs
-      group-items:       body-sm, comma-separated
+      group-label:       body-xs uppercase tracking-widest, on-surface-muted opacity 50
+      group-items:       body-sm, on-surface-muted, dot-separated
       groups: Languages / Frameworks / Libraries / Tools
   - links:               icon + label, vertical stack, gap sm
 
 project-main:
   flex: 1
-  paddingLeft: 32px
-  maxWidth: 720px         # constrained reading width
+  paddingLeft: spacing-xl
+  maxWidth: 680px          # constrained reading width
 ```
 
 On viewports below `lg`, the sidebar content stacks at the top of the page in a single-column layout (no sticky behavior).
@@ -761,28 +803,99 @@ Bottom-right does not collide with pill nav (top-center). Hidden when the slide-
 
 ```yaml
 footer:
-  marginTop: 4xl                    # 96px
-  paddingVertical: xl                # 32px
+  marginTop: spacing-4xl
+  paddingVertical: spacing-xl
   paddingHorizontal: same as page side-margins
-  borderTop: 1px solid outline-variant
-  
+  borderTop: none                    # no top divider
+
   layout-desktop: flex-row, space-between
-    left: copyright (body-sm, on-surface-muted)
-    right: social icons, gap md, iconSize 20px
-  
+    left: copyright (body-sm)
+    right: social icons (GitHub, LinkedIn, Mail), gap md, iconSize 18px
+
   layout-mobile: flex-column, gap md
-    copyright (centered or left-aligned)
-    socials (left-aligned)
+
+copyright-format:
+  # Exact copy: "© {year} / Aishwarya Ganesan / Designed and developed by me."
+  surrounding-spans:                 # "© {year} /" and "/ Designed and developed by me."
+    color: on-surface-muted
+    opacity: 0.40
+  name-span:                          # "Aishwarya Ganesan"
+    color: on-surface-muted
+    opacity: 1.0
 
 social-icon:
-  size: 20px
+  size: 18px
   color: on-surface-muted
   hover:
-    color: accent
+    color: on-surface
     transition: color 150ms
 ```
 
 No theme toggle in the footer. (It lives in the pill nav / slide-out menu.)
+
+### Callout (MDX)
+
+Editorial pull block — integrated with prose flow, not a UI card.
+
+```yaml
+callout:
+  background: surface-sunken              # subtle tonal separation
+  borderLeft: 2px solid [type-color]      # insight=accent, tradeoff=secondary, warning=tertiary
+  borderRadius: none                      # flush with prose
+  paddingLeft: spacing-lg
+  paddingRight: spacing-md
+  paddingY: spacing-md
+  marginY: spacing-xl
+
+callout-title:
+  type: body-md
+  fontWeight: 600
+  color: on-surface
+  marginBottom: spacing-sm
+```
+
+`type` defaults to `"insight"`. The accent line is intentionally thin (2px) to keep the block from reading as a UI card.
+
+### Project section label
+
+Architectural divider used on project detail pages to separate major reading sections (e.g. `OVERVIEW`, `DEEP DIVE`). Not authored in MDX — emitted by the project page template.
+
+```yaml
+project-section-label:
+  borderTop: 1px solid outline-variant
+  paddingTop: spacing-lg
+  label:
+    type: mono-label
+    color: on-surface-muted
+    opacity: 0.40
+  # Section content begins below the label, separated by spacing-xl
+```
+
+### Prose (MDX deep-dive) layout
+
+Pairs with the `prose-h2` / `prose-h3` / `prose-body` type tokens in §3.
+
+```yaml
+prose-h2-layout:
+  borderTop: 1px solid outline-variant
+  paddingTop: spacing-xl
+  marginTop: spacing-3xl
+  marginBottom: spacing-lg
+  # First h2 inside .prose-content skips border-top + padding-top + margin-top
+  # so the section label above provides the only anchor rule.
+
+prose-h3-layout:
+  marginTop: spacing-2xl
+  marginBottom: spacing-sm
+
+prose-paragraph:
+  marginBottom: spacing-lg
+
+prose-list-item:
+  marginBottom: spacing-xs
+```
+
+H2s function as section anchors via their own thin top rule. H3s sit clearly subordinate (lighter weight, smaller, no rule).
 
 ### About — two-panel intro
 
