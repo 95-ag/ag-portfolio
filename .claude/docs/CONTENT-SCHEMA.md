@@ -398,7 +398,7 @@ penalty would likely close the remaining gap on tight turns.
 | `type` | enum | no | `"insight"` (default) \| `"tradeoff"` \| `"warning"` |
 | `title` | string | no | Optional bold lead-in |
 
-Visual treatment in DESIGN.md §1 (Callouts feel editorial, not promotional). `type` drives the accent color (insight = `accent`, tradeoff = `secondary`, warning = `tertiary`).
+Visual treatment in DESIGN.md §11. Callouts are editorial asides — intended to surface key decisions or tradeoffs without interrupting the reading flow. `type` drives the accent color (insight = `accent`, tradeoff = `secondary`, warning = `tertiary`).
 
 ### `<Stack>`
 
@@ -466,7 +466,19 @@ Reason: the About page has a structured two-column layout (DESIGN.md §11) where
 # Identity
 name: "Your Name"
 role: "AI/ML Engineer"
+
+# Intro paragraph — rendered as the opening body-lg sentence in the two-panel intro.
+# One paragraph. Plain prose, first person. States what you build and how you think.
 positioning: "Building practical ML systems for real-world constraints."
+
+# Supporting points — rendered as a bullet list below the intro paragraph.
+# 3–5 items. Each is a concise, standalone engineering-focused statement.
+# Covers: how you work, what you optimise for, domain breadth, collaboration style.
+detailedPositioning:
+  - "Systems thinking across model training, inference, and backend — these are connected problems."
+  - "I optimise for shipping. Usable systems early, refined against real data."
+  # 3–5 items recommended
+
 headshot: "/headshot.jpg"
 headshotAlt: "Portrait of [Your Name]"
 socials:
@@ -474,7 +486,7 @@ socials:
   linkedin: "https://linkedin.com/in/..."
   # extend as needed
 
-# Contact quick links
+# Populates the email affordance in the identity contact row and the contact section
 contactEmail: "you@example.com"
 
 # Approach (rendered as numbered or bulleted principles per DESIGN.md)
