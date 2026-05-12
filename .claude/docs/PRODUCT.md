@@ -78,18 +78,17 @@ Missing optional fields are omitted from rendering — no placeholders.
 **Theme.** Light, dark, system. Default is system. Persisted in localStorage after explicit user selection. No flash of incorrect theme on load.
 
 **Theme toggle placement.**
-- **Desktop:** in the footer (right side, alongside copyright and socials).
-- **Mobile:** at the bottom of the slide-out nav menu only. **Not** in the mobile footer.
+- **Desktop:** in the pill nav (right side, after divider). Not in the footer.
+- **Mobile:** at the bottom of the slide-out menu only. Not in the mobile footer.
 
-**Footer (every page).** Left: copyright. Right: social icons (GitHub, LinkedIn, plus configurable list). Desktop only: theme toggle at the end. Mobile footer is compact — copyright + socials only.
+**Footer (every page).** Left: copyright. Right: social icons (GitHub: https://github.com/95-ag, LinkedIn: https://www.linkedin.com/in/aishganesan/). No theme toggle in footer. Mobile footer is compact — copyright + socials only.
 
-**Scroll-to-top button.** Appears after the user scrolls past ~1 viewport height. Bottom-right, fixed, fades in. All long pages.
+**Floating pill nav (top-center).**
+- **Desktop (`md+`):** fixed, floating pill centered relative to the 1200px content column. Layout: `[ logo ] ─ [ About  Work ] ─ [ theme toggle ]`. Logo is a round mark linking to `/` — acts as the Home link. No separate "Home" nav item. Active page highlighted. Visual spec owned by `DESIGN.md`.
+- **Mobile (`< md`):** pill nav hidden. Fixed trigger (top-right) opens a slide-out menu. Menu includes: Home, About, Work + theme toggle at the bottom. Translucent backdrop, focus-trapped while open.
 
-**Right-side vertical nav.**
-- **Desktop:** persistent, semi-transparent backdrop while scrolling. Items: Home, About, Work, Blog (v2). Current page is shown with active styling — **not hidden**. Left side has a home-icon/logo (matches favicon) linking to `/`.
-- **Mobile:** collapsed by default. Opens via tap on a menu icon (top-right) or right-edge swipe. Slides in from the right. Translucent backdrop. Theme toggle pinned at the bottom of the menu. Visual treatment (gradient, blur amount, exact opacity) is owned by `DESIGN.md`.
+> **Deviation from original notes:** Original spec described a right-side vertical nav. Replaced with a top-center floating pill nav per `DESIGN.md`. Logo mark on the left of the pill serves as the Home link — no separate Home nav item on desktop.
 
-> **Deviation from notes:** Notes specified hiding the current page from nav. Overridden — hiding breaks the user's mental model of nav as a stable map. Standard active-state highlighting instead.
 
 **Routing reliability.** No dead links. 404 page exists, styled, links back to Home and Work. Build fails on missing required frontmatter fields or broken `featured` flags — no broken pages reach production.
 

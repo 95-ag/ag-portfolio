@@ -427,29 +427,37 @@ pill-nav:
   position: fixed
   top: 24px
   horizontalPlacement: center      # centered relative to max-content-width container, NOT viewport
-  height: 56px
-  paddingHorizontal: 16px
-  gap-between-items: 4px
+  height: 44px
+  paddingHorizontal: 8px
   borderRadius: pill
   background: surface-overlay
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
   zIndex: 50
 
+  layout: [ logo-mark ] ─ [ divider ] ─ [ About  Work ] ─ [ divider ] ─ [ theme-toggle ]
+
+pill-nav-logo:
+  size: 32px x 32px
+  borderRadius: pill (full circle)
+  background: accent
+  color: accent-on
+  content: "AG" in mono-label at 10px   # placeholder until real logo asset in /public/
+  hover: opacity 0.8, transition 150ms
+  links-to: /
+
 pill-nav-item:
-  height: 40px
+  height: 32px
   paddingHorizontal: 16px
-  paddingVertical: 8px
   borderRadius: pill
   gap-icon-label: 8px
-  iconSize: 18px
+  iconSize: 16px
   fontSize: 14px
   fontWeight: 500
 
 pill-nav-item-active:
   background: accent
   color: accent-on
-  # no other change — same shape, same size
 
 pill-nav-item-hover:
   background: accent-muted
@@ -458,13 +466,14 @@ pill-nav-item-hover:
 
 pill-nav-divider:
   width: 1px
-  height: 24px
+  height: 20px
   background: outline-variant
-  marginHorizontal: 8px
-  # placed before the theme toggle to separate it from nav items
+  # one divider after logo, one before theme toggle
 ```
 
 **Top-center caveat:** centered relative to the 1200px content max-width, not the viewport. On ultrawide monitors the pill aligns with content rather than floating in empty space.
+
+**Logo mark:** currently an `AG` round accent circle (placeholder). When a real logo asset is available, drop it in `/public/logo.svg` and update the `LogoMark` component in `pill-nav.tsx`. The logo always links to `/` and replaces the "Home" nav item — no separate Home link on desktop.
 
 ### Theme toggle (in pill nav)
 
