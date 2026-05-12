@@ -275,7 +275,7 @@ body {
   }
   .prose-content p {
     font-size: 16px;
-    line-height: 26px;
+    line-height: 24px;
     color: var(--on-surface);
     margin-bottom: var(--spacing-md);
   }
@@ -286,7 +286,7 @@ body {
   }
   .prose-content li {
     font-size: 16px;
-    line-height: 26px;
+    line-height: 24px;
     color: var(--on-surface);
     margin-bottom: var(--spacing-xs);
   }
@@ -300,9 +300,10 @@ body {
     color: var(--on-surface);
   }
   .prose-content blockquote {
-    border-left: 2px solid var(--outline-variant);
+    border-left: 3px solid var(--accent);
     padding-left: var(--spacing-lg);
     color: var(--on-surface-muted);
+    font-style: italic;
     margin: var(--spacing-lg) 0;
   }
   .prose-content hr {
@@ -332,7 +333,7 @@ body {
     background: var(--surface-sunken);
     border: 1px solid var(--outline-variant);
     border-radius: var(--radius-sm);
-    padding: 1px 6px;
+    padding: 2px 6px;
     color: var(--on-surface);
   }
 
