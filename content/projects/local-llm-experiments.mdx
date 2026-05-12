@@ -1,0 +1,49 @@
+---
+title: "Local LLM Experiments"
+shortTitle: "Local LLM"
+summary: "Personal exploration of running and fine-tuning small language models on consumer hardware using quantization and LoRA."
+projectType: personal
+publishedAt: "2024-03-10"
+order: 30
+heroImage: "/projects/local-llm-experiments/hero.svg"
+heroAlt: "Token attention heatmap grid showing diagonal activation patterns across positions."
+tags:
+  - LLMs
+  - Fine-tuning
+  - Python
+  - Research
+stack:
+  languages: [Python]
+  frameworks: [PyTorch, Transformers]
+  libraries: [bitsandbytes, PEFT, datasets]
+  tools: [Ollama, Git]
+overview:
+  problem: |
+    Cloud-hosted LLM inference costs make rapid experimentation expensive and slow.
+    The question: how capable can a quantized 7B model be on a single consumer GPU?
+  built: |
+    A local inference stack using Ollama and llama.cpp, plus LoRA fine-tuning experiments
+    on a Hugging Face PEFT pipeline targeting domain-specific summarization tasks.
+  learnings:
+    - Quantization tradeoffs are highly task-dependent — 4-bit is surprisingly capable for summarization but degrades on multi-step reasoning
+    - LoRA adapters for narrow domains train in hours on a single RTX 3090
+    - Prompt format matters more than model size for structured output tasks
+---
+
+## What I explored
+
+Three related experiments over about six weeks:
+
+**Quantized inference.** Running Mistral 7B at 4-bit and 8-bit quantization via llama.cpp and Ollama. Benchmarking against full-precision on summarization, classification, and code generation.
+
+**LoRA fine-tuning.** Fine-tuning Mistral 7B on a small domain-specific corpus using PEFT and bitsandbytes. Training time on an RTX 3090 was around 3 hours per 1,000 steps at batch size 4.
+
+**Prompt engineering vs. fine-tuning.** Comparing structured prompt templates against LoRA-adapted models on the same evaluation set to understand when fine-tuning is actually worth the effort.
+
+<Callout type="insight">
+For structured output tasks where the output format is constrained and the domain is narrow, well-engineered prompts often match a LoRA-adapted model — and take minutes, not hours, to iterate on.
+</Callout>
+
+## Next Steps
+
+The natural next experiment is distillation: using a large teacher model to generate training data for a smaller student, then fine-tuning the student with LoRA. This could close more of the quality gap at lower inference cost.

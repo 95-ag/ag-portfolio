@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <rect width="400" height="500" fill="#e8eaea"/>
+  <!-- Head -->
+  <circle cx="200" cy="165" r="80" fill="#bbcabf"/>
+  <!-- Neck -->
+  <rect x="172" y="230" width="56" height="50" fill="#bbcabf" rx="4"/>
+  <!-- Shoulders / body -->
+  <path d="M 60,500 Q 60,360 120,340 Q 160,320 200,318 Q 240,320 280,340 Q 340,360 340,500 Z" fill="#bbcabf"/>
+</svg>

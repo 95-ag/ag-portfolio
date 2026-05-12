@@ -253,6 +253,90 @@ body {
     line-height: 20px;
   }
 
+  /* MDX deep-dive prose — applies inside .prose-content */
+  .prose-content h2 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    color: var(--on-surface);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
+  }
+  .prose-content h3 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: var(--on-surface);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-sm);
+  }
+  .prose-content p {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    margin-bottom: var(--spacing-md);
+  }
+  .prose-content ul,
+  .prose-content ol {
+    padding-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+  }
+  .prose-content li {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    margin-bottom: var(--spacing-xs);
+  }
+  .prose-content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-content strong {
+    font-weight: 600;
+    color: var(--on-surface);
+  }
+  .prose-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: var(--spacing-lg);
+    color: var(--on-surface-muted);
+    font-style: italic;
+    margin: var(--spacing-lg) 0;
+  }
+  .prose-content hr {
+    border: none;
+    border-top: 1px solid var(--outline-variant);
+    margin: var(--spacing-xl) 0;
+  }
+  .prose-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: var(--spacing-md);
+  }
+  .prose-content th,
+  .prose-content td {
+    border: 1px solid var(--outline-variant);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+  }
+  .prose-content th {
+    background: var(--surface-sunken);
+    font-weight: 600;
+  }
+  .prose-content code:not(pre code) {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+    color: var(--on-surface);
+  }
+
   /* Mobile overrides — DESIGN.md §3 */
   @media (max-width: 768px) {
     .type-display-lg {

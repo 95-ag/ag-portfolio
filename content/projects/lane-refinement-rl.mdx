@@ -1,0 +1,74 @@
+---
+title: "Lane Refinement with Double DQN"
+shortTitle: "Lane Refinement RL"
+summary: "Two-stage RL pipeline correcting lane-detection errors in occluded driving scenes, improving accuracy by 18%."
+projectType: academic
+publishedAt: "2024-09-15"
+order: 10
+heroImage: "/projects/lane-refinement-rl/hero.svg"
+heroAlt: "Bird's-eye view of parallel lane paths with one accent-colored refined lane."
+tags:
+  - Reinforcement Learning
+  - Computer Vision
+  - Autonomous Driving
+  - PyTorch
+stack:
+  languages: [Python, C++]
+  frameworks: [PyTorch, OpenCV]
+  libraries: [NumPy, Pandas, scikit-learn]
+  tools: [Docker, Git, Linux]
+overview:
+  problem: |
+    Lane detection fails in shadows and sharp curves, compromising safe lane-keeping
+    in autonomous vehicles operating under non-ideal conditions.
+  built: |
+    A two-stage pipeline: a CNN produces an initial lane prediction, then a Double DQN
+    agent iteratively refines lane-point positions using image features as state.
+  results:
+    - "Improved lane-point accuracy by 18% on occluded segments"
+    - "Reduced curvature errors by 23% on the tightest-radius test set"
+    - "Maintained near real-time inference at 38ms per frame on a single GPU"
+  transferableSkills:
+    - Designing modular ML pipelines that separate concerns between perception and decision layers
+    - Working with noisy perception data and reward-shaping under sparse signals
+    - Optimizing models under latency constraints without sacrificing accuracy
+    - Communicating technical work clearly across engineering and research audiences
+featured: true
+---
+
+## Detailed Problem
+
+Standard CNN-based lane detectors produce dense pixel-level predictions that degrade significantly under occlusion — shadows from overpasses, tight curves where only partial lane markings are visible, and adverse lighting conditions. The failure mode is systematic: the detector over-predicts straight-line geometry in conditions where curvature requires extrapolation beyond visible evidence.
+
+The goal was to build a refinement layer that operates on an existing detector's output, correcting geometric errors without retraining the upstream model.
+
+## Architecture
+
+The pipeline is two-stage:
+
+1. **Perception stage** — A MobileNetV3 backbone extracts lane-point predictions from the input image frame.
+2. **Refinement stage** — A Double DQN agent takes the raw prediction and a cropped image patch as state, and learns to apply incremental corrections to individual lane points.
+
+The agent's action space is discrete: shift each point left, right, up, down, or leave unchanged. The reward signal is the negative lateral error against ground-truth annotations from the dataset.
+
+## Algorithm & Code Design
+
+```python
+def compute_reward(predicted_points, ground_truth_points):
+    lateral_error = torch.mean(
+        torch.abs(predicted_points[:, 0] - ground_truth_points[:, 0])
+    )
+    return -lateral_error.item()
+```
+
+<Callout type="insight" title="Reward shaping">
+The reward only penalizes lateral error. Adding a curvature smoothness penalty in later experiments reduced oscillation artifacts on tight radii — a follow-up worth formalizing.
+</Callout>
+
+## Results
+
+The refined pipeline improved lane-point accuracy by 18% on the occluded test split relative to the standalone CNN baseline. Curvature error on tight-radius segments dropped 23%. Inference overhead from the refinement stage was 8ms per frame, keeping the combined latency within the 40ms real-time budget.
+
+## Next Steps
+
+The reward function could be extended to penalize geometric implausibility (non-monotonic curvature) in addition to lateral error. Applying the same two-stage pattern to a transformer-based backbone is a natural next experiment.
