@@ -1,6 +1,17 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run build *)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint *)",
+      "Bash(npm run dev)",
+      "Bash(npm run dev *)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run typecheck *)",
+      "Bash(npm test)",
+      "Bash(npm test *)"
+    ],
     "deny": []
   },
   "env": {},
