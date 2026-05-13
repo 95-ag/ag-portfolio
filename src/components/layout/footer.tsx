@@ -1,10 +1,10 @@
 import { Container } from "@/components/layout/container";
 
-function GitHubIcon() {
+function GitHubIcon({ size = 20 }: { size?: number }) {
   return (
     <svg
-      width="22"
-      height="22"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -14,11 +14,11 @@ function GitHubIcon() {
   );
 }
 
-function LinkedInIcon() {
+function LinkedInIcon({ size = 20 }: { size?: number }) {
   return (
     <svg
-      width="22"
-      height="22"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -28,11 +28,11 @@ function LinkedInIcon() {
   );
 }
 
-function MailIcon() {
+function MailIcon({ size = 20 }: { size?: number }) {
   return (
     <svg
-      width="22"
-      height="22"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -51,44 +51,50 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-[var(--spacing-4xl)] py-[var(--spacing-xl)]">
+    <footer className="mt-[var(--spacing-4xl)] py-[var(--spacing-lg)]">
       <Container>
-        <div className="flex flex-col gap-[var(--spacing-md)] md:flex-row md:items-center md:justify-between">
-          <p className="type-body-sm">
-            <span className="text-[var(--on-surface-muted)] opacity-40">
-              © {year} /{" "}
-            </span>
+        <div className="flex items-center justify-between gap-[var(--spacing-md)]">
+          {/* Left: copyright + name + repo link */}
+          <p className="footer-text min-w-0 text-[var(--on-surface-muted)]">
+            <span className="opacity-50">© {year} / </span>
             <span className="text-[var(--on-surface)]">Aishwarya Ganesan</span>
-            <span className="text-[var(--on-surface-muted)] opacity-40">
-              {" "}
-              / Designed and developed by me.
-            </span>
+            <span className="opacity-50"> / </span>
+            <a
+              href="https://github.com/95-ag/ag-portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+            >
+              Designed &amp; developed by me.
+            </a>
           </p>
-          <div className="flex items-center gap-[var(--spacing-md)]">
+
+          {/* Right: social icons */}
+          <div className="flex shrink-0 items-center gap-[var(--spacing-md)]">
             <a
               href="https://github.com/95-ag"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
             >
-              <GitHubIcon />
+              <GitHubIcon size={20} />
             </a>
             <a
               href="https://www.linkedin.com/in/aishganesan/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
             >
-              <LinkedInIcon />
+              <LinkedInIcon size={20} />
             </a>
             <a
               href="mailto:aishwaryaganesan95@gmail.com"
               aria-label="Send email"
-              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
             >
-              <MailIcon />
+              <MailIcon size={20} />
             </a>
           </div>
         </div>
