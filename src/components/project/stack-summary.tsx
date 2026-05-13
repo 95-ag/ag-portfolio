@@ -22,10 +22,10 @@ export function StackSummary({ stack }: StackSummaryProps) {
     <div className="flex flex-col gap-[var(--spacing-md)]">
       {entries.map(([category, items]) => (
         <div key={category} className="flex flex-col gap-[var(--spacing-xs)]">
-          <p className="type-body-xs text-[var(--on-surface-muted)] opacity-50 uppercase tracking-widest">
+          <p className="type-mono-label text-[var(--on-surface-muted)]">
             {CATEGORY_LABELS[category]}
           </p>
-          <p className="type-body-sm text-[var(--on-surface-muted)] leading-relaxed">
+          <p className="type-body-sm text-[var(--on-surface)] leading-relaxed">
             {items.join(" · ")}
           </p>
         </div>

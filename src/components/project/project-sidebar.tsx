@@ -27,12 +27,8 @@ function MetaRow({
 }) {
   return (
     <div className="flex flex-col gap-[var(--spacing-xs)]">
-      <p className="type-body-xs text-[var(--on-surface-muted)] opacity-50 uppercase tracking-widest">
-        {label}
-      </p>
-      <div className="type-body-sm text-[var(--on-surface-muted)]">
-        {children}
-      </div>
+      <p className="type-mono-label text-[var(--on-surface-muted)]">{label}</p>
+      <div className="type-body-sm text-[var(--on-surface)]">{children}</div>
     </div>
   );
 }
@@ -42,19 +38,17 @@ interface ProjectSidebarProps {
 }
 
 export function ProjectSidebar({ frontmatter: fm }: ProjectSidebarProps) {
-  const displayTitle = fm.shortTitle ?? fm.title;
-
   return (
     <Sticky>
       <div className="flex flex-col gap-[var(--spacing-xl)]">
         {/* Title */}
         <div className="flex flex-col gap-[var(--spacing-xs)]">
           <p className="type-headline-sm text-[var(--on-surface)]">
-            {displayTitle}
+            {fm.title}
           </p>
-          {fm.fullTitle && fm.fullTitle !== fm.title && (
-            <p className="type-body-sm text-[var(--on-surface-muted)] opacity-60">
-              {fm.fullTitle}
+          {fm.subtitle && (
+            <p className="type-body-sm text-[var(--on-surface-muted)]">
+              {fm.subtitle}
             </p>
           )}
         </div>
@@ -77,7 +71,7 @@ export function ProjectSidebar({ frontmatter: fm }: ProjectSidebarProps) {
                     href={fm.links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                   >
                     <GitHubIcon />
                     GitHub
@@ -95,7 +89,7 @@ export function ProjectSidebar({ frontmatter: fm }: ProjectSidebarProps) {
                     href={fm.links.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                   >
                     <Icon icon={Globe} size={16} />
                     Live demo
@@ -113,7 +107,7 @@ export function ProjectSidebar({ frontmatter: fm }: ProjectSidebarProps) {
                     href={fm.links.paper}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                    className="flex items-center gap-[var(--spacing-sm)] type-body-sm text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                   >
                     <Icon icon={FileText} size={16} />
                     Paper
