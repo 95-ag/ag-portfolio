@@ -6,9 +6,9 @@ interface ProjectOverviewProps {
 
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="flex flex-col gap-[var(--spacing-xs)]">
+    <ul>
       {items.map((item) => (
-        <li key={item} className="flex gap-[var(--spacing-sm)]">
+        <li key={item}>
           <span
             aria-hidden="true"
             className="mt-[10px] h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--outline-variant)]"
@@ -28,25 +28,35 @@ export function ProjectOverview({ overview }: ProjectOverviewProps) {
 
   return (
     <section aria-label="Project overview">
-      <h3>Problem</h3>
-      <p>{overview.problem}</p>
+      <dl className="editorial-dl">
+        <dt>Problem</dt>
+        <dd>
+          <p>{overview.problem}</p>
+        </dd>
 
-      <h3>What I built</h3>
-      <p>{overview.built}</p>
+        <dt>What I built</dt>
+        <dd>
+          <p>{overview.built}</p>
+        </dd>
 
-      {overview.results && overview.results.length > 0 && (
-        <>
-          <h3>Results</h3>
-          <BulletList items={overview.results} />
-        </>
-      )}
+        {overview.results && overview.results.length > 0 && (
+          <>
+            <dt>Results</dt>
+            <dd>
+              <BulletList items={overview.results} />
+            </dd>
+          </>
+        )}
 
-      {skillsList.length > 0 && (
-        <>
-          <h3>{skillsLabel}</h3>
-          <BulletList items={skillsList} />
-        </>
-      )}
+        {skillsList.length > 0 && (
+          <>
+            <dt>{skillsLabel}</dt>
+            <dd>
+              <BulletList items={skillsList} />
+            </dd>
+          </>
+        )}
+      </dl>
     </section>
   );
 }

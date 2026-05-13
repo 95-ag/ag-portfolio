@@ -1,3 +1,4 @@
+import React from "react";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 interface TechStackProps {
@@ -21,12 +22,16 @@ export function TechStack({ stack }: TechStackProps) {
   return (
     <section aria-label="Tech stack">
       <h2>Tech Stack</h2>
-      {entries.map(([category, items]) => (
-        <div key={category}>
-          <h3>{CATEGORY_LABELS[category]}</h3>
-          <p>{items.join(" · ")}</p>
-        </div>
-      ))}
+      <dl className="editorial-dl">
+        {entries.map(([category, items]) => (
+          <React.Fragment key={category}>
+            <dt>{CATEGORY_LABELS[category]}</dt>
+            <dd>
+              <p>{items.join(" · ")}</p>
+            </dd>
+          </React.Fragment>
+        ))}
+      </dl>
     </section>
   );
 }
