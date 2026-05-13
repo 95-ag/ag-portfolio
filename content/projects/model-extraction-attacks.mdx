@@ -1,7 +1,6 @@
 ---
 title: "Query-Efficient Model Extraction Attacks"
-shortTitle: "Model Extraction"
-fullTitle: "Query-Efficient Black-Box Model Extraction and Privacy Attack Transferability"
+subtitle: "Query-Efficient Black-Box Model Extraction and Privacy Attack Transferability"
 summary: "Built a black-box model extraction pipeline that replicated proprietary ML models with 82.88% accuracy using only 25k queries through entropy-based sampling and surrogate training."
 projectType: academic
 publishedAt: "2022-05-01"
@@ -88,9 +87,7 @@ The selection process:
 3. Submit the top-k highest-entropy inputs to the victim API.
 4. Add the labeled results to the surrogate training set.
 
-<Callout type="insight" title="Why entropy works">
-High-entropy inputs sit near class boundaries. Training the surrogate on these examples provides a denser map of the victim's decision surface per query — the same information density that random sampling would require 3–4× more queries to achieve.
-</Callout>
+<Highlight heading="Notes #1">High-entropy inputs sit near class boundaries — training on these provides a denser map of the victim's decision surface per query than random sampling would require 3–4× more queries to achieve.</Highlight>
 
 On CIFAR-10, coreset selection matched random sampling at 75k queries using only 25k — roughly a 3× improvement in query efficiency. CIFAR-100's higher class count and label noise reduced the margin, but the efficiency gain remained meaningful in the mid-query-budget regime.
 

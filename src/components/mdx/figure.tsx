@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils/cn";
 type FigureWidth = "default" | "wide" | "full";
 
 const containerClass: Record<FigureWidth, string> = {
-  default: "max-w-[720px]",
-  wide: "max-w-[960px]",
+  default: "w-full",
+  wide: "w-full max-w-[960px]",
   full: "w-full",
 };
 
@@ -34,7 +34,7 @@ export function Figure({
   return (
     <figure
       className={cn(
-        "my-[var(--spacing-2xl)]",
+        "my-[var(--spacing-2xl)] mx-auto",
         containerClass[width],
         className,
       )}
@@ -48,11 +48,11 @@ export function Figure({
           alt={alt}
           fill
           className="object-cover"
-          sizes="(max-width: 768px) 100vw, 720px"
+          sizes="(max-width: 768px) 100vw, 760px"
         />
       </div>
       {caption && (
-        <figcaption className="type-body-sm mt-[var(--spacing-sm)] text-[var(--on-surface-muted)]">
+        <figcaption className="type-body-sm mt-[var(--spacing-sm)] text-[var(--on-surface-muted)] text-center">
           {caption}
         </figcaption>
       )}

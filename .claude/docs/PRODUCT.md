@@ -62,7 +62,7 @@ No CMS in v1. No analytics decision in v1.
 - `slug`, `title`, `summary`, `tags[]`, `heroImage` — drive cards.
 - `projectType: academic | freelance | personal` — drives sort order on Work page and section visibility on the project page (see §8).
 - `featured: boolean`, `order: number` — drive homepage selection.
-- `links{ github, demo, paper }` — drive the sidebar links section.
+- `links{ github, demo, paper }` — drive the project header links row.
 - `relatedProjects[]` (v2) — drives related-project suggestions on the project page.
 
 Missing optional fields are omitted from rendering — no placeholders.
@@ -85,7 +85,7 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 **Floating pill nav (top-center).**
 - **Desktop (`md+`):** fixed, floating pill centered relative to the 1200px content column. Layout: `[ logo ] ─ [ About  Work ] ─ [ theme toggle ]`. Logo is a round mark linking to `/` — acts as the Home link. No separate "Home" nav item. Active page highlighted. Visual spec owned by `DESIGN.md`.
-- **Mobile (`< md`):** pill nav hidden. Fixed trigger (top-right) opens a slide-out menu. Menu includes: Home, About, Work + theme toggle at the bottom. Translucent backdrop, focus-trapped while open.
+- **Mobile (`< md`):** pill nav hidden. Fixed trigger (top-right) opens a slide-out menu. Menu includes: About, Work + theme toggle at the bottom. Home is the logomark in the top-left of the menu — no separate "Home" nav item. Translucent backdrop, focus-trapped while open.
 
 > **Deviation from original notes:** Original spec described a right-side vertical nav. Replaced with a top-center floating pill nav per `DESIGN.md`. Logo mark on the left of the pill serves as the Home link — no separate Home nav item on desktop.
 
@@ -155,19 +155,18 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 **Purpose.** Visitors scanning quickly can extract role, stack, and outcome from the overview alone. Engineers reading deeply use the deep dive. Both reading modes are supported without the page requiring either.
 
-**Layout (desktop, ≥ lg).** Sticky left sidebar (intro panel) + main content column. Main column flows vertically through three labeled reading zones: **hero → OVERVIEW → DEEP DIVE → backlink**. Section transitions are marked by quiet architectural labels rather than dividers — they serve as wayfinding for visitors who arrive mid-scroll. Visual treatment in `DESIGN.md`. The sidebar scrolls independently if its content exceeds the viewport.
+**Layout.** Single-column editorial layout at `max-w-[960px]`, centered. No sidebar at any breakpoint. Content flows vertically: **header (tags, title, subtitle, links) → hero → OVERVIEW → DEEP DIVE → backlink**.
 
-**Layout (mobile).** Sidebar content stacks at the top, then hero, then overview, then deep dive.
-
-> **Deviation from notes:** Original three-panel grid replaced with sticky-sidebar + single main column to avoid layout breakage when deep-dive content is far longer than overview. User confirmed this direction.
+> **Deviation from original notes:** Original spec described a sticky sidebar + main column. Replaced with a single-column editorial layout in Phase 5 — sidebar added structural friction without reading value given the content length and density.
 
 **Sections:**
 
-- **Hero.** Project hero image or video. Optional logo strip below.
-- **Intro sidebar (sticky).** Short title, full title (optional), tags, stack summary grouped by category, links (GitHub, demo, paper).
-- **Overview (main column, top).** Problem, what I built, results, transferable skills. ~300–500 words. Plain language. **This section is the high-level scannable summary** — it must stand alone without the deep dive.
-- **Deep dive (main column, below overview).** Detailed problem, background, data, model architecture, algorithm/code design, resources/constraints, optimization, deployment, full results, next steps. Each subsection is optional — omitted entirely if the MDX file doesn't include it. No "TBD" placeholders.
-- **Reading progress indicator.** Thin vertical bar on the left edge of the viewport, vertically positioned below the sticky sidebar's footprint. Appears after the user scrolls past the hero. Project pages only.
+- **Header.** Tags row, title (`display-lg`), optional subtitle (`body-lg` muted), project links row (GitHub / demo / paper) with per-type icons and pill hover affordance.
+- **Hero.** Project hero image or video.
+- **Overview.** Problem, what I built, results, transferable skills — rendered as an editorial two-column `<dl>` grid (180px label column, flexible content column; collapses to single column on mobile). This section is the high-level scannable summary — it must stand alone without the deep dive.
+- **Tech Stack.** Languages, frameworks, libraries, tools — same two-column `<dl>` grid under a `Tech Stack` H2. Rendered only if at least one category has entries.
+- **Deep dive.** Detailed MDX content. Each H2 is a chapter anchor. Subsections are optional — omitted if the MDX file doesn't include them.
+- **Section progress nav.** Desktop-only sticky TOC anchored to H2 headings. Appears after the hero scrolls out of view. Highlights the active section while reading. Hidden on mobile.
 - **Backlink.** "← Back to Work" at the end of content.
 - **Related projects** — v2. 2–3 suggested projects, displayed below the backlink.
 
@@ -175,14 +174,15 @@ Missing optional fields are omitted from rendering — no placeholders.
 
 | Section | academic | freelance | personal |
 |---|---|---|---|
+| Header | ✓ | ✓ | ✓ |
 | Hero | ✓ | ✓ | ✓ |
-| Sidebar (full) | ✓ | ✓ | ✓ |
-| Overview | ✓ full | ✓ full | ✓ lighter — "What I learned" replaces "Transferable Skills"; "Results" optional |
+| Overview | ✓ full | ✓ full | ✓ lighter — "Learnings" replaces "Transferable Skills"; "Results" optional |
+| Tech Stack | ✓ | ✓ | ✓ (if entries exist) |
 | Deep dive subsections | All applicable | All applicable | Only what's substantive; expect fewer subsections |
 
 The system is uniform; honest content depth varies by project type. Personal projects should not be inflated into full case studies they don't merit.
 
-**Content rendering.** MDX components: `<Diagram>`, `<Figure>`, `<Callout>`, `<Stack>`. Code blocks syntax-highlighted at build time (Shiki or similar). No client-side highlighter.
+**Content rendering.** MDX components: `<Diagram>`, `<Figure>`, `<Callout>`, `<Stack>`, `<Highlight>`. Code blocks syntax-highlighted at build time (Shiki or similar). No client-side highlighter.
 
 ### 7.4 About (`/about`)
 
@@ -221,7 +221,7 @@ The system is uniform; honest content depth varies by project type. Personal pro
 
 **Content rules.**
 - One MDX file = one project. Slug from filename.
-- Frontmatter is the source of truth for cards and sidebars. Body MDX is the source of truth for overview and deep dive.
+- Frontmatter is the source of truth for cards, the project header, and the overview/tech-stack sections. Body MDX is the source of truth for the deep dive.
 - Image paths in MDX are relative to `/public`.
 - No content duplicated between frontmatter and body.
 
@@ -240,14 +240,14 @@ The system is uniform; honest content depth varies by project type. Personal pro
 
 | Element | Mobile (< md) | Tablet (md–lg) | Desktop (≥ lg) |
 |---|---|---|---|
-| Right vertical nav | Slide-out from right via menu icon or swipe; theme toggle at bottom of menu | Visible, narrower | Visible, full |
-| Footer | Compact: copyright + socials only | Full inline | Full inline incl. theme toggle |
+| Nav | Slide-out from right (trigger top-right); About + Work + theme toggle at bottom | — | Floating pill nav (About, Work, theme toggle) |
+| Footer | Single row: copyright + socials | Single row | Single row |
 | Featured project cards | 1 col | 2 col | 3 col |
 | Work grid | 1 col | 2 col | 3 col |
 | About two-panel intro | Stacked, image first | Stacked | Side-by-side |
 | About structured sections | Stacked | Stacked | Two-column |
-| Project detail | Single column, sidebar content at top | Single column | Sticky sidebar + main |
-| Reading progress bar | Hidden | Visible | Visible |
+| Project detail | Single column | Single column | Single column, `max-w-[960px]` centered |
+| Section progress nav | Hidden | Hidden | Visible (sticky TOC, right of content) |
 
 Touch devices: no hover-only affordances. All hover content also reachable via focus or tap.
 
