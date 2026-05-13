@@ -23,12 +23,10 @@ export function SidebarLayout({
         className,
       )}
     >
-      <aside className="w-full shrink-0 lg:w-[260px] lg:pr-[var(--spacing-lg)]">
+      <aside className="w-full shrink-0 lg:w-[220px] lg:pr-[var(--spacing-lg)]">
         {sidebar}
       </aside>
-      <div className="min-w-0 flex-1 lg:max-w-[680px] lg:pl-[var(--spacing-xl)]">
-        {children}
-      </div>
+      <div className="min-w-0 flex-1 lg:pl-[var(--spacing-xl)]">{children}</div>
     </div>
   );
 }
