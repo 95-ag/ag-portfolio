@@ -35,8 +35,7 @@ const isVideo = (path: string) =>
 export const ProjectFrontmatterSchema = z
   .object({
     title: z.string().min(1),
-    shortTitle: z.string().optional(),
-    fullTitle: z.string().optional(),
+    subtitle: z.string().optional(),
     summary: z.string().min(1).max(200),
     projectType: z.enum(["academic", "freelance", "personal"]),
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
