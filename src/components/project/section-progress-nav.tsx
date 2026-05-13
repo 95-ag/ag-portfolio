@@ -63,7 +63,7 @@ export function SectionProgressNav() {
   return (
     <nav
       aria-label="Page sections"
-      className="fixed left-[max(1rem,calc(50vw-380px-180px))] top-1/2 hidden -translate-y-1/2 xl:flex xl:flex-col xl:gap-[var(--spacing-sm)]"
+      className="fixed left-6 top-1/2 hidden -translate-y-1/2 xl:flex xl:flex-col xl:gap-[var(--spacing-md)]"
       style={{ zIndex: "var(--z-sticky-content)" }}
     >
       {sections.map(({ id, label }) => {
@@ -81,8 +81,8 @@ export function SectionProgressNav() {
             }}
             className="type-body-xs max-w-[140px] truncate transition-colors duration-[var(--duration-fast)]"
             style={{
-              color: isActive ? "var(--on-surface)" : "var(--on-surface-muted)",
-              fontWeight: isActive ? 500 : 400,
+              color: isActive ? "var(--on-surface)" : "var(--outline)",
+              fontWeight: isActive ? 600 : 400,
             }}
           >
             {label}

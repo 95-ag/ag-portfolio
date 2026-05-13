@@ -3,8 +3,8 @@ import { Container } from "@/components/layout/container";
 function GitHubIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -17,8 +17,8 @@ function GitHubIcon() {
 function LinkedInIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -31,8 +31,8 @@ function LinkedInIcon() {
 function MailIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -72,7 +72,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
             >
               <GitHubIcon />
             </a>
@@ -81,14 +81,14 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
             >
               <LinkedInIcon />
             </a>
             <a
               href="mailto:aishwaryaganesan95@gmail.com"
               aria-label="Send email"
-              className="text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
             >
               <MailIcon />
             </a>
