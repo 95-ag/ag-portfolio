@@ -174,11 +174,17 @@ link:
 
 # Prose (MDX deep-dive body)
 prose-h2:
-  fontFamily: Manrope
-  fontSize: 28px
-  fontWeight: 600
-  lineHeight: 36px
-  letterSpacing: -0.02em
+  # Chapter anchor — intentionally uses mono-label scale, not a Manrope headline.
+  # Reads as a structural label/divider, not a content heading.
+  fontFamily: JetBrains Mono
+  fontSize: 13px
+  fontWeight: 500
+  lineHeight: 16px
+  letterSpacing: 0.05em
+  textTransform: uppercase
+  color: on-surface-muted
+  borderBottom: 1px solid currentColor   # divider color always matches text color
+  paddingBottom: spacing-md
 
 prose-h3:
   fontFamily: Manrope
@@ -267,10 +273,12 @@ Tokens are role-based. The same role has different hex values per theme to maint
 | `surface` | `#f8f9fa` | `#131313` | Default content surface (= background) |
 | `surface-raised` | `#ffffff` | `#1c1b1b` | Cards, sidebars, elevated panels |
 | `surface-sunken` | `#f3f4f5` | `#0e0e0e` | Code blocks, inset wells |
-| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Pill nav backdrop, slide-out menu (semi-transparent for backdrop-blur) |
+| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Pill nav backdrop (~85% opacity, for backdrop-blur) |
+| `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Mobile slide-out panel (~72% opacity — larger surface needs more transparency to feel equivalent to pill nav) |
+| `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
 | `on-background` | `#191c1d` | `#e5e2e1` | Primary text on background |
 | `on-surface` | `#191c1d` | `#e5e2e1` | Primary text on surfaces |
-| `on-surface-muted` | `#3c4a42` | `#bbcabf` | Secondary text, captions |
+| `on-surface-muted` | `#6b7280` | `#a0a0a0` | Secondary text, captions |
 | `outline` | `#6c7a71` | `#86948a` | Default borders, dividers |
 | `outline-variant` | `#bbcabf` | `#3c4a42` | Subtle borders, low-contrast dividers |
 | `accent` | `#006c49` | `#4edea3` | Active nav, primary CTA, links, focus rings, callout accents |
@@ -364,33 +372,50 @@ Use of fully sharp corners (0px) and very large rounds (>12px) is reserved for s
 
 ## 8. Elevation & Depth
 
-Depth is communicated through tonal layering and subtle borders. **No shadows in v1.** No glow effects. No glassmorphism — except the one carve-out below.
+Depth is communicated through tonal layering and subtle borders. **No shadows by default.** No glow effects. No glassmorphism — except the carve-outs below.
 
 ```yaml
 elevation:
   flat: none                                  # default; surfaces sit at their tonal layer
-  raised: border 1px solid outline-variant    # cards, sidebars
+  raised: border 1px solid outline-variant    # cards, panels
   inset:  border 1px solid outline-variant    # code blocks, wells (uses surface-sunken)
 ```
 
 ### Backdrop-blur carve-out
 
-The **floating pill nav** and **mobile slide-out menu** are the only surfaces permitted to use backdrop-blur. Spec:
+The **floating pill nav** and **mobile slide-out panel** are the only surfaces permitted to use `backdrop-filter`. Reason: they float above arbitrary content and need to remain legible against any background.
 
 ```yaml
 pill-nav-backdrop:
-  background: surface-overlay        # semi-transparent at ~85% opacity
+  background: surface-overlay        # ~85% opacity
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
-  shadow: none
 
 mobile-slide-out-backdrop:
-  background: surface-overlay
-  backdropFilter: blur(16px)
-  border-left: 1px solid outline-variant
+  background: surface-overlay-panel  # ~72% opacity — larger panel surface needs lower
+                                     # opacity to achieve equivalent perceived transparency
+  backdropFilter: blur(12px)         # matched to pill nav
 ```
 
-Nothing else uses `backdrop-filter` in v1. The reason these get the exception: they float above arbitrary content (hero images, project videos) and need to remain legible.
+### Highlight panel shadow carve-out
+
+The `<Highlight>` editorial panel uses `box-shadow` as a deliberate exception to the no-shadow rule. Reason: the panel is a standalone elevated pull-quote that must feel physically separated from the surrounding prose flow — tonal borders alone are insufficient at this scale.
+
+```yaml
+highlight-shadow-light:
+  box-shadow:
+    0 1px 4px rgba(0,0,0,0.08),
+    0 4px 16px rgba(0,0,0,0.07),
+    0 8px 24px rgba(0,0,0,0.04)
+
+highlight-shadow-dark:
+  box-shadow:
+    0 1px 4px rgba(0,0,0,0.50),
+    0 4px 16px rgba(0,0,0,0.40),
+    0 8px 24px rgba(0,0,0,0.25)
+```
+
+These are the only two shadow carve-outs in v1. Do not introduce shadows for any other component without explicitly documenting the exception here.
 
 ---
 
@@ -461,9 +486,7 @@ pill-nav:
 pill-nav-logo:
   size: 32px x 32px
   borderRadius: pill (full circle)
-  background: accent
-  color: accent-on
-  content: "AG" in mono-label at 10px   # placeholder until real logo asset in /public/
+  asset: /public/cat_head_icon.svg via next/image (unoptimized)
   hover: opacity 0.8, transition 150ms
   links-to: /
 
@@ -496,7 +519,7 @@ pill-nav-divider:
 
 **Top-center caveat:** centered relative to the 1200px content max-width, not the viewport. On ultrawide monitors the pill aligns with content rather than floating in empty space.
 
-**Logo mark:** currently an `AG` round accent circle (placeholder). When a real logo asset is available, drop it in `/public/logo.svg` and update the `LogoMark` component in `pill-nav.tsx`. The logo always links to `/` and replaces the "Home" nav item — no separate Home link on desktop.
+**Logo mark:** `cat_head_icon.svg` at `/public/cat_head_icon.svg`, rendered via `next/image` (unoptimized). The logo always links to `/` and replaces the "Home" nav item — no separate Home link on desktop or mobile.
 
 ### Theme toggle (in pill nav)
 
@@ -546,37 +569,38 @@ mobile-slide-out:
   position: fixed
   top: 0
   right: 0
-  width: min(320px, 85vw)
+  width: min(280px, 80vw)
   height: 100vh
-  background: surface-overlay
-  backdropFilter: blur(16px)
-  border-left: 1px solid outline-variant
+  background: surface-overlay-panel   # ~72% opacity — see §8 backdrop-blur carve-out
+  backdropFilter: blur(12px)          # matched to pill nav for visual parity
+  border-left: none                   # separation achieved by the overlay + blur alone
   padding: 24px
   zIndex: 60
   
   enter: slide-in from right, 300ms, easing-emphasis
-  exit: slide-out to right, 250ms, easing-standard
+  exit: slide-out to right, 300ms, easing-emphasis
 
 mobile-slide-out-overlay:
   position: fixed
   inset: 0
-  background: on-background at 40% alpha
+  background: on-background at 30% alpha
   zIndex: 55
   fade-in: 200ms
 
 mobile-slide-out-layout:
-  - close-icon: top-right of menu
-  - logo: top-left of menu
-  - divider
-  - nav-items: vertical stack, each item full-width
-      height: 48px
-      iconSize: 20px
-      fontSize: 16px
-      borderRadius: md
-      active: same accent fill as desktop pill
-  - flex-spacer
-  - divider
-  - theme-toggle: at bottom, with label "Theme: [current]" and cycling click
+  header-row:
+    - logomark: top-left, 32x32px round image, links to /
+    - close-button: top-right, 36x36px pill, on-surface-muted
+  nav-items: vertical stack, margin-top xl, gap xs
+    height: 40px
+    iconSize: 16px
+    fontSize: 14px
+    fontWeight: 500
+    borderRadius: pill
+    active: surface-sunken / on-surface (tonal — not accent fill)
+    hover: surface-sunken / on-surface
+  flex-spacer
+  theme-toggle: bottom of panel (no label, no divider)
 ```
 
 ### Hire Me CTA pulse
@@ -702,76 +726,133 @@ tag:
 
   variants:
     outline:
-      background: transparent
-      border: 1px solid outline-variant
+      background: surface-tag         # dedicated tag surface token — lighter than bg/card
+      border: none                    # no explicit border; surface-tag provides the distinction
       color: on-surface-muted
 
     filled:
-      background: surface-sunken
-      color: on-surface               # brighter than outline variant
+      background: surface-tag         # same surface token; color distinguishes the variants
+      color: on-surface
       border: none
 ```
 
-Project cards use `filled`. Project sidebars render metadata as plain inline dot-separated text rather than tag chips (see Project sticky sidebar below). `outline` remains available for contexts that need a chip with a hairline border.
+Both variants use `surface-tag`. The distinction between them is text color only (`on-surface-muted` vs `on-surface`). Project cards use `filled`.
 
-### Project sticky sidebar
+### Project detail layout
 
-PRODUCT.md §7.3 mandates this layout. Visual spec:
-
-```yaml
-project-sidebar:
-  width: 260px
-  position: sticky
-  top: 96px               # clears the pill nav (24px top + 56px height + 16px gap)
-  alignSelf: flex-start
-  paddingRight: spacing-lg
-  borderRight: none        # no hard divider — separation comes from column gap
-  maxHeight: calc(100vh - 96px)
-  overflowY: auto
-
-project-sidebar-section:
-  marginBottom: spacing-xl
-
-  - short-title:         headline-sm
-  - full-title:          body-sm, on-surface-muted, italic (optional)
-  - tag-row (Topics):    body-sm, on-surface-muted, dot-separated ("tag · tag · tag")
-  - stack-summary:
-      group-label:       body-xs uppercase tracking-widest, on-surface-muted opacity 50
-      group-items:       body-sm, on-surface-muted, dot-separated
-      groups: Languages / Frameworks / Libraries / Tools
-  - links:               icon + label, vertical stack, gap sm
-
-project-main:
-  flex: 1
-  paddingLeft: spacing-xl
-  maxWidth: 680px          # constrained reading width
-```
-
-On viewports below `lg`, the sidebar content stacks at the top of the page in a single-column layout (no sticky behavior).
-
-### Reading progress indicator
+Single-column editorial layout. No sidebar at any breakpoint.
 
 ```yaml
-reading-progress:
-  position: fixed
-  left: 32px
-  top: calc(sidebar-bottom + 24px)   # below the sticky sidebar's footprint
-  width: 2px
-  height: 200px
-  background: outline-variant
-  borderRadius: pill
-  zIndex: 30
+project-detail:
+  maxWidth: 960px
+  margin: 0 auto
 
-reading-progress-fill:
-  width: 100%
-  background: accent
-  borderRadius: pill
-  transformOrigin: top
-  transition: transform 100ms linear
-  # fill height driven by scroll position past the hero
+  sections-in-order:
+    - project-header      # tags, title, subtitle, links row
+    - hero-media          # 16:9, surface-sunken bg, radius-md
+    - overview            # editorial-dl layout (see below)
+    - tech-stack          # editorial-dl layout under a prose-h2
+    - mdx-deep-dive       # MDX body
+    - backlink            # "← Back to Work"
 ```
 
-Appears only after the user scrolls past the hero. Project pages only. Hidden below `md`.
+### Section progress nav
+
+Desktop-only sticky TOC derived from H2 headings in the MDX body. Replaces the earlier thin scroll-progress bar.
+
+```yaml
+section-progress-nav:
+  position: fixed, right side of viewport
+  visible: desktop only (hidden < md)
+  appears: after hero scrolls out of view
+  behavior: highlights active section as user scrolls
+  zIndex: sticky-content (20)
+```
+
+### Project header
+
+```yaml
+project-header:
+  layout: flex-col, gap lg
+
+  tags-row:
+    variant: filled Tag chips, gap xs
+
+  title:
+    type: display-lg
+
+  subtitle:                           # optional
+    type: body-lg
+    color: on-surface-muted
+
+  links-row:                          # optional, renders if links exist
+    layout: flex-wrap, gap lg
+    link:
+      type: body-md, font-semibold
+      padding: spacing-xs spacing-sm
+      borderRadius: sm
+      hover:
+        background: accent-muted
+        color: accent
+        external-icon: translate-x 2px
+      active: opacity 0.70
+```
+
+### Editorial two-column layout (overview + tech stack)
+
+Used for both the Overview and Tech Stack sections. Renders structured content as a definition list grid — not a general prose pattern.
+
+```yaml
+editorial-dl:
+  element: <dl>
+  desktop (>= md):
+    grid-template-columns: 180px 1fr
+    column-gap: spacing-2xl
+    row-gap: spacing-lg
+
+  mobile (< md):
+    single column
+    row-gap: spacing-md
+
+  dt:
+    font: Inter 14px/600
+    color: on-surface
+    padding-top: 3px     # baseline alignment against first content line
+
+  dd:
+    font: body-md (16px/28px)
+    color: on-surface
+    margin: 0
+```
+
+### Highlight (MDX editorial panel)
+
+Standalone elevated pull-quote for a single key insight. Not a Callout variant — this is a physically separated panel, not an inline aside.
+
+```yaml
+highlight:
+  element: <figure>
+  background: surface-raised
+  border: 1px solid outline-variant
+  borderRadius: md
+  paddingX: spacing-2xl
+  paddingY: spacing-xl
+  marginY: spacing-2xl
+  shadow: highlight-shadow (see §8 carve-out)  # intentional exception to no-shadow rule
+
+  heading (optional):
+    element: <figcaption>
+    type: mono-label
+    color: on-surface-muted
+    margin-bottom: spacing-lg
+    # No border-bottom — heading floats above body without a divider
+
+  body:
+    type: body-md
+    fontWeight: 500 (medium)
+    color: on-surface
+    lineHeight: relaxed
+```
 
 ### Scroll-to-top button
 
@@ -804,31 +885,31 @@ Bottom-right does not collide with pill nav (top-center). Hidden when the slide-
 ```yaml
 footer:
   marginTop: spacing-4xl
-  paddingVertical: spacing-xl
+  paddingVertical: spacing-lg
   paddingHorizontal: same as page side-margins
-  borderTop: none                    # no top divider
+  borderTop: none
 
-  layout-desktop: flex-row, space-between
-    left: copyright (body-sm)
-    right: social icons (GitHub, LinkedIn, Mail), gap md, iconSize 18px
-
-  layout-mobile: flex-column, gap md
+  layout: flex-row, space-between, align-center — single row at all viewport sizes
 
 copyright-format:
-  # Exact copy: "© {year} / Aishwarya Ganesan / Designed and developed by me."
-  surrounding-spans:                 # "© {year} /" and "/ Designed and developed by me."
-    color: on-surface-muted
-    opacity: 0.40
+  # Exact copy: "© {year} / Aishwarya Ganesan / Designed & developed by me."
+  type: footer-text (responsive — 11px mobile / 15px desktop, Inter)
+  color: on-surface-muted
+  opacity-spans:                      # "© {year} /" and "/" separators
+    opacity: 0.50
   name-span:                          # "Aishwarya Ganesan"
-    color: on-surface-muted
-    opacity: 1.0
+    color: on-surface
+  repo-link:                          # "Designed & developed by me."
+    underline: yes, underline-offset 2px
+    hover: on-surface
 
 social-icon:
-  size: 18px
-  color: on-surface-muted
+  size: 20px
+  color: on-surface
   hover:
-    color: on-surface
-    transition: color 150ms
+    color: accent
+    scale: 1.1
+    transition: all 150ms
 ```
 
 No theme toggle in the footer. (It lives in the pill nav / slide-out menu.)
@@ -877,12 +958,11 @@ Pairs with the `prose-h2` / `prose-h3` / `prose-body` type tokens in §3.
 
 ```yaml
 prose-h2-layout:
-  borderTop: 1px solid outline-variant
-  paddingTop: spacing-xl
   marginTop: spacing-3xl
-  marginBottom: spacing-lg
-  # First h2 inside .prose-content skips border-top + padding-top + margin-top
-  # so the section label above provides the only anchor rule.
+  borderBottom: 1px solid currentColor   # inherits on-surface-muted; always matches text
+  paddingBottom: spacing-md
+  marginBottom: spacing-2xl
+  # First h2 inside .prose-content: margin-top 0 (section label above provides separation)
 
 prose-h3-layout:
   marginTop: spacing-2xl

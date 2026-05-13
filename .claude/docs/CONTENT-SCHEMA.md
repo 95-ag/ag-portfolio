@@ -73,7 +73,6 @@ Frontmatter is YAML. Validated at build time against the Zod schema in §10. Bui
 ---
 # === Required: identity ===
 title: "Lane Refinement with Double DQN"
-shortTitle: "Lane Refinement"          # used in sticky sidebar; falls back to title if omitted
 summary: "Two-stage RL pipeline that corrects lane-detection errors in occluded driving scenes."
 projectType: academic                   # academic | freelance | personal
 
@@ -121,8 +120,8 @@ overview:
   # For projectType: personal, use `learnings` instead of `transferableSkills`.
   # See §3.3 below.
 
-# === Optional: full title ===
-fullTitle: "Two-Stage Deep Reinforcement Learning Pipeline for Lane Boundary Refinement"
+# === Optional: subtitle (long descriptive title) ===
+subtitle: "Two-Stage Deep Reinforcement Learning Pipeline for Lane Boundary Refinement"
 
 # === Optional: external links ===
 links:
@@ -156,8 +155,7 @@ relatedProjects:
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `title` | string | yes | Full project title used in headers, OG tags, browser tab |
-| `shortTitle` | string | no | Used in sticky sidebar header. Falls back to `title` |
-| `fullTitle` | string | no | Long descriptive title (e.g., research-paper style). Renders below `shortTitle` in sidebar if present |
+| `subtitle` | string | no | Long descriptive title (e.g., research-paper style). Renders below `title` in the project header |
 | `summary` | string | yes | One-line description. Used on cards and meta description fallback |
 | `projectType` | enum | yes | `academic` \| `freelance` \| `personal` |
 | `publishedAt` | ISO date string | yes | Drives sort order tiebreak |
@@ -340,7 +338,7 @@ Engineering maturity — what would improve this further.
 
 ### Reading width
 
-Body MDX renders inside a constrained `~720px` column (DESIGN.md §6). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
+Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md §6). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
 
 ---
 
@@ -414,6 +412,24 @@ A vertical stack of items with consistent spacing. Used for grouped lists where 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
 | `gap` | enum | no | `"sm"` \| `"md"` (default) \| `"lg"` |
+
+### `<Highlight>`
+
+Editorial pull-quote panel for a single key insight. Elevated above normal prose — not a callout variant.
+
+```mdx
+<Highlight heading="Notes #1">
+  High-entropy inputs sit near class boundaries — training on these provides
+  a denser map of the victim's decision surface per query.
+</Highlight>
+```
+
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `heading` | string | no | Renders as `mono-label` caption above the body. No heading = body panel only |
+| `children` | ReactNode | yes | Prose content. Rendered at `body-md` weight medium |
+
+Visual treatment in DESIGN.md §11. Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; Highlight is a standalone elevated statement.
 
 ### Code blocks
 
@@ -605,8 +621,7 @@ const isVideo = (path: string) =>
 
 export const ProjectFrontmatterSchema = z.object({
   title: z.string().min(1),
-  shortTitle: z.string().optional(),
-  fullTitle: z.string().optional(),
+  subtitle: z.string().optional(),
   summary: z.string().min(1).max(200),
   projectType: z.enum(['academic', 'freelance', 'personal']),
   publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
