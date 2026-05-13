@@ -27,13 +27,13 @@ export function Callout({
     <aside
       role="note"
       className={cn(
-        "my-[var(--spacing-xl)] border-l-[2px] bg-[var(--surface-sunken)] py-[var(--spacing-md)] pl-[var(--spacing-lg)] pr-[var(--spacing-md)]",
+        "my-[var(--spacing-xl)] border-l-[2px] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]",
         borderClass[type],
         className,
       )}
     >
       {title && (
-        <strong className="type-body-md mb-[var(--spacing-sm)] block font-semibold text-[var(--on-surface)]">
+        <strong className="type-body-sm mb-[var(--spacing-sm)] block font-semibold text-[var(--accent)]">
           {title}
         </strong>
       )}
