@@ -58,9 +58,7 @@ export function Footer() {
             <span className="text-[var(--on-surface-muted)] opacity-40">
               © {year} /{" "}
             </span>
-            <span className="text-[var(--on-surface-muted)]">
-              Aishwarya Ganesan
-            </span>
+            <span className="text-[var(--on-surface)]">Aishwarya Ganesan</span>
             <span className="text-[var(--on-surface-muted)] opacity-40">
               {" "}
               / Designed and developed by me.
@@ -72,7 +70,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
             >
               <GitHubIcon />
             </a>
@@ -81,14 +79,14 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
             >
               <LinkedInIcon />
             </a>
             <a
               href="mailto:aishwaryaganesan95@gmail.com"
               aria-label="Send email"
-              className="text-[var(--outline)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+              className="text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
             >
               <MailIcon />
             </a>
