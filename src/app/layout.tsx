@@ -3,6 +3,7 @@ import { inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,8 +26,9 @@ export default function RootLayout({
       <body>
         <Providers>
           <Nav />
-          <main className="pt-[var(--spacing-2xl)]">{children}</main>
+          <main className="pt-[var(--spacing-3xl)]">{children}</main>
           <Footer />
+          <ScrollToTop />
         </Providers>
       </body>
     </html>
