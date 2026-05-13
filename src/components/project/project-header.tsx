@@ -122,11 +122,11 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
                     href={url as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="type-body-md font-medium flex items-center gap-[var(--spacing-xs)] text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                    className="group type-body-md font-semibold inline-flex items-center gap-[var(--spacing-md)] rounded-[var(--radius-sm)] px-[var(--spacing-sm)] py-[var(--spacing-xs)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] active:opacity-70"
                   >
                     {Icon && <Icon />}
                     {label}
-                    <span className="text-[var(--on-surface-muted)]">
+                    <span className="text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)]">
                       <ExternalLinkIcon />
                     </span>
                   </a>
