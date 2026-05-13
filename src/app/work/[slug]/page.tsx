@@ -4,12 +4,12 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { SidebarLayout } from "@/components/layout/sidebar-layout";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { HeroMedia } from "@/components/project/hero-media";
+import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
-import { ProjectSidebar } from "@/components/project/project-sidebar";
-import { ReadingProgress } from "@/components/project/reading-progress";
+import { SectionProgressNav } from "@/components/project/section-progress-nav";
+import { TechStack } from "@/components/project/tech-stack";
 import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
 
 interface Props {
@@ -43,13 +43,16 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article>
-      <ReadingProgress />
+      <SectionProgressNav />
 
       <Section>
         <Container>
-          <SidebarLayout sidebar={<ProjectSidebar frontmatter={fm} />}>
+          <div className="mx-auto max-w-[760px]">
+            {/* Header: tags, title, subtitle, links */}
+            <ProjectHeader frontmatter={fm} />
+
             {/* Hero */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
+            <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
               <HeroMedia
                 src={fm.heroImage}
                 alt={fm.heroAlt}
@@ -58,13 +61,12 @@ export default async function ProjectPage({ params }: Props) {
               />
             </div>
 
-            {/* Sentinel — reading progress bar reveals once this scrolls out of view */}
-            <div data-reading-sentinel aria-hidden="true" />
-
-            {/* Overview + deep-dive prose share .prose-content so OVERVIEW h2 and MDX h2s are visually identical chapter anchors */}
-            <div className="prose-content mt-[var(--spacing-2xl)]">
+            {/* Overview + Tech Stack + deep-dive prose share .prose-content */}
+            <div className="prose-content mt-[var(--spacing-3xl)]">
               <h2>Overview</h2>
               <ProjectOverview overview={fm.overview} />
+
+              <TechStack stack={fm.stack} />
 
               <MDXRemote
                 source={project.body}
@@ -73,14 +75,16 @@ export default async function ProjectPage({ params }: Props) {
               />
             </div>
 
-            {/* Backlink */}
-            <Link
-              href="/work"
-              className="mt-[var(--spacing-3xl)] inline-block type-body-sm text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-            >
-              ← Back to Work
-            </Link>
-          </SidebarLayout>
+            {/* Back link */}
+            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
+              <Link
+                href="/work"
+                className="type-body-md font-medium text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              >
+                ← Back to Work
+              </Link>
+            </div>
+          </div>
         </Container>
       </Section>
     </article>
