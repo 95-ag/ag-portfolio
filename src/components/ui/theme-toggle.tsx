@@ -2,6 +2,7 @@
 
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 
 type ThemeMode = "light" | "dark" | "system";
@@ -26,8 +27,16 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme = "system", setTheme } = useTheme();
-  const current =
-    (theme as ThemeMode) in cycle ? (theme as ThemeMode) : "system";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const current = mounted
+    ? (theme as ThemeMode) in cycle
+      ? (theme as ThemeMode)
+      : "system"
+    : "system";
+
   const IconComponent = Icon[current];
 
   return (
