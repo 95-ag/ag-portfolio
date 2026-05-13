@@ -61,23 +61,11 @@ export default async function ProjectPage({ params }: Props) {
             {/* Sentinel — reading progress bar reveals once this scrolls out of view */}
             <div data-reading-sentinel aria-hidden="true" />
 
-            {/* Overview */}
-            <div className="mt-[var(--spacing-2xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
-              <p className="type-mono-label mb-[var(--spacing-xl)] text-[var(--on-surface-muted)] opacity-40">
-                Overview
-              </p>
+            {/* Overview + deep-dive prose share .prose-content so OVERVIEW h2 and MDX h2s are visually identical chapter anchors */}
+            <div className="prose-content mt-[var(--spacing-2xl)]">
+              <h2>Overview</h2>
               <ProjectOverview overview={fm.overview} />
-            </div>
 
-            {/* Section label — architectural divider before deep-dive prose */}
-            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
-              <p className="type-mono-label text-[var(--on-surface-muted)] opacity-40">
-                Deep Dive
-              </p>
-            </div>
-
-            {/* Deep dive */}
-            <div className="prose-content mt-[var(--spacing-xl)]">
               <MDXRemote
                 source={project.body}
                 components={mdxComponents}
