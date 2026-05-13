@@ -105,38 +105,53 @@ Phase 3.5 design refinement is complete, verified, and committed (6 commits on `
 
 ---
 
-## Last Session (Phase 4 — Real Content)
+## Last Session (Phase 5 — Project Page Polish, branch: `phase-5-ui-polish`)
 
-**Content:**
-- Added `content/projects/model-extraction-attacks.mdx` — full MDX page (frontmatter, 8 deep-dive sections, Diagram/Figure/Callout/Stack components)
-- Added `public/projects/model-extraction-attacks/` — 4 hand-crafted SVG diagrams (`extraction-pipeline`, `coreset-selection`, `ood-pipeline`, `attacker-victim-comparison`), 4 placeholder SVGs (hero + 3 charts), 3 real PNGs provided by user
-- Real assets landed: `public/headshot.jpeg`, `public/AishwaryaGanesan_Resume.pdf`, `public/cat_head_icon.svg`
-- Updated `content/about/about.mdx` with real headshot path
-- Deleted `content/projects/_example.mdx`
+**Project detail page — complete. All work on `/work/[slug]/page.tsx` and its components.**
 
-**Bug fixes:**
-- Fixed `ThemeToggle` hydration mismatch — deferred icon/aria-label render until after mount via `mounted` state
-- Replaced `AG` text logomark in `PillNav` with `cat_head_icon.svg` via `next/image`
+Schema/content:
+- `fullTitle` renamed → `subtitle`; `shortTitle` removed from schema and all content
+- `Callout` upgraded with styled variants; `Highlight` MDX component added (initially inline accent, later redesigned)
 
-**Build:** passes clean — 10 static pages including `/work/model-extraction-attacks`
+Project detail components (all in `src/components/project/`):
+- `project-header.tsx` — tags row, title, subtitle, links row with per-type icons; links have accent-muted pill hover, icon nudge, `active:opacity-70`
+- `section-progress-nav.tsx` — desktop sticky TOC; replaces old scroll-progress bar; hidden on mobile
+- `tech-stack.tsx` — dedicated Tech Stack section with `<h2>Tech Stack</h2>` + editorial two-column `<dl class="editorial-dl">`
+- `project-overview.tsx` — editorial two-column `<dl class="editorial-dl">`; subheadings as `<dt>`, content as `<dd>`
+
+Layout:
+- Sidebar removed; single-column editorial layout at `max-w-[960px]`
+- Overview h2 + Tech Stack h2 share `.prose-content h2` styling (mono-label, muted, `border-bottom: 1px solid currentColor`)
+- `Figure`/`Diagram` default full column width with centered captions
+- `Highlight` redesigned as elevated pull-quote panel: `surface-raised` bg, `radius-md`, 3-layer shadow (`.highlight-panel` in globals.css), optional `heading` prop renders as `type-mono-label`
+
+Global changes on this branch:
+- Scroll-to-top button added site-wide (`src/components/ui/scroll-to-top.tsx`)
+- Mobile nav: `--surface-overlay-panel` token (72% opacity), `backdrop-blur-[12px]`; body scroll restored on viewport resize via `resize` listener closing menu at ≥768px
+- Footer: no `border-t`; "and" → "&"; link underlined; `.footer-text` responsive class (11px mobile / 15px desktop); icons 20px with `hover:scale-110`
+- Tags: both variants use `--surface-tag` token
+- New tokens: `--surface-overlay-panel`, `--surface-tag`; both in `@theme` as Tailwind utilities
+- `on-surface-muted` dark theme: `#9ca3af` → `#a0a0a0`
+
+**Constraints discovered this branch:**
+- Tailwind v4 responsive variants (`md:custom-class`) do NOT work on `@layer components` classes — use explicit `@media` blocks inside `@layer components` instead
+- `React.Fragment` (explicit) required when `key` is needed in a map — `<>` shorthand cannot take `key`
+
+**Build:** clean — 10 static pages, Biome + TypeScript pass
 
 ---
 
-## Next Steps (Phase 5 — UI Polish)
+## Next Steps
 
-Branch: `phase-5-ui-polish` (from `main` after current branch merges)
+Merge `phase-5-ui-polish` → `main`, then open a new branch per page:
 
-Design pass needed before more content:
-1. Review every page at 375px / 768px / 1280px — identify spacing, typography, and layout issues
-2. Home page — hero layout, CTA block, featured grid density
-3. Work page — grid spacing, card proportions, tag rendering
-4. Project detail — sidebar/content balance, section rhythm, prose density, hero sizing
-5. About page — two-column layout, section spacing, headshot treatment
-6. Global — nav pill sizing, footer spacing, any token drift
+1. `phase-5-work-page` — Work page: grid spacing, card proportions, tag density
+2. `phase-5-about-page` — About page: two-column layout, section spacing, headshot treatment
+3. `phase-5-home-page` — Home page: hero layout, CTA block, featured grid density
 
-Content still pending (resume Phase 4 after polish):
-- `lane-refinement-rl.mdx`, `distributed-task-queue.mdx`, `local-llm-experiments.mdx` — all still placeholder content
-- Placeholder hero/chart SVGs in `model-extraction-attacks` — replace with real assets when ready
+**Content still pending (Phase 4 remainder):**
+- `lane-refinement-rl.mdx`, `distributed-task-queue.mdx`, `local-llm-experiments.mdx` — still placeholder content
+- Placeholder hero/chart SVGs in `model-extraction-attacks` — replace when real assets ready
 
 ---
 
