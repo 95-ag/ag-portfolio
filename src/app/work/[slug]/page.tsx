@@ -47,7 +47,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <Section>
         <Container>
-          <div className="mx-auto max-w-[760px]">
+          <div className="mx-auto max-w-[960px]">
             {/* Header: tags, title, subtitle, links */}
             <ProjectHeader frontmatter={fm} />
 
