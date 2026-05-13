@@ -105,22 +105,38 @@ Phase 3.5 design refinement is complete, verified, and committed (6 commits on `
 
 ---
 
-## Last Session
-- Phase 3.5 design refinement: container, nav, radius, tag, card, home, work, about, footer, project detail, prose typography all refined
-- About page intro wired to frontmatter (`positioning` + `detailedPositioning`)
-- DESIGN.md, PRODUCT.md, CONTENT-SCHEMA.md fully synced with implementation
-- 6 commits on `phase-3.5-design-refinement`, build passes (9 static pages)
+## Last Session (Phase 4 — Real Content)
+
+**Content:**
+- Added `content/projects/model-extraction-attacks.mdx` — full MDX page (frontmatter, 8 deep-dive sections, Diagram/Figure/Callout/Stack components)
+- Added `public/projects/model-extraction-attacks/` — 4 hand-crafted SVG diagrams (`extraction-pipeline`, `coreset-selection`, `ood-pipeline`, `attacker-victim-comparison`), 4 placeholder SVGs (hero + 3 charts), 3 real PNGs provided by user
+- Real assets landed: `public/headshot.jpeg`, `public/AishwaryaGanesan_Resume.pdf`, `public/cat_head_icon.svg`
+- Updated `content/about/about.mdx` with real headshot path
+- Deleted `content/projects/_example.mdx`
+
+**Bug fixes:**
+- Fixed `ThemeToggle` hydration mismatch — deferred icon/aria-label render until after mount via `mounted` state
+- Replaced `AG` text logomark in `PillNav` with `cat_head_icon.svg` via `next/image`
+
+**Build:** passes clean — 10 static pages including `/work/model-extraction-attacks`
 
 ---
 
-## Next Steps (Phase 4 — Real Project Content)
-1. Merge `phase-3.5-design-refinement` into `main`
-2. Branch `phase-4-real-content` from updated `main`
-3. Read `.claude/docs/CONTENT-SCHEMA.md` §3–§4 before authoring any MDX
-4. Add 2–3 fully real projects (`content/projects/*.mdx`) with actual screenshots/diagrams/metrics
-5. Add real headshot (`/public/headshot.jpg`) and update `content/about/about.mdx` headshot field
-6. Add `/public/resume.pdf`
-7. Validate: `npm run build` must pass with real frontmatter
+## Next Steps (Phase 5 — UI Polish)
+
+Branch: `phase-5-ui-polish` (from `main` after current branch merges)
+
+Design pass needed before more content:
+1. Review every page at 375px / 768px / 1280px — identify spacing, typography, and layout issues
+2. Home page — hero layout, CTA block, featured grid density
+3. Work page — grid spacing, card proportions, tag rendering
+4. Project detail — sidebar/content balance, section rhythm, prose density, hero sizing
+5. About page — two-column layout, section spacing, headshot treatment
+6. Global — nav pill sizing, footer spacing, any token drift
+
+Content still pending (resume Phase 4 after polish):
+- `lane-refinement-rl.mdx`, `distributed-task-queue.mdx`, `local-llm-experiments.mdx` — all still placeholder content
+- Placeholder hero/chart SVGs in `model-extraction-attacks` — replace with real assets when ready
 
 ---
 

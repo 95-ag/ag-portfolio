@@ -1,0 +1,192 @@
+---
+title: "Query-Efficient Model Extraction Attacks"
+shortTitle: "Model Extraction"
+fullTitle: "Query-Efficient Black-Box Model Extraction and Privacy Attack Transferability"
+summary: "Built a black-box model extraction pipeline that replicated proprietary ML models with 82.88% accuracy using only 25k queries through entropy-based sampling and surrogate training."
+projectType: academic
+publishedAt: "2022-05-01"
+order: 40
+featured: true
+heroImage: "/projects/model-extraction-attacks/hero-model-extraction.svg"
+heroAlt: "Attacker-victim ML pipeline showing queries flowing into a black-box model and a surrogate being trained on the responses."
+tags:
+  - Adversarial Machine Learning
+  - ML Security
+  - Model Extraction
+  - PyTorch
+  - Knowledge Distillation
+  - Privacy Attacks
+stack:
+  languages: [Python]
+  frameworks: [PyTorch]
+  libraries: [NumPy, scikit-learn]
+  tools: [Git, Linux]
+overview:
+  problem: |
+    Proprietary ML models deployed through MLaaS platforms can be replicated through repeated
+    black-box queries, compromising intellectual property and enabling downstream privacy attacks.
+  built: |
+    A multi-stage attacker-victim pipeline using ResNet-based surrogate models, entropy-based
+    coreset sampling, and custom out-of-distribution datasets to efficiently replicate black-box
+    model behavior under constrained query budgets.
+  results:
+    - "Achieved 82.88% extraction accuracy using only 25k queries"
+    - "Validated extraction across mismatched model architectures"
+    - "Built an OOD-based extraction pipeline without access to original training data"
+    - "Evaluated adversarial transferability and membership inference attacks"
+  transferableSkills:
+    - Designing ML experimentation pipelines with clean attacker-victim separation
+    - Query-efficient optimization under constrained resource budgets
+    - Adversarial ML evaluation across architectures
+    - Data engineering for out-of-distribution datasets
+    - PyTorch systems implementation at research scale
+links:
+  github: "https://github.com/95-ag/dl-model-extraction"
+---
+
+## Detailed Problem
+
+Machine learning APIs are increasingly deployed as paid services — cloud providers charge per inference call, and the models behind them represent significant training investment. This creates an attack surface: an adversary with API access can reconstruct a functionally equivalent surrogate model by querying the target repeatedly and training on the responses.
+
+The core challenge is budget. Naïve extraction — flooding the API with random inputs — requires hundreds of thousands of queries to converge, making attacks expensive and detectable. The practical threat model demands extraction under a realistic query limit, with no access to the original training data and limited knowledge of the victim architecture.
+
+This project built and evaluated a complete extraction pipeline targeting that constraint: replicate a black-box model's decision boundary with high fidelity using no more than 25k queries.
+
+## System Design
+
+The pipeline separates into three stages: query generation, surrogate training, and downstream attack evaluation.
+
+<Diagram
+  src="/projects/model-extraction-attacks/extraction-pipeline.svg"
+  alt="Three-stage pipeline: query generation feeds a black-box victim model, whose predictions train a surrogate, which is then evaluated for adversarial and membership inference transferability."
+  caption="Full extraction pipeline from query generation through surrogate training to downstream attack evaluation."
+  width="wide"
+/>
+
+**Victim model** — A ResNet architecture trained on CIFAR-10 or CIFAR-100, accessed only through a prediction API. The attacker receives either hard labels, top-3 softmax probabilities, or full softmax output depending on the experiment.
+
+**Surrogate model** — A separate ResNet trained entirely on victim responses. The surrogate's architecture need not match the victim; the goal is decision-boundary replication, not weight copying.
+
+**Query-response loop** — Input images are sent to the victim, predictions are collected, and the surrogate is trained iteratively on the labeled pool. The key design decision is *which* inputs to query next.
+
+**Evaluation** — Post-training, the surrogate is evaluated for extraction accuracy, adversarial attack transferability, and membership inference vulnerability.
+
+## Query Optimization
+
+Random sampling wastes query budget on inputs the victim classifies with high confidence — those near the center of a decision region add little information. Entropy-based coreset selection concentrates queries on inputs near decision boundaries, where model behavior is most informative.
+
+<Diagram
+  src="/projects/model-extraction-attacks/coreset-selection.svg"
+  alt="Diagram showing ResNet-18 proxy scoring candidate inputs by entropy, selecting high-uncertainty examples for the query pool."
+  caption="Entropy-based coreset selection: a lightweight proxy ranks inputs by prediction uncertainty before committing to API queries."
+/>
+
+The selection process:
+
+1. Score a large candidate pool using a lightweight ResNet-18 proxy (no API calls required).
+2. Rank candidates by Shannon entropy of the proxy's softmax output.
+3. Submit the top-k highest-entropy inputs to the victim API.
+4. Add the labeled results to the surrogate training set.
+
+<Callout type="insight" title="Why entropy works">
+High-entropy inputs sit near class boundaries. Training the surrogate on these examples provides a denser map of the victim's decision surface per query — the same information density that random sampling would require 3–4× more queries to achieve.
+</Callout>
+
+On CIFAR-10, coreset selection matched random sampling at 75k queries using only 25k — roughly a 3× improvement in query efficiency. CIFAR-100's higher class count and label noise reduced the margin, but the efficiency gain remained meaningful in the mid-query-budget regime.
+
+<Figure
+  src="/projects/model-extraction-attacks/query-budget-results.png"
+  alt="Line chart comparing extraction accuracy vs query budget for random sampling versus entropy-based coreset selection, showing coreset reaching 82.88% at 25k queries."
+  caption="Coreset selection reaches 82.88% extraction accuracy at 25k queries — a point random sampling doesn't approach until roughly 75k."
+  width="wide"
+/>
+
+## Data Engineering
+
+Real-world extraction scenarios assume no access to the victim's training distribution. Experiments included an out-of-distribution dataset track to test extraction under this harder constraint.
+
+<Diagram
+  src="/projects/model-extraction-attacks/ood-pipeline.svg"
+  alt="Pipeline diagram: web scraping and ImageNet sampling feed a filtering and resizing stage that produces a 32x32 OOD query dataset."
+  caption="OOD dataset construction: web-scraped and ImageNet-sampled images are filtered and resized to match CIFAR's input format."
+/>
+
+Two OOD sources were constructed:
+
+- **Web-scraped images** — downloaded and filtered for rough semantic alignment with CIFAR classes, then resized to 32×32.
+- **ImageNet subsets** — class-mapped subsets resampled to CIFAR resolution.
+
+Both required label verification passes to remove mislabeled or ambiguous examples that would corrupt the surrogate's training signal. The OOD track confirmed the approach generalizes beyond in-distribution queries — though with lower peak accuracy, the extraction signal remained strong enough to train a useful surrogate.
+
+## Security Evaluation
+
+A replicated surrogate is only useful if it inherits the victim's security vulnerabilities. Two downstream attacks were evaluated.
+
+**Adversarial transferability** — FGSM perturbations crafted on the surrogate were evaluated on the victim. A transferred attack fools the victim using only the surrogate's gradients — no direct victim access required.
+
+<Figure
+  src="/projects/model-extraction-attacks/adversarial-example-panel.png"
+  alt="Side-by-side panel showing original CIFAR images alongside FGSM adversarial examples with the surrogate's and victim's predicted labels."
+  caption="FGSM adversarial examples generated from the surrogate. Matching victim predictions indicate successful gradient transfer."
+/>
+
+**Membership inference** — An entropy-based classifier tested whether the victim model's prediction confidence could distinguish training set members from non-members. ROC-AUC was measured separately for in-distribution and OOD query sets.
+
+<Figure
+  src="/projects/model-extraction-attacks/membership-inference-roc.png"
+  alt="ROC curve comparison for membership inference on OOD versus in-distribution query sets, showing AUC values for each condition."
+  caption="Membership inference ROC-AUC. OOD queries show lower discriminability — the victim's confidence calibration is harder to exploit without access to the training distribution."
+/>
+
+<Figure
+  src="/projects/model-extraction-attacks/attack-transfer-summary.svg"
+  alt="Summary visualization showing the fraction of adversarial examples that fooled the attacker, the victim, or both with matching labels."
+  caption="Attack transfer summary: cases where FGSM examples fool both models with the same predicted class confirm effective gradient transfer."
+/>
+
+## Results
+
+<Figure
+  src="/projects/model-extraction-attacks/architecture-transfer-heatmap.svg"
+  alt="Heatmap showing extraction accuracy across different victim and attacker architecture pairings."
+  caption="Architecture transfer heatmap. Extraction accuracy holds across mismatched victim-attacker pairs, demonstrating architecture-agnostic replication."
+  width="wide"
+/>
+
+<Figure
+  src="/projects/model-extraction-attacks/output-access-bar-chart.svg"
+  alt="Bar chart comparing extraction accuracy under three output access modes: hard labels, top-3 softmax, and full softmax."
+  caption="Output access modality matters. Full softmax output yields the highest surrogate accuracy; hard labels are sufficient but less efficient."
+/>
+
+Key outcomes:
+
+- **82.88% extraction accuracy** on CIFAR-10 using 25k queries with coreset selection.
+- **Architecture-agnostic** — surrogate accuracy held within a narrow range across ResNet variant pairings with differing depth and width.
+- **OOD extraction** produced lower but functional surrogates, confirming the approach doesn't require training distribution access.
+- **Adversarial transfer** was meaningful but not perfect — FGSM on the surrogate fooled the victim at above-chance rates but showed sensitivity to the query budget level.
+
+## Constraints & Limitations
+
+<Stack gap="md">
+  <Callout type="tradeoff" title="Weak FGSM transferability">
+    FGSM generates large, perceptible perturbations by design. Transfer rates were moderate — stronger attacks (PGD, C&W) would likely improve transferability but weren't evaluated in this scope.
+  </Callout>
+  <Callout type="tradeoff" title="Data-free extraction is query-expensive">
+    Experiments with purely synthetic query generation (no real images) converged only around 20M queries — three orders of magnitude above the constrained budget. Useful as a theoretical bound, not a practical attack.
+  </Callout>
+  <Callout type="tradeoff" title="CIFAR dimensionality ceiling">
+    CIFAR-10/100's 32×32 input and 10/100-class structure is low-dimensional relative to production deployment scenarios. Extraction efficiency on larger input spaces and finer-grained class sets remains an open question.
+  </Callout>
+</Stack>
+
+CIFAR-100's noisier label space reduced coreset selection's advantage, suggesting entropy-based selection is most valuable when the victim's decision boundaries are well-separated — a property that degrades with label ambiguity.
+
+## Next Steps
+
+The current coreset selection relies entirely on proxy entropy. Several improvements are tractable:
+
+- **Generator-guided query synthesis** — a conditional generative model could produce queries specifically targeting high-uncertainty regions of the estimated decision boundary, reducing budget further.
+- **Higher-dimensional benchmarks** — reproducing the pipeline on ImageNet-scale inputs would better characterize real-world attack feasibility.
+- **Stronger adversarial transfer** — replacing FGSM with PGD or AutoAttack would provide a cleaner signal on surrogate quality as an attack transfer medium.
+- **Improved synthetic generation** — combining a VAE or diffusion prior with the entropy ranker could reduce or eliminate the OOD data requirement.

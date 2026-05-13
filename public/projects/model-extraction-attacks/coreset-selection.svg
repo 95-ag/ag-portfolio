@@ -1,0 +1,72 @@
+<svg viewBox="0 0 808 132" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coreset selection pipeline: a large candidate pool is scored by a ResNet-18 proxy, ranked by prediction entropy, and the highest-uncertainty top-K samples are selected as the query pool, reducing query budget roughly three times versus random sampling.">
+  <title>Entropy-based coreset selection</title>
+  <defs>
+    <style>
+      .n  { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
+      .na { fill: #f3f4f5; stroke: #006c49; stroke-width: 1.5; }
+      .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: #191c1d; }
+      .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; }
+      .note { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; font-style: italic; }
+      .conn { fill: none; stroke: #6c7a71; stroke-width: 1.5; }
+      .af  { fill: #6c7a71; }
+      @media (prefers-color-scheme: dark) {
+        .n  { fill: #1c1b1b; stroke: #3c4a42; }
+        .na { fill: #1c1b1b; stroke: #4edea3; }
+        .lbl { fill: #e5e2e1; }
+        .sub { fill: #bbcabf; }
+        .note { fill: #86948a; }
+        .conn { stroke: #86948a; }
+        .af  { fill: #86948a; }
+      }
+    </style>
+    <marker id="arr" markerWidth="7" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path class="af" d="M0,0 L7,3 L0,6 Z"/>
+    </marker>
+  </defs>
+
+  <!-- ── NODES ── y=28, h=44, cy=50 ───────────────────────────────
+       5 nodes × 120px wide, 44px gaps.
+       Total content: 5×120 + 4×44 = 776px. Margins: 12px each side.
+  ───────────────────────────────────────────────────────────────── -->
+
+  <!-- N1: Candidate Pool -->
+  <rect class="n" x="12" y="28" width="120" height="44" rx="4"/>
+  <text class="lbl" x="72" y="45" text-anchor="middle">Candidate Pool</text>
+  <text class="sub" x="72" y="59" text-anchor="middle">~50k images</text>
+
+  <!-- A1 -->
+  <line class="conn" x1="132" y1="50" x2="180" y2="50" marker-end="url(#arr)"/>
+
+  <!-- N2: ResNet-18 Proxy -->
+  <rect class="n" x="180" y="28" width="120" height="44" rx="4"/>
+  <text class="lbl" x="240" y="45" text-anchor="middle">ResNet-18 Proxy</text>
+  <text class="sub" x="240" y="59" text-anchor="middle">proxy scoring</text>
+
+  <!-- A2 -->
+  <line class="conn" x1="300" y1="50" x2="348" y2="50" marker-end="url(#arr)"/>
+
+  <!-- N3: Entropy Ranking [accent] -->
+  <rect class="na" x="348" y="28" width="120" height="44" rx="4"/>
+  <text class="lbl" x="408" y="45" text-anchor="middle">Entropy Ranking</text>
+  <text class="sub" x="408" y="59" text-anchor="middle">uncertainty rank</text>
+
+  <!-- A3 -->
+  <line class="conn" x1="468" y1="50" x2="516" y2="50" marker-end="url(#arr)"/>
+
+  <!-- N4: Top-K Selection -->
+  <rect class="n" x="516" y="28" width="120" height="44" rx="4"/>
+  <text class="lbl" x="576" y="45" text-anchor="middle">Top-K Selection</text>
+  <text class="sub" x="576" y="59" text-anchor="middle">highest entropy</text>
+
+  <!-- A4 -->
+  <line class="conn" x1="636" y1="50" x2="684" y2="50" marker-end="url(#arr)"/>
+
+  <!-- N5: Query Pool [accent] -->
+  <rect class="na" x="684" y="28" width="120" height="44" rx="4"/>
+  <text class="lbl" x="744" y="45" text-anchor="middle">Query Pool</text>
+  <text class="sub" x="744" y="59" text-anchor="middle">25k queries</text>
+
+  <!-- Efficiency annotation -->
+  <text class="note" x="400" y="104" text-anchor="middle">Entropy-based selection reduces query budget ~3× relative to random sampling</text>
+
+</svg>

@@ -85,7 +85,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-[var(--spacing-md)]">
               <a
-                href="/resume.pdf"
+                href="/AishwaryaGanesan_Resume.pdf"
                 download
                 className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-sm font-medium text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >

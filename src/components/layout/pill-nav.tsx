@@ -1,6 +1,7 @@
 "use client";
 
 import { Briefcase, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -12,17 +13,21 @@ const NAV_ITEMS = [
   { href: "/work", label: "Work", Icon: Briefcase },
 ] as const;
 
-// Round logo mark — replace with next/image when a real logo asset exists in /public
 function LogoMark() {
   return (
     <Link
       href="/"
       aria-label="Home"
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-80"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-opacity duration-[var(--duration-fast)] hover:opacity-80"
     >
-      <span className="type-mono-label text-[10px]" aria-hidden="true">
-        AG
-      </span>
+      <Image
+        src="/cat_head_icon.svg"
+        alt=""
+        width={32}
+        height={32}
+        className="rounded-full"
+        unoptimized
+      />
     </Link>
   );
 }

@@ -1,0 +1,97 @@
+<svg viewBox="0 0 800 292" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Attacker-victim comparison: the same query input is sent to both the proprietary victim model and the extracted surrogate model; both return predictions, and the surrogate matches the victim on 82.88 percent of test inputs.">
+  <title>Attacker–victim model comparison</title>
+  <defs>
+    <style>
+      .n   { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
+      .na  { fill: #f3f4f5; stroke: #006c49; stroke-width: 1.5; }
+      .nb  { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1.5; }
+      .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: #191c1d; }
+      .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; }
+      .eye { font-family: 'JetBrains Mono', 'Courier New', Courier, monospace; font-size: 10px; font-weight: 500; fill: #6c7a71; letter-spacing: 0.06em; }
+      .stat { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; fill: #6c7a71; }
+      .stat-accent { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #006c49; }
+      .conn { fill: none; stroke: #6c7a71; stroke-width: 1.5; }
+      .div  { stroke: #bbcabf; stroke-width: 1; stroke-dasharray: 4 4; }
+      .af   { fill: #6c7a71; }
+      @media (prefers-color-scheme: dark) {
+        .n   { fill: #1c1b1b; stroke: #3c4a42; }
+        .na  { fill: #1c1b1b; stroke: #4edea3; }
+        .nb  { fill: #1c1b1b; stroke: #86948a; }
+        .lbl { fill: #e5e2e1; }
+        .sub { fill: #bbcabf; }
+        .eye { fill: #86948a; }
+        .stat { fill: #86948a; }
+        .stat-accent { fill: #4edea3; }
+        .conn { stroke: #86948a; }
+        .div  { stroke: #3c4a42; }
+        .af   { fill: #86948a; }
+      }
+    </style>
+    <marker id="arr" markerWidth="7" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path class="af" d="M0,0 L7,3 L0,6 Z"/>
+    </marker>
+  </defs>
+
+  <!-- ── SHARED QUERY INPUT ── centered at top ──────────────────
+       N0: x=330, y=20, w=140, h=44, cx=400, cy=42, bottom=64
+  ───────────────────────────────────────────────────────────────── -->
+
+  <rect class="n" x="330" y="20" width="140" height="44" rx="4"/>
+  <text class="lbl" x="400" y="37" text-anchor="middle">Query Input</text>
+  <text class="sub" x="400" y="51" text-anchor="middle">same input to both models</text>
+
+  <!-- Y-fork: from N0 bottom-center (400, 64) to N1 top (240, 120) and N2 top (560, 120)
+       Elbow y=96 (midpoint of 64..120=92, shifted slightly down for visual balance) -->
+  <path class="conn" d="M 400 64 L 400 96 L 240 96 L 240 120" marker-end="url(#arr)"/>
+  <path class="conn" d="M 400 64 L 400 96 L 560 96 L 560 120" marker-end="url(#arr)"/>
+
+  <!-- Vertical center divider (dashed) -->
+  <line class="div" x1="400" y1="72" x2="400" y2="248"/>
+
+  <!-- ── LEFT: VICTIM MODEL ──────────────────────────────────────
+       N1: x=170, y=120, w=140, h=52, cx=240, cy=146, bottom=172
+  ───────────────────────────────────────────────────────────────── -->
+
+  <!-- Eyebrow -->
+  <text class="eye" x="240" y="113" text-anchor="middle">VICTIM</text>
+
+  <!-- N1: Victim Model (standard border — black-box, opaque) -->
+  <rect class="nb" x="170" y="120" width="140" height="52" rx="4"/>
+  <text class="lbl" x="240" y="141" text-anchor="middle">Victim Model</text>
+  <text class="sub" x="240" y="155" text-anchor="middle">proprietary · black-box</text>
+  <text class="sub" x="240" y="167" text-anchor="middle">ResNet architecture</text>
+
+  <!-- Arrow N1 → N3 -->
+  <line class="conn" x1="240" y1="172" x2="240" y2="200" marker-end="url(#arr)"/>
+
+  <!-- N3: Victim Prediction -->
+  <rect class="n" x="170" y="200" width="140" height="44" rx="4"/>
+  <text class="lbl" x="240" y="217" text-anchor="middle">Victim Prediction</text>
+  <text class="sub" x="240" y="231" text-anchor="middle">ground-truth distribution</text>
+
+  <!-- ── RIGHT: EXTRACTED SURROGATE ────────────────────────────
+       N2: x=490, y=120, w=140, h=52, cx=560, cy=146, bottom=172
+  ───────────────────────────────────────────────────────────────── -->
+
+  <!-- Eyebrow -->
+  <text class="eye" x="560" y="113" text-anchor="middle">SURROGATE</text>
+
+  <!-- N2: Extracted Surrogate [accent] -->
+  <rect class="na" x="490" y="120" width="140" height="52" rx="4"/>
+  <text class="lbl" x="560" y="141" text-anchor="middle">Extracted Surrogate</text>
+  <text class="sub" x="560" y="155" text-anchor="middle">trained on API responses</text>
+  <text class="sub" x="560" y="167" text-anchor="middle">no weight access</text>
+
+  <!-- Arrow N2 → N4 -->
+  <line class="conn" x1="560" y1="172" x2="560" y2="200" marker-end="url(#arr)"/>
+
+  <!-- N4: Surrogate Prediction -->
+  <rect class="n" x="490" y="200" width="140" height="44" rx="4"/>
+  <text class="lbl" x="560" y="217" text-anchor="middle">Surrogate Prediction</text>
+  <text class="sub" x="560" y="231" text-anchor="middle">approximated distribution</text>
+
+  <!-- ── AGREEMENT ANNOTATION ──────────────────────────────────── -->
+  <text class="stat-accent" x="400" y="265" text-anchor="middle">82.88%</text>
+  <text class="stat" x="400" y="279" text-anchor="middle">agreement on test inputs (CIFAR-10, 25k query budget)</text>
+
+</svg>
