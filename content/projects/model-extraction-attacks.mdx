@@ -87,7 +87,7 @@ The selection process:
 3. Submit the top-k highest-entropy inputs to the victim API.
 4. Add the labeled results to the surrogate training set.
 
-<Highlight>High-entropy inputs sit near class boundaries — training on these provides a denser map of the victim's decision surface per query than random sampling would require 3–4× more queries to achieve.</Highlight>
+<Highlight heading="Notes #1">High-entropy inputs sit near class boundaries — training on these provides a denser map of the victim's decision surface per query than random sampling would require 3–4× more queries to achieve.</Highlight>
 
 On CIFAR-10, coreset selection matched random sampling at 75k queries using only 25k — roughly a 3× improvement in query efficiency. CIFAR-100's higher class count and label noise reduced the margin, but the efficiency gain remained meaningful in the mid-query-budget regime.
 
