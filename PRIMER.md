@@ -148,6 +148,10 @@ Merge `phase-5-ui-polish` → `main`, then open a new branch per page:
 1. `phase-5-work-page` — Work page: grid spacing, card proportions, tag density
 2. `phase-5-about-page` — About page: two-column layout, section spacing, headshot treatment
 3. `phase-5-home-page` — Home page: hero layout, CTA block, featured grid density
+   **Home page has three outstanding v1 spec items to implement during polish:**
+   - **Hero portrait** — real headshot (`/public/headshot.jpeg`) exists but home page still shows a `surface-sunken` placeholder rectangle; wire it up
+   - **Hire Me CTA pulse** — DESIGN.md §11 specifies slow pulse (2400ms, opacity + scale) on the leading icon only; stops on hover; gated by `useReducedMotion()`
+   - **Theme toggle tooltip** — DESIGN.md §11 specifies tooltip after 500ms hover showing current mode label ("Light" / "Dark" / "System"); optional, lower priority
 
 **Content still pending (Phase 4 remainder):**
 - `lane-refinement-rl.mdx`, `distributed-task-queue.mdx`, `local-llm-experiments.mdx` — still placeholder content
