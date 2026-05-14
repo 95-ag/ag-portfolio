@@ -4,7 +4,9 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Sticky } from "@/components/layout/sticky";
+import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { SocialLink } from "@/components/ui/social-link";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 
@@ -41,9 +43,6 @@ function LinkedInIcon() {
     </svg>
   );
 }
-
-const socialLinkClass =
-  "inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline-variant)] px-[var(--spacing-md)] interactive-label text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] hover:border-[var(--outline)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
 function TwoColumnRow({
   label,
@@ -84,34 +83,29 @@ export default function AboutPage() {
             {/* Labeled social chips */}
             <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
-                <a
+                <SocialLink
                   href={about.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={socialLinkClass}
+                  icon={<GitHubIcon />}
+                  external
                 >
-                  <GitHubIcon />
                   GitHub
-                </a>
+                </SocialLink>
               )}
               {about.socials.linkedin && (
-                <a
+                <SocialLink
                   href={about.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={socialLinkClass}
+                  icon={<LinkedInIcon />}
+                  external
                 >
-                  <LinkedInIcon />
                   LinkedIn
-                </a>
+                </SocialLink>
               )}
-              <a
+              <SocialLink
                 href={`mailto:${about.contactEmail}`}
-                className={socialLinkClass}
+                icon={<Mail size={16} aria-hidden="true" />}
               >
-                <Mail size={16} aria-hidden="true" />
                 Email
-              </a>
+              </SocialLink>
             </div>
           </header>
 
@@ -258,13 +252,13 @@ export default function AboutPage() {
               the fastest way to reach me.
             </p>
             <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
-              <a
+              <Button
+                variant="primary"
                 href={`mailto:${about.contactEmail}`}
-                className="interactive-label inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                icon={<Mail size={16} aria-hidden="true" />}
               >
-                <Mail size={16} aria-hidden="true" />
                 Email me
-              </a>
+              </Button>
               <span className="body-caption opacity-60">
                 {about.contactEmail}
               </span>

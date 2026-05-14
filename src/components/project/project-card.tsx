@@ -48,9 +48,7 @@ export function ProjectCard({
           </div>
           <div className="flex flex-wrap gap-[var(--spacing-xs)]">
             {fm.tags.slice(0, 3).map((tag) => (
-              <Tag key={tag} variant="filled">
-                {tag}
-              </Tag>
+              <Tag key={tag}>{tag}</Tag>
             ))}
           </div>
         </div>
@@ -93,9 +91,7 @@ export function ProjectCard({
             <p className="body-caption flex-1">{displayText}</p>
             <div className="flex flex-wrap gap-[var(--spacing-xs)]">
               {fm.tags.slice(0, 3).map((tag) => (
-                <Tag key={tag} variant="filled">
-                  {tag}
-                </Tag>
+                <Tag key={tag}>{tag}</Tag>
               ))}
             </div>
           </div>

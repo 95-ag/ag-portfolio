@@ -94,9 +94,7 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
       {fm.tags.length > 0 && (
         <div className="flex flex-wrap gap-[var(--spacing-xs)]">
           {fm.tags.map((tag) => (
-            <Tag key={tag} variant="filled">
-              {tag}
-            </Tag>
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
       )}

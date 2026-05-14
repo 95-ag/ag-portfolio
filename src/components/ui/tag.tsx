@@ -3,18 +3,13 @@ import { cn } from "@/lib/utils/cn";
 interface TagProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "outline" | "filled";
 }
 
-export function Tag({ children, className, variant = "outline" }: TagProps) {
+export function Tag({ children, className }: TagProps) {
   return (
     <span
       className={cn(
-        "tag-chip normal-case tracking-normal inline-block rounded-[var(--radius-sm)] px-[10px] py-[4px]",
-        variant === "outline" &&
-          "bg-[var(--surface-tag)] text-[var(--on-surface-muted)]",
-        variant === "filled" &&
-          "bg-[var(--surface-tag)] text-[var(--on-surface)]",
+        "tag-chip normal-case tracking-normal inline-block rounded-[var(--radius-sm)] bg-[var(--surface-tag)] px-[var(--spacing-sm)] py-[2px] text-[var(--on-surface)]",
         className,
       )}
     >

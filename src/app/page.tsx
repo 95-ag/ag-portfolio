@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { ProjectCard } from "@/components/project/project-card";
+import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { getFeaturedProjects } from "@/lib/content/projects";
 
@@ -82,21 +83,21 @@ export default function HomePage() {
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-[var(--spacing-md)]">
-              <a
+              <Button
+                variant="secondary"
                 href="/AishwaryaGanesan_Resume.pdf"
                 download
-                className="interactive-label inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                icon={<Download size={16} aria-hidden="true" />}
               >
-                <Download size={16} aria-hidden="true" />
                 Download Resume
-              </a>
-              <a
+              </Button>
+              <Button
+                variant="primary"
                 href="mailto:aishwaryaganesan95@gmail.com"
-                className="interactive-label inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                icon={<Mail size={16} aria-hidden="true" />}
               >
-                <Mail size={16} aria-hidden="true" />
                 Get in Touch
-              </a>
+              </Button>
             </div>
           </div>
         </Container>
