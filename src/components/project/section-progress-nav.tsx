@@ -79,7 +79,7 @@ export function SectionProgressNav() {
                 block: "start",
               });
             }}
-            className="type-body-xs max-w-[140px] truncate transition-colors duration-[var(--duration-fast)]"
+            className="support-meta max-w-[140px] truncate transition-colors duration-[var(--duration-fast)]"
             style={{
               color: isActive ? "var(--on-surface)" : "var(--outline)",
               fontWeight: isActive ? 600 : 400,

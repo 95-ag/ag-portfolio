@@ -17,7 +17,7 @@ export function Button({
     <button
       type="button"
       className={cn(
-        "inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] px-[var(--spacing-lg)] text-sm font-medium transition-opacity duration-[var(--duration-fast)]",
+        "interactive-label inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] px-[var(--spacing-lg)] transition-opacity duration-[var(--duration-fast)]",
         variant === "primary" && [
           "bg-[var(--accent)] text-[var(--accent-on)]",
           "hover:opacity-90",

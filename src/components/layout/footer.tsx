@@ -55,7 +55,7 @@ export function Footer() {
       <Container>
         <div className="flex items-center justify-between gap-[var(--spacing-md)]">
           {/* Left: copyright + name + repo link */}
-          <p className="footer-text min-w-0 text-[var(--on-surface-muted)]">
+          <p className="support-meta min-w-0 [font-size:11px] [line-height:18px] md:[font-size:15px] md:[line-height:24px]">
             <span className="opacity-50">© {year} / </span>
             <span className="text-[var(--on-surface)]">Aishwarya Ganesan</span>
             <span className="opacity-50"> / </span>

@@ -10,7 +10,7 @@ export function Tag({ children, className, variant = "outline" }: TagProps) {
   return (
     <span
       className={cn(
-        "type-mono-label normal-case tracking-normal inline-block rounded-[var(--radius-sm)] px-[10px] py-[4px]",
+        "tag-chip normal-case tracking-normal inline-block rounded-[var(--radius-sm)] px-[10px] py-[4px]",
         variant === "outline" &&
           "bg-[var(--surface-tag)] text-[var(--on-surface-muted)]",
         variant === "filled" &&

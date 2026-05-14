@@ -55,7 +55,7 @@ export function PillNav() {
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex h-8 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] text-sm font-medium transition-colors duration-[var(--duration-fast)]",
+                "nav-link flex h-8 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
                 isActive
                   ? "bg-[var(--surface-sunken)] text-[var(--on-surface)]"
                   : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
