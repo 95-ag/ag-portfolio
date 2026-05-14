@@ -81,7 +81,7 @@ export function SectionProgressNav() {
             }}
             className="support-meta max-w-[140px] truncate transition-colors duration-[var(--duration-fast)]"
             style={{
-              color: isActive ? "var(--on-surface)" : "var(--outline)",
+              color: isActive ? "var(--on-surface)" : "var(--on-surface-muted)",
               fontWeight: isActive ? 600 : 400,
             }}
           >
