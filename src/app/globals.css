@@ -264,6 +264,136 @@ body {
     line-height: 20px;
   }
 
+  /* ── Semantic typography tokens ── */
+
+  /* Display */
+  .display-primary {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: -0.025em;
+  }
+  .display-accent {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: -0.025em;
+    color: var(--accent);
+  }
+
+  /* Headings */
+  .heading-component {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.01em;
+  }
+  .heading-narrative {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  /* Body */
+  .body-primary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+  }
+  .body-secondary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--on-surface-muted);
+  }
+  .body-caption {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--on-surface-muted);
+  }
+  .body-emphasis {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+  }
+  .callout-title {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--accent);
+  }
+
+  /* Interactive */
+  .interactive-label {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  .nav-link {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  /* Structural mono */
+  .mono-anchor {
+    font-family: var(--font-mono), monospace;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+  }
+  .tag-chip {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+  }
+  .insight-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+  }
+  .mono-code {
+    font-family: var(--font-mono), monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--on-surface-muted);
+  }
+
+  /* Support / navigation meta */
+  .support-meta {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--on-surface-muted);
+  }
+
   /* MDX deep-dive prose — applies inside .prose-content */
 
   /* h2 = chapter anchor: mono-label style, hairline rule below */
@@ -439,7 +569,7 @@ body {
     color: var(--on-surface);
   }
 
-  /* Mobile overrides — DESIGN.md §3 */
+  /* Mobile overrides */
   @media (max-width: 768px) {
     .type-display-lg {
       font-size: 36px;
@@ -456,6 +586,11 @@ body {
     .type-body-lg {
       font-size: 17px;
       line-height: 26px;
+    }
+    .display-primary,
+    .display-accent {
+      font-size: 36px;
+      line-height: 44px;
     }
   }
 }
