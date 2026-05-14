@@ -129,38 +129,67 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Semantic typography system migration — complete and committed.**
+**Tag / button / radius normalization — complete and committed (this session).**
 
-Five commits:
-1. `feat: add semantic typography token classes alongside existing`
-2. `refactor: migrate UI primitives, nav, and layout to semantic tokens`
-3. `refactor: migrate project components and pages to semantic tokens`
-4. `refactor: update prose composition rules and editorial-dl to semantic token values`
-5. `chore: remove deprecated type-* class aliases`
+Three commit clusters:
 
-**Color token refinements — committed:**
-- Palette: warm-neutral surfaces, `#211f1e` dark raised, calmer editorial green accent
+1. `refactor: normalize tag/button system — collapse variants, extract components`
+   - `<Tag>` collapsed to single canonical treatment: `surface-tag` bg, `on-surface` text, `spacing-sm` padding
+   - `<SocialLink>` extracted: h-9 border-chip, quiet utility affordance
+   - `<Button>` extended with `href` discriminated union — renders `<a>` or `<button>` based on prop, same variants both branches
+   - About social row → `<SocialLink>`; home/about CTAs → `<Button href="...">`
 
-**DESIGN.md §3 rewrite — committed (this session):**
-- Old `type-*` YAML scale replaced with 16-token semantic table + prose composition rules section
+2. `refactor: semantic token cleanup — inline code composition and code block surface`
+   - Inline code rule in globals.css rewritten to explicitly match `mono-code` token values (note: `@apply mono-code` does NOT work in Tailwind v4 against `@layer components` classes — keep values explicit)
+   - `<CodeBlock>` surface-sunken fill removed — now border-only, no fill
 
-**Semantic color audit + fixes — committed (this session):**
-- TOC inactive links: `var(--outline)` → `var(--on-surface-muted)` (was using a border token as text color)
-- Callout: removed multi-variant type system (tradeoff/warning secondary/tertiary); single editorial treatment
-- Callout title: prose cascade bug fixed — explicit `text-[var(--accent)]` added to beat `.prose-content` specificity
+3. `refactor: normalize radius vocabulary — architectural containers to 0px, media to 8px`
+   - Cards outer: `radius-sm` → 0px (architectural container)
+   - Code blocks: `radius-md` → 0px
+   - Card hero inner: `radius-sm` → `radius-md` (4px → 8px, media surface)
+   - About headshot: `radius-lg` → `radius-md` (12px → 8px)
+   - Homepage portrait placeholder: `radius-sm` → `radius-md` (4px → 8px)
+
+**DESIGN.md synced** to reflect all three clusters (tag spec, radius vocabulary, elevation note, Button anchor rendering, new SocialLink spec).
+
+**Visual QA passed** (Playwright). One mobile weak spot noted: 0px cards at 375px have near-invisible side edges because `surface-raised` (#fff) and `background` (#f8f8f7) are tonally very close — inner hero image contrasts more than the outer container. Not a regression; flagged for the elevation/depth audit.
 
 ---
 
 ## Next Steps
 
-`phase-5-work-page` content work continues. Outstanding items:
+**Immediate next action — do this first:**
 
-1. **Merge to main** when phase-5 polish is complete
+**Elevation/depth audit** (prerequisite for About page polish)
+
+Full inventory of every depth/elevation mechanism currently in the system. For each: where it exists, whether it is structural / interactive / decorative, and whether it aligns with the editorial-architectural direction.
+
+Audit categories:
+- Borders (`outline-variant`, `outline`, `outline-hair`)
+- Tonal surface steps (`background` → `surface-raised` → `surface-sunken`)
+- Hover border shifts
+- Hover background shifts
+- Shadows (documented carve-outs: `<Highlight>` only)
+- Blur / backdrop-filter (pill nav, mobile panel, scroll-to-top)
+- Image scaling on hover (`group-hover:scale-[1.03]` on card hero)
+- Sticky / floating elements
+- Accent fills (primary button, active nav state, callout border)
+- Dark-surface anchors (surface-sunken used as anchor color in dark theme)
+- Radius usage as depth signal
+- Typography density as depth signal
+
+Output of audit feeds directly into About page polish decisions.
+
+---
+
+`phase-5-work-page` polish otherwise complete. Remaining:
+
+1. **About page polish** (`phase-5-about-page`) — elevation/depth audit first
 2. **Home page v1 spec items:**
    - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
    - Hire Me CTA pulse — DESIGN.md §11: 2400ms opacity+scale on icon only, stops on hover, `useReducedMotion()` gated
    - Theme toggle tooltip — 500ms hover delay, optional/lower priority
-3. **About page polish** (`phase-5-about-page`)
+3. **Merge to main** when phase-5 polish is complete
 4. **Content** — placeholder MDX files need real content
 
 ---
