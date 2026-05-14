@@ -394,14 +394,19 @@ body {
     color: var(--on-surface-muted);
   }
 
-  /* MDX deep-dive prose — applies inside .prose-content */
+  /* ── Prose composition rules — .prose-content ──
+     Headings compose from semantic tokens; spacing/border are layout rules.
+     h2 → mono-anchor  |  h3 → heading-component  |  h4 → heading-narrative
+     p/li → body-primary  |  blockquote → body-secondary  |  table → body-caption
+     code → mono-code  |  strong → body-primary + weight-600
+  */
 
-  /* h2 = chapter anchor: mono-label style, hairline rule below */
   .prose-content h2 {
+    /* mono-anchor values + structural border */
     font-family: var(--font-mono), monospace;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 500;
-    line-height: 16px;
+    line-height: 20px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--on-surface-muted);
@@ -414,27 +419,31 @@ body {
     margin-top: 0;
   }
   .prose-content h3 {
+    /* heading-component values */
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 19px;
-    font-weight: 500;
-    line-height: 28px;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
     letter-spacing: -0.01em;
     color: var(--on-surface);
     margin-top: var(--spacing-2xl);
     margin-bottom: var(--spacing-sm);
   }
-  /* h4 = accent lead sentence — analogue of reference green opener */
   .prose-content h4 {
+    /* heading-narrative values */
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
     color: var(--accent);
     margin-top: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
   }
   .prose-content p {
-    font-size: 16px;
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
     line-height: 28px;
     color: var(--on-surface);
     margin-bottom: var(--spacing-lg);
@@ -445,8 +454,10 @@ body {
     margin-bottom: var(--spacing-lg);
   }
   .prose-content li {
-    font-size: 16px;
-    line-height: 26px;
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
     color: var(--on-surface);
     margin-bottom: var(--spacing-xs);
   }
@@ -456,10 +467,15 @@ body {
     text-underline-offset: 2px;
   }
   .prose-content strong {
+    /* body-primary + semibold weight */
     font-weight: 600;
     color: var(--on-surface);
   }
   .prose-content blockquote {
+    /* body-secondary values + left border */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
     border-left: 3px solid var(--accent);
     padding-left: var(--spacing-lg);
     color: var(--on-surface-muted);
@@ -474,7 +490,9 @@ body {
   .prose-content table {
     width: 100%;
     border-collapse: collapse;
+    /* body-caption size */
     font-size: 14px;
+    line-height: 20px;
     margin-bottom: var(--spacing-md);
   }
   .prose-content th,
@@ -482,19 +500,22 @@ body {
     border: 1px solid var(--outline-variant);
     padding: var(--spacing-sm) var(--spacing-md);
     text-align: left;
+    color: var(--on-surface-muted);
   }
   .prose-content th {
     background: var(--surface-sunken);
     font-weight: 600;
   }
   .prose-content code:not(pre code) {
+    /* mono-code values + background treatment */
     font-family: var(--font-mono), monospace;
-    font-size: 13px;
+    font-size: 16px;
+    line-height: 24px;
     background: var(--surface-sunken);
     border: 1px solid var(--outline-variant);
     border-radius: var(--radius-sm);
     padding: 2px 6px;
-    color: var(--on-surface);
+    color: var(--on-surface-muted);
   }
 
   /* Footer text — responsive scale */
@@ -539,15 +560,18 @@ body {
     }
   }
   .editorial-dl dt {
+    /* body-primary + semibold for term label */
     font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
-    line-height: 22px;
+    line-height: 28px;
     color: var(--on-surface);
-    padding-top: 3px;
+    padding-top: 1px;
   }
   .editorial-dl dd {
-    font-size: 16px;
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
     line-height: 28px;
     color: var(--on-surface);
     margin: 0;
@@ -564,8 +588,10 @@ body {
     display: flex;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-xs);
-    font-size: 16px;
-    line-height: 26px;
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
     color: var(--on-surface);
   }
 
