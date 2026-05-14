@@ -269,10 +269,10 @@ Tokens are role-based. The same role has different hex values per theme to maint
 
 | Role | Light | Dark | Used for |
 |---|---|---|---|
-| `background` | `#f8f9fa` | `#131313` | Page background |
-| `surface` | `#f8f9fa` | `#131313` | Default content surface (= background) |
-| `surface-raised` | `#ffffff` | `#1c1b1b` | Cards, sidebars, elevated panels |
-| `surface-sunken` | `#f3f4f5` | `#0e0e0e` | Code blocks, inset wells |
+| `background` | `#f8f8f7` | `#131313` | Page background |
+| `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
+| `surface-raised` | `#ffffff` | `#211f1e` | Cards, sidebars, elevated panels |
+| `surface-sunken` | `#f2f2f1` | `#0e0e0e` | Code blocks, inset wells |
 | `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Pill nav backdrop (~85% opacity, for backdrop-blur) |
 | `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Mobile slide-out panel (~72% opacity — larger surface needs more transparency to feel equivalent to pill nav) |
 | `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
@@ -281,21 +281,22 @@ Tokens are role-based. The same role has different hex values per theme to maint
 | `on-surface-muted` | `#6b7280` | `#a0a0a0` | Secondary text, captions |
 | `outline` | `#6c7a71` | `#86948a` | Default borders, dividers |
 | `outline-variant` | `#bbcabf` | `#3c4a42` | Subtle borders, low-contrast dividers |
-| `accent` | `#006c49` | `#4edea3` | Active nav, primary CTA, links, focus rings, callout accents |
-| `accent-on` | `#ffffff` | `#0a1f15` | Text/icon on accent fills |
-| `accent-muted` | `#e6f4ed` | `#1f3329` | Hover backgrounds, accent-tinted surfaces |
+| `outline-hair` | `color-mix(in srgb, #191c1d 10%, transparent)` | `color-mix(in srgb, #e5e2e1 10%, transparent)` | Alpha hairline border, surface-relative |
+| `accent` | `#006e37` | `#35c27d` | Active nav, primary CTA, links, focus rings, callout accents |
+| `accent-on` | `#ffffff` | `#0a1f0e` | Text/icon on accent fills |
+| `accent-muted` | `#e6f4ec` | `#1a2e1f` | Hover backgrounds, accent-tinted surfaces |
 | `secondary` | `#565e74` | `#bdc7d9` | Reserved — categorical use only (e.g., callout variants) |
 | `tertiary` | `#a43a3a` | `#e8a5a5` | Reserved — categorical use only (e.g., warning callouts) |
 | `error` | `#c0392b` | `#ff6b5e` | 404, validation errors |
-| `success` | `#006c49` | `#4edea3` | Build status, confirmations (= accent in v1) |
-| `focus-ring` | `#006c49` | `#4edea3` | 2px outline on keyboard focus (= accent) |
-| `selection` | `#006c4933` | `#4edea333` | Text selection background (accent at 20% alpha) |
+| `success` | `#006e37` | `#35c27d` | Build status, confirmations (= accent in v1) |
+| `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
+| `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
 
 ### Notes on color usage
 
 - **One accent.** The portfolio is identity-led by a single green. `accent-strong` is intentionally not defined — if you need more emphasis, use weight or size, not a louder color.
 - **`secondary` and `tertiary` are reserved tokens.** Available for future categorical needs (callout variants, status differentiation), not used in v1 layouts.
-- **Pure white is rare in light theme.** Reserved for `surface-raised` (cards, elevated panels). Body background is the warm off-white `#f8f9fa`.
+- **Pure white is rare in light theme.** Reserved for `surface-raised` (cards, elevated panels). Body background is the warm off-white `#f8f8f7`.
 - **Dark theme is deep but not black.** `#131313` is the deepest surface; `surface-sunken` goes slightly darker for code blocks only.
 - **Accent and success share a value in v1.** Acceptable because there is no scenario in v1 where both are visible together (success states are post-launch).
 
