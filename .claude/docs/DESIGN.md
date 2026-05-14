@@ -97,7 +97,7 @@ export const mono = JetBrains_Mono({
 | `interactive-label` | Inter | 14px | 500 | 20px | — | — (stateful) | Committed actions — buttons, CTAs, download links. Color expresses available/hover/pressed state. |
 | `nav-link` | Inter | 14px | 500 | 20px | — | — (stateful) | Navigational/location indicators — nav anchors, back links. Color expresses current/visited/hover state. Same visual spec as `interactive-label`; distinct behavioral contract. |
 | `mono-anchor` | JetBrains Mono | 15px | 500 | 20px | +0.05em | `on-surface-muted` | Page eyebrows, role labels, structural metadata (uppercase) |
-| `tag-chip` | JetBrains Mono | 12px | 500 | 16px | +0.05em | `on-surface-muted` | Tag chips on cards (uppercase) |
+| `tag-chip` | JetBrains Mono | 12px | 500 | 16px | +0.05em | `on-surface` | Tag chips on cards (uppercase) |
 | `insight-label` | JetBrains Mono | 13px | 500 | 16px | +0.05em | `on-surface-muted` | Callout/highlight markers (uppercase) |
 | `mono-code` | JetBrains Mono | 16px | 400 | 24px | — | `on-surface-muted` | Inline code, code blocks |
 | `support-meta` | Inter | 13px | 400 | 20px | — | `on-surface-muted` | Footer, TOC items, section progress nav |
@@ -120,8 +120,8 @@ MDX prose inside `.prose-content` maps heading levels to existing semantic token
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
 | `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid outline-variant`, padding |
 | `td` | `body-caption` values | `border-bottom: 1px solid outline-hair`, padding |
-| `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: 4px` |
-| `pre code` | `mono-code` values | `background: surface-sunken`, full block padding, `border: 1px solid outline-variant` |
+| `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: radius-sm` |
+| `pre code` | `mono-code` values | border-only (`border: 1px solid outline-variant`), full block padding, no fill, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
 ### Mono usage rules
@@ -241,13 +241,14 @@ Long-form pages constrain reading width to `~680px` (roughly 65–70 characters 
 
 ```yaml
 radius:
-  sm: 4px      # tags, chips, buttons, project cards, callouts (default for most surfaces)
-  md: 8px      # code blocks
-  lg: 12px     # headshot, large containers
-  pill: 9999px # pill nav, status pills, theme toggle, scroll-to-top
+  0px:  structural containers — cards, code blocks, callouts (architectural / no radius)
+  sm: 4px      # interactive controls — tags, chips, buttons, inline code
+  md: 8px      # media surfaces — headshot, hero images, figures, diagrams, highlights
+  lg: 12px     # unused in v1 (reserved; was headshot — now normalized to md)
+  pill: 9999px # floating/nav controls — pill nav, mobile trigger, theme toggle, scroll-to-top, logomark
 ```
 
-Use of fully sharp corners (0px) and very large rounds (>12px) is reserved for specific intentional cases — flag them rather than defaulting.
+The vocabulary is intentional: structural containers are sharp (0px), interactive controls have the minimum radius (4px) to read as controls, and all media/image surfaces normalize to 8px. Floating controls use pill.
 
 ---
 
@@ -258,8 +259,10 @@ Depth is communicated through tonal layering and subtle borders. **No shadows by
 ```yaml
 elevation:
   flat: none                                  # default; surfaces sit at their tonal layer
-  raised: border 1px solid outline-variant    # cards, panels
-  inset:  border 1px solid outline-variant    # code blocks, wells (uses surface-sunken)
+  raised: border 1px solid outline-variant    # cards, panels (surface-raised bg)
+  inset:  border 1px solid outline-variant    # wells, inline code (uses surface-sunken bg)
+  # Note: code blocks (CodeBlock component) use border-only with no fill — not surface-sunken.
+  # Inline code uses surface-sunken. The distinction is block vs. inline context.
 ```
 
 ### Backdrop-blur carve-out
@@ -511,7 +514,7 @@ The pulse is on the icon only, never the entire button. Stops if the button is h
 project-card:
   background: surface-raised
   border: 1px solid outline-variant
-  borderRadius: sm                    # 4px
+  borderRadius: 0px                   # architectural container — sharp corners
   display: flex
   flexDirection: column
   transition: border-color 150ms
@@ -530,16 +533,16 @@ project-card-hero:
   # Hero is inset with breathing room — not edge-to-edge
   wrapperPadding: spacing-md
   innerBackground: surface-sunken
-  innerBorderRadius: sm
+  innerBorderRadius: md               # 8px — media surface, matches all image/media radius
 
 project-card-body:
   paddingX: spacing-lg
   paddingBottom: spacing-lg
   gap: spacing-sm
-  - title:    body-lg (compact) or headline-sm (featured), on-surface, font-semibold
+  - title:    heading-component, on-surface, font-semibold
               hover: underline (decoration: accent, offset 2px)
-  - summary:  body-sm, on-surface-muted, line-clamp-2
-  - tag-row:  Tag variant="filled", gap xs, max 3 tags
+  - summary:  body-caption, on-surface-muted
+  - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
 
 project-card-text-variant:
   # No hero. Category icon mapped from projectType (academic|freelance|personal):
@@ -595,29 +598,50 @@ button-icon-leading:
 
 Buttons rely on spacing, type, and contrast. No shadows. No gradients.
 
+**Rendering:** `<Button>` renders as `<button type="button">` by default. When an `href` prop is provided, it renders as `<a>`. Primary/secondary variants are identical in both branches — whether a CTA navigates or triggers an action is an implementation detail, not a separate design primitive.
+
+### SocialLink
+
+Quiet utility affordance — sits between a static Tag and a committed Button in visual weight. Used for adjacent quick links (GitHub, LinkedIn, Email row on About). Distinct from `<Button>` by height (h-9 vs h-11), transparent bordered surface vs. filled/outlined Button treatment.
+
+```yaml
+social-link:
+  height: 36px                       # h-9 — quieter than Button (44px)
+  paddingHorizontal: spacing-md      # 16px
+  gap-icon-label: spacing-sm         # 8px
+  borderRadius: sm                   # 4px — matches interactive controls
+  background: transparent
+  border: 1px solid outline-variant
+  color: on-surface-muted
+  type: interactive-label
+
+  hover:
+    borderColor: outline
+    color: on-surface
+    transition: all 150ms
+
+  external: adds target="_blank" rel="noopener noreferrer" when external prop is true
+```
+
+**Interaction hierarchy:** `Tag` (static, no hover) → `SocialLink` (h-9, border-chip, quiet utility) → `Button` (h-11, committed action).
+
 ### Tag
+
+Single canonical static label. No variants — one treatment across all contexts.
 
 ```yaml
 tag:
-  type: mono-label, normal-case (overrides default uppercase)
-  letterSpacing: normal
-  paddingX: spacing-sm
+  type: tag-chip, normal-case, tracking-normal
+  paddingX: spacing-sm               # 8px
   paddingY: 2px
-  borderRadius: sm
-
-  variants:
-    outline:
-      background: surface-tag         # dedicated tag surface token — lighter than bg/card
-      border: none                    # no explicit border; surface-tag provides the distinction
-      color: on-surface-muted
-
-    filled:
-      background: surface-tag         # same surface token; color distinguishes the variants
-      color: on-surface
-      border: none
+  borderRadius: sm                   # 4px — interactive-control scale
+  background: surface-tag
+  color: on-surface                  # darker of the two options; strongest legibility
+  border: none
+  # No hover state — Tag is a static label, not an interactive control.
 ```
 
-Both variants use `surface-tag`. The distinction between them is text color only (`on-surface-muted` vs `on-surface`). Project cards use `filled`.
+`surface-tag` provides the tonal distinction from surrounding surfaces without an explicit border. Use `on-surface` (not `on-surface-muted`) universally — previously the About/Capabilities section used the muted variant, creating visual inconsistency with card tags. Now unified.
 
 ### Project detail layout
 
@@ -657,7 +681,7 @@ project-header:
   layout: flex-col, gap lg
 
   tags-row:
-    variant: filled Tag chips, gap xs
+    Tag chips (canonical treatment), gap xs
 
   title:
     type: display-primary
