@@ -5,7 +5,7 @@
 ---
 
 ## Current Phase
-**Phase 4 — Real Project Content** (Phase 3 + Phase 3.5 complete)
+**Phase 5 — UI Polish** (branch: `phase-5-work-page`)
 
 See `.claude/docs/build-flow.md` for full phase requirements and verification checklist.
 
@@ -13,21 +13,23 @@ See `.claude/docs/build-flow.md` for full phase requirements and verification ch
 
 ## Current State
 
-Phase 3.5 design refinement is complete, verified, and committed (6 commits on `phase-3.5-design-refinement`). Build passes (9 static pages), Biome clean, TypeScript clean.
+Phase 5 work-page polish is in progress. Build passes (10 static pages), Biome clean, TypeScript clean. No uncommitted changes outstanding.
 
 **Installed:**
 - Next.js 16.2.6, React 19, TypeScript, Tailwind CSS v4, Biome
 - framer-motion, next-themes, gray-matter, next-mdx-remote, zod, remark-gfm
 - clsx, tailwind-merge, lucide-react
 
-**Design tokens (complete) — `src/app/globals.css`:**
-- Full semantic color map (light + dark): 18 roles
+**Design tokens — `src/app/globals.css` (current values):**
+- Full semantic color map (light + dark): 19 roles (added `outline-hair`)
+- Light surfaces: `background/surface #f8f8f7`, `surface-raised #ffffff`, `surface-sunken #f2f2f1`
+- Dark surfaces: `background/surface #131313`, `surface-raised #211f1e`, `surface-sunken #0e0e0e`
+- Light accent: `#006e37` / dark accent: `#35c27d` (calmer editorial green, less teal)
+- `outline-hair`: `color-mix(in srgb, var(--on-background) 10%, transparent)` — alpha hairline token
 - Spacing scale: `xs` → `5xl` + `gutter`, `margin-mobile`, `margin-desktop`
-- Radius: `sm` (default for buttons/cards/tags/callouts), `md` (code blocks), `lg` (headshot), `pill`
-- Z-index: 10-level scale
-- Motion: `duration-fast/base/slow`, `ease-standard`, `ease-emphasis`
+- Radius: `sm`, `md`, `lg`, `pill`; Z-index: 10-level; Motion: `duration-fast/base/slow`, `ease-standard`, `ease-emphasis`
 - Type scale utility classes: `.type-display-{xl,lg,md}`, `.type-headline-{lg,md,sm}`, `.type-body-{lg,md,sm,xs}`, `.type-mono-{label,data}` with 768px mobile overrides
-- `.prose-content` — MDX deep-dive prose: h2 (28px, section anchor rule), h3 (19px/500w), p (16px/26px lh, spacing-lg margin), ul/ol, li, a, strong, blockquote, hr, table, inline code
+- `.prose-content` — MDX deep-dive prose styles; `.editorial-dl` — two-column definition list; `.highlight-panel` — pull-quote elevation; `.footer-text` — responsive footer type
 
 **Layout primitives (complete) — `src/components/layout/`:**
 - `container.tsx` — 1200px cap, responsive side margins (xl: spacing-xl / 32px)
@@ -43,12 +45,12 @@ Phase 3.5 design refinement is complete, verified, and committed (6 commits on `
 - `card.tsx` — flat element, `surface-raised` treatment
 - `heading.tsx` — polymorphic h1–h6, type-scale class
 - `tag.tsx` — `variant="outline"` (border, muted) or `variant="filled"` (surface-sunken, on-surface); both `normal-case tracking-normal`
-- `theme-toggle.tsx` — cycles light→dark→system, dynamic `aria-label`
-- `icon.tsx` — lucide-react wrapper at 18px default
+- `theme-toggle.tsx` — `PillThemeSelector` (expand-on-hover, all 3 always in DOM, `overflow-hidden` width transition) + `InlineThemeSelector` (`w-fit`, always 3 visible); both use `MaterialSymbol`
+- `material-symbol.tsx` — inline SVG component; 5 icons: `fingerprint`, `folder_code`, `light_mode`, `dark_mode`, `computer`; paths inlined from `@material-symbols/svg-400@0.44.7` (no runtime dep); viewBox `0 -960 960 960`
 
 **Navigation (complete):**
-- `pill-nav.tsx` — 44px pill; active state: `surface-sunken/on-surface` (not accent); accent reserved for logo mark only
-- `mobile-nav.tsx` — Framer Motion slide-out, focus trap, Esc-to-close, reduced-motion gated
+- `pill-nav.tsx` — 44px pill; active state: `surface-sunken/on-surface` (tonal); active nav icon renders in `accent`; uses `MaterialSymbol`
+- `mobile-nav.tsx` — Framer Motion slide-out, focus trap, Esc-to-close, reduced-motion gated; uses `MaterialSymbol` + `InlineThemeSelector`
 - `nav.tsx` — CSS-only responsive switch
 
 **Footer (complete) — `src/components/layout/footer.tsx`:**
@@ -61,7 +63,7 @@ Phase 3.5 design refinement is complete, verified, and committed (6 commits on `
 - `code-block.tsx`, `mdx-components.tsx`
 
 **Project components (complete) — `src/components/project/`:**
-- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text` (icon only — intentional, not a fallback); inset hero with `surface-sunken` background; `filled` tags; hover: border shift + title underline
+- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text` (icon only — intentional, not a fallback); thumbnail `aspect-video` (16:9); inset hero with scale transform on hover; `filled` tags; hover: border/bg tonal shift + chevron with accent + image scale; no shadows
 - `hero-media.tsx` — image/video/SVG handler, reduced-motion poster fallback
 - `project-overview.tsx` — Problem / What I built / Results (muted bullets) / transferableSkills or learnings
 - `stack-summary.tsx` — dot-separated inline text per category (no Tag chips)
@@ -105,37 +107,32 @@ Phase 3.5 design refinement is complete, verified, and committed (6 commits on `
 
 ---
 
-## Last Session (Phase 5 — Project Page Polish, branch: `phase-5-ui-polish`)
+## Last Session (Phase 5 — Work Page Polish, branch: `phase-5-work-page`)
 
-**Project detail page — complete. All work on `/work/[slug]/page.tsx` and its components.**
+**Work page and global nav/theme polish complete. All changes committed.**
 
-Schema/content:
-- `fullTitle` renamed → `subtitle`; `shortTitle` removed from schema and all content
-- `Callout` upgraded with styled variants; `Highlight` MDX component added (initially inline accent, later redesigned)
+Nav / theme toggle:
+- `material-symbol.tsx` (new) — 5 icons inline from `@material-symbols/svg-400`, no package added
+- `pill-nav.tsx` — lucide icons replaced with MaterialSymbol; active icon uses `accent` color
+- `mobile-nav.tsx` — same icon swap; `InlineThemeSelector` replaces old toggle
+- `theme-toggle.tsx` — `PillThemeSelector` redesigned: all 3 buttons always in DOM, `overflow-hidden` width transition, no jarring remount; `InlineThemeSelector` `w-fit` fixes trailing space in mobile panel
 
-Project detail components (all in `src/components/project/`):
-- `project-header.tsx` — tags row, title, subtitle, links row with per-type icons; links have accent-muted pill hover, icon nudge, `active:opacity-70`
-- `section-progress-nav.tsx` — desktop sticky TOC; replaces old scroll-progress bar; hidden on mobile
-- `tech-stack.tsx` — dedicated Tech Stack section with `<h2>Tech Stack</h2>` + editorial two-column `<dl class="editorial-dl">`
-- `project-overview.tsx` — editorial two-column `<dl class="editorial-dl">`; subheadings as `<dt>`, content as `<dd>`
+Work cards (`project-card.tsx`):
+- Thumbnail `aspect-video` (was aspect-square/4:3)
+- Hero image scales `group-hover:scale-[1.03]` via inner wrapper
+- Body padding/gap tightened; subtitle/summary shown without line-clamp
+- Hover: border + bg tonal shift, chevron fades in with accent + translate — no shadows (v1 rule)
 
-Layout:
-- Sidebar removed; single-column editorial layout at `max-w-[960px]`
-- Overview h2 + Tech Stack h2 share `.prose-content h2` styling (mono-label, muted, `border-bottom: 1px solid currentColor`)
-- `Figure`/`Diagram` default full column width with centered captions
-- `Highlight` redesigned as elevated pull-quote panel: `surface-raised` bg, `radius-md`, 3-layer shadow (`.highlight-panel` in globals.css), optional `heading` prop renders as `type-mono-label`
-
-Global changes on this branch:
-- Scroll-to-top button added site-wide (`src/components/ui/scroll-to-top.tsx`)
-- Mobile nav: `--surface-overlay-panel` token (72% opacity), `backdrop-blur-[12px]`; body scroll restored on viewport resize via `resize` listener closing menu at ≥768px
-- Footer: no `border-t`; "and" → "&"; link underlined; `.footer-text` responsive class (11px mobile / 15px desktop); icons 20px with `hover:scale-110`
-- Tags: both variants use `--surface-tag` token
-- New tokens: `--surface-overlay-panel`, `--surface-tag`; both in `@theme` as Tailwind utilities
-- `on-surface-muted` dark theme: `#9ca3af` → `#a0a0a0`
+Surface + accent palette refinement (`globals.css` + `DESIGN.md` synced):
+- Light: `background/surface #f8f8f7`, `surface-sunken #f2f2f1`, `accent #006e37`
+- Dark: `surface-raised #211f1e`, `accent #35c27d`, `accent-on #0a1f0e`, `accent-muted #1a2e1f`
+- Added `outline-hair` token: `color-mix(in srgb, var(--on-background) 10%, transparent)`
 
 **Constraints discovered this branch:**
 - Tailwind v4 responsive variants (`md:custom-class`) do NOT work on `@layer components` classes — use explicit `@media` blocks inside `@layer components` instead
 - `React.Fragment` (explicit) required when `key` is needed in a map — `<>` shorthand cannot take `key`
+- Biome `noStaticElementInteractions` fires on hover wrappers — use biome-ignore with justification comment
+- Material Symbols SVG paths use viewBox `0 -960 960 960` (not standard `0 0 24 24`)
 
 **Build:** clean — 10 static pages, Biome + TypeScript pass
 
@@ -143,11 +140,10 @@ Global changes on this branch:
 
 ## Next Steps
 
-Merge `phase-5-ui-polish` → `main`, then open a new branch per page:
+`phase-5-work-page` is ready to merge → `main`. Next branches:
 
-1. `phase-5-work-page` — Work page: grid spacing, card proportions, tag density
-2. `phase-5-about-page` — About page: two-column layout, section spacing, headshot treatment
-3. `phase-5-home-page` — Home page: hero layout, CTA block, featured grid density
+1. `phase-5-about-page` — About page: two-column layout, section spacing, headshot treatment
+2. `phase-5-home-page` — Home page: hero layout, CTA block, featured grid density
    **Home page has three outstanding v1 spec items to implement during polish:**
    - **Hero portrait** — real headshot (`/public/headshot.jpeg`) exists but home page still shows a `surface-sunken` placeholder rectangle; wire it up
    - **Hire Me CTA pulse** — DESIGN.md §11 specifies slow pulse (2400ms, opacity + scale) on the leading icon only; stops on hover; gated by `useReducedMotion()`

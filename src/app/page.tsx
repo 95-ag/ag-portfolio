@@ -23,13 +23,11 @@ export default function HomePage() {
 
             {/* Statement block */}
             <div className="flex flex-col gap-[var(--spacing-lg)] lg:pb-[var(--spacing-lg)]">
-              <p className="type-mono-label text-[var(--on-surface-muted)]">
-                Aishwarya Ganesan · AI/ML Engineer
-              </p>
-              <Heading level={1} type="display-lg">
+              <p className="mono-anchor">Aishwarya Ganesan · AI/ML Engineer</p>
+              <Heading level={1} type="display-primary">
                 Building practical ML systems for real-world constraints.
               </Heading>
-              <p className="type-body-lg max-w-[480px] text-[var(--on-surface-muted)]">
+              <p className="body-secondary max-w-[480px]">
                 From perception pipelines and reinforcement learning to scalable
                 backend infrastructure — end to end.
               </p>
@@ -45,12 +43,12 @@ export default function HomePage() {
           <Container>
             <Stack gap="xl">
               <div className="flex items-baseline justify-between gap-[var(--spacing-md)]">
-                <Heading level={2} type="headline-md">
+                <Heading level={2} type="heading-component">
                   Featured projects
                 </Heading>
                 <Link
                   href="/work"
-                  className="type-body-sm shrink-0 text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className="body-caption shrink-0 transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
                   View all →
                 </Link>
@@ -74,10 +72,10 @@ export default function HomePage() {
         <Container>
           <div className="flex flex-col items-center gap-[var(--spacing-xl)] text-center">
             <div className="flex flex-col gap-[var(--spacing-md)]">
-              <Heading level={2} type="headline-lg">
+              <Heading level={2} type="heading-component">
                 Collaboration &amp; Hiring
               </Heading>
-              <p className="type-body-lg mx-auto max-w-[560px] text-[var(--on-surface-muted)]">
+              <p className="body-secondary mx-auto max-w-[560px]">
                 Available for full-time roles and scoped freelance projects. I
                 specialise in bridging research and production — from model
                 development to scalable backend systems.
@@ -87,14 +85,14 @@ export default function HomePage() {
               <a
                 href="/AishwaryaGanesan_Resume.pdf"
                 download
-                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-sm font-medium text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 <Download size={16} aria-hidden="true" />
                 Download Resume
               </a>
               <a
                 href="mailto:aishwaryaganesan95@gmail.com"
-                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 <Mail size={16} aria-hidden="true" />
                 Get in Touch

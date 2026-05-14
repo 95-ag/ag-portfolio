@@ -33,7 +33,7 @@ export function Callout({
       )}
     >
       {title && (
-        <strong className="type-body-sm mb-[var(--spacing-sm)] block font-semibold text-[var(--accent)]">
+        <strong className="callout-title mb-[var(--spacing-sm)] block">
           {title}
         </strong>
       )}

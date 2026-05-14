@@ -79,7 +79,7 @@ export default async function ProjectPage({ params }: Props) {
             <div className="mt-[var(--spacing-3xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
               <Link
                 href="/work"
-                className="type-body-md font-medium text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 ← Back to Work
               </Link>

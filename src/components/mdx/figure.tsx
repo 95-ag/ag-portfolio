@@ -52,7 +52,7 @@ export function Figure({
         />
       </div>
       {caption && (
-        <figcaption className="type-body-sm mt-[var(--spacing-sm)] text-[var(--on-surface-muted)] text-center">
+        <figcaption className="body-caption mt-[var(--spacing-sm)] text-center">
           {caption}
         </figcaption>
       )}

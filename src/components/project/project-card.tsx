@@ -41,12 +41,10 @@ export function ProjectCard({
             <CategoryIcon size={18} aria-hidden="true" />
           </div>
           <div className="flex flex-1 flex-col gap-[var(--spacing-xs)]">
-            <p className="type-headline-sm font-semibold text-[var(--on-surface)] group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
+            <p className="heading-component font-semibold text-[var(--on-surface)] group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
               {fm.title}
             </p>
-            <p className="type-body-sm text-[var(--on-surface-muted)]">
-              {displayText}
-            </p>
+            <p className="body-caption">{displayText}</p>
           </div>
           <div className="flex flex-wrap gap-[var(--spacing-xs)]">
             {fm.tags.slice(0, 3).map((tag) => (
@@ -80,7 +78,7 @@ export function ProjectCard({
                 className={cn(
                   "font-semibold text-[var(--on-surface)]",
                   "group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2",
-                  variant === "featured" ? "type-headline-sm" : "type-body-lg",
+                  "heading-component",
                 )}
               >
                 {fm.title}
@@ -92,9 +90,7 @@ export function ProjectCard({
               />
             </div>
 
-            <p className="type-body-sm flex-1 text-[var(--on-surface-muted)]">
-              {displayText}
-            </p>
+            <p className="body-caption flex-1">{displayText}</p>
             <div className="flex flex-wrap gap-[var(--spacing-xs)]">
               {fm.tags.slice(0, 3).map((tag) => (
                 <Tag key={tag} variant="filled">
