@@ -363,7 +363,7 @@ Image with optional caption and width control.
 |---|---|---|---|
 | `src` | string | yes | Web path under `/public` |
 | `alt` | string | yes | Accessibility |
-| `caption` | string | no | Renders below image, `body-sm` muted |
+| `caption` | string | no | Renders below image, `body-caption` muted |
 | `width` | enum | no | Default `"default"` |
 
 Renders with a subtle border (`outline-variant`) and `radius: md`.
@@ -382,10 +382,10 @@ Architecture diagrams, flow charts, system illustrations. Same props as `<Figure
 
 ### `<Callout>`
 
-Editorial highlight for key insights, tradeoffs, or decisions.
+Editorial aside for key insights, decisions, or caveats.
 
 ```mdx
-<Callout type="insight">
+<Callout title="Optional lead-in">
 The reward function only penalized lateral error — adding a curvature
 penalty would likely close the remaining gap on tight turns.
 </Callout>
@@ -393,10 +393,9 @@ penalty would likely close the remaining gap on tight turns.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `type` | enum | no | `"insight"` (default) \| `"tradeoff"` \| `"warning"` |
-| `title` | string | no | Optional bold lead-in |
+| `title` | string | no | Optional bold lead-in, renders in Accent |
 
-Visual treatment in DESIGN.md §11. Callouts are editorial asides — intended to surface key decisions or tradeoffs without interrupting the reading flow. `type` drives the accent color (insight = `accent`, tradeoff = `secondary`, warning = `tertiary`).
+Single visual treatment: Accent left border, Accent title, `body-emphasis` body text. No type variants. The component is self-contained — does not rely on prose cascade. Visual treatment in DESIGN.md §11.
 
 ### `<Stack>`
 
@@ -426,8 +425,8 @@ Editorial pull-quote panel for a single key insight. Elevated above normal prose
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `heading` | string | no | Renders as `mono-label` caption above the body. No heading = body panel only |
-| `children` | ReactNode | yes | Prose content. Rendered at `body-md` weight medium |
+| `heading` | string | no | Renders as `insight-label` caption above the body. No heading = body panel only |
+| `children` | ReactNode | yes | Prose content. Rendered at `body-emphasis` weight |
 
 Visual treatment in DESIGN.md §11. Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; Highlight is a standalone elevated statement.
 
@@ -442,7 +441,7 @@ def reward(state, next_state):
 ```
 ````
 
-Inline code uses single backticks: `` `like this` ``. Renders per DESIGN.md §3 `code-inline` token.
+Inline code uses single backticks: `` `like this` ``. Renders per DESIGN.md §3 `mono-code` token.
 
 ---
 

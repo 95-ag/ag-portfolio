@@ -79,170 +79,50 @@ export const mono = JetBrains_Mono({
 - **Inter** — body, UI, prose.
 - **JetBrains Mono** — metadata, tags, code, lightweight technical accents only. Never in long-form prose.
 
-### Type scale
+### Semantic token table
 
-```yaml
-# Display (hero-only, used sparingly)
-display-xl:
-  fontFamily: Manrope
-  fontSize: 64px
-  fontWeight: 700
-  lineHeight: 72px
-  letterSpacing: -0.025em
+16 tokens, role-based. Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 
-display-lg:
-  fontFamily: Manrope
-  fontSize: 48px
-  fontWeight: 700
-  lineHeight: 56px
-  letterSpacing: -0.02em
+| Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
+|---|---|---|---|---|---|---|---|
+| `display-primary` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
+| `display-accent` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
+| `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
+| `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
+| `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
+| `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
+| `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
+| `body-emphasis` | Inter | 18px | 500 | 28px | — | — (Ink) | Highlighted callout body text |
+| `callout-title` | Inter | 16px | 600 | 20px | — | `accent` | Callout/aside titles |
+| `interactive-label` | Inter | 14px | 500 | 20px | — | — (stateful) | Committed actions — buttons, CTAs, download links. Color expresses available/hover/pressed state. |
+| `nav-link` | Inter | 14px | 500 | 20px | — | — (stateful) | Navigational/location indicators — nav anchors, back links. Color expresses current/visited/hover state. Same visual spec as `interactive-label`; distinct behavioral contract. |
+| `mono-anchor` | JetBrains Mono | 15px | 500 | 20px | +0.05em | `on-surface-muted` | Page eyebrows, role labels, structural metadata (uppercase) |
+| `tag-chip` | JetBrains Mono | 12px | 500 | 16px | +0.05em | `on-surface` | Tag chips on cards (uppercase) |
+| `insight-label` | JetBrains Mono | 13px | 500 | 16px | +0.05em | `on-surface-muted` | Callout/highlight markers (uppercase) |
+| `mono-code` | JetBrains Mono | 16px | 400 | 24px | — | `on-surface-muted` | Inline code, code blocks |
+| `support-meta` | Inter | 13px | 400 | 20px | — | `on-surface-muted` | Footer, TOC items, section progress nav |
 
-display-md:
-  fontFamily: Manrope
-  fontSize: 40px
-  fontWeight: 700
-  lineHeight: 48px
-  letterSpacing: -0.02em
+**Mobile overrides** (≤768px): `display-primary` and `display-accent` scale down to 36px / 44px line-height.
 
-# Headlines (section/page headings)
-headline-lg:
-  fontFamily: Manrope
-  fontSize: 32px
-  fontWeight: 600
-  lineHeight: 40px
-  letterSpacing: -0.01em
+**Footer responsive exception**: `support-meta` is 13px by default; footer.tsx applies a local Tailwind override to 11px / 18px on mobile, 15px / 24px on desktop. This is the only component-level responsive exception to a semantic token.
 
-headline-md:
-  fontFamily: Manrope
-  fontSize: 24px
-  fontWeight: 600
-  lineHeight: 32px
-  letterSpacing: -0.01em
+### Prose composition rules
 
-headline-sm:
-  fontFamily: Manrope
-  fontSize: 20px
-  fontWeight: 600
-  lineHeight: 28px
+MDX prose inside `.prose-content` maps heading levels to existing semantic tokens plus layout composition rules. No prose-only tokens are created.
 
-# Mobile overrides for display/headline
-display-lg-mobile:
-  fontSize: 36px
-  lineHeight: 44px
-
-headline-lg-mobile:
-  fontSize: 28px
-  lineHeight: 36px
-
-# Body
-body-lg:
-  fontFamily: Inter
-  fontSize: 18px
-  fontWeight: 400
-  lineHeight: 28px
-
-body-lg-mobile:
-  fontSize: 17px
-  lineHeight: 26px
-
-body-md:
-  fontFamily: Inter
-  fontSize: 16px
-  fontWeight: 400
-  lineHeight: 24px
-
-body-sm:
-  fontFamily: Inter
-  fontSize: 14px
-  fontWeight: 400
-  lineHeight: 20px
-
-body-xs:
-  fontFamily: Inter
-  fontSize: 12px
-  fontWeight: 400
-  lineHeight: 16px
-
-# Inline UI
-link:
-  inherits: body-md
-  fontWeight: 500
-  color: accent
-  textDecoration: none
-  hoverDecoration: underline
-  hoverDecorationOffset: 2px
-
-# Prose (MDX deep-dive body)
-prose-h2:
-  # Chapter anchor — intentionally uses mono-label scale, not a Manrope headline.
-  # Reads as a structural label/divider, not a content heading.
-  fontFamily: JetBrains Mono
-  fontSize: 13px
-  fontWeight: 500
-  lineHeight: 16px
-  letterSpacing: 0.05em
-  textTransform: uppercase
-  color: on-surface-muted
-  borderBottom: 1px solid currentColor   # divider color always matches text color
-  paddingBottom: spacing-md
-
-prose-h3:
-  fontFamily: Manrope
-  fontSize: 19px
-  fontWeight: 500
-  lineHeight: 28px
-  letterSpacing: -0.01em
-
-prose-body:
-  fontFamily: Inter
-  fontSize: 16px
-  fontWeight: 400
-  lineHeight: 26px
-
-# Mono (metadata, code)
-mono-label:
-  fontFamily: JetBrains Mono
-  fontSize: 13px
-  fontWeight: 500
-  lineHeight: 16px
-  letterSpacing: 0.05em
-  textTransform: uppercase   # for status pills, section eyebrows
-
-mono-data:
-  fontFamily: JetBrains Mono
-  fontSize: 14px
-  fontWeight: 400
-  lineHeight: 20px
-
-# Code
-code-inline:
-  fontFamily: JetBrains Mono
-  fontSize: 0.875em      # relative to surrounding text
-  background: surface-sunken
-  padding: 2px 6px
-  borderRadius: 4px
-
-code-block:
-  fontFamily: JetBrains Mono
-  fontSize: 14px
-  lineHeight: 22px
-  padding: 16px 20px
-  background: surface-sunken
-  borderRadius: 8px
-  border: 1px solid outline-variant
-
-# Prose
-blockquote:
-  inherits: body-lg
-  fontStyle: italic
-  borderLeft: 3px solid accent
-  paddingLeft: 16px
-  marginVertical: 24px
-
-list-item:
-  inherits: body-md
-  marginBottom: 8px
-```
+| Element | Semantic token | Composition additions |
+|---|---|---|
+| `h2` | `mono-anchor` values | `border-bottom: 1px solid outline-variant`, `padding-bottom: spacing-md`, `margin-top: spacing-3xl`, `margin-bottom: spacing-lg` |
+| `h3` | `heading-component` values | `margin-top: spacing-2xl`, `margin-bottom: spacing-sm` |
+| `h4` | `heading-narrative` values | `margin-top: spacing-xl`, `margin-bottom: spacing-xs` |
+| `p`, `li` | `body-primary` values (18px) | — |
+| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 3px solid accent`, `padding-left: spacing-lg`, `margin-vertical: spacing-xl` |
+| `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
+| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid outline-variant`, padding |
+| `td` | `body-caption` values | `border-bottom: 1px solid outline-hair`, padding |
+| `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: radius-sm` |
+| `pre code` | `mono-code` values | border-only (`border: 1px solid outline-variant`), full block padding, no fill, 0px radius |
+| `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
 ### Mono usage rules
 
@@ -269,10 +149,10 @@ Tokens are role-based. The same role has different hex values per theme to maint
 
 | Role | Light | Dark | Used for |
 |---|---|---|---|
-| `background` | `#f8f9fa` | `#131313` | Page background |
-| `surface` | `#f8f9fa` | `#131313` | Default content surface (= background) |
-| `surface-raised` | `#ffffff` | `#1c1b1b` | Cards, sidebars, elevated panels |
-| `surface-sunken` | `#f3f4f5` | `#0e0e0e` | Code blocks, inset wells |
+| `background` | `#f8f8f7` | `#131313` | Page background |
+| `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
+| `surface-raised` | `#ffffff` | `#211f1e` | Cards, sidebars, elevated panels |
+| `surface-sunken` | `#f2f2f1` | `#0e0e0e` | Code blocks, inset wells |
 | `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Pill nav backdrop (~85% opacity, for backdrop-blur) |
 | `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Mobile slide-out panel (~72% opacity — larger surface needs more transparency to feel equivalent to pill nav) |
 | `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
@@ -281,21 +161,22 @@ Tokens are role-based. The same role has different hex values per theme to maint
 | `on-surface-muted` | `#6b7280` | `#a0a0a0` | Secondary text, captions |
 | `outline` | `#6c7a71` | `#86948a` | Default borders, dividers |
 | `outline-variant` | `#bbcabf` | `#3c4a42` | Subtle borders, low-contrast dividers |
-| `accent` | `#006c49` | `#4edea3` | Active nav, primary CTA, links, focus rings, callout accents |
-| `accent-on` | `#ffffff` | `#0a1f15` | Text/icon on accent fills |
-| `accent-muted` | `#e6f4ed` | `#1f3329` | Hover backgrounds, accent-tinted surfaces |
+| `outline-hair` | `color-mix(in srgb, #191c1d 10%, transparent)` | `color-mix(in srgb, #e5e2e1 10%, transparent)` | Alpha hairline border, surface-relative |
+| `accent` | `#006e37` | `#35c27d` | Active nav, primary CTA, links, focus rings, callout accents |
+| `accent-on` | `#ffffff` | `#0a1f0e` | Text/icon on accent fills |
+| `accent-muted` | `#e6f4ec` | `#1a2e1f` | Hover backgrounds, accent-tinted surfaces |
 | `secondary` | `#565e74` | `#bdc7d9` | Reserved — categorical use only (e.g., callout variants) |
 | `tertiary` | `#a43a3a` | `#e8a5a5` | Reserved — categorical use only (e.g., warning callouts) |
 | `error` | `#c0392b` | `#ff6b5e` | 404, validation errors |
-| `success` | `#006c49` | `#4edea3` | Build status, confirmations (= accent in v1) |
-| `focus-ring` | `#006c49` | `#4edea3` | 2px outline on keyboard focus (= accent) |
-| `selection` | `#006c4933` | `#4edea333` | Text selection background (accent at 20% alpha) |
+| `success` | `#006e37` | `#35c27d` | Build status, confirmations (= accent in v1) |
+| `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
+| `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
 
 ### Notes on color usage
 
 - **One accent.** The portfolio is identity-led by a single green. `accent-strong` is intentionally not defined — if you need more emphasis, use weight or size, not a louder color.
 - **`secondary` and `tertiary` are reserved tokens.** Available for future categorical needs (callout variants, status differentiation), not used in v1 layouts.
-- **Pure white is rare in light theme.** Reserved for `surface-raised` (cards, elevated panels). Body background is the warm off-white `#f8f9fa`.
+- **Pure white is rare in light theme.** Reserved for `surface-raised` (cards, elevated panels). Body background is the warm off-white `#f8f8f7`.
 - **Dark theme is deep but not black.** `#131313` is the deepest surface; `surface-sunken` goes slightly darker for code blocks only.
 - **Accent and success share a value in v1.** Acceptable because there is no scenario in v1 where both are visible together (success states are post-launch).
 
@@ -360,13 +241,14 @@ Long-form pages constrain reading width to `~680px` (roughly 65–70 characters 
 
 ```yaml
 radius:
-  sm: 4px      # tags, chips, buttons, project cards, callouts (default for most surfaces)
-  md: 8px      # code blocks
-  lg: 12px     # headshot, large containers
-  pill: 9999px # pill nav, status pills, theme toggle, scroll-to-top
+  0px:  structural containers — cards, code blocks, callouts (architectural / no radius)
+  sm: 4px      # interactive controls — tags, chips, buttons, inline code
+  md: 8px      # media surfaces — headshot, hero images, figures, diagrams, highlights
+  lg: 12px     # unused in v1 (reserved; was headshot — now normalized to md)
+  pill: 9999px # floating/nav controls — pill nav, mobile trigger, theme toggle, scroll-to-top, logomark
 ```
 
-Use of fully sharp corners (0px) and very large rounds (>12px) is reserved for specific intentional cases — flag them rather than defaulting.
+The vocabulary is intentional: structural containers are sharp (0px), interactive controls have the minimum radius (4px) to read as controls, and all media/image surfaces normalize to 8px. Floating controls use pill.
 
 ---
 
@@ -377,8 +259,10 @@ Depth is communicated through tonal layering and subtle borders. **No shadows by
 ```yaml
 elevation:
   flat: none                                  # default; surfaces sit at their tonal layer
-  raised: border 1px solid outline-variant    # cards, panels
-  inset:  border 1px solid outline-variant    # code blocks, wells (uses surface-sunken)
+  raised: border 1px solid outline-variant    # cards, panels (surface-raised bg)
+  inset:  border 1px solid outline-variant    # wells, inline code (uses surface-sunken bg)
+  # Note: code blocks (CodeBlock component) use border-only with no fill — not surface-sunken.
+  # Inline code uses surface-sunken. The distinction is block vs. inline context.
 ```
 
 ### Backdrop-blur carve-out
@@ -630,7 +514,7 @@ The pulse is on the icon only, never the entire button. Stops if the button is h
 project-card:
   background: surface-raised
   border: 1px solid outline-variant
-  borderRadius: sm                    # 4px
+  borderRadius: 0px                   # architectural container — sharp corners
   display: flex
   flexDirection: column
   transition: border-color 150ms
@@ -649,16 +533,16 @@ project-card-hero:
   # Hero is inset with breathing room — not edge-to-edge
   wrapperPadding: spacing-md
   innerBackground: surface-sunken
-  innerBorderRadius: sm
+  innerBorderRadius: md               # 8px — media surface, matches all image/media radius
 
 project-card-body:
   paddingX: spacing-lg
   paddingBottom: spacing-lg
   gap: spacing-sm
-  - title:    body-lg (compact) or headline-sm (featured), on-surface, font-semibold
+  - title:    heading-component, on-surface, font-semibold
               hover: underline (decoration: accent, offset 2px)
-  - summary:  body-sm, on-surface-muted, line-clamp-2
-  - tag-row:  Tag variant="filled", gap xs, max 3 tags
+  - summary:  body-caption, on-surface-muted
+  - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
 
 project-card-text-variant:
   # No hero. Category icon mapped from projectType (academic|freelance|personal):
@@ -714,29 +598,50 @@ button-icon-leading:
 
 Buttons rely on spacing, type, and contrast. No shadows. No gradients.
 
+**Anchor rendering:** `<Button href="...">` renders as `<a>` — same variants, same visual spec. A CTA that navigates is still a committed action; rendering mode is not a design distinction.
+
+### SocialLink
+
+Quiet utility affordance — sits between a static Tag and a committed Button in visual weight. Used for adjacent quick links (GitHub, LinkedIn, Email row on About). Distinct from `<Button>` by height (h-9 vs h-11), transparent bordered surface vs. filled/outlined Button treatment.
+
+```yaml
+social-link:
+  height: 36px                       # h-9 — quieter than Button (44px)
+  paddingHorizontal: spacing-md      # 16px
+  gap-icon-label: spacing-sm         # 8px
+  borderRadius: sm                   # 4px — matches interactive controls
+  background: transparent
+  border: 1px solid outline-variant
+  color: on-surface-muted
+  type: interactive-label
+
+  hover:
+    borderColor: outline
+    color: on-surface
+    transition: all 150ms
+
+  external: adds target="_blank" rel="noopener noreferrer" when external prop is true
+```
+
+**Interaction hierarchy:** `Tag` (static, no hover) → `SocialLink` (h-9, border-chip, quiet utility) → `Button` (h-11, committed action).
+
 ### Tag
+
+Single canonical static label. No variants — one treatment across all contexts.
 
 ```yaml
 tag:
-  type: mono-label, normal-case (overrides default uppercase)
-  letterSpacing: normal
-  paddingX: spacing-sm
+  type: tag-chip, normal-case, tracking-normal
+  paddingX: spacing-sm               # 8px
   paddingY: 2px
-  borderRadius: sm
-
-  variants:
-    outline:
-      background: surface-tag         # dedicated tag surface token — lighter than bg/card
-      border: none                    # no explicit border; surface-tag provides the distinction
-      color: on-surface-muted
-
-    filled:
-      background: surface-tag         # same surface token; color distinguishes the variants
-      color: on-surface
-      border: none
+  borderRadius: sm                   # 4px — interactive-control scale
+  background: surface-tag
+  color: on-surface                  # darker of the two options; strongest legibility
+  border: none
+  # No hover state — Tag is a static label, not an interactive control.
 ```
 
-Both variants use `surface-tag`. The distinction between them is text color only (`on-surface-muted` vs `on-surface`). Project cards use `filled`.
+`surface-tag` provides the tonal distinction from surrounding surfaces without an explicit border. Use `on-surface` (not `on-surface-muted`) universally — previously the About/Capabilities section used the muted variant, creating visual inconsistency with card tags. Now unified.
 
 ### Project detail layout
 
@@ -776,19 +681,19 @@ project-header:
   layout: flex-col, gap lg
 
   tags-row:
-    variant: filled Tag chips, gap xs
+    Tag chips (canonical treatment), gap xs
 
   title:
-    type: display-lg
+    type: display-primary
 
   subtitle:                           # optional
-    type: body-lg
+    type: body-secondary
     color: on-surface-muted
 
   links-row:                          # optional, renders if links exist
     layout: flex-wrap, gap lg
     link:
-      type: body-md, font-semibold
+      type: interactive-label, font-semibold
       padding: spacing-xs spacing-sm
       borderRadius: sm
       hover:
@@ -893,7 +798,7 @@ footer:
 
 copyright-format:
   # Exact copy: "© {year} / Aishwarya Ganesan / Designed & developed by me."
-  type: footer-text (responsive — 11px mobile / 15px desktop, Inter)
+  type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
   color: on-surface-muted
   opacity-spans:                      # "© {year} /" and "/" separators
     opacity: 0.50
@@ -954,7 +859,7 @@ project-section-label:
 
 ### Prose (MDX deep-dive) layout
 
-Pairs with the `prose-h2` / `prose-h3` / `prose-body` type tokens in §3.
+Pairs with the prose composition rules in §3.
 
 ```yaml
 prose-h2-layout:

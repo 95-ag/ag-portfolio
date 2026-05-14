@@ -4,7 +4,9 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Sticky } from "@/components/layout/sticky";
+import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { SocialLink } from "@/components/ui/social-link";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 
@@ -42,9 +44,6 @@ function LinkedInIcon() {
   );
 }
 
-const socialLinkClass =
-  "inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline-variant)] px-[var(--spacing-md)] type-body-sm text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] hover:border-[var(--outline)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
-
 function TwoColumnRow({
   label,
   children,
@@ -56,7 +55,7 @@ function TwoColumnRow({
     <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
       <div className="w-full shrink-0 lg:w-[200px]">
         <Sticky top="var(--spacing-3xl)">
-          <p className="type-headline-sm text-[var(--on-surface-muted)]">
+          <p className="heading-component text-[var(--on-surface-muted)]">
             {label}
           </p>
         </Sticky>
@@ -76,44 +75,37 @@ export default function AboutPage() {
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
             <div className="flex flex-col gap-[var(--spacing-xs)]">
-              <Heading level={1} type="display-xl">
+              <Heading level={1} type="display-accent">
                 {about.name}
               </Heading>
-              <p className="type-headline-sm text-[var(--on-surface-muted)]">
-                {about.role}
-              </p>
+              <p className="body-secondary">{about.role}</p>
             </div>
             {/* Labeled social chips */}
             <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
-                <a
+                <SocialLink
                   href={about.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={socialLinkClass}
+                  icon={<GitHubIcon />}
+                  external
                 >
-                  <GitHubIcon />
                   GitHub
-                </a>
+                </SocialLink>
               )}
               {about.socials.linkedin && (
-                <a
+                <SocialLink
                   href={about.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={socialLinkClass}
+                  icon={<LinkedInIcon />}
+                  external
                 >
-                  <LinkedInIcon />
                   LinkedIn
-                </a>
+                </SocialLink>
               )}
-              <a
+              <SocialLink
                 href={`mailto:${about.contactEmail}`}
-                className={socialLinkClass}
+                icon={<Mail size={16} aria-hidden="true" />}
               >
-                <Mail size={16} aria-hidden="true" />
                 Email
-              </a>
+              </SocialLink>
             </div>
           </header>
 
@@ -121,7 +113,7 @@ export default function AboutPage() {
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
             {/* Headshot — softer radius, integrated into composition */}
             <div className="w-full shrink-0 lg:w-[240px]">
-              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-lg)] grayscale">
+              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
@@ -135,9 +127,7 @@ export default function AboutPage() {
 
             {/* Editorial content — sourced from about.mdx frontmatter */}
             <div className="flex flex-col gap-[var(--spacing-lg)]">
-              <p className="type-body-lg text-[var(--on-surface-muted)]">
-                {about.positioning}
-              </p>
+              <p className="body-secondary">{about.positioning}</p>
               <ul className="flex flex-col gap-[var(--spacing-sm)]">
                 {about.detailedPositioning.map((point) => (
                   <li key={point} className="flex gap-[var(--spacing-sm)]">
@@ -145,9 +135,7 @@ export default function AboutPage() {
                       aria-hidden="true"
                       className="mt-[10px] h-[4px] w-[4px] shrink-0 rounded-full bg-[var(--outline-variant)]"
                     />
-                    <p className="type-body-md text-[var(--on-surface-muted)]">
-                      {point}
-                    </p>
+                    <p className="body-secondary">{point}</p>
                   </li>
                 ))}
               </ul>
@@ -156,7 +144,7 @@ export default function AboutPage() {
 
           {/* Approach */}
           <div className="flex flex-col gap-[var(--spacing-xl)]">
-            <Heading level={2} type="headline-md">
+            <Heading level={2} type="heading-component">
               Approach
             </Heading>
             <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2 lg:grid-cols-3">
@@ -165,10 +153,10 @@ export default function AboutPage() {
                   key={item.title}
                   className="flex flex-col gap-[var(--spacing-sm)]"
                 >
-                  <p className="type-mono-data text-[var(--on-surface-muted)] opacity-40">
+                  <p className="mono-code opacity-40">
                     {String(i + 1).padStart(2, "0")}
                   </p>
-                  <p className="type-body-md text-[var(--on-surface)]">
+                  <p className="body-primary text-[var(--on-surface)]">
                     <strong>{item.title}.</strong> {item.body}
                   </p>
                 </div>
@@ -184,12 +172,10 @@ export default function AboutPage() {
                   key={cap.area}
                   className="flex flex-col gap-[var(--spacing-sm)]"
                 >
-                  <p className="type-headline-sm text-[var(--on-surface)]">
+                  <p className="heading-component text-[var(--on-surface)]">
                     {cap.area}
                   </p>
-                  <p className="type-body-md text-[var(--on-surface-muted)]">
-                    {cap.description}
-                  </p>
+                  <p className="body-secondary">{cap.description}</p>
                   <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
                     {cap.tags.map((tag) => (
                       <Tag key={tag}>{tag}</Tag>
@@ -209,10 +195,10 @@ export default function AboutPage() {
                   className="flex flex-col gap-[var(--spacing-sm)]"
                 >
                   <div className="flex flex-col gap-[var(--spacing-xs)]">
-                    <p className="type-headline-sm text-[var(--on-surface)]">
+                    <p className="heading-component text-[var(--on-surface)]">
                       {exp.role}
                     </p>
-                    <p className="type-mono-label text-[var(--on-surface-muted)]">
+                    <p className="mono-anchor">
                       {exp.company} · {exp.timeframe}
                     </p>
                   </div>
@@ -220,7 +206,7 @@ export default function AboutPage() {
                     {exp.achievements.map((achievement) => (
                       <li
                         key={achievement}
-                        className="flex gap-[var(--spacing-sm)] type-body-md text-[var(--on-surface-muted)]"
+                        className="body-secondary flex gap-[var(--spacing-sm)]"
                       >
                         <span
                           aria-hidden="true"
@@ -243,16 +229,14 @@ export default function AboutPage() {
                   key={edu.institution}
                   className="flex flex-col gap-[var(--spacing-xs)]"
                 >
-                  <p className="type-headline-sm text-[var(--on-surface)]">
+                  <p className="heading-component text-[var(--on-surface)]">
                     {edu.institution}
                   </p>
-                  <p className="type-body-md text-[var(--on-surface-muted)]">
+                  <p className="body-secondary">
                     {edu.degree}
                     {edu.specialization && ` — ${edu.specialization}`}
                   </p>
-                  <p className="type-mono-label text-[var(--on-surface-muted)]">
-                    {edu.timeframe}
-                  </p>
+                  <p className="mono-anchor">{edu.timeframe}</p>
                 </div>
               ))}
             </Stack>
@@ -260,22 +244,22 @@ export default function AboutPage() {
 
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
-            <Heading level={2} type="headline-lg">
+            <Heading level={2} type="heading-component">
               Get in touch
             </Heading>
-            <p className="type-body-lg max-w-[480px] text-[var(--on-surface-muted)]">
+            <p className="body-secondary max-w-[480px]">
               Open to full-time roles and scoped freelance projects. Email is
               the fastest way to reach me.
             </p>
             <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
-              <a
+              <Button
+                variant="primary"
                 href={`mailto:${about.contactEmail}`}
-                className="inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] bg-[var(--accent)] px-[var(--spacing-lg)] text-sm font-medium text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                icon={<Mail size={16} aria-hidden="true" />}
               >
-                <Mail size={16} aria-hidden="true" />
                 Email me
-              </a>
-              <span className="type-body-sm text-[var(--on-surface-muted)] opacity-60">
+              </Button>
+              <span className="body-caption opacity-60">
                 {about.contactEmail}
               </span>
             </div>

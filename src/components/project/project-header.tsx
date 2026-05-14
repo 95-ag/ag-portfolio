@@ -94,20 +94,14 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
       {fm.tags.length > 0 && (
         <div className="flex flex-wrap gap-[var(--spacing-xs)]">
           {fm.tags.map((tag) => (
-            <Tag key={tag} variant="filled">
-              {tag}
-            </Tag>
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
       )}
 
-      <h1 className="type-display-lg text-[var(--on-surface)]">{fm.title}</h1>
+      <h1 className="display-primary text-[var(--on-surface)]">{fm.title}</h1>
 
-      {fm.subtitle && (
-        <p className="type-body-lg text-[var(--on-surface-muted)]">
-          {fm.subtitle}
-        </p>
-      )}
+      {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
 
       {links.length > 0 && (
         <nav aria-label="Project links">
@@ -122,7 +116,7 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
                     href={url as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group type-body-md font-semibold inline-flex items-center gap-[var(--spacing-md)] rounded-[var(--radius-sm)] px-[var(--spacing-sm)] py-[var(--spacing-xs)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] active:opacity-70"
+                    className="group interactive-label font-semibold inline-flex items-center gap-[var(--spacing-md)] rounded-[var(--radius-sm)] px-[var(--spacing-sm)] py-[var(--spacing-xs)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] active:opacity-70"
                   >
                     {Icon && <Icon />}
                     {label}
