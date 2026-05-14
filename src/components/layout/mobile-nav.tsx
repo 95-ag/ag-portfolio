@@ -1,18 +1,19 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Briefcase, User, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { MaterialSymbol } from "@/components/ui/material-symbol";
+import { InlineThemeSelector } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
 
 const NAV_ITEMS = [
-  { href: "/about", label: "About", Icon: User },
-  { href: "/work", label: "Work", Icon: Briefcase },
+  { href: "/about", label: "About", icon: "fingerprint" },
+  { href: "/work", label: "Work", icon: "folder_code" },
 ] as const;
 
 export function MobileNav() {
@@ -152,7 +153,7 @@ export function MobileNav() {
                 aria-label="Primary"
                 className="mt-[var(--spacing-xl)] flex flex-col gap-[var(--spacing-xs)]"
               >
-                {NAV_ITEMS.map(({ href, label, Icon }) => {
+                {NAV_ITEMS.map(({ href, label, icon }) => {
                   const isActive = pathname.startsWith(href);
                   return (
                     <Link
@@ -166,7 +167,11 @@ export function MobileNav() {
                           : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
                       )}
                     >
-                      <Icon size={16} aria-hidden />
+                      <MaterialSymbol
+                        name={icon}
+                        size={16}
+                        className={isActive ? "text-[var(--accent)]" : ""}
+                      />
                       {label}
                     </Link>
                   );
@@ -175,8 +180,8 @@ export function MobileNav() {
 
               <div className="flex-1" />
 
-              {/* Theme toggle */}
-              <ThemeToggle />
+              {/* Theme selector */}
+              <InlineThemeSelector />
             </motion.div>
           </>
         )}
