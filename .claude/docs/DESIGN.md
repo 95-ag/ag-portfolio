@@ -598,7 +598,7 @@ button-icon-leading:
 
 Buttons rely on spacing, type, and contrast. No shadows. No gradients.
 
-**Rendering:** `<Button>` renders as `<button type="button">` by default. When an `href` prop is provided, it renders as `<a>`. Primary/secondary variants are identical in both branches — whether a CTA navigates or triggers an action is an implementation detail, not a separate design primitive.
+**Anchor rendering:** `<Button href="...">` renders as `<a>` — same variants, same visual spec. A CTA that navigates is still a committed action; rendering mode is not a design distinction.
 
 ### SocialLink
 
