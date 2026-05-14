@@ -79,170 +79,50 @@ export const mono = JetBrains_Mono({
 - **Inter** — body, UI, prose.
 - **JetBrains Mono** — metadata, tags, code, lightweight technical accents only. Never in long-form prose.
 
-### Type scale
+### Semantic token table
 
-```yaml
-# Display (hero-only, used sparingly)
-display-xl:
-  fontFamily: Manrope
-  fontSize: 64px
-  fontWeight: 700
-  lineHeight: 72px
-  letterSpacing: -0.025em
+16 tokens, role-based. Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 
-display-lg:
-  fontFamily: Manrope
-  fontSize: 48px
-  fontWeight: 700
-  lineHeight: 56px
-  letterSpacing: -0.02em
+| Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
+|---|---|---|---|---|---|---|---|
+| `display-primary` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
+| `display-accent` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
+| `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
+| `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
+| `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
+| `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
+| `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
+| `body-emphasis` | Inter | 18px | 500 | 28px | — | — (Ink) | Highlighted callout body text |
+| `callout-title` | Inter | 16px | 600 | 20px | — | `accent` | Callout/aside titles |
+| `interactive-label` | Inter | 14px | 500 | 20px | — | — (stateful) | Committed actions — buttons, CTAs, download links. Color expresses available/hover/pressed state. |
+| `nav-link` | Inter | 14px | 500 | 20px | — | — (stateful) | Navigational/location indicators — nav anchors, back links. Color expresses current/visited/hover state. Same visual spec as `interactive-label`; distinct behavioral contract. |
+| `mono-anchor` | JetBrains Mono | 15px | 500 | 20px | +0.05em | `on-surface-muted` | Page eyebrows, role labels, structural metadata (uppercase) |
+| `tag-chip` | JetBrains Mono | 12px | 500 | 16px | +0.05em | `on-surface-muted` | Tag chips on cards (uppercase) |
+| `insight-label` | JetBrains Mono | 13px | 500 | 16px | +0.05em | `on-surface-muted` | Callout/highlight markers (uppercase) |
+| `mono-code` | JetBrains Mono | 16px | 400 | 24px | — | `on-surface-muted` | Inline code, code blocks |
+| `support-meta` | Inter | 13px | 400 | 20px | — | `on-surface-muted` | Footer, TOC items, section progress nav |
 
-display-md:
-  fontFamily: Manrope
-  fontSize: 40px
-  fontWeight: 700
-  lineHeight: 48px
-  letterSpacing: -0.02em
+**Mobile overrides** (≤768px): `display-primary` and `display-accent` scale down to 36px / 44px line-height.
 
-# Headlines (section/page headings)
-headline-lg:
-  fontFamily: Manrope
-  fontSize: 32px
-  fontWeight: 600
-  lineHeight: 40px
-  letterSpacing: -0.01em
+**Footer responsive exception**: `support-meta` is 13px by default; footer.tsx applies a local Tailwind override to 11px / 18px on mobile, 15px / 24px on desktop. This is the only component-level responsive exception to a semantic token.
 
-headline-md:
-  fontFamily: Manrope
-  fontSize: 24px
-  fontWeight: 600
-  lineHeight: 32px
-  letterSpacing: -0.01em
+### Prose composition rules
 
-headline-sm:
-  fontFamily: Manrope
-  fontSize: 20px
-  fontWeight: 600
-  lineHeight: 28px
+MDX prose inside `.prose-content` maps heading levels to existing semantic tokens plus layout composition rules. No prose-only tokens are created.
 
-# Mobile overrides for display/headline
-display-lg-mobile:
-  fontSize: 36px
-  lineHeight: 44px
-
-headline-lg-mobile:
-  fontSize: 28px
-  lineHeight: 36px
-
-# Body
-body-lg:
-  fontFamily: Inter
-  fontSize: 18px
-  fontWeight: 400
-  lineHeight: 28px
-
-body-lg-mobile:
-  fontSize: 17px
-  lineHeight: 26px
-
-body-md:
-  fontFamily: Inter
-  fontSize: 16px
-  fontWeight: 400
-  lineHeight: 24px
-
-body-sm:
-  fontFamily: Inter
-  fontSize: 14px
-  fontWeight: 400
-  lineHeight: 20px
-
-body-xs:
-  fontFamily: Inter
-  fontSize: 12px
-  fontWeight: 400
-  lineHeight: 16px
-
-# Inline UI
-link:
-  inherits: body-md
-  fontWeight: 500
-  color: accent
-  textDecoration: none
-  hoverDecoration: underline
-  hoverDecorationOffset: 2px
-
-# Prose (MDX deep-dive body)
-prose-h2:
-  # Chapter anchor — intentionally uses mono-label scale, not a Manrope headline.
-  # Reads as a structural label/divider, not a content heading.
-  fontFamily: JetBrains Mono
-  fontSize: 13px
-  fontWeight: 500
-  lineHeight: 16px
-  letterSpacing: 0.05em
-  textTransform: uppercase
-  color: on-surface-muted
-  borderBottom: 1px solid currentColor   # divider color always matches text color
-  paddingBottom: spacing-md
-
-prose-h3:
-  fontFamily: Manrope
-  fontSize: 19px
-  fontWeight: 500
-  lineHeight: 28px
-  letterSpacing: -0.01em
-
-prose-body:
-  fontFamily: Inter
-  fontSize: 16px
-  fontWeight: 400
-  lineHeight: 26px
-
-# Mono (metadata, code)
-mono-label:
-  fontFamily: JetBrains Mono
-  fontSize: 13px
-  fontWeight: 500
-  lineHeight: 16px
-  letterSpacing: 0.05em
-  textTransform: uppercase   # for status pills, section eyebrows
-
-mono-data:
-  fontFamily: JetBrains Mono
-  fontSize: 14px
-  fontWeight: 400
-  lineHeight: 20px
-
-# Code
-code-inline:
-  fontFamily: JetBrains Mono
-  fontSize: 0.875em      # relative to surrounding text
-  background: surface-sunken
-  padding: 2px 6px
-  borderRadius: 4px
-
-code-block:
-  fontFamily: JetBrains Mono
-  fontSize: 14px
-  lineHeight: 22px
-  padding: 16px 20px
-  background: surface-sunken
-  borderRadius: 8px
-  border: 1px solid outline-variant
-
-# Prose
-blockquote:
-  inherits: body-lg
-  fontStyle: italic
-  borderLeft: 3px solid accent
-  paddingLeft: 16px
-  marginVertical: 24px
-
-list-item:
-  inherits: body-md
-  marginBottom: 8px
-```
+| Element | Semantic token | Composition additions |
+|---|---|---|
+| `h2` | `mono-anchor` values | `border-bottom: 1px solid outline-variant`, `padding-bottom: spacing-md`, `margin-top: spacing-3xl`, `margin-bottom: spacing-lg` |
+| `h3` | `heading-component` values | `margin-top: spacing-2xl`, `margin-bottom: spacing-sm` |
+| `h4` | `heading-narrative` values | `margin-top: spacing-xl`, `margin-bottom: spacing-xs` |
+| `p`, `li` | `body-primary` values (18px) | — |
+| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 3px solid accent`, `padding-left: spacing-lg`, `margin-vertical: spacing-xl` |
+| `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
+| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid outline-variant`, padding |
+| `td` | `body-caption` values | `border-bottom: 1px solid outline-hair`, padding |
+| `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: 4px` |
+| `pre code` | `mono-code` values | `background: surface-sunken`, full block padding, `border: 1px solid outline-variant` |
+| `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
 ### Mono usage rules
 
@@ -780,16 +660,16 @@ project-header:
     variant: filled Tag chips, gap xs
 
   title:
-    type: display-lg
+    type: display-primary
 
   subtitle:                           # optional
-    type: body-lg
+    type: body-secondary
     color: on-surface-muted
 
   links-row:                          # optional, renders if links exist
     layout: flex-wrap, gap lg
     link:
-      type: body-md, font-semibold
+      type: interactive-label, font-semibold
       padding: spacing-xs spacing-sm
       borderRadius: sm
       hover:
@@ -894,7 +774,7 @@ footer:
 
 copyright-format:
   # Exact copy: "© {year} / Aishwarya Ganesan / Designed & developed by me."
-  type: footer-text (responsive — 11px mobile / 15px desktop, Inter)
+  type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
   color: on-surface-muted
   opacity-spans:                      # "© {year} /" and "/" separators
     opacity: 0.50
@@ -955,7 +835,7 @@ project-section-label:
 
 ### Prose (MDX deep-dive) layout
 
-Pairs with the `prose-h2` / `prose-h3` / `prose-body` type tokens in §3.
+Pairs with the prose composition rules in §3.
 
 ```yaml
 prose-h2-layout:
