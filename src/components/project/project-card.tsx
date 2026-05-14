@@ -28,7 +28,7 @@ export function ProjectCard({
     <Link
       href={`/work/${slug}`}
       className={cn(
-        "group flex flex-col rounded-[var(--radius-sm)] border border-[var(--outline-variant)] bg-[var(--surface-raised)]",
+        "group flex flex-col border border-[var(--outline-variant)] bg-[var(--surface-raised)]",
         "transition-colors duration-[var(--duration-fast)]",
         "hover:border-[var(--outline)] hover:bg-[var(--surface)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
@@ -56,7 +56,7 @@ export function ProjectCard({
         <>
           {/* Hero — image scales slightly on hover */}
           <div className="p-[var(--spacing-md)]">
-            <div className="relative w-full overflow-hidden rounded-[var(--radius-sm)] bg-[var(--surface-sunken)] aspect-video">
+            <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)] aspect-video">
               <div className="absolute inset-0 transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03]">
                 <HeroMedia
                   src={fm.heroImage}

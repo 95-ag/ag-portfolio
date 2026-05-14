@@ -113,7 +113,7 @@ export default function AboutPage() {
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
             {/* Headshot — softer radius, integrated into composition */}
             <div className="w-full shrink-0 lg:w-[240px]">
-              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-lg)] grayscale">
+              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}

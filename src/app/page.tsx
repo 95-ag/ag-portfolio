@@ -19,7 +19,7 @@ export default function HomePage() {
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-end lg:gap-[var(--spacing-3xl)]">
             {/* Portrait region — placeholder until real photo lands */}
             <div className="hidden lg:block lg:w-[260px] lg:shrink-0">
-              <div className="aspect-[3/4] w-full rounded-[var(--radius-sm)] bg-[var(--surface-sunken)]" />
+              <div className="aspect-[3/4] w-full rounded-[var(--radius-md)] bg-[var(--surface-sunken)]" />
             </div>
 
             {/* Statement block */}
