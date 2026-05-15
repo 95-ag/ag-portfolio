@@ -129,7 +129,9 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` — §4 token table updated (surface polarity swap, surface-nav, surface-selection added, legacy tokens noted); §8 fully rewritten (5-level canonical elevation table, blur carve-out, shadow section removed); §11 all affected components updated; §3 prose table updated
+- `.claude/docs/DESIGN.md` — restructured into 8-section hierarchy: Overview / Foundations / Layout & Composition / Do's & Don'ts / Components / Accessibility / Technical Conventions / Iteration Notes. All §N section numbers removed; cross-references now use named section paths (e.g. "Foundations → Colors"). Content preserved verbatim.
+- `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths in `design-system.md`, `motion.md`, `accessibility.md`, `frontend.md`
+- `.claude/docs/CONTENT-SCHEMA.md` — DESIGN.md §N references updated
 - `.claude/CLAUDE.md` — blur and shadow constraints updated
 
 **Placeholder content:**
@@ -141,31 +143,19 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Elevation/depth system restructured — complete, uncommitted.**
+**DESIGN.md restructured — committed (`aaef6ac`).**
 
-Three logical work areas (to be committed as separate clusters):
+Structural-only pass: 14 flat §N sections → 8-bucket hierarchy. All content preserved verbatim. Cross-references in `rules/` and `docs/` migrated from `§N` to named section paths.
 
-**1. Token foundation**
-- `globals.css`: `surface-raised`/`surface-sunken` values swapped in light theme
-- `globals.css`: `surface-nav` + `surface-selection` tokens added (light + dark + `@theme inline`)
-- `globals.css`: highlight shadow blocks removed permanently
-
-**2. Component migration**
-- `pill-nav.tsx` → `surface-nav` (container), `surface-selection` (active link)
-- `mobile-nav.tsx` → `surface-nav` (trigger + panel), `surface-selection` (active link)
-- `scroll-to-top.tsx` → `surface-nav`
-- `callout.tsx` → `surface-raised` fill
-- `code-block.tsx` → `surface-sunken` fill added
-- `diagram.tsx` → outer border-only + `overflow-hidden`; inner image region gets `surface-sunken`
-- `card.tsx` → deleted (was unused)
-
-**3. Docs sync**
-- `DESIGN.md` § 4, 8, 11 rewritten
-- `CLAUDE.md` constraints updated
-
-**Visual decisions still open:**
-- `surface-sunken` contrast in light (deferred — evaluate after elevation stabilises)
-- `surface-overlay` / `surface-overlay-panel` removal (deferred — kept as legacy)
+**DESIGN.md hierarchy (current):**
+- **Overview** — Design Philosophy, Core Principles, Things to Avoid
+- **Foundations** — Colors, Typography, Spacing, Shapes, Elevation & Depth, Motion & Interaction
+- **Layout & Composition** — Breakpoints, Grid & Containers, Responsive Behavior *(empty)*, Long-form Reading Layout, Editorial Composition *(empty)*, Imagery
+- **Do's & Don'ts** *(empty placeholder)*
+- **Components** — Navigation, Actions & Interactive, Content Surfaces, Project Detail, Editorial & Prose, About Layouts, Footer
+- **Accessibility**
+- **Technical Conventions** — Z-Index Scale, Reduced Motion Rules *(empty)*, Token Usage Conventions *(empty)*
+- **Iteration Notes** — Open Decisions, Known Gaps *(empty)*
 
 ---
 
