@@ -338,7 +338,7 @@ Engineering maturity — what would improve this further.
 
 ### Reading width
 
-Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md §6). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
+Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md — Components → Project Detail → Project Detail Layout). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
 
 ---
 
@@ -395,7 +395,7 @@ penalty would likely close the remaining gap on tight turns.
 |---|---|---|---|
 | `title` | string | no | Optional bold lead-in, renders in Accent |
 
-Single visual treatment: Accent left border, Accent title, `body-emphasis` body text. No type variants. The component is self-contained — does not rely on prose cascade. Visual treatment in DESIGN.md §11.
+Single visual treatment: Accent left border, Accent title, `body-emphasis` body text. No type variants. The component is self-contained — does not rely on prose cascade. Visual treatment in DESIGN.md — Components → Content Surfaces → Callout.
 
 ### `<Stack>`
 
@@ -428,7 +428,7 @@ Editorial pull-quote panel for a single key insight. Elevated above normal prose
 | `heading` | string | no | Renders as `insight-label` caption above the body. No heading = body panel only |
 | `children` | ReactNode | yes | Prose content. Rendered at `body-emphasis` weight |
 
-Visual treatment in DESIGN.md §11. Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; Highlight is a standalone elevated statement.
+Visual treatment in DESIGN.md — Components → Content Surfaces → Highlight. Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; Highlight is a standalone elevated statement.
 
 ### Code blocks
 
@@ -441,7 +441,7 @@ def reward(state, next_state):
 ```
 ````
 
-Inline code uses single backticks: `` `like this` ``. Renders per DESIGN.md §3 `mono-code` token.
+Inline code uses single backticks: `` `like this` ``. Renders per DESIGN.md — Foundations → Typography — `mono-code` token.
 
 ---
 
@@ -472,7 +472,7 @@ Within MDX body, standard markdown is used:
 
 PRODUCT.md §7.4 specifies About-page sections. Content for these sections is **not** in MDX body — it lives in structured frontmatter on a single `/content/about/about.mdx` file.
 
-Reason: the About page has a structured two-column layout (DESIGN.md §11) where each section's heading and body must be rendered consistently. Frontmatter enforces structure better than MDX body for this case.
+Reason: the About page has a structured two-column layout (DESIGN.md — Components → About Layouts) where each section's heading and body must be rendered consistently. Frontmatter enforces structure better than MDX body for this case.
 
 ```yaml
 ---

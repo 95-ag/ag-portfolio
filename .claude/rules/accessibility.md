@@ -1,6 +1,6 @@
 # Accessibility Rules
 
-Full requirements in `docs/PRODUCT.md` §10 and `docs/DESIGN.md` §13.
+Full requirements in `docs/PRODUCT.md` §10 and `docs/DESIGN.md` — Accessibility.
 
 ## Semantic HTML
 
@@ -12,7 +12,7 @@ Full requirements in `docs/PRODUCT.md` §10 and `docs/DESIGN.md` §13.
 
 - All interactive elements must be keyboard-reachable in logical DOM order
 - Use `:focus-visible` not `:focus` — prevents focus ring on mouse click
-- Focus ring style is defined in `docs/DESIGN.md` §13 — use the `focus-ring` token
+- Focus ring style is defined in `docs/DESIGN.md` — Accessibility — use the `focus-ring` token
 - The mobile slide-out menu must trap focus while open
 
 ## Touch Targets
