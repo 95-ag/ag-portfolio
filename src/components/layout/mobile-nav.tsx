@@ -71,7 +71,7 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-overlay)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
       >
         <svg
           width="18"
@@ -120,7 +120,7 @@ export function MobileNav() {
                 duration: shouldReduceMotion ? 0 : 0.3,
                 ease: [0.3, 0, 0, 1],
               }}
-              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] flex h-full w-[min(280px,80vw)] flex-col bg-[var(--surface-overlay-panel)] p-[var(--spacing-lg)] backdrop-blur-[12px]"
+              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] flex h-full w-[min(280px,80vw)] flex-col bg-[var(--surface-nav)] p-[var(--spacing-lg)] backdrop-blur-[12px]"
             >
               {/* Header: logomark + close */}
               <div className="flex items-center justify-between">
@@ -163,7 +163,7 @@ export function MobileNav() {
                       className={cn(
                         "nav-link flex h-10 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
                         isActive
-                          ? "bg-[var(--surface-sunken)] text-[var(--on-surface)]"
+                          ? "bg-[var(--surface-selection)] text-[var(--on-surface)]"
                           : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
                       )}
                     >
