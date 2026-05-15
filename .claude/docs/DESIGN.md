@@ -116,12 +116,12 @@ MDX prose inside `.prose-content` maps heading levels to existing semantic token
 | `h3` | `heading-component` values | `margin-top: spacing-2xl`, `margin-bottom: spacing-sm` |
 | `h4` | `heading-narrative` values | `margin-top: spacing-xl`, `margin-bottom: spacing-xs` |
 | `p`, `li` | `body-primary` values (18px) | — |
-| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 3px solid accent`, `padding-left: spacing-lg`, `margin-vertical: spacing-xl` |
+| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid accent`, `background: surface-raised`, `padding: spacing-md spacing-lg`, `margin-vertical: spacing-lg` |
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
 | `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid outline-variant`, padding |
 | `td` | `body-caption` values | `border-bottom: 1px solid outline-hair`, padding |
 | `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: radius-sm` |
-| `pre code` | `mono-code` values | border-only (`border: 1px solid outline-variant`), full block padding, no fill, 0px radius |
+| `pre code` | `mono-code` values | `border: 1px solid outline-variant`, `background: surface-sunken`, full block padding, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
 ### Mono usage rules
@@ -151,10 +151,12 @@ Tokens are role-based. The same role has different hex values per theme to maint
 |---|---|---|---|
 | `background` | `#f8f8f7` | `#131313` | Page background |
 | `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
-| `surface-raised` | `#ffffff` | `#211f1e` | Cards, sidebars, elevated panels |
-| `surface-sunken` | `#f2f2f1` | `#0e0e0e` | Code blocks, inset wells |
-| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Pill nav backdrop (~85% opacity, for backdrop-blur) |
-| `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Mobile slide-out panel (~72% opacity — larger surface needs more transparency to feel equivalent to pill nav) |
+| `surface-raised` | `#f2f2f1` | `#211f1e` | Cards, callouts, highlighted panels — slightly off-white in light, warm-dark in dark |
+| `surface-sunken` | `#ffffff` | `#0e0e0e` | Code blocks, inline code, diagram content regions — pure white in light for maximum code legibility |
+| `surface-nav` | `#ffffffd9` | `#1c1b1bd9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
+| `surface-selection` | `#e6f4ec` | `#1a2e1f` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
+| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
+| `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
 | `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
 | `on-background` | `#191c1d` | `#e5e2e1` | Primary text on background |
 | `on-surface` | `#191c1d` | `#e5e2e1` | Primary text on surfaces |
@@ -176,8 +178,10 @@ Tokens are role-based. The same role has different hex values per theme to maint
 
 - **One accent.** The portfolio is identity-led by a single green. `accent-strong` is intentionally not defined — if you need more emphasis, use weight or size, not a louder color.
 - **`secondary` and `tertiary` are reserved tokens.** Available for future categorical needs (callout variants, status differentiation), not used in v1 layouts.
-- **Pure white is rare in light theme.** Reserved for `surface-raised` (cards, elevated panels). Body background is the warm off-white `#f8f8f7`.
+- **Surface polarity is inverted in light theme.** `surface-raised` (`#f2f2f1`) is slightly off-white — cards and panels sit at a recessed tone. `surface-sunken` (`#ffffff`) is pure white — used for code blocks and inline code where maximum contrast aids legibility. Body background is `#f8f8f7`.
 - **Dark theme is deep but not black.** `#131313` is the deepest surface; `surface-sunken` goes slightly darker for code blocks only.
+- **`surface-nav` is the only permitted blur surface.** Use it for all floating nav and utility UI. Do not use `surface-overlay` or `surface-overlay-panel` for new work.
+- **`surface-selection` is not `surface-sunken`.** Active/selected states use the accent-tinted `surface-selection` token. Hover states use `surface-sunken`. These are intentionally distinct.
 - **Accent and success share a value in v1.** Acceptable because there is no scenario in v1 where both are visible together (success states are post-launch).
 
 ---
@@ -254,52 +258,39 @@ The vocabulary is intentional: structural containers are sharp (0px), interactiv
 
 ## 8. Elevation & Depth
 
-Depth is communicated through tonal layering and subtle borders. **No shadows by default.** No glow effects. No glassmorphism — except the carve-outs below.
+Depth is communicated through tonal layering and subtle borders. **No shadows.** No glow effects. No glassmorphism — except the blur carve-out below.
 
-```yaml
-elevation:
-  flat: none                                  # default; surfaces sit at their tonal layer
-  raised: border 1px solid outline-variant    # cards, panels (surface-raised bg)
-  inset:  border 1px solid outline-variant    # wells, inline code (uses surface-sunken bg)
-  # Note: code blocks (CodeBlock component) use border-only with no fill — not surface-sunken.
-  # Inline code uses surface-sunken. The distinction is block vs. inline context.
-```
+### Canonical elevation levels
+
+| Level | Treatment | Components |
+|---|---|---|
+| **0 — Flat** | No border, no fill | Page sections, hero regions, all About sections, Home CTA, Work index, footer |
+| **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
+| **2 — Border + blur** | `1px solid outline-variant` + `backdrop-blur-[12px]` + `bg surface-nav` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
+| **3 — Border + raised** | `1px solid outline-variant` + `bg surface-raised` | Project cards (all variants), `<Highlight>` editorial pull-quote |
+| **4 — Border + sunken** | `1px solid outline-variant` + `bg surface-sunken` | `<CodeBlock>`, prose inline `<code>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
+| **5 — Accent left border + raised** | `2px solid accent` (left only) + `bg surface-raised` | `<Callout>`, prose `<blockquote>` |
 
 ### Backdrop-blur carve-out
 
-The **floating pill nav** and **mobile slide-out panel** are the only surfaces permitted to use `backdrop-filter`. Reason: they float above arbitrary content and need to remain legible against any background.
+Floating nav and utility UI are the only surfaces permitted to use `backdrop-filter`. Reason: they float above arbitrary content and need to remain legible against any background. All use `surface-nav` — do not substitute `surface-overlay` or `surface-overlay-panel`.
 
 ```yaml
-pill-nav-backdrop:
-  background: surface-overlay        # ~85% opacity
+blur-ui:
+  background: surface-nav    # ~85% opacity — see §4 token table
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
 
-mobile-slide-out-backdrop:
-  background: surface-overlay-panel  # ~72% opacity — larger panel surface needs lower
-                                     # opacity to achieve equivalent perceived transparency
-  backdropFilter: blur(12px)         # matched to pill nav
+applies-to:
+  - pill nav container
+  - mobile nav trigger button
+  - mobile nav slide-out panel
+  - scroll-to-top button
 ```
 
-### Highlight panel shadow carve-out
+### No shadows
 
-The `<Highlight>` editorial panel uses `box-shadow` as a deliberate exception to the no-shadow rule. Reason: the panel is a standalone elevated pull-quote that must feel physically separated from the surrounding prose flow — tonal borders alone are insufficient at this scale.
-
-```yaml
-highlight-shadow-light:
-  box-shadow:
-    0 1px 4px rgba(0,0,0,0.08),
-    0 4px 16px rgba(0,0,0,0.07),
-    0 8px 24px rgba(0,0,0,0.04)
-
-highlight-shadow-dark:
-  box-shadow:
-    0 1px 4px rgba(0,0,0,0.50),
-    0 4px 16px rgba(0,0,0,0.40),
-    0 8px 24px rgba(0,0,0,0.25)
-```
-
-These are the only two shadow carve-outs in v1. Do not introduce shadows for any other component without explicitly documenting the exception here.
+Shadows are not used in v1. The `<Highlight>` shadow carve-out that previously existed has been removed. Elevation is communicated by border + tonal surface alone.
 
 ---
 
@@ -360,7 +351,7 @@ pill-nav:
   height: 44px
   paddingHorizontal: 8px
   borderRadius: pill
-  background: surface-overlay
+  background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
   zIndex: 50
@@ -384,14 +375,15 @@ pill-nav-item:
   fontWeight: 500
 
 pill-nav-item-active:
-  background: surface-sunken
+  background: surface-selection
   color: on-surface
-  # Intentionally not using accent — accent is reserved within the nav for the
-  # logo mark, keeping the active highlight tonal and quiet.
+  # Uses surface-selection (accent-tinted), not surface-sunken.
+  # Accent icon reinforces the active signal; fill keeps it tonal rather than loud.
 
 pill-nav-item-hover:
   background: surface-sunken
   color: on-surface
+  # Hover uses surface-sunken (neutral) — distinct from active (surface-selection).
   transition: background 150ms
 
 pill-nav-divider:
@@ -444,7 +436,7 @@ mobile-menu-trigger:
   right: 16px
   size: 44px x 44px
   borderRadius: pill
-  background: surface-overlay
+  background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
   iconSize: 20px
@@ -455,7 +447,7 @@ mobile-slide-out:
   right: 0
   width: min(280px, 80vw)
   height: 100vh
-  background: surface-overlay-panel   # ~72% opacity — see §8 backdrop-blur carve-out
+  background: surface-nav             # see §8 blur carve-out
   backdropFilter: blur(12px)          # matched to pill nav for visual parity
   border-left: none                   # separation achieved by the overlay + blur alone
   padding: 24px
@@ -481,7 +473,7 @@ mobile-slide-out-layout:
     fontSize: 14px
     fontWeight: 500
     borderRadius: pill
-    active: surface-sunken / on-surface (tonal — not accent fill)
+    active: surface-selection / on-surface (accent-tinted — not surface-sunken)
     hover: surface-sunken / on-surface
   flex-spacer
   theme-toggle: bottom of panel (no label, no divider)
@@ -654,7 +646,7 @@ project-detail:
 
   sections-in-order:
     - project-header      # tags, title, subtitle, links row
-    - hero-media          # 16:9, surface-sunken bg, radius-md
+    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
     - overview            # editorial-dl layout (see below)
     - tech-stack          # editorial-dl layout under a prose-h2
     - mdx-deep-dive       # MDX body
@@ -743,7 +735,7 @@ highlight:
   paddingX: spacing-2xl
   paddingY: spacing-xl
   marginY: spacing-2xl
-  shadow: highlight-shadow (see §8 carve-out)  # intentional exception to no-shadow rule
+  # Elevation via border + raised fill only. No shadow.
 
   heading (optional):
     element: <figcaption>
@@ -768,7 +760,8 @@ scroll-to-top:
   right: 24px
   size: 44px x 44px
   borderRadius: pill
-  background: surface-raised
+  background: surface-nav
+  backdropFilter: blur(12px)
   border: 1px solid outline-variant
   iconSize: 18px
   color: on-surface
@@ -825,22 +818,20 @@ Editorial pull block — integrated with prose flow, not a UI card.
 
 ```yaml
 callout:
-  background: surface-sunken              # subtle tonal separation
-  borderLeft: 2px solid [type-color]      # insight=accent, tradeoff=secondary, warning=tertiary
+  background: surface-raised              # raised fill — level 5 elevation (accent left border + raised)
+  borderLeft: 2px solid accent
   borderRadius: none                      # flush with prose
-  paddingLeft: spacing-lg
-  paddingRight: spacing-md
-  paddingY: spacing-md
+  padding: spacing-lg
   marginY: spacing-xl
 
 callout-title:
-  type: body-md
+  type: callout-title
   fontWeight: 600
-  color: on-surface
+  color: accent
   marginBottom: spacing-sm
 ```
 
-`type` defaults to `"insight"`. The accent line is intentionally thin (2px) to keep the block from reading as a UI card.
+Single treatment — no type variants. The accent border is intentionally thin (2px) to keep the block integrated with prose flow rather than reading as a UI card.
 
 ### Project section label
 

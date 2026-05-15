@@ -5,7 +5,7 @@
 ---
 
 ## Current Phase
-**Phase 5 — UI Polish** (branch: `phase-5-work-page`)
+**Phase 5 — UI Polish** (branch: `phase-5-about-page`)
 
 See `.claude/docs/build-flow.md` for full phase requirements and verification checklist.
 
@@ -21,9 +21,12 @@ Phase 5 UI polish in progress. Build passes (10 static pages), Biome clean, Type
 - clsx, tailwind-merge, lucide-react
 
 **Design tokens — `src/app/globals.css` (current values):**
-- Full semantic color map (light + dark): 19 roles including `outline-hair`
-- Light: `background/surface #f8f8f7`, `surface-raised #ffffff`, `surface-sunken #f2f2f1`, `accent #006e37`
+- Full semantic color map (light + dark): 21 roles
+- Light: `background/surface #f8f8f7`, `surface-raised #f2f2f1`, `surface-sunken #ffffff`, `accent #006e37`
 - Dark: `background/surface #131313`, `surface-raised #211f1e`, `surface-sunken #0e0e0e`, `accent #35c27d`
+- **Surface polarity in light:** `surface-raised` is off-white (`#f2f2f1`) — cards/panels recede; `surface-sunken` is pure white (`#ffffff`) — code/inline code lifts for legibility
+- **New tokens:** `surface-nav` (`#ffffffd9` / `#1c1b1bd9`) — blur UI only; `surface-selection` (`#e6f4ec` / `#1a2e1f`) — active nav/selection states
+- `surface-overlay` / `surface-overlay-panel` — legacy, kept but superseded by `surface-nav`
 - `outline-hair`: `color-mix(in srgb, var(--on-background) 10%, transparent)` — alpha hairline token
 - Spacing: `xs` → `5xl` + `gutter`, `margin-mobile`, `margin-desktop`
 - Radius: `sm`, `md`, `lg`, `pill`; Z-index: 10-level; Motion: `duration-fast/base/slow`, `ease-standard`, `ease-emphasis`
@@ -60,43 +63,60 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `p` / `li` → body-primary (18px), Ink
 - `a` → Accent, underline
 - `strong` → Ink, weight 600
-- `blockquote` → body-secondary + italic + Accent left border
+- `blockquote` → body-secondary + italic + 2px Accent left border + `surface-raised` bg + `spacing-md spacing-lg` padding
 - `table th/td` → body-caption, Muted
-- `code` (inline) → mono-code + surface-sunken bg
+- `code` (inline) → mono-code + `surface-sunken` bg + `outline-variant` border
+
+**Canonical elevation system (5 levels) — `src/app/globals.css` + components:**
+| Level | Treatment | Components |
+|---|---|---|
+| 0 — Flat | No border, no fill | Page sections, hero, About, footer |
+| 1 — Border only | `1px outline-variant` | `<Figure>`, `<Diagram>` outer shell, prose hr, table borders, back-link divider, nav dividers |
+| 2 — Border + blur | `1px outline-variant` + `backdrop-blur-[12px]` + `surface-nav` | Pill nav, mobile nav trigger, mobile nav panel, scroll-to-top |
+| 3 — Border + raised | `1px outline-variant` + `surface-raised` | Project cards, `<Highlight>` |
+| 4 — Border + sunken | `1px outline-variant` + `surface-sunken` | `<CodeBlock>`, inline code, `<Diagram>` inner region, table `<th>`, card media well, hero bg |
+| 5 — Accent left border + raised | `2px accent` + `surface-raised` | `<Callout>`, prose blockquote |
 
 **Layout primitives (complete) — `src/components/layout/`:**
 - `container.tsx`, `section.tsx`, `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
 
 **UI primitives (complete) — `src/components/ui/`:**
 - `button.tsx` — primary/secondary variants, 44px, `radius-sm`, icon slot
-- `card.tsx` — flat element, `surface-raised` treatment
-- `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class; `display-primary` and `heading-component` get explicit `text-[var(--on-surface)]`
-- `tag.tsx` — `variant="outline"` (Muted text) or `variant="filled"` (Ink text); both `normal-case tracking-normal`
-- `theme-toggle.tsx` — `PillThemeSelector` (expand-on-hover, all 3 always in DOM, `overflow-hidden` width transition) + `InlineThemeSelector` (`w-fit`); both use MaterialSymbol
-- `material-symbol.tsx` — inline SVG; 5 icons: `fingerprint`, `folder_code`, `light_mode`, `dark_mode`, `computer`; paths from `@material-symbols/svg-400@0.44.7` (no runtime dep); viewBox `0 -960 960 960`
+- `card.tsx` — **DELETED** (was unused)
+- `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
+- `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
+- `theme-toggle.tsx` — `PillThemeSelector` + `InlineThemeSelector`; both use MaterialSymbol
+- `material-symbol.tsx` — inline SVG; 5 icons
 
 **Navigation (complete):**
-- `pill-nav.tsx` — active state tonal (surface-sunken/Ink); active icon in Accent; uses MaterialSymbol
-- `mobile-nav.tsx` — Framer Motion slide-out, focus trap, Esc-to-close, reduced-motion gated
+- `pill-nav.tsx` — active state: `surface-selection` (accent-tinted); hover: `surface-sunken`; container: `surface-nav` + blur
+- `mobile-nav.tsx` — active link: `surface-selection`; panel + trigger: `surface-nav` + blur
 - `nav.tsx` — CSS-only responsive switch
 
 **Footer (complete) — `src/components/layout/footer.tsx`:**
 - `support-meta` token + responsive Tailwind override; no border-t
 
 **MDX components (complete) — `src/components/mdx/`:**
-- `figure.tsx`, `diagram.tsx` — image/diagram with optional `body-caption` caption
-- `callout.tsx` — single editorial treatment: Accent border, `callout-title` with explicit `text-[var(--accent)]` (overrides prose cascade), `body-emphasis` body with explicit Ink. No type variants.
-- `highlight.tsx` — elevated pull-quote; `insight-label` heading, `body-emphasis` body
-- `code-block.tsx`, `mdx-components.tsx`
+- `figure.tsx` — border only (level 1)
+- `diagram.tsx` — outer shell border-only (`overflow-hidden`, no padding); inner image region gets `surface-sunken` fill
+- `callout.tsx` — `surface-raised` fill + 2px accent left border (level 5). Single treatment, no variants.
+- `highlight.tsx` — `surface-raised` fill + `outline-variant` border (level 3). **Shadow system removed permanently.**
+- `code-block.tsx` — `outline-variant` border + `surface-sunken` fill (level 4)
+- `mdx-components.tsx`
 
-**Important callout implementation note:**
-`callout-title` uses `.callout-title` class (has `color: var(--accent)`) but also requires explicit `text-[var(--accent)]` Tailwind arbitrary utility. Without it, `.prose-content p` / `.prose-content strong` override the class color with Ink via higher specificity. The explicit utility class wins the cascade.
+**Important implementation notes:**
+- Tailwind v4 responsive variants (`md:custom-class`) do NOT work on `@layer components` classes — use `@media` blocks inside `@layer components`
+- `React.Fragment` (explicit) required when `key` needed in map — `<>` cannot take `key`
+- Biome `noStaticElementInteractions` fires on hover wrappers — biome-ignore with justification
+- Material Symbols SVG paths use viewBox `0 -960 960 960` (not `0 0 24 24`)
+- Prose cascade specificity: `.prose-content <element>` rules beat `@layer components` token classes — always add explicit Tailwind arbitrary color utilities on elements that must hold a fixed color inside prose
+- `lucide-react` has no Github icon — use inline SVG
+- `surface-selection` vs `surface-sunken`: selection = accent-tinted (active states), sunken = neutral (hover states, code surfaces, recessed wells)
 
 **Project components (complete) — `src/components/project/`:**
-- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; thumbnail `aspect-video`; hover: border/bg tonal shift + chevron Accent + image scale; no shadows
-- `hero-media.tsx` — image/video/SVG handler, reduced-motion poster fallback
-- `project-overview.tsx`, `stack-summary.tsx`, `project-sidebar.tsx`
-- `section-progress-nav.tsx` — TOC: active Ink (`on-surface`), inactive Muted (`on-surface-muted`). **Not `outline`** — `outline` is a border token, not a text token.
+- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; outer: `surface-raised` + `outline-variant` border (0px radius); inner media: `surface-sunken` + `radius-md`
+- `hero-media.tsx`, `project-overview.tsx`, `stack-summary.tsx`, `project-sidebar.tsx`
+- `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
 
 **Pages (complete):**
 - `src/app/page.tsx` — two-column hero, featured grid, CTA block
@@ -109,88 +129,56 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` §3 — replaced old `type-*` YAML with 16-token semantic table + prose composition rules section; interactive-label vs nav-link behavioral contract documented; footer responsive exception noted
-- `.claude/docs/CONTENT-SCHEMA.md` — `<Callout>` updated: removed `type` prop and multi-variant docs; documented single treatment
+- `.claude/docs/DESIGN.md` — §4 token table updated (surface polarity swap, surface-nav, surface-selection added, legacy tokens noted); §8 fully rewritten (5-level canonical elevation table, blur carve-out, shadow section removed); §11 all affected components updated; §3 prose table updated
+- `.claude/CLAUDE.md` — blur and shadow constraints updated
 
 **Placeholder content:**
 - `content/projects/lane-refinement-rl.mdx` — academic, `featured: true`, order 10
 - `content/projects/distributed-task-queue.mdx` — freelance, order 20
 - `content/projects/local-llm-experiments.mdx` — personal, order 30
 
-**Key constraints:**
-- Tailwind v4 responsive variants (`md:custom-class`) do NOT work on `@layer components` classes — use `@media` blocks inside `@layer components`
-- `React.Fragment` (explicit) required when `key` needed in map — `<>` cannot take `key`
-- Biome `noStaticElementInteractions` fires on hover wrappers — biome-ignore with justification
-- Material Symbols SVG paths use viewBox `0 -960 960 960` (not `0 0 24 24`)
-- Prose cascade specificity: `.prose-content <element>` rules beat `@layer components` token classes — always add explicit Tailwind arbitrary color utilities on elements that must hold a fixed color inside prose (e.g., callout title)
-- `lucide-react` has no Github icon — use inline SVG
-
 ---
 
 ## Last Session
 
-**Tag / button / radius normalization — complete and committed (this session).**
+**Elevation/depth system restructured — complete, uncommitted.**
 
-Three commit clusters:
+Three logical work areas (to be committed as separate clusters):
 
-1. `refactor: normalize tag/button system — collapse variants, extract components`
-   - `<Tag>` collapsed to single canonical treatment: `surface-tag` bg, `on-surface` text, `spacing-sm` padding
-   - `<SocialLink>` extracted: h-9 border-chip, quiet utility affordance
-   - `<Button>` extended with `href` discriminated union — renders `<a>` or `<button>` based on prop, same variants both branches
-   - About social row → `<SocialLink>`; home/about CTAs → `<Button href="...">`
+**1. Token foundation**
+- `globals.css`: `surface-raised`/`surface-sunken` values swapped in light theme
+- `globals.css`: `surface-nav` + `surface-selection` tokens added (light + dark + `@theme inline`)
+- `globals.css`: highlight shadow blocks removed permanently
 
-2. `refactor: semantic token cleanup — inline code composition and code block surface`
-   - Inline code rule in globals.css rewritten to explicitly match `mono-code` token values (note: `@apply mono-code` does NOT work in Tailwind v4 against `@layer components` classes — keep values explicit)
-   - `<CodeBlock>` surface-sunken fill removed — now border-only, no fill
+**2. Component migration**
+- `pill-nav.tsx` → `surface-nav` (container), `surface-selection` (active link)
+- `mobile-nav.tsx` → `surface-nav` (trigger + panel), `surface-selection` (active link)
+- `scroll-to-top.tsx` → `surface-nav`
+- `callout.tsx` → `surface-raised` fill
+- `code-block.tsx` → `surface-sunken` fill added
+- `diagram.tsx` → outer border-only + `overflow-hidden`; inner image region gets `surface-sunken`
+- `card.tsx` → deleted (was unused)
 
-3. `refactor: normalize radius vocabulary — architectural containers to 0px, media to 8px`
-   - Cards outer: `radius-sm` → 0px (architectural container)
-   - Code blocks: `radius-md` → 0px
-   - Card hero inner: `radius-sm` → `radius-md` (4px → 8px, media surface)
-   - About headshot: `radius-lg` → `radius-md` (12px → 8px)
-   - Homepage portrait placeholder: `radius-sm` → `radius-md` (4px → 8px)
+**3. Docs sync**
+- `DESIGN.md` § 4, 8, 11 rewritten
+- `CLAUDE.md` constraints updated
 
-**DESIGN.md synced** to reflect all three clusters (tag spec, radius vocabulary, elevation note, Button anchor rendering, new SocialLink spec).
-
-**Visual QA passed** (Playwright). One mobile weak spot noted: 0px cards at 375px have near-invisible side edges because `surface-raised` (#fff) and `background` (#f8f8f7) are tonally very close — inner hero image contrasts more than the outer container. Not a regression; flagged for the elevation/depth audit.
+**Visual decisions still open:**
+- `surface-sunken` contrast in light (deferred — evaluate after elevation stabilises)
+- `surface-overlay` / `surface-overlay-panel` removal (deferred — kept as legacy)
 
 ---
 
 ## Next Steps
 
-**Immediate next action — do this first:**
-
-**Elevation/depth audit** (prerequisite for About page polish)
-
-Full inventory of every depth/elevation mechanism currently in the system. For each: where it exists, whether it is structural / interactive / decorative, and whether it aligns with the editorial-architectural direction.
-
-Audit categories:
-- Borders (`outline-variant`, `outline`, `outline-hair`)
-- Tonal surface steps (`background` → `surface-raised` → `surface-sunken`)
-- Hover border shifts
-- Hover background shifts
-- Shadows (documented carve-outs: `<Highlight>` only)
-- Blur / backdrop-filter (pill nav, mobile panel, scroll-to-top)
-- Image scaling on hover (`group-hover:scale-[1.03]` on card hero)
-- Sticky / floating elements
-- Accent fills (primary button, active nav state, callout border)
-- Dark-surface anchors (surface-sunken used as anchor color in dark theme)
-- Radius usage as depth signal
-- Typography density as depth signal
-
-Output of audit feeds directly into About page polish decisions.
-
----
-
-`phase-5-work-page` polish otherwise complete. Remaining:
-
-1. **About page polish** (`phase-5-about-page`) — elevation/depth audit first
-2. **Home page v1 spec items:**
+1. **Commit elevation work** (3 clusters — see git plan in session)
+2. **About page visual polish** — now that elevation is stable, do a visual pass
+3. **Home page v1 spec items:**
    - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
-   - Hire Me CTA pulse — DESIGN.md §11: 2400ms opacity+scale on icon only, stops on hover, `useReducedMotion()` gated
+   - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
    - Theme toggle tooltip — 500ms hover delay, optional/lower priority
-3. **Merge to main** when phase-5 polish is complete
-4. **Content** — placeholder MDX files need real content
+4. **Merge to main** when phase-5 polish is complete
+5. **Content** — placeholder MDX files need real content
 
 ---
 
