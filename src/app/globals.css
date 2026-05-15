@@ -9,10 +9,14 @@
   /* Surfaces */
   --background: #f8f8f7;
   --surface: #f8f8f7;
-  --surface-raised: #ffffff;
-  --surface-sunken: #f2f2f1;
+  --surface-raised: #f2f2f1;
+  --surface-sunken: #ffffff;
   --surface-overlay: #ffffffd9;
   --surface-overlay-panel: #ffffffb8;
+  /* Floating nav/utility blur surface */
+  --surface-nav: #ffffffd9;
+  /* Selection state — active nav, future tabs/segmented controls */
+  --surface-selection: #e6f4ec;
 
   /* Text */
   --on-background: #191c1d;
@@ -49,6 +53,8 @@
   --surface-sunken: #0e0e0e;
   --surface-overlay: #1c1b1bd9;
   --surface-overlay-panel: #1c1b1bba;
+  --surface-nav: #1c1b1bd9;
+  --surface-selection: #1a2e1f;
 
   --on-background: #e5e2e1;
   --on-surface: #e5e2e1;
@@ -86,6 +92,8 @@
   --color-surface-sunken: var(--surface-sunken);
   --color-surface-overlay: var(--surface-overlay);
   --color-surface-overlay-panel: var(--surface-overlay-panel);
+  --color-surface-nav: var(--surface-nav);
+  --color-surface-selection: var(--surface-selection);
   --color-surface-tag: var(--surface-tag);
   --color-on-background: var(--on-background);
   --color-on-surface: var(--on-surface);
@@ -389,12 +397,13 @@ body {
     color: var(--on-surface);
   }
   .prose-content blockquote {
-    /* body-secondary values + left border */
+    /* body-secondary values + accent left border + raised fill */
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 18px;
     line-height: 28px;
-    border-left: 3px solid var(--accent);
-    padding-left: var(--spacing-lg);
+    border-left: 2px solid var(--accent);
+    background: var(--surface-raised);
+    padding: var(--spacing-md) var(--spacing-lg);
     color: var(--on-surface-muted);
     font-style: italic;
     margin: var(--spacing-lg) 0;
@@ -436,19 +445,7 @@ body {
     padding: 2px 6px;
   }
 
-  /* Highlight panel — editorial pull-quote */
-  .highlight-panel {
-    box-shadow:
-      0 1px 4px rgba(0, 0, 0, 0.08),
-      0 4px 16px rgba(0, 0, 0, 0.07),
-      0 8px 24px rgba(0, 0, 0, 0.04);
-  }
-  [data-theme="dark"] .highlight-panel {
-    box-shadow:
-      0 1px 4px rgba(0, 0, 0, 0.5),
-      0 4px 16px rgba(0, 0, 0, 0.4),
-      0 8px 24px rgba(0, 0, 0, 0.25);
-  }
+  /* Highlight panel — editorial pull-quote; elevation via border + raised fill only */
 
   /* Editorial two-column DL layout for Overview + Tech Stack */
   .editorial-dl {
