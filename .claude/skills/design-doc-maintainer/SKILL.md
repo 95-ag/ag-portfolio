@@ -34,6 +34,13 @@ If the user's request implies:
 
 Stop and recommend `design-doc-rewriter` instead. Ask one clarifying question if the scope is ambiguous.
 
+**Cross-layer edits** — edits that touch both the YAML Registry *and* the markdown body (e.g., adding a token and updating its prose reference) are still within maintainer scope when they affect ≤ 2 canonical sections. Emit separate diff entries for the registry change and the markdown follow-on:
+
+```
+ADDED: token `new-token` to YAML Registry → colors
+UPDATED: inline reference `{new-token}` added to Components → button-primary bullets
+```
+
 ## Output Format
 
 For every edit:
@@ -42,8 +49,8 @@ For every edit:
 2. **A brief diff summary** — one line per hunk:
 
 ```
-ADDED: token row `surface-interactive` to Foundations → Colors table
-UPDATED: `radius.sm` resolved value 4px → 6px (3 references updated)
+ADDED: token `surface-interactive` to YAML Registry → colors
+UPDATED: `radius.sm` resolved value 4px → 6px in YAML Registry; 3 inline references updated in markdown body
 NOTED: nearby contract violation in same section — prose wall at ¶3. Not changed. Recommend rewriter pass.
 ```
 

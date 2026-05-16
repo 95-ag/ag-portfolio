@@ -43,6 +43,10 @@ Use these exact entry types across all passes. Keep each entry to one line.
 | `PLACEHOLDER` | Empty heading with no content — flagged, not moved, not deleted |
 | `FLAGGED` | Potentially duplicative content — user confirmation required before action |
 | `NOTED` | Observation outside the pass scope — no action taken |
+| `MIGRATED-LAYER` | YAML block extracted from markdown body into the top-level registry |
+| `RECLASSIFIED` | Content moved between canonical buckets (e.g., Foundations → Semantic Systems) |
+| `DEMOTED-TO-EXTENSION` | Formerly canonical section relocated to domain extension position |
+| `KEPT-LOCAL` | Content evaluated for hoisting but retained colocated (locality principle applied) |
 
 **`PLACEHOLDER` vs `FLAGGED`:** Use `PLACEHOLDER` exclusively for empty headings. Use `FLAGGED` for headings or sections that have content but may be duplicative or misplaced. Never conflate the two.
 
@@ -118,13 +122,41 @@ Manifest entries: UNIFIED (old → new, count).
 
 ---
 
+---
+
+## 6. Architectural Migration Pass
+
+**Purpose:** Restructure an existing document into the two-layer model and new canonical spine. One-time use per architectural transition — distinct from the ordinary Migration / Reorganization Pass.
+
+Scope: document-wide. Operates across all section boundaries simultaneously.
+
+What changes:
+- Globally reusable canonical tokens extracted into a top-of-document YAML Registry (see *Canonical Does Not Mean Centralized* in the contract).
+- Sections relocated to new spine positions per an approved migration mapping table.
+- Formerly canonical sections that become domain extensions are repositioned after the spine.
+
+What does NOT change:
+- Token names and values — preserved verbatim (Tokens Are Sacred still applies).
+- Content that cannot be cleanly mapped is flagged, never silently deleted.
+
+Carve-out: the Section-Preserving Migrations default is suspended for this pass. Cross-section restructuring is the entire point. This suspension applies to this pass only.
+
+Every structural move is logged with a `MIGRATED-LAYER`, `RECLASSIFIED`, `DEMOTED-TO-EXTENSION`, or `KEPT-LOCAL` manifest entry.
+
+**Default disposition for ambiguous placement decisions:** flag in the manifest and keep in place. Migration's job is to adopt the new spine — not to maximize architectural extraction.
+
+This pass runs alone. It MUST NOT be combined with other passes.
+
+---
+
 ## Combined Passes
 
 If the user requests more than one pass, run them in this order:
-1. Structure-Only
-2. Migration (if needed)
-3. Normalization
-4. Section-by-Section Rewrite
-5. Terminology
+1. Architectural Migration (always alone — never combined)
+2. Structure-Only
+3. Migration / Reorganization (if needed)
+4. Normalization
+5. Section-by-Section Rewrite
+6. Terminology
 
 Segment the manifest by pass type with a `--- PASS: name ---` divider.

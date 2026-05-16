@@ -70,4 +70,16 @@ UPDATED: cross-reference "Foundations → Old Name" → "Foundations → New Nam
 
 Token name changes follow the same rules. Search for the token name in backtick format: `` `token-name` ``.
 
-Also check for resolved-value inline mentions (e.g., `(44px)`) if the resolved value changed too.
+Also check for resolved-value inline mentions (e.g., `(44px)`) if the resolved value changed too. Token values are defined in the YAML Registry — update the registry first, then propagate to markdown body inline mentions.
+
+---
+
+## Post-Migration Sibling Doc Updates
+
+After a structural migration of DESIGN.md (e.g., the Architectural Migration Pass), every heading-path reference in sibling docs may be outdated.
+
+Before running a large structural migration, the agent SHOULD ask the user which sibling docs, rule files, prompts, or automation configs depend on DESIGN.md heading paths or token names. Cross-reference propagation must adapt to the project ecosystem — not a hardcoded file inventory.
+
+At minimum, check all sibling docs that reference DESIGN.md heading paths or token names. In this portfolio project, that includes files such as `.claude/CLAUDE.md`, `PRIMER.md`, and files in `.claude/rules/` — but the user's project may have additional dependents (automation scripts, prompt templates, other rule files) that the agent cannot enumerate independently.
+
+Cross-reference propagation is in scope for the migration pass, not pre-migration contract work. After migration, verify that every heading path in sibling docs resolves to a real heading in the updated DESIGN.md.

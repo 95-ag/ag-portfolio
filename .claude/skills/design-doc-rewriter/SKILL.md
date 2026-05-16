@@ -21,7 +21,7 @@ You perform heavyweight structural transformation of DESIGN.md files. Your job i
 Before doing anything else, read:
 
 1. `../.claude/skills/design-writing-contract.md` — the canonical contract. This defines what valid output looks like.
-2. `references/rewrite-passes.md` — the five pass types and when to use each.
+2. `references/rewrite-passes.md` — the available pass types and when to use each.
 3. `references/safety-rules.md` — lossless-transformation constraints.
 4. `references/validation-heuristics.md` — post-rewrite checks.
 

@@ -4,22 +4,22 @@ Common maintainer operations with the correct approach for each.
 
 ---
 
-## Add a token row to a Foundations table
+## Add a token to the YAML registry
 
-1. Confirm with the user: token name, resolved value, role.
-2. Find the correct table in the Foundations section.
-3. Add the row in the appropriate position (group by semantic category if the table is ordered that way).
-4. Check if the new token needs a corresponding Usage Notes entry — add one if so.
-5. Diff summary: `ADDED: token row \`token-name\` to Foundations → Colors table`
+1. Confirm with the user: token name, resolved value, semantic role.
+2. Determine the correct registry group (e.g., colors, typography, spacing, rounded, motion, breakpoints, z-index, or another canonical primitive-token group).
+3. Add the entry to the YAML registry at the top of the document, in the appropriate group and position.
+4. If the token also needs a row in a semantic-role table (e.g., a color token with a semantic-role mapping), add a follow-on markdown update with its own diff entry.
+5. Diff summary: `ADDED: token \`token-name\` to YAML Registry → [group]`
 
 ---
 
 ## Update a token's resolved value
 
-1. Find the token in the Foundations table.
-2. Update the resolved value in the table.
-3. Scan the rest of the document for inline references to the old resolved value (e.g., `(44px)` in prose) and update them.
-4. Diff summary: `UPDATED: \`token.name\` resolved value old → new (N inline references updated)`
+1. Find the token in the YAML registry.
+2. Update the resolved value in the registry — this is the single source of truth.
+3. Scan the markdown body for inline resolved-value mentions (e.g., `(44px)` in prose) and update them as cross-layer follow-ons.
+4. Diff summary: `UPDATED: \`token.name\` resolved value old → new in YAML Registry; N inline references updated in markdown body`
 
 ---
 
@@ -28,23 +28,35 @@ Common maintainer operations with the correct approach for each.
 This is a cross-reference-heavy operation. Read `references/cross-reference-rules.md` before proceeding.
 
 1. Confirm the new name with the user.
-2. Update the Foundations table.
-3. Find and replace all references in the document.
-4. Find and replace in sibling docs named by the user.
-5. Diff summary lists every touched location.
+2. Update the YAML registry entry (primary source).
+3. Find and replace all markdown body references (prose, bullets, component spec blocks).
+4. Find and replace in sibling docs named by the user (`CLAUDE.md`, `PRIMER.md`, `.claude/rules/*.md`).
+5. Diff summary lists every touched location — registry first, then markdown body, then sibling docs.
 
 ---
 
 ## Add a new component section
 
-1. Identify the correct location within the Components section (alphabetical, or by category if the section is grouped).
+1. Identify the correct location within the `# Components` section (alphabetical, or by category if the section is grouped).
 2. Write the component entry following the contract format:
    - `### \`component-name\``
    - 1-line identity statement (not a heading)
-   - 3–5 semantic bullets covering: visual identity, dimensions/tokens, usage context, interaction behavior, important constraints
-   - Optional YAML spec block after the bullets
+   - 3–5 semantic bullets covering: visual identity, dimensions/tokens, usage context, important constraints
+   - Optional YAML spec block after the bullets (references registry tokens by path — does not restate resolved values)
 3. Confirm contextual usage examples are included.
-4. Diff summary: `ADDED: component \`component-name\` to Components section`
+4. Shared interaction-state baselines (hover/focus/disabled/loading/responsive defaults) belong in `# Interaction Rules`. Component sections may include local interaction behavior, sequencing, or affordance details when they are structurally tied to the component itself.
+5. Diff summary: `ADDED: component \`component-name\` to Components`
+
+---
+
+## Add a semantic-systems mapping
+
+For adding a row to a surface hierarchy, typography roles, interaction semantics, or state semantics table — whether that table lives in `# Semantic Systems` or colocated in a Foundations subsection.
+
+1. Identify the target table (e.g., `Foundations → Colors → Semantic Roles` or `Semantic Systems → Surface Hierarchy`).
+2. Add the row in the correct semantic grouping.
+3. Check whether the same semantic concern is referenced elsewhere in the document — if so, update those references rather than adding a competing restatement (anti-fragmentation rule).
+4. Diff summary: `ADDED: semantic mapping row \`role-name\` to [table location]`
 
 ---
 
@@ -79,7 +91,7 @@ Note: whole-doc terminology sweeps are better handled by the rewriter's Terminol
 
 ## Fix or update a cross-reference
 
-E.g., a broken `Foundations → Colors → Usage Notes` path after a heading rename.
+E.g., a broken `Foundations → Colors` path after a heading rename.
 
 1. Find the broken reference.
 2. Trace the correct current heading path.

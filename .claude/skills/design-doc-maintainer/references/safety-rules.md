@@ -65,12 +65,12 @@ See `references/cross-reference-rules.md` for the full process.
 
 ## Token Additions Require Explicit Confirmation
 
-Before adding a new token to a Foundations table, confirm with the user:
+Before adding a new token to the YAML Registry, confirm with the user:
 - Token name
 - Resolved value
 - Role it fulfills (what it's for, where it's used)
 
-Do not infer these from context. Token names are load-bearing — a wrong name causes cascading inconsistency.
+Do not infer these from context. Token names are load-bearing — a wrong name causes cascading inconsistency across the registry and all markdown references.
 
 ---
 

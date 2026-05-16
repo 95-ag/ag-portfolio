@@ -37,9 +37,20 @@ Combined passes must segment the manifest with `--- PASS: name ---` dividers so 
 ## Canonical-Ordering Preservation
 
 Reordering must comply with the portfolio schema's canonical order:
-`Overview → Foundations → Layout & Composition → Do's & Don'ts → Components → Accessibility → Technical Conventions → Iteration Notes`
 
-Reordering that violates this is rejected — the model surfaces the conflict and asks the user to decide.
+```
+YAML Registry → Overview → Foundations → [Semantic Systems] → Components → Interaction Rules → Accessibility Rules → Cross-Cutting Rules → Technical Conventions → [Domain Extensions] → Iteration Notes
+```
+
+Sections in `[brackets]` are optional or extension-position entries — their absence is not a violation. Reordering that places a section outside this sequence is rejected; the model surfaces the conflict and asks the user to decide.
+
+---
+
+## One-Time Architectural-Migration Carve-Out
+
+The Section-Preserving Migrations default (see *Section-Preserving Migrations Preferred*) is suspended for an explicit Architectural Migration Pass. Cross-section restructuring across all boundaries is the entire point of that pass.
+
+This suspension applies only to the Architectural Migration Pass (Pass 6). All other passes continue to default to section-preserving behavior.
 
 ---
 

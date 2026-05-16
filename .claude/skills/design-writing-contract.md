@@ -1,4 +1,4 @@
-# 1. Universal DESIGN.md Writing Contract
+# Universal DESIGN.md Writing Contract
 
 ## Purpose
 
@@ -16,6 +16,43 @@ The document MUST optimize for:
 * implementation clarity
 * semantic retrieval
 * long-term maintainability
+
+---
+
+## Two-Layer Document Model
+
+`DESIGN.md` operates as two distinct layers — logical roles, not file regions:
+
+**YAML Registry layer** — globally reusable canonical tokens at the top of the document. Single source of truth for token *values*: color tokens, typography tokens, spacing scale, radius scale, motion duration and easing tokens, breakpoints, z-index scale, focus-ring spec. Inline YAML may reference registry tokens by name but must not duplicate their values.
+
+**Markdown Body layer** — canonical for *meaning*: semantic intent, role, operational constraints, rationale. Markdown is where behavior is described, not where values are stored.
+
+Local-spec YAML is still permitted inline when locality aids comprehension — per-elevation-level surface specs, component spec blocks, semantic-systems mappings. The two-layer model separates *roles* (canonical tokens vs. semantic meaning), not file regions. There is no single monolithic YAML superblock.
+
+---
+
+## Canonical Does Not Mean Centralized
+
+The top YAML registry is for primitive/token systems only — not for every reusable semantic mapping.
+
+Three distinct categories guide placement decisions:
+
+**1. Primitive/Token Registries → top YAML registry**
+Color tokens, typography tokens, spacing scale, radius scale, motion duration + easing tokens, breakpoints, z-index scale, focus-ring spec.
+
+**2. Semantic Interpretation Systems → colocated by default; hoist only when broadly reused**
+Semantic typography-role matrix, surface hierarchy mapping, color semantic-role table, state semantics. Hoist to a `# Semantic Systems` section only when the same mapping is referenced from three or more structural places and locality no longer aids comprehension.
+
+**3. Local Structural Specs → stay colocated**
+Component spec blocks, per-elevation-level surface specs, grid/layout structural specs, domain-specific composition specs, role maps used only within a single section.
+
+---
+
+## Locality Principle
+
+Structural locality beats theoretical purity when the semantic relationship is tight.
+
+When deciding whether a YAML block, role table, or rule should be hoisted to a global layer or remain colocated: the question is not "where does this fit in the canonical taxonomy?" but "where is this most readable and maintainable?" Tight semantic coupling between a structural spec and its surrounding prose argues for keeping them together. Loose coupling — a token referenced from many places, a default applied across many components — argues for hoisting.
 
 ---
 
@@ -135,7 +172,9 @@ without semantic linkage.
 
 ## YAML Rules
 
-YAML SHOULD only appear when:
+The top of the document holds a YAML registry for globally reusable canonical tokens — the single source of truth for token values. See *Two-Layer Document Model* and *Canonical Does Not Mean Centralized* for what belongs in the registry vs. colocated inline.
+
+YAML SHOULD only appear (inline or in registry) when:
 
 * hierarchy matters
 * structured systems are being defined
@@ -147,12 +186,83 @@ YAML MUST NOT:
 * replace semantic explanation
 * appear before identity/behavior description
 * restate information already sufficiently communicated in prose unless structural hierarchy or implementation precision requires it
+* carry primary semantic meaning through inline comments — explanatory semantics belong in prose or bullets above the block
+* form a single monolithic superblock — the registry collects globally reusable tokens, not every YAML block in the document
+
+YAML blocks are spec registries: token/value mappings, structural hierarchies, and variant definitions. When inline YAML comments are carrying the primary semantic load, move the semantics to bullets above and remove the comments.
+
+Exception: foundational token systems (spacing scale, motion tokens, breakpoints) must preserve a canonical YAML block even when prose explains the semantics. Prose establishes meaning; YAML is the spec registry. They serve different roles and coexist.
+
+Pure spec blocks need minimal operational framing (1–2 bullets) when the semantics are not self-evident from raw values alone. Do not leave naked YAML without interpretive context.
 
 Preferred order:
 
 1. identity statement
 2. semantic bullets
 3. YAML/spec block (optional)
+
+### YAML Schema Conventions
+
+These conventions define how tokens and specs are encoded in the registry. Primitive/token groups are strongly standardized. Component and local-spec groups are lightly standardized — enough for interoperability, not so rigid as to over-constrain richer systems.
+
+**Token types**
+
+| Type | Format | Example |
+|---|---|---|
+| Color | `#` + hex (sRGB) | `"#1A1C1E"` |
+| Dimension | number + unit (`px`, `em`, `rem`) | `"48px"`, `"-0.02em"` |
+| Token Reference | `{path.to.token}` | `{colors.primary}` |
+
+Token references point to another value in the YAML tree. For most token groups, references must resolve to a primitive value (e.g., `{colors.primary-60}`). Within component spec YAML blocks, references to composite values (e.g., `{typography.label-md}`) are permitted.
+
+**Recommended registry structure**
+
+Typography objects carry `fontFamily`, `fontSize`, `fontWeight` (numeric, e.g. `400`), `lineHeight` (unitless multiplier preferred, e.g. `1.6`), `letterSpacing` (optional), and optionally `fontFeature` / `fontVariation`. Scale level keys (`xs`, `sm`, `md`, `lg`, `xl`) SHOULD be consistent across `spacing`, `rounded`, and any other scale groups; avoid mixing numeric and named keys within the same scale.
+
+```yaml
+colors:
+  <token-name>: <Color>
+
+typography:
+  <token-name>:
+    fontFamily: <string>
+    fontSize: <Dimension>
+    fontWeight: <number>
+    lineHeight: <Dimension | number>
+    letterSpacing: <Dimension>
+
+spacing:
+  <scale-level>: <Dimension>
+
+rounded:
+  <scale-level>: <Dimension>
+
+motion:
+  duration:
+    <name>: <Dimension>
+  easing:
+    <name>: <string>
+
+breakpoints:
+  <name>: <Dimension>
+
+z-index:
+  <name>: <number>
+```
+
+**Component spec blocks (lightly standardized)**
+
+Component specs SHOULD remain colocated with their component entry unless the same specification becomes broadly reused across multiple structural contexts. A component block may reference registry tokens:
+
+```yaml
+button-primary:
+  backgroundColor: "{colors.accent}"
+  textColor: "{colors.accent-on}"
+  height: "{spacing.interactive-md}"
+  rounded: "{rounded.md}"
+```
+
+When a reusable token already exists, component and local specs SHOULD reference the token rather than restating the resolved value. Local structural specs that are genuinely self-contained (not derived from a registry token) may include their own values.
 
 ---
 
@@ -186,6 +296,12 @@ Avoid:
 - Text `{colors.on-surface}`
 - Radius `{radius.sm}` (4px)
 
+### Cross-Cutting Rules Before Tables
+
+Cross-cutting interpretation rules, global overrides, and exceptions that affect multiple rows or entries in a table or spec block belong as intro bullets before the table — not as post-table footnotes or detached notes sections. Readers need the interpretive frame before entering the table.
+
+---
+
 ### Redundancy Rules
 
 Intentional repetition of identity-bearing concepts is permitted.
@@ -210,6 +326,14 @@ Examples:
 
 Avoid relying entirely on earlier philosophy sections for contextual understanding.
 
+### Affirmative Rules Over Defensive Prohibitions
+
+Prefer affirmative canonical rules over defensive prohibition phrasing when exclusivity is already implied. "All blur surfaces use X" makes "do not use Y or Z" redundant. Defensive prohibitions are warranted only when the prohibited alternative is genuinely plausible and not already ruled out by the affirmative rule.
+
+### Avoiding Redundant Interpretive Prose
+
+When a canonical table or spec block already expresses behavior clearly, interpretive prose that restates the same information adds noise rather than clarity. Explanatory prose earns its place when it adds interpretation not already structurally encoded — not when it paraphrases what the table shows.
+
 ---
 
 ## Component Writing Contract
@@ -221,11 +345,12 @@ Every reusable component section MUST contain:
 3. 3–5 semantic bullets
 
 Component bullets SHOULD collectively communicate:
-- visual identity
-- dimensions/tokens
-- usage context
-- interaction behavior
-- important constraints
+
+* visual identity
+* dimensions/tokens
+* usage context
+* interaction behavior
+* important constraints
 
 These categories SHOULD be semantically grouped into dense, readable bullets rather than mechanically separated into one category per bullet.
 
@@ -264,13 +389,13 @@ Reusable components SHOULD include contextual usage examples whenever practical.
 
 Preferred:
 
-```md id="2okg1j"
+```md
 Used for Hire Me (home CTA), project navigation, and contact actions.
 ```
 
 Avoid:
 
-```md id="w6e6xm"
+```md
 Used for primary actions.
 ```
 
@@ -291,10 +416,10 @@ A valid `DESIGN.md` SHOULD:
 * remain scannable top-to-bottom
 * avoid dense prose walls
 * maintain stable terminology
-* keep YAML secondary to prose
+* keep inline body YAML secondary to prose — the top-level YAML Registry is the canonical token store, not a prose support structure
 * use semantic-token + resolved-value formatting consistently
 * avoid excessive heading nesting
-* avoid repeating identical information across prose and YAML
+* avoid duplicating registry token *values* in prose — token *names* may be referenced freely in markdown
 * preserve consistent cadence across sections
 * satisfy defined Compression Targets
 
@@ -364,6 +489,7 @@ Avoid:
 * implementation-heavy paragraphs
 * excessive abstraction without grounding
 * repeating identical information across prose and YAML
+* process/source metadata in canonical sections — cross-doc citations ("see PRODUCT.md §7.4"), open-question markers, and self-containment notes ("Restated from X for self-containment") are transient authoring artifacts, not design-system content. Open decisions belong in `Iteration Notes → Open Decisions`; gaps belong in `Iteration Notes → Known Gaps`.
 
 ---
 
@@ -379,7 +505,7 @@ Avoid:
 
 Avoid:
 
-```md id="j5np06"
+```md
 - Height 44px.
 - Radius 4px.
 - Padding 24px.
@@ -387,7 +513,7 @@ Avoid:
 
 Prefer:
 
-```md id="x2v1w3"
+```md
 - Height `{height-interactive-md}` (44px), radius `{radius.sm}` (4px), with `{spacing.lg}` (24px) horizontal padding.
 ```
 
@@ -430,13 +556,13 @@ Avoid:
 
 Avoid:
 
-```md id="vfb0qt"
+```md
 padding-inline-md
 ```
 
 Prefer:
 
-```md id="8rdr6d"
+```md
 padding `{spacing.md}` (16px)
 ```
 
@@ -451,7 +577,7 @@ Avoid:
 * YAML used before semantic explanation
 * implementation specs without contextual understanding
 
-YAML SHOULD support prose, not replace it.
+Inline body YAML SHOULD support prose, not replace it. This applies to YAML blocks in the markdown body — the top-level YAML Registry is the canonical token store and operates independently of prose.
 
 This section is valuable because it teaches:
 
@@ -465,41 +591,72 @@ which dramatically improves agent consistency.
 
 # Canonical Structure Model
 
-## Core Sections
+## Canonical Spine
 
-These SHOULD exist in most substantial design systems:
+The canonical spine provides the organizing structure for any substantial design system. Not every section is mandatory in every product — the inner ontology of `# Semantic Systems` in particular is an optional organizing layer, not a forced extraction target.
 
-* Overview
-* Foundations
-* Components
+```
+YAML Registry              ← globally reusable tokens/scales/aliases/systems only
+# Overview
+# Foundations              (Colors, Typography, Spacing, Layout, Motion, Shapes, Elevation & Depth)
+# Semantic Systems         (optional — populate only when semantic concerns benefit from a dedicated home)
+# Components               (component-local interaction nuance permitted)
+# Interaction Rules        (global defaults: Hover, Focus, Disabled, Loading, Responsive Behavior)
+# Accessibility Rules
+# Cross-Cutting Rules
+# Technical Conventions    (narrowed — rendering, MDX, build/runtime, performance UX, animation-rendering)
 
-## Recommended Sections
+— Domain Extensions —      (first-class, after the spine)
+# Long-form Reading Layout
+# Editorial Composition
+# Project Detail Layout
+# About Layouts
+# Iteration Notes          (Open Decisions, Known Gaps)
+```
 
-These SHOULD exist when relevant:
+Domain extensions are first-class, not second-class. They encode legitimate domain knowledge the spine cannot — editorial composition, long-form reading flow, project detail composition, about-page layouts. The spine provides interoperability and shared vocabulary; domain extensions provide product-specific composition systems.
 
-* Layout & Composition
-* Accessibility
-* Technical Conventions
-* Do’s & Don’ts
-* Motion
-* Responsive Behavior
+## Semantic Systems Policy
 
-## Optional Specialized Sections
+`# Semantic Systems` is an optional organizing layer — not a mandatory destination for every semantic role table.
 
-These MAY exist depending on product type:
+Migrate a semantic table out of Foundations *only* when consolidation under Semantic Systems improves clarity (e.g., cross-foundation state semantics, surface hierarchy that references both colors and elevation). A semantic role table that reads well inside its parent Foundation (e.g., the Colors semantic-role table) may stay colocated.
 
-* Editorial Composition
-* Data Visualization
-* Commerce Patterns
-* Motion Systems
-* Dashboard Patterns
-* Long-form Reading Layout
-* Project Detail Layouts
-* About Layouts
-* Diagram Systems
-* Brand Expression
+**Anti-fragmentation rule:** if a semantic concern gains a dedicated canonical home under Semantic Systems, duplicate restatements elsewhere must collapse to references or be retained only as localized exceptions to the canonical mapping. Semantic truth must not fork across Foundations, Semantic Systems, and Components.
 
-Optional sections SHOULD only exist when they meaningfully describe reusable system behavior, composition rules, or domain-specific interaction patterns.
+## Interaction Rules Policy
+
+`# Interaction Rules` defines *shared behavioral baselines* (hover, focus, disabled, loading, responsive behavior) — global defaults only.
+
+Component sections SHOULD reference shared interaction baselines rather than restating them verbatim, unless local restatement materially improves clarity, scanability, accessibility emphasis, or exception handling. This keeps Interaction Rules as the canonical baseline while preserving component-local nuance where it genuinely aids comprehension.
+
+## Cross-Cutting Rules Policy
+
+`# Cross-Cutting Rules` is narrowly scoped: it contains only rules that genuinely span multiple foundations, components, or interaction contexts and cannot reasonably live in any single canonical home.
+
+Examples: "no shadows anywhere in v1," "all interactive elements meet 44×44px touch target," "no client-side syntax highlighting."
+
+Aesthetic preference lists and stylistic do/don’t bullets do not qualify unless they are operationally enforceable as system-wide constraints. This prevents Cross-Cutting Rules from becoming a Do’s & Don’ts dumping ground.
+
+## Technical Conventions Policy
+
+`# Technical Conventions` survives as a *narrowed implementation-policy section* covering rendering constraints, MDX conventions, build/runtime constraints affecting UX, performance-sensitive policy (LCP/FOUT, lazy loading), and animation-rendering constraints.
+
+It does not hold tokens (those belong in the YAML Registry) or component specs. Reduced-motion *behavioral* rules join Interaction Rules; reduced-motion *implementation policy* stays in Technical Conventions. Token-usage conventions move to Cross-Cutting Rules.
+
+## Domain Extension Sections Policy
+
+Domain extensions are first-class additions that appear after the canonical spine. They encode real domain knowledge that the spine cannot (editorial composition, long-form reading flow, project detail composition, about-page layouts).
+
+Domain extensions MUST:
+
+* primarily extend, specialize, or compose one or more canonical spine systems
+* appear after the canonical spine, not interleaved
+
+Domain extensions MUST NOT:
+
+* introduce a parallel taxonomy that fragments the spine
+* duplicate token values from the registry
 
 ---
 
@@ -539,13 +696,19 @@ Characteristics:
 * concise explanatory prose
 * implementation vocabulary permitted
 
+Foundations sections should remain implementation-agnostic unless explicitly defining technical conventions. Framework-specific setup code (imports, config boilerplate, framework initialization) belongs in Technical Conventions or implementation docs, not conceptual design foundations.
+
+Exception: implementation-policy decisions that materially affect UX or rendering behavior (e.g. font self-hosting for LCP/FOUT, build-time syntax highlighting) may appear in Foundations as a compact policy note — not as raw framework code.
+
 ---
 
-### Layout & Composition Sections
+### Foundations — Layout Subsections
 
 Mode:
 
 * architectural and compositional
+
+Applies to: `Foundations → Layout` (grid, containers, imagery) and `Interaction Rules → Responsive Behavior`.
 
 Characteristics:
 
@@ -603,7 +766,63 @@ Characteristics:
 
 ---
 
-# 2. Product-Type Extensions
+### Semantic Systems Sections
+
+Mode:
+
+* role-based, table-oriented
+
+Characteristics:
+
+* semantic mapping first — roles before values
+* minimal prose (the table carries primary load)
+* cross-references to Foundations rather than restating token values
+
+---
+
+### Interaction Rules Sections
+
+Mode:
+
+* declarative global defaults
+
+Characteristics:
+
+* affirmative behavioral rules (what happens, not what is forbidden)
+* cross-component baseline — not per-component nuance
+* component-specific deviations live in the component section, not here
+
+---
+
+### Cross-Cutting Rules Sections
+
+Mode:
+
+* system-wide constraints
+
+Characteristics:
+
+* operationally enforceable rules only
+* no aesthetic preferences unless they are architectural constraints
+* each rule must span multiple structural contexts to qualify
+
+---
+
+### Domain Extension Sections
+
+Mode:
+
+* compositional and editorial
+
+Characteristics:
+
+* references spine primitives by token name
+* product-specific composition narratives — not generic design-system rules
+* may introduce domain-specific structural conventions (reading grids, editorial hierarchies, page-specific layout logic)
+
+---
+
+# Product-Type Extensions
 
 ## Portfolio Extension
 
@@ -709,7 +928,7 @@ Preferred terminology:
 
 ---
 
-# 3. Project-Specific Schema
+# Project-Specific Schema
 
 ## Purpose
 
@@ -744,38 +963,45 @@ Project schemas MUST NOT:
 
 ## Portfolio Schema Example
 
-### Required Top-Level Sections
+### Canonical Spine (Required)
 
-```md
-1. Overview
-2. Foundations
-3. Layout & Composition
-4. Do's & Don'ts
-5. Components
-6. Accessibility
-7. Technical Conventions
-8. Iteration Notes
+```
+YAML Registry
+# Overview
+# Foundations              (Colors, Typography, Spacing, Layout, Motion, Shapes, Elevation & Depth)
+# Semantic Systems         (optional organizing layer)
+# Components
+# Interaction Rules        (Hover, Focus, Disabled, Loading, Responsive Behavior)
+# Accessibility Rules
+# Cross-Cutting Rules
+# Technical Conventions   (narrowed — rendering, MDX, build/runtime, performance UX, animation-rendering)
 ```
 
-### Required Portfolio-Specific Sections
+### Required Domain Extensions (Portfolio-Specific)
 
-```md
-- Long-form Reading Layout
-- Editorial Composition
-- Project Detail
-- About Layouts
+```
+# Long-form Reading Layout
+# Editorial Composition
+# Project Detail Layout
+# About Layouts
+# Iteration Notes          (Open Decisions, Known Gaps)
 ```
 
 ### Canonical Ordering
 
 Sections SHOULD appear in this order:
 
-1. identity/philosophy
-2. foundational primitives
-3. composition/layout
-4. reusable components
-5. technical constraints
-6. iteration notes
+1. YAML token registry
+2. identity/philosophy
+3. foundational primitives (colors, typography, spacing, motion, elevation)
+4. optional semantic organizing layer
+5. reusable components
+6. interaction baselines
+7. accessibility rules
+8. cross-cutting system constraints
+9. implementation infrastructure (Technical Conventions)
+10. domain-specific composition systems (extensions)
+11. iteration notes
 
 ---
 
@@ -821,7 +1047,5 @@ Agents MUST NOT:
 * duplicate sections across categories
 * introduce unnecessary hierarchy depth
 * move content into semantically unrelated sections
-
-
-
-
+* place page-specific implementation details inside foundational system sections — page-specific policy (e.g. a single page's image treatment) belongs near the component or layout section that owns the page context, not in global Foundations rules
+* place responsive infrastructure (breakpoints, viewport constraints, nav behavior thresholds) as isolated siblings to layout specs — these belong under `Interaction Rules → Responsive Behavior`
