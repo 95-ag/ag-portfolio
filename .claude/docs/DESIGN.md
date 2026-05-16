@@ -3,7 +3,64 @@
 > Visual specification for the portfolio defined in `PRODUCT.md`.
 > PRODUCT.md owns *what* and *why*. This document owns *how it looks*.
 > When the two disagree on a visual detail, this document wins.
-> Version 1.9
+> Version 2.0
+
+---
+
+```yaml
+# YAML Registry — globally reusable canonical tokens
+# Primitive token values only. For semantic meaning, role, and
+# usage constraints, see the Foundations section below.
+
+spacing:
+  xs:   4px
+  sm:   8px
+  md:   16px
+  lg:   24px
+  xl:   32px
+  2xl:  48px
+  3xl:  64px
+  4xl:  96px
+  5xl:  128px
+
+  gutter: 24px
+  margin-mobile: 16px
+  margin-desktop: 64px
+
+radius:
+  0px:  0px
+  sm:   4px
+  md:   8px
+  lg:   12px
+  pill: 9999px
+
+motion:
+  duration-fast: 150ms
+  duration-base: 200ms
+  duration-slow: 300ms
+  easing-standard: cubic-bezier(0.2, 0, 0, 1)
+  easing-emphasis: cubic-bezier(0.3, 0, 0, 1)
+
+breakpoints:
+  sm: 640px
+  md: 768px
+  lg: 1024px
+  xl: 1280px
+  2xl: 1536px
+
+z-index:
+  base: 0
+  raised: 10
+  sticky-content: 20
+  reading-progress: 30
+  scroll-to-top: 40
+  pill-nav: 50
+  mobile-menu-overlay: 55
+  mobile-menu-panel: 60
+  tooltip: 70
+  modal: 80
+  toast: 90
+```
 
 ---
 
@@ -134,23 +191,6 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 Strict 4px base. Used for padding, margins, gaps, and rhythm.
 
-```yaml
-spacing:
-  xs:   4px
-  sm:   8px
-  md:   16px
-  lg:   24px
-  xl:   32px
-  2xl:  48px
-  3xl:  64px
-  4xl:  96px
-  5xl:  128px
-
-  gutter: 24px
-  margin-mobile: 16px
-  margin-desktop: 64px
-```
-
 #### Density Rules
 
 - Major section gaps: `{spacing.3xl}` (64px) desktop, `{spacing.2xl}` (48px) mobile.
@@ -171,17 +211,6 @@ Four surface categories, each with a fixed radius:
 - **Floating controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark.
 
 `{radius.lg}` (12px) is reserved and unused in v1 — previously assigned to the headshot, now normalized to `{radius.md}`.
-
-#### Radius Scale
-
-```yaml
-radius:
-  0px:  0px
-  sm:   4px
-  md:   8px
-  lg:   12px
-  pill: 9999px
-```
 
 ### Elevation & Depth
 
@@ -241,15 +270,6 @@ Motion is calm, restrained, intentional. All transitions respect `prefers-reduce
 - `{motion.easing-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
 - `{motion.easing-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
 
-```yaml
-motion:
-  duration-fast: 150ms
-  duration-base: 200ms
-  duration-slow: 300ms
-  easing-standard: cubic-bezier(0.2, 0, 0, 1)
-  easing-emphasis: cubic-bezier(0.3, 0, 0, 1)
-```
-
 ---
 
 ## Layout & Composition
@@ -286,15 +306,6 @@ layout:
 - Five breakpoints covering phone through ultrawide.
 - `md` (768px) is the desktop/mobile dividing line — navigation switches between pill nav and slide-out menu at this boundary.
 - Minimum supported width is 375px. All layouts must work cleanly at this width.
-
-```yaml
-breakpoints:
-  sm: 640px
-  md: 768px
-  lg: 1024px
-  xl: 1280px
-  2xl: 1536px
-```
 
 #### Touch Targets
 
@@ -961,22 +972,21 @@ Beyond PRODUCT.md §10's general requirements:
 
 ### Z-Index Scale
 
-```yaml
-z-index:
-  base: 0
-  raised: 10              # raised cards, hover lifts (none in v1, reserved)
-  sticky-content: 20      # sticky sidebars, sticky table headers
-  reading-progress: 30
-  scroll-to-top: 40
-  pill-nav: 50
-  mobile-menu-overlay: 55
-  mobile-menu-panel: 60
-  tooltip: 70
-  modal: 80               # reserved
-  toast: 90               # reserved
-```
+Components must use z-index tokens, not raw numbers.
 
-Components must use these tokens, not raw numbers.
+| Token | Value | Usage |
+|---|---|---|
+| `base` | 0 | Default document flow |
+| `raised` | 10 | Reserved — raised cards, hover lifts (unused in v1) |
+| `sticky-content` | 20 | Sticky sidebars, sticky table headers, section progress nav |
+| `reading-progress` | 30 | Reading progress bar |
+| `scroll-to-top` | 40 | Scroll-to-top button |
+| `pill-nav` | 50 | Floating pill nav |
+| `mobile-menu-overlay` | 55 | Semi-opaque overlay behind mobile slide-out |
+| `mobile-menu-panel` | 60 | Mobile slide-out panel |
+| `tooltip` | 70 | Tooltip popups |
+| `modal` | 80 | Reserved |
+| `toast` | 90 | Reserved |
 
 ### Reduced Motion Rules
 
