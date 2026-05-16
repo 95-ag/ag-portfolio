@@ -13,11 +13,9 @@
 
 The portfolio combines the structural clarity of a technical journal with the precision of modern engineering interfaces. The visual language is editorial, systems-oriented, and restrained — designed to communicate technical credibility without relying on visual effects or trend-driven aesthetics.
 
-**The interface should feel:** calm, intentional, highly readable, technically sharp, professionally understated.
-
-**It should resemble:** a curated engineering case-study archive, a modern technical publication, a refined engineering workspace.
-
-**It should not resemble:** a startup marketing site, a hacker-terminal simulation, an experimental art portfolio, an Awwwards showcase.
+- **Feel:** calm, intentional, highly readable, technically sharp, professionally understated.
+- **Resemble:** a curated engineering case-study archive, a modern technical publication, a refined engineering workspace.
+- **Avoid:** a startup marketing site, a hacker-terminal simulation, an experimental art portfolio, an Awwwards showcase.
 
 ### Core Principles
 
@@ -30,7 +28,11 @@ The portfolio combines the structural clarity of a technical journal with the pr
 
 ### Things to Avoid
 
-Excessive gradients, heavy glow effects, glassmorphism (except the one carve-out in Foundations → Elevation & Depth → Backdrop-Blur Carve-out), animation-heavy interactions, scroll-jacking, parallax, dramatic reveal animations, decorative motion, dense unstructured layouts, image-heavy layouts without context, terminal/cyberpunk cosplay aesthetics (`SYSTEM_STATUS:`, `.exe`, `_underscore_NAMING` in copy), startup-SaaS visual tropes, playful UI systems.
+- Excessive gradients, heavy glow effects, glassmorphism (carve-out: Foundations → Elevation & Depth → Backdrop-Blur Carve-out).
+- Animation-heavy interactions, scroll-jacking, parallax, dramatic reveal animations, decorative motion.
+- Dense unstructured layouts, image-heavy layouts without supporting context.
+- Terminal/cyberpunk cosplay aesthetics (`SYSTEM_STATUS:`, `.exe`, `_underscore_NAMING` in copy).
+- Startup-SaaS visual tropes, playful UI systems.
 
 ---
 
@@ -81,34 +83,11 @@ Tokens are role-based. The same role has different hex values per theme to maint
 
 ### Typography
 
-#### Font Families
-
-Three families, all self-hosted via `next/font` for performance (no Google Fonts CDN request, eliminates FOUT, required to hit PRODUCT.md's LCP < 2.0s budget).
-
-```ts
-// app/fonts.ts
-import { Manrope, Inter, JetBrains_Mono } from 'next/font/google'
-
-export const manrope = Manrope({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-manrope',
-})
-export const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-export const mono = JetBrains_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-mono',
-})
-```
+Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
 
 - **Manrope** — display and headline.
 - **Inter** — body, UI, prose.
-- **JetBrains Mono** — metadata, tags, code, lightweight technical accents only. Never in long-form prose.
+- **JetBrains Mono** — structural metadata texture, not expressive typography.
 
 #### Semantic Token Table
 
@@ -139,36 +118,22 @@ export const mono = JetBrains_Mono({
 
 #### Prose Composition Rules
 
-MDX prose inside `.prose-content` maps heading levels to existing semantic tokens plus layout composition rules. No prose-only tokens are created.
+- MDX prose inside `.prose-content` maps heading levels to existing semantic tokens and layout composition rules.
+- No prose-only tokens are created.
 
 | Element | Semantic token | Composition additions |
 |---|---|---|
-| `h2` | `mono-anchor` values | `border-bottom: 1px solid outline-variant`, `padding-bottom: spacing-md`, `margin-top: spacing-3xl`, `margin-bottom: spacing-lg` |
-| `h3` | `heading-component` values | `margin-top: spacing-2xl`, `margin-bottom: spacing-sm` |
-| `h4` | `heading-narrative` values | `margin-top: spacing-xl`, `margin-bottom: spacing-xs` |
+| `h2` | `mono-anchor` values | `border-bottom: 1px solid {outline-variant}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.lg}` |
+| `h3` | `heading-component` values | `margin-top: {spacing.2xl}`, `margin-bottom: {spacing.sm}` |
+| `h4` | `heading-narrative` values | `margin-top: {spacing.xl}`, `margin-bottom: {spacing.xs}` |
 | `p`, `li` | `body-primary` values (18px) | — |
-| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid accent`, `background: surface-raised`, `padding: spacing-md spacing-lg`, `margin-vertical: spacing-lg` |
+| `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid {accent}`, `background: {surface-raised}`, `padding: {spacing.md} {spacing.lg}`, `margin-vertical: {spacing.lg}` |
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
-| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid outline-variant`, padding |
-| `td` | `body-caption` values | `border-bottom: 1px solid outline-hair`, padding |
-| `code` (inline) | `mono-code` values | `background: surface-sunken`, `padding: 2px 6px`, `border-radius: radius-sm` |
-| `pre code` | `mono-code` values | `border: 1px solid outline-variant`, `background: surface-sunken`, full block padding, 0px radius |
+| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid {outline-variant}`, padding |
+| `td` | `body-caption` values | `border-bottom: 1px solid {outline-hair}`, padding |
+| `code` (inline) | `mono-code` values | `background: {surface-sunken}`, `padding: 2px 6px`, `border-radius: {radius.sm}` |
+| `pre code` | `mono-code` values | `border: 1px solid {outline-variant}`, `background: {surface-sunken}`, full block padding, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
-
-#### Mono Usage Rules
-
-JetBrains Mono is used for **structural metadata only** — visual texture, not prose. Permitted:
-- Tags / chips on cards and project sidebars
-- Card numbering (`001`, `002`) in corners
-- Timestamps and version labels
-- Status pills and section eyebrows
-- Inline code and code blocks
-
-Not permitted:
-- Body copy in mono
-- Headlines in mono
-- Decorative `_underscore_NAMING` or `.EXE` styling
-- `SYSTEM_STATUS:` prefixes in prose
 
 ### Spacing
 
@@ -195,50 +160,64 @@ spacing:
 
 #### Density Rules
 
-Minimum spacing between major page sections: **`3xl` (64px)** desktop, **`2xl` (48px)** mobile. Within sections, paragraphs separated by `md` (16px); list items by `sm` (8px). Cards internal padding: `lg` (24px).
+- Major section gaps: `{spacing.3xl}` (64px) desktop, `{spacing.2xl}` (48px) mobile.
+- Paragraph separation: `{spacing.md}` (16px). List item separation: `{spacing.sm}` (8px).
+- Card internal padding: `{spacing.lg}` (24px).
 
-This is the only density rule. Whitespace beyond these minimums is intentional, not arbitrary.
+Whitespace beyond these minimums is intentional, not arbitrary.
 
 ### Shapes
+
+#### Structural vs Interactive vs Media Surfaces
+
+Four surface categories, each with a fixed radius:
+
+- **Structural containers** — 0px (sharp). Cards, code blocks, callouts. Architectural, no softening.
+- **Interactive controls** — `{radius.sm}` (4px). Tags, chips, buttons, inline code. Minimum radius to read as a control.
+- **Media surfaces** — `{radius.md}` (8px). Headshot, hero images, figures, diagrams, highlights.
+- **Floating controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark.
+
+`{radius.lg}` (12px) is reserved and unused in v1 — previously assigned to the headshot, now normalized to `{radius.md}`.
 
 #### Radius Scale
 
 ```yaml
 radius:
-  0px:  structural containers — cards, code blocks, callouts (architectural / no radius)
-  sm: 4px      # interactive controls — tags, chips, buttons, inline code
-  md: 8px      # media surfaces — headshot, hero images, figures, diagrams, highlights
-  lg: 12px     # unused in v1 (reserved; was headshot — now normalized to md)
-  pill: 9999px # floating/nav controls — pill nav, mobile trigger, theme toggle, scroll-to-top, logomark
+  0px:  0px
+  sm:   4px
+  md:   8px
+  lg:   12px
+  pill: 9999px
 ```
-
-#### Structural vs Interactive vs Media Surfaces
-
-The vocabulary is intentional: structural containers are sharp (0px), interactive controls have the minimum radius (4px) to read as controls, and all media/image surfaces normalize to 8px. Floating controls use pill.
 
 ### Elevation & Depth
 
-Depth is communicated through tonal layering and subtle borders. **No shadows.** No glow effects. No glassmorphism — except the blur carve-out below.
+Depth is communicated through tonal layering and subtle borders.
+No shadows, glow effects, or glassmorphism (except the blur carve-out below).
 
 #### Elevation Levels
+
+Six levels, each defined by border and surface treatment only.
 
 | Level | Treatment | Components |
 |---|---|---|
 | **0 — Flat** | No border, no fill | Page sections, hero regions, all About sections, Home CTA, Work index, footer |
 | **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
-| **2 — Border + blur** | `1px solid outline-variant` + `backdrop-blur-[12px]` + `bg surface-nav` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
-| **3 — Border + raised** | `1px solid outline-variant` + `bg surface-raised` | Project cards (all variants), `<Highlight>` editorial pull-quote |
-| **4 — Border + sunken** | `1px solid outline-variant` + `bg surface-sunken` | `<CodeBlock>`, prose inline `<code>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
-| **5 — Accent left border + raised** | `2px solid accent` (left only) + `bg surface-raised` | `<Callout>`, prose `<blockquote>` |
+| **2 — Border + blur** | `1px solid outline-variant` + `backdrop-filter: blur(12px)` + `surface: {surface-nav}` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
+| **3 — Border + raised** | `1px solid outline-variant` + `surface: {surface-raised}` | Project cards (all variants), `<Highlight>` editorial pull-quote |
+| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, prose inline `<code>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
+| **5 — Accent left border + raised** | `2px solid {accent}` (left only) + `surface: {surface-raised}` | `<Callout>`, prose `<blockquote>` |
 
 #### Backdrop-Blur Carve-out
 
-Floating nav and utility UI are the only surfaces permitted to use `backdrop-filter`. Reason: they float above arbitrary content and need to remain legible against any background. All use `surface-nav` — do not substitute `surface-overlay` or `surface-overlay-panel`.
+- Only floating nav and utility UI may use `backdrop-filter`.
+- All blur surfaces use `{surface-nav}`.
+- These surfaces float above arbitrary content and must remain legible against any background.
 
 ```yaml
 blur-ui:
-  background: surface-nav    # ~85% opacity — see Foundations → Colors → Semantic Roles
-  backdropFilter: blur(12px)
+  surface: surface-nav
+  backdrop-filter: blur(12px)
   border: 1px solid outline-variant
 
 applies-to:
@@ -258,30 +237,25 @@ Shadows are not used in v1. The `<Highlight>` shadow carve-out that previously e
 
 Motion is calm, restrained, intentional. All transitions respect `prefers-reduced-motion`.
 
+- **Permitted:** opacity transitions, small transforms (≤4px translate, ≤2% scale), color transitions (border, background, text), slide-in for the mobile menu, slow pulse on the Hire Me CTA icon (see Components → Actions & Interactive → Hire Me CTA Pulse).
+- **Prohibited:** scroll-jacking, parallax, per-section entrance animations on scroll, continuous ambient motion, cursor-tracking effects, page-load reveal sequences.
+
+#### Duration & Easing
+
+- `{motion.duration-fast}` (150ms) — hover states, button presses.
+- `{motion.duration-base}` (200ms) — nav transitions, fades.
+- `{motion.duration-slow}` (300ms) — slide-out menu, larger reveals.
+- `{motion.easing-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
+- `{motion.easing-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
+
 ```yaml
 motion:
-  duration-fast: 150ms       # hover states, button presses
-  duration-base: 200ms       # nav transitions, fades
-  duration-slow: 300ms       # slide-out menu, larger reveals
+  duration-fast: 150ms
+  duration-base: 200ms
+  duration-slow: 300ms
   easing-standard: cubic-bezier(0.2, 0, 0, 1)
   easing-emphasis: cubic-bezier(0.3, 0, 0, 1)
 ```
-
-#### Permitted Motion
-
-- Opacity transitions (fade in/out).
-- Small transforms (≤4px translate, ≤2% scale).
-- Color transitions (border, background, text).
-- Slide-in for the mobile menu.
-- Slow pulse on the Hire Me CTA icon (see Components → Actions & Interactive → Hire Me CTA Pulse).
-
-#### Prohibited Motion
-
-- Scroll-jacking, parallax.
-- Per-section entrance animations on scroll.
-- Continuous ambient motion.
-- Cursor-tracking effects.
-- Page-load reveal sequences.
 
 ---
 
