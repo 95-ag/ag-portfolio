@@ -3,6 +3,7 @@
 > Visual specification for the portfolio defined in `PRODUCT.md`.
 > PRODUCT.md owns *what* and *why*. This document owns *how it looks*.
 > When the two disagree on a visual detail, this document wins.
+> Version 1.9
 
 ---
 
@@ -943,8 +944,6 @@ about-two-col:
 
 ### Footer
 
-#### Footer
-
 ```yaml
 footer:
   marginTop: spacing-4xl
@@ -1026,3 +1025,7 @@ Components must use these tokens, not raw numbers.
 2. **`accent-hover` token** — v1 uses `opacity: 0.9` on hover for primary buttons. If this looks muddy in practice, define a dedicated darker/lighter accent variant per theme.
 
 ### Known Gaps
+
+- `Do's & Don'ts` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
+- `Responsive Behavior → Touch Targets` and `Responsive Behavior → Collapsing Strategy` are empty headings with no content.
+- `Technical Conventions → Reduced Motion Rules` and `Technical Conventions → Token Usage Conventions` are empty headings with no content.
