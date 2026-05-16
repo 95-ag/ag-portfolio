@@ -961,7 +961,20 @@ about-two-col:
 
 #### Touch Targets
 
+- Minimum 44×44px tappable area for all interactive elements on mobile — enforced even when visual size is smaller.
+- Visual size and tappable area are distinct: icon buttons use transparent padding to reach the 44px target without enlarging the visual footprint.
+- Pill nav items, mobile menu trigger, and scroll-to-top button all meet the 44px minimum through padding, not by increasing icon or label size.
+- Footer links and inline editorial links prioritize reading-flow spacing over individual target inflation — vertical rhythm provides sufficient separation at comfortable reading densities.
+- Dense editorial UI (tag chips, back-links, metadata rows) relies on spatial separation rather than individual target inflation — do not introduce outsized tap areas that break layout rhythm.
+
 #### Collapsing Strategy
+
+- **Pill nav → mobile slide-out:** at `md` (768px), the pill nav gives way to a hamburger trigger and a full-height slide-out panel. The two navigation surfaces do not coexist.
+- **Project-detail progress nav:** visible on desktop as a sticky sidebar element; hidden entirely on mobile — no collapsed or accordion variant. Reading progress is conveyed by scroll position alone.
+- **Editorial two-column → single-column:** project detail and About layouts that use a two-column reading grid collapse to a single content column on mobile. Sidebar metadata stacks above or below the primary content column, never alongside it.
+- **Metadata stacking:** tag chips, timestamps, and role/tech metadata wrap within their container — no horizontal scroll for standard metadata rows. Flex-wrap is the default; grid reflow is used only where alignment is load-bearing.
+- **Wrap vs scroll vs stack:** wrapping is preferred for chips and metadata; vertical stacking is preferred for structured content groups; horizontal scroll is reserved for overflow contexts where truncation would lose information.
+- **Long-form reading on mobile:** the reading column reaches full viewport width at mobile sizes. Line length is managed by the tier-specific gutter defined in `Foundations → Layout → Grid & Containers`, not by constraining `max-width`. Reading rhythm is preserved over compact density.
 
 ---
 
@@ -979,7 +992,23 @@ about-two-col:
 
 ### Do
 
+- Use tonal layering before elevation — surface fills and tonal borders communicate depth; elevation levels are a last resort.
+- Keep structural containers sharp (`0px` radius). Cards, code blocks, and callouts are architectural, not decorative.
+- Use the accent color sparingly and intentionally — one high-signal moment per surface.
+- Let typography establish hierarchy before introducing stronger surfaces or borders.
+- Keep motion subtle and secondary to reading flow — transitions serve state, not spectacle.
+- Use mono typography for metadata and structure only: tags, card numbers, timestamps, status pills, code.
+- Preserve long-form readability above dense visual composition — editorial flow wins.
+
 ### Don't
+
+- Don't introduce `backdrop-filter` outside floating navigation surfaces (pill nav, mobile nav panel, scroll-to-top).
+- Don't use shadows to imply depth — tonal layering is the only elevation mechanism in v1.
+- Don't use oversized hero imagery without contextual framing — images serve editorial narrative, not decoration.
+- Don't use mono typography in body copy, headlines, or prose.
+- Don't create decorative motion or scroll-driven effects — no parallax, no per-section entrance sequences.
+- Don't add new accent colors for emphasis — the single accent token is the system boundary.
+- Don't treat cards as floating objects — they are flat editorial surfaces, not visually lifted panels.
 
 ---
 
@@ -1003,10 +1032,6 @@ Components must use z-index tokens, not raw numbers.
 | `modal` | 80 | Reserved |
 | `toast` | 90 | Reserved |
 
-### Reduced Motion Rules
-
-### Token Usage Conventions
-
 ---
 
 ## Iteration Notes
@@ -1018,7 +1043,4 @@ Components must use z-index tokens, not raw numbers.
 
 ### Known Gaps
 
-- `Cross-Cutting Rules` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
-- `Interaction Rules → Responsive Behavior → Touch Targets` and `→ Collapsing Strategy` are empty headings with no content.
-- `Technical Conventions → Reduced Motion Rules` and `→ Token Usage Conventions` are empty headings with no content.
 - `Foundations → Layout → Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
