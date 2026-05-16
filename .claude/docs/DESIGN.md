@@ -254,22 +254,10 @@ motion:
 
 ## Layout & Composition
 
-### Breakpoints
-
-Restated from PRODUCT.md for self-containment.
-
-```yaml
-breakpoints:
-  sm: 640px      # large phone / small tablet portrait
-  md: 768px      # tablet portrait
-  lg: 1024px     # tablet landscape / small desktop
-  xl: 1280px     # desktop
-  2xl: 1536px    # large desktop / ultrawide cap
-```
-
-`md` is the desktop/mobile dividing line for navigation behavior (pill ↔ slide-out). All layouts must work cleanly at 375px width.
-
 ### Grid & Containers
+
+- Three-tier responsive grid: 12 columns on desktop, 8 on tablet, 4 on mobile.
+- Content is capped at `1200px` max-width with tier-specific gutters and side margins.
 
 ```yaml
 layout:
@@ -293,6 +281,21 @@ layout:
 
 ### Responsive Behavior
 
+#### Breakpoints
+
+- Five breakpoints covering phone through ultrawide.
+- `md` (768px) is the desktop/mobile dividing line — navigation switches between pill nav and slide-out menu at this boundary.
+- Minimum supported width is 375px. All layouts must work cleanly at this width.
+
+```yaml
+breakpoints:
+  sm: 640px
+  md: 768px
+  lg: 1024px
+  xl: 1280px
+  2xl: 1536px
+```
+
 #### Touch Targets
 
 #### Collapsing Strategy
@@ -305,17 +308,14 @@ Long-form pages constrain reading width to `~680px` (roughly 65–70 characters 
 
 ### Imagery
 
-#### Photography Treatment
+**Photography**
+- Imagery supports understanding — never decorative, never dominant.
+- Treatment: monochrome or muted, restrained saturation, structured framing, editorial composition.
+- Avoid: stock imagery, oversaturated visuals, oversized hero images without supporting context, image-heavy sections with weak structure.
 
-Imagery supports understanding, never dominates. Project hero images and the About headshot are intentional, not decorative.
-
-**Treatment:** monochrome or muted, restrained saturation, structured framing, editorial composition. The About headshot is black & white per PRODUCT.md §7.4.
-
-**Avoid:** stock imagery, oversaturated visuals, oversized hero images without supporting context, image-heavy sections with weak structure.
-
-#### Diagram Rules
-
-**Diagrams** in project deep dives must be production-quality and visually consistent. Tooling (Excalidraw / Mermaid / tldraw / hand-drawn) is decided once and used uniformly across all projects — see PRODUCT.md open question.
+**Diagrams**
+- Diagrams in project deep dives must be production-quality and visually consistent.
+- Tooling is decided once and applied uniformly across all projects.
 
 ---
 
@@ -996,3 +996,4 @@ Components must use these tokens, not raw numbers.
 - `Do's & Don'ts` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
 - `Responsive Behavior → Touch Targets` and `Responsive Behavior → Collapsing Strategy` are empty headings with no content.
 - `Technical Conventions → Reduced Motion Rules` and `Technical Conventions → Token Usage Conventions` are empty headings with no content.
+- `Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
