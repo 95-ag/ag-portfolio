@@ -6,8 +6,8 @@ Run these checks after producing the rewritten document, before reporting done. 
 
 ## Structural
 
-- Canonical top-level ordering preserved: `YAML Registry → Overview → Foundations → [Semantic Systems] → Components → Interaction Rules → Accessibility Rules → Cross-Cutting Rules → Technical Conventions → [Domain Extensions] → Iteration Notes`. Bracketed entries are optional or extension-position.
-- All required portfolio spine sections present (YAML Registry, Overview, Foundations, Components, Interaction Rules, Accessibility Rules, Cross-Cutting Rules). Domain extensions (Long-form Reading Layout, Editorial Composition, Project Detail Layout, About Layouts) appear after the spine.
+- Canonical top-level ordering preserved: `YAML Registry → Overview → Foundations → [Semantic Systems] → Components → Domain Components → Interaction Rules → Accessibility Rules → Cross-Cutting Rules → Technical Conventions → Iteration Notes`. Bracketed entries are optional.
+- All required portfolio spine sections present (YAML Registry, Overview, Foundations, Components, Domain Components, Interaction Rules, Accessibility Rules, Cross-Cutting Rules). Domain Components contains `Project Detail` and `About Layouts`.
 - No heading deeper than H4.
 - No duplicate section titles within the same parent.
 
@@ -28,10 +28,11 @@ Run these checks after producing the rewritten document, before reporting done. 
 - Global hover/focus/disabled/loading/responsive *defaults* are consolidated under `# Interaction Rules`. Flag duplication of defaults across multiple locations.
 - Component-local interaction nuances (deviations from or specializations of the baseline) may live with the component. Do not flag component-local nuance as a duplication violation.
 
-## Domain Extensions
+## Domain Components
 
-- Domain extensions appear strictly after the canonical spine — not interleaved between canonical sections.
-- Each domain extension SHOULD primarily extend, specialize, or compose one or more canonical spine systems. Domain extensions that function as compositional overlays or editorial orchestration systems spanning multiple canonical foundations are valid; a strict one-to-one parent relationship is not required.
+- `## Domain Components` appears between `## Components` and `## Interaction Rules` — not at the end of the document.
+- Each domain component SHOULD primarily compose, specialize, or extend one or more canonical spine systems, and MAY assume a specific page context or content schema.
+- Domain Components MUST NOT contain globally reusable UI systems — those belong in `## Components`.
 
 ## Technical Conventions Scope
 

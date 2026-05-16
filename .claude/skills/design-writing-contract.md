@@ -600,21 +600,19 @@ YAML Registry              ← globally reusable tokens/scales/aliases/systems o
 # Overview
 # Foundations              (Colors, Typography, Spacing, Layout, Motion, Shapes, Elevation & Depth)
 # Semantic Systems         (optional — populate only when semantic concerns benefit from a dedicated home)
-# Components               (component-local interaction nuance permitted)
+# Components               ← reusable / portable UI systems
+# Domain Components        ← page/domain-bound compositions and layouts
 # Interaction Rules        (global defaults: Hover, Focus, Disabled, Loading, Responsive Behavior)
 # Accessibility Rules
 # Cross-Cutting Rules
 # Technical Conventions    (narrowed — rendering, MDX, build/runtime, performance UX, animation-rendering)
-
-— Domain Extensions —      (first-class, after the spine)
-# Long-form Reading Layout
-# Editorial Composition
-# Project Detail Layout
-# About Layouts
 # Iteration Notes          (Open Decisions, Known Gaps)
 ```
 
-Domain extensions are first-class, not second-class. They encode legitimate domain knowledge the spine cannot — editorial composition, long-form reading flow, project detail composition, about-page layouts. The spine provides interoperability and shared vocabulary; domain extensions provide product-specific composition systems.
+**Components vs Domain Components:**
+
+- **Components** — reusable, portable UI systems with no page-specific assumptions. MUST NOT assume a route, schema, or editorial purpose.
+- **Domain Components** — page- or domain-bound compositions that orchestrate Components and Foundations into product surfaces. MAY assume a specific page context, content schema, or editorial purpose.
 
 ## Semantic Systems Policy
 
@@ -644,19 +642,20 @@ Aesthetic preference lists and stylistic do/don’t bullets do not qualify unles
 
 It does not hold tokens (those belong in the YAML Registry) or component specs. Reduced-motion *behavioral* rules join Interaction Rules; reduced-motion *implementation policy* stays in Technical Conventions. Token-usage conventions move to Cross-Cutting Rules.
 
-## Domain Extension Sections Policy
+## Domain Components Policy
 
-Domain extensions are first-class additions that appear after the canonical spine. They encode real domain knowledge that the spine cannot (editorial composition, long-form reading flow, project detail composition, about-page layouts).
+`# Domain Components` is a first-class spine section placed immediately after `# Components`. It holds page- and domain-bound composition systems that orchestrate Components and Foundations into product surfaces.
 
-Domain extensions MUST:
+Domain Components MUST:
 
-* primarily extend, specialize, or compose one or more canonical spine systems
-* appear after the canonical spine, not interleaved
+* primarily compose, specialize, or extend one or more canonical spine systems
+* assume a specific page context, content schema, or editorial purpose
 
-Domain extensions MUST NOT:
+Domain Components MUST NOT:
 
 * introduce a parallel taxonomy that fragments the spine
 * duplicate token values from the registry
+* contain globally reusable components (those belong in `# Components`)
 
 ---
 
@@ -808,7 +807,7 @@ Characteristics:
 
 ---
 
-### Domain Extension Sections
+### Domain Component Sections
 
 Mode:
 
@@ -816,9 +815,10 @@ Mode:
 
 Characteristics:
 
-* references spine primitives by token name
+* assumes a specific page context, content schema, or editorial purpose
+* references spine primitives (Components, Foundations) by token name
 * product-specific composition narratives — not generic design-system rules
-* may introduce domain-specific structural conventions (reading grids, editorial hierarchies, page-specific layout logic)
+* may introduce page-specific structural conventions (reading grids, editorial hierarchies, layout logic)
 
 ---
 
@@ -970,21 +970,21 @@ YAML Registry
 # Overview
 # Foundations              (Colors, Typography, Spacing, Layout, Motion, Shapes, Elevation & Depth)
 # Semantic Systems         (optional organizing layer)
-# Components
+# Components               ← reusable / portable UI systems
+# Domain Components        ← page/domain-bound compositions
 # Interaction Rules        (Hover, Focus, Disabled, Loading, Responsive Behavior)
 # Accessibility Rules
 # Cross-Cutting Rules
 # Technical Conventions   (narrowed — rendering, MDX, build/runtime, performance UX, animation-rendering)
-```
-
-### Required Domain Extensions (Portfolio-Specific)
-
-```
-# Long-form Reading Layout
-# Editorial Composition
-# Project Detail Layout
-# About Layouts
 # Iteration Notes          (Open Decisions, Known Gaps)
+```
+
+### Required Domain Components (Portfolio-Specific)
+
+```
+# Domain Components
+  ## Project Detail
+  ## About Layouts
 ```
 
 ### Canonical Ordering
@@ -996,11 +996,11 @@ Sections SHOULD appear in this order:
 3. foundational primitives (colors, typography, spacing, motion, elevation)
 4. optional semantic organizing layer
 5. reusable components
-6. interaction baselines
-7. accessibility rules
-8. cross-cutting system constraints
-9. implementation infrastructure (Technical Conventions)
-10. domain-specific composition systems (extensions)
+6. page/domain-bound compositions (Domain Components)
+7. interaction baselines
+8. accessibility rules
+9. cross-cutting system constraints
+10. implementation infrastructure (Technical Conventions)
 11. iteration notes
 
 ---

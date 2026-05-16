@@ -39,7 +39,7 @@ Combined passes must segment the manifest with `--- PASS: name ---` dividers so 
 Reordering must comply with the portfolio schema's canonical order:
 
 ```
-YAML Registry → Overview → Foundations → [Semantic Systems] → Components → Interaction Rules → Accessibility Rules → Cross-Cutting Rules → Technical Conventions → [Domain Extensions] → Iteration Notes
+YAML Registry → Overview → Foundations → [Semantic Systems] → Components → Domain Components → Interaction Rules → Accessibility Rules → Cross-Cutting Rules → Technical Conventions → Iteration Notes
 ```
 
 Sections in `[brackets]` are optional or extension-position entries — their absence is not a violation. Reordering that places a section outside this sequence is rejected; the model surfaces the conflict and asks the user to decide.

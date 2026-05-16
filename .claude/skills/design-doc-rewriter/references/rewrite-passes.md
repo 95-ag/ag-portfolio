@@ -45,7 +45,7 @@ Use these exact entry types across all passes. Keep each entry to one line.
 | `NOTED` | Observation outside the pass scope — no action taken |
 | `MIGRATED-LAYER` | YAML block extracted from markdown body into the top-level registry |
 | `RECLASSIFIED` | Content moved between canonical buckets (e.g., Foundations → Semantic Systems) |
-| `DEMOTED-TO-EXTENSION` | Formerly canonical section relocated to domain extension position |
+| `RELOCATED-TO-DOMAIN-COMPONENT` | Section relocated to `## Domain Components` (page/domain-bound, not globally reusable) |
 | `KEPT-LOCAL` | Content evaluated for hoisting but retained colocated (locality principle applied) |
 
 **`PLACEHOLDER` vs `FLAGGED`:** Use `PLACEHOLDER` exclusively for empty headings. Use `FLAGGED` for headings or sections that have content but may be duplicative or misplaced. Never conflate the two.
@@ -133,7 +133,7 @@ Scope: document-wide. Operates across all section boundaries simultaneously.
 What changes:
 - Globally reusable canonical tokens extracted into a top-of-document YAML Registry (see *Canonical Does Not Mean Centralized* in the contract).
 - Sections relocated to new spine positions per an approved migration mapping table.
-- Formerly canonical sections that become domain extensions are repositioned after the spine.
+- Sections reclassified as Domain Components are relocated to `## Domain Components`, placed between `## Components` and `## Interaction Rules`.
 
 What does NOT change:
 - Token names and values — preserved verbatim (Tokens Are Sacred still applies).
