@@ -145,22 +145,23 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**DESIGN.md doc cleanup and architectural restructure — 5 commits.**
+**DESIGN.md doc cleanup and section population — 6 commits.**
 
-1. `3dbebf7` — post-Foundations component cleanup pass: all component sections after Foundations normalized to identity sentence → semantic bullets → YAML spec; semantic YAML comments lifted to prose; stale cross-doc citations removed.
-2. `930cfbc` — introduced `## Domain Components` section; moved Project Detail, About Layouts, Prose Layout, Editorial Two-column into it; deleted stale Long-form Reading Layout and empty Editorial Composition sections.
+1. `3dbebf7` — post-Foundations component cleanup pass.
+2. `930cfbc` — introduced `## Domain Components`; moved Project Detail and About Layouts into it.
 3. `ec539fb` — updated writing contract and rewriter skills for Domain Components taxonomy.
-4. `408a5c3` — committed file-protect hook change.
+4. `408a5c3` — file-protect hook update.
+5. `bc0d189` — populated Cross-Cutting Rules (Do/Don't), Touch Targets, Collapsing Strategy; removed empty Reduced Motion Rules and Token Usage Conventions headings; cleared all related Known Gaps entries.
 
 **DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid
 - **Foundations** — Colors, Typography, Spacing, Shapes, Elevation & Depth, Motion & Interaction, Layout
 - **Components** — Navigation, Actions & Interactive, Content Surfaces, Footer
 - **Domain Components** — Project Detail (Layout, Header, Progress Nav, Section Label, Prose Layout, Editorial Two-column), About Layouts (Two-panel Intro, Two-column Structured)
-- **Interaction Rules** — Responsive Behavior *(Touch Targets, Collapsing Strategy empty)*
+- **Interaction Rules** — Responsive Behavior (Breakpoints, Touch Targets, Collapsing Strategy)
 - **Accessibility Rules**
-- **Cross-Cutting Rules** *(Do/Don't empty)*
-- **Technical Conventions** — Z-Index Scale *(Reduced Motion Rules, Token Usage Conventions empty)*
+- **Cross-Cutting Rules** — Do / Don't
+- **Technical Conventions** — Z-Index Scale
 - **Iteration Notes** — Open Decisions, Known Gaps
 
 ---
@@ -171,8 +172,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 2. **Home page v1 spec items:**
    - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
    - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
-3. **doc-maintainer passes** — fill empty placeholder sections (Cross-Cutting Rules, Interaction Rules → Touch Targets / Collapsing Strategy, Technical Conventions → Reduced Motion / Token Usage Conventions)
-4. **Merge to main** when phase-5 polish is complete
+3. **Merge to main** when phase-5 polish is complete
 5. **Content** — placeholder MDX files need real content
 
 ---
