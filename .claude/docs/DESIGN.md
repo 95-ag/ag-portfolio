@@ -691,7 +691,133 @@ callout-title:
   marginBottom: spacing-sm
 ```
 
-### Editorial & Prose
+### Footer
+
+Single-row page footer with copyright copy, a social icon, and branding text; no theme toggle.
+
+- Copyright: separators dimmed to 50% opacity; name at full `on-surface`; repo link label underlined.
+- No top border; top separation comes from content margin above.
+
+```yaml
+footer:
+  marginTop: spacing-4xl
+  paddingVertical: spacing-lg
+  paddingHorizontal: same as page side-margins
+  borderTop: none
+
+  layout: flex-row, space-between, align-center — single row at all viewport sizes
+
+copyright-format:
+  type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
+  color: on-surface-muted
+  opacity-spans:                      # "© {year} /" and "/" separators
+    opacity: 0.50
+  name-span:                          # "<name>"
+    color: on-surface
+  repo-link:                          # "Designed & developed by me."
+    underline: yes, underline-offset 2px
+    hover: on-surface
+
+social-icon:
+  size: 20px
+  color: on-surface
+  hover:
+    color: accent
+    scale: 1.1
+    transition: all 150ms
+```
+
+## Domain Components
+
+Page- and domain-bound composition systems that orchestrate Components and Foundations into product surfaces; assume a specific page context, content schema, or editorial purpose.
+
+### Project Detail
+
+#### Project Detail Layout
+
+Single-column editorial layout optimized for long-form project reading; no sidebar at any breakpoint.
+
+- Content sections render in fixed order: header → hero → overview → tech stack → MDX body → backlink.
+
+```yaml
+project-detail:
+  maxWidth: 960px
+  margin: 0 auto
+
+  sections-in-order:
+    - project-header      # tags, title, subtitle, links row
+    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
+    - overview            # editorial-dl layout (see below)
+    - tech-stack          # editorial-dl layout under a prose-h2
+    - mdx-deep-dive       # MDX body
+    - backlink            # "← Back to Work"
+```
+
+#### Project Header
+
+Page header for a project detail page; communicates project identity, tags, and links before the hero media.
+
+- Vertical stack: tags row → display title → optional subtitle → optional links row.
+- Links row renders only when the project has external links.
+
+```yaml
+project-header:
+  layout: flex-col, gap lg
+
+  tags-row:
+    Tag chips (canonical treatment), gap xs
+
+  title:
+    type: display-primary
+
+  subtitle:                           # optional
+    type: body-secondary
+    color: on-surface-muted
+
+  links-row:                          # optional, renders if links exist
+    layout: flex-wrap, gap lg
+    link:
+      type: interactive-label, font-semibold
+      padding: spacing-xs spacing-sm
+      borderRadius: sm
+      hover:
+        background: accent-muted
+        color: accent
+        external-icon: translate-x 2px
+      active: opacity 0.70
+```
+
+#### Section Progress Nav
+
+Desktop-only sticky TOC derived from H2 headings in the MDX body; highlights the active section as the user scrolls.
+
+- Fixed to the right side of the viewport; hidden below `md` breakpoint.
+- Appears after the hero scrolls out of view.
+
+```yaml
+section-progress-nav:
+  position: fixed, right side of viewport
+  visible: desktop only (hidden < md)
+  appears: after hero scrolls out of view
+  behavior: highlights active section as user scrolls
+  zIndex: sticky-content (20)
+```
+
+#### Project Section Label
+
+Architectural divider separating the overview block from the MDX body on project detail pages; emitted by the page template, not authored in MDX.
+
+- Section content begins below the label, separated by `spacing-xl`.
+
+```yaml
+project-section-label:
+  borderTop: 1px solid outline-variant
+  paddingTop: spacing-lg
+  label:
+    type: mono-label
+    color: on-surface-muted
+    opacity: 0.40
+```
 
 #### Prose (MDX Deep-dive) Layout
 
@@ -749,40 +875,76 @@ editorial-dl:
     margin: 0
 ```
 
-### Footer
+### About Layouts
 
-Single-row page footer with copyright copy, a social icon, and branding text; no theme toggle.
+#### About — Two-panel Intro
 
-- Copyright: separators dimmed to 50% opacity; name at full `on-surface`; repo link label underlined.
-- No top border; top separation comes from content margin above.
+Two-column intro layout for the About page; headshot panel beside intro copy and philosophy text on desktop.
+
+- Headshot stretches to fill both the intro and adjacent philosophy section via CSS grid row span — image uses `object-fit: cover` at `height: 100%`.
+- Image renders in black and white (`grayscale(100%)`).
+- On mobile: stacked single column, headshot at 4:5 aspect ratio.
 
 ```yaml
-footer:
-  marginTop: spacing-4xl
-  paddingVertical: spacing-lg
-  paddingHorizontal: same as page side-margins
-  borderTop: none
+about-intro:
+  desktop (>= lg):
+    display: grid
+    grid-template-columns: 5fr 7fr
+    gap: xl
+    align-items: stretch
+    
+    headshot-panel:
+      gridColumn: 1
+      height: 100%
+      borderRadius: md
+      filter: grayscale(100%)
+      objectFit: cover
+    
+    content-panel:
+      gridColumn: 2
+      # contains intro copy + philosophy section in a vertical stack
+  
+  mobile (< lg):
+    display: flex
+    flexDirection: column
+    gap: lg
+    headshot-panel:
+      aspectRatio: 4/5
+      width: 100%
+```
 
-  layout: flex-row, space-between, align-center — single row at all viewport sizes
+#### About — Two-column Structured Layout
 
-copyright-format:
-  type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
-  color: on-surface-muted
-  opacity-spans:                      # "© {year} /" and "/" separators
-    opacity: 0.50
-  name-span:                          # "<name>"
-    color: on-surface
-  repo-link:                          # "Designed & developed by me."
-    underline: yes, underline-offset 2px
-    hover: on-surface
+25/75 column layout for structured About sections (Approach, Capabilities, Experience, Education); heading column on the left, content on the right.
 
-social-icon:
-  size: 20px
-  color: on-surface
-  hover:
-    color: accent
-    scale: 1.1
-    transition: all 150ms
+- Heading column is sticky within its grid row at `lg+`; stacked single column below.
+- Each section separated by a `1px outline-variant` border-top.
+
+```yaml
+about-two-col:
+  desktop (>= lg):
+    display: grid
+    grid-template-columns: 3fr 9fr
+    gap: xl
+    paddingVertical: 3xl
+    borderTop: 1px solid outline-variant
+    
+    heading-col:
+      gridColumn: 1
+      position: sticky
+      top: 96px
+      alignSelf: flex-start
+      typography: headline-md
+      color: on-surface
+    
+    content-col:
+      gridColumn: 2
+      gap: lg
+  
+  mobile (< lg):
+    display: flex
+    flexDirection: column
+    gap: md
 ```
 
 ---
@@ -847,180 +1009,6 @@ Components must use z-index tokens, not raw numbers.
 
 ---
 
-## Long-form Reading Layout
-
-Long-form pages constrain reading width to `~680px` (roughly 65–70 characters per line) regardless of grid.
-
----
-
-## Editorial Composition
-
----
-
-## Project Detail
-
-### Project Detail Layout
-
-Single-column editorial layout optimized for long-form project reading; no sidebar at any breakpoint.
-
-- Content sections render in fixed order: header → hero → overview → tech stack → MDX body → backlink.
-
-```yaml
-project-detail:
-  maxWidth: 960px
-  margin: 0 auto
-
-  sections-in-order:
-    - project-header      # tags, title, subtitle, links row
-    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
-    - overview            # editorial-dl layout (see below)
-    - tech-stack          # editorial-dl layout under a prose-h2
-    - mdx-deep-dive       # MDX body
-    - backlink            # "← Back to Work"
-```
-
-### Project Header
-
-Page header for a project detail page; communicates project identity, tags, and links before the hero media.
-
-- Vertical stack: tags row → display title → optional subtitle → optional links row.
-- Links row renders only when the project has external links.
-
-```yaml
-project-header:
-  layout: flex-col, gap lg
-
-  tags-row:
-    Tag chips (canonical treatment), gap xs
-
-  title:
-    type: display-primary
-
-  subtitle:                           # optional
-    type: body-secondary
-    color: on-surface-muted
-
-  links-row:                          # optional, renders if links exist
-    layout: flex-wrap, gap lg
-    link:
-      type: interactive-label, font-semibold
-      padding: spacing-xs spacing-sm
-      borderRadius: sm
-      hover:
-        background: accent-muted
-        color: accent
-        external-icon: translate-x 2px
-      active: opacity 0.70
-```
-
-### Section Progress Nav
-
-Desktop-only sticky TOC derived from H2 headings in the MDX body; highlights the active section as the user scrolls.
-
-- Fixed to the right side of the viewport; hidden below `md` breakpoint.
-- Appears after the hero scrolls out of view.
-
-```yaml
-section-progress-nav:
-  position: fixed, right side of viewport
-  visible: desktop only (hidden < md)
-  appears: after hero scrolls out of view
-  behavior: highlights active section as user scrolls
-  zIndex: sticky-content (20)
-```
-
-### Project Section Label
-
-Architectural divider separating the overview block from the MDX body on project detail pages; emitted by the page template, not authored in MDX.
-
-- Section content begins below the label, separated by `spacing-xl`.
-
-```yaml
-project-section-label:
-  borderTop: 1px solid outline-variant
-  paddingTop: spacing-lg
-  label:
-    type: mono-label
-    color: on-surface-muted
-    opacity: 0.40
-```
-
----
-
-## About Layouts
-
-### About — Two-panel Intro
-
-Two-column intro layout for the About page; headshot panel beside intro copy and philosophy text on desktop.
-
-- Headshot stretches to fill both the intro and adjacent philosophy section via CSS grid row span — image uses `object-fit: cover` at `height: 100%`.
-- Image renders in black and white (`grayscale(100%)`).
-- On mobile: stacked single column, headshot at 4:5 aspect ratio.
-
-```yaml
-about-intro:
-  desktop (>= lg):
-    display: grid
-    grid-template-columns: 5fr 7fr
-    gap: xl
-    align-items: stretch
-    
-    headshot-panel:
-      gridColumn: 1
-      height: 100%
-      borderRadius: md
-      filter: grayscale(100%)
-      objectFit: cover
-    
-    content-panel:
-      gridColumn: 2
-      # contains intro copy + philosophy section in a vertical stack
-  
-  mobile (< lg):
-    display: flex
-    flexDirection: column
-    gap: lg
-    headshot-panel:
-      aspectRatio: 4/5
-      width: 100%
-```
-
-### About — Two-column Structured Layout
-
-25/75 column layout for structured About sections (Approach, Capabilities, Experience, Education); heading column on the left, content on the right.
-
-- Heading column is sticky within its grid row at `lg+`; stacked single column below.
-- Each section separated by a `1px outline-variant` border-top.
-
-```yaml
-about-two-col:
-  desktop (>= lg):
-    display: grid
-    grid-template-columns: 3fr 9fr
-    gap: xl
-    paddingVertical: 3xl
-    borderTop: 1px solid outline-variant
-    
-    heading-col:
-      gridColumn: 1
-      position: sticky
-      top: 96px
-      alignSelf: flex-start
-      typography: headline-md
-      color: on-surface
-    
-    content-col:
-      gridColumn: 2
-      gap: lg
-  
-  mobile (< lg):
-    display: flex
-    flexDirection: column
-    gap: md
-```
-
----
-
 ## Iteration Notes
 
 ### Open Decisions
@@ -1033,4 +1021,4 @@ about-two-col:
 - `Cross-Cutting Rules` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
 - `Interaction Rules → Responsive Behavior → Touch Targets` and `→ Collapsing Strategy` are empty headings with no content.
 - `Technical Conventions → Reduced Motion Rules` and `→ Token Usage Conventions` are empty headings with no content.
-- `Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
+- `Foundations → Layout → Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
