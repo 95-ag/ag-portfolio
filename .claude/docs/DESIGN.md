@@ -270,11 +270,9 @@ Motion is calm, restrained, intentional. All transitions respect `prefers-reduce
 - `{motion.easing-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
 - `{motion.easing-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
 
----
+### Layout
 
-## Layout & Composition
-
-### Grid & Containers
+#### Grid & Containers
 
 - Three-tier responsive grid: 12 columns on desktop, 8 on tablet, 4 on mobile.
 - Content is capped at `1200px` max-width with tier-specific gutters and side margins.
@@ -299,25 +297,7 @@ layout:
     side-margin: 16px
 ```
 
-### Responsive Behavior
-
-#### Breakpoints
-
-- Five breakpoints covering phone through ultrawide.
-- `md` (768px) is the desktop/mobile dividing line — navigation switches between pill nav and slide-out menu at this boundary.
-- Minimum supported width is 375px. All layouts must work cleanly at this width.
-
-#### Touch Targets
-
-#### Collapsing Strategy
-
-### Long-form Reading Layout
-
-Long-form pages constrain reading width to `~680px` (roughly 65–70 characters per line) regardless of grid.
-
-### Editorial Composition
-
-### Imagery
+#### Imagery
 
 **Photography**
 - Imagery supports understanding — never decorative, never dominant.
@@ -327,14 +307,6 @@ Long-form pages constrain reading width to `~680px` (roughly 65–70 characters 
 **Diagrams**
 - Diagrams in project deep dives must be production-quality and visually consistent.
 - Tooling is decided once and applied uniformly across all projects.
-
----
-
-## Do's & Don'ts
-
-### Do
-
-### Don't
 
 ---
 
@@ -719,83 +691,6 @@ callout-title:
 
 Single treatment — no type variants. The accent border is intentionally thin (2px) to keep the block integrated with prose flow rather than reading as a UI card.
 
-### Project Detail
-
-#### Project Detail Layout
-
-Single-column editorial layout. No sidebar at any breakpoint.
-
-```yaml
-project-detail:
-  maxWidth: 960px
-  margin: 0 auto
-
-  sections-in-order:
-    - project-header      # tags, title, subtitle, links row
-    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
-    - overview            # editorial-dl layout (see below)
-    - tech-stack          # editorial-dl layout under a prose-h2
-    - mdx-deep-dive       # MDX body
-    - backlink            # "← Back to Work"
-```
-
-#### Project Header
-
-```yaml
-project-header:
-  layout: flex-col, gap lg
-
-  tags-row:
-    Tag chips (canonical treatment), gap xs
-
-  title:
-    type: display-primary
-
-  subtitle:                           # optional
-    type: body-secondary
-    color: on-surface-muted
-
-  links-row:                          # optional, renders if links exist
-    layout: flex-wrap, gap lg
-    link:
-      type: interactive-label, font-semibold
-      padding: spacing-xs spacing-sm
-      borderRadius: sm
-      hover:
-        background: accent-muted
-        color: accent
-        external-icon: translate-x 2px
-      active: opacity 0.70
-```
-
-#### Section Progress Nav
-
-Desktop-only sticky TOC derived from H2 headings in the MDX body. Replaces the earlier thin scroll-progress bar.
-
-```yaml
-section-progress-nav:
-  position: fixed, right side of viewport
-  visible: desktop only (hidden < md)
-  appears: after hero scrolls out of view
-  behavior: highlights active section as user scrolls
-  zIndex: sticky-content (20)
-```
-
-#### Project Section Label
-
-Architectural divider used on project detail pages to separate major reading sections (e.g. `OVERVIEW`, `DEEP DIVE`). Not authored in MDX — emitted by the project page template.
-
-```yaml
-project-section-label:
-  borderTop: 1px solid outline-variant
-  paddingTop: spacing-lg
-  label:
-    type: mono-label
-    color: on-surface-muted
-    opacity: 0.40
-  # Section content begins below the label, separated by spacing-xl
-```
-
 ### Editorial & Prose
 
 #### Prose (MDX Deep-dive) Layout
@@ -850,76 +745,6 @@ editorial-dl:
     margin: 0
 ```
 
-### About Layouts
-
-#### About — Two-panel Intro
-
-PRODUCT.md §7.4 #3.
-
-```yaml
-about-intro:
-  desktop (>= lg):
-    display: grid
-    grid-template-columns: 5fr 7fr     # ~40/60 split
-    gap: xl                             # 32px
-    align-items: stretch
-    
-    headshot-panel:
-      gridColumn: 1
-      # Image height extends through the philosophy section using
-      # CSS grid stretch — image element uses object-fit: cover and
-      # height: 100% within its grid cell. The grid row spans both
-      # the intro and the next section (philosophy).
-      height: 100%
-      borderRadius: md
-      filter: grayscale(100%)            # B&W per PRODUCT.md
-      objectFit: cover
-    
-    content-panel:
-      gridColumn: 2
-      # contains intro copy + philosophy section in a vertical stack
-  
-  mobile (< lg):
-    display: flex
-    flexDirection: column
-    gap: lg
-    headshot-panel:
-      aspectRatio: 4/5
-      width: 100%
-```
-
-#### About — Two-column Structured Layout
-
-PRODUCT.md §7.4 #4. Used for sections 5–8 (Approach, Capabilities, Experience, Education).
-
-```yaml
-about-two-col:
-  desktop (>= lg):
-    display: grid
-    grid-template-columns: 3fr 9fr        # 25/75
-    gap: xl                                # 32px
-    paddingVertical: 3xl                   # 64px between sections
-    borderTop: 1px solid outline-variant
-    
-    heading-col:
-      gridColumn: 1
-      # Section heading sticks to the top of its grid row only on lg+
-      position: sticky
-      top: 96px
-      alignSelf: flex-start
-      typography: headline-md
-      color: on-surface
-    
-    content-col:
-      gridColumn: 2
-      gap: lg
-  
-  mobile (< lg):
-    display: flex
-    flexDirection: column
-    gap: md
-```
-
 ### Footer
 
 ```yaml
@@ -956,7 +781,23 @@ No theme toggle in the footer. (It lives in the pill nav / slide-out menu.)
 
 ---
 
-## Accessibility
+## Interaction Rules
+
+### Responsive Behavior
+
+#### Breakpoints
+
+- Five breakpoints covering phone through ultrawide.
+- `md` (768px) is the desktop/mobile dividing line — navigation switches between pill nav and slide-out menu at this boundary.
+- Minimum supported width is 375px. All layouts must work cleanly at this width.
+
+#### Touch Targets
+
+#### Collapsing Strategy
+
+---
+
+## Accessibility Rules
 
 Beyond PRODUCT.md §10's general requirements:
 
@@ -965,6 +806,14 @@ Beyond PRODUCT.md §10's general requirements:
 - **Touch targets:** minimum 44x44px for all interactive elements on mobile.
 - **Reduced motion:** all motion in Foundations → Motion & Interaction has a no-motion fallback. The Hire Me pulse becomes static. Page transitions become instant. Hover transforms become color-only.
 - **Theme toggle accessible name:** `aria-label` reflects current state ("Switch to dark theme", "Switch to system theme", etc.) and updates on cycle.
+
+---
+
+## Cross-Cutting Rules
+
+### Do
+
+### Don't
 
 ---
 
@@ -994,6 +843,167 @@ Components must use z-index tokens, not raw numbers.
 
 ---
 
+## Long-form Reading Layout
+
+Long-form pages constrain reading width to `~680px` (roughly 65–70 characters per line) regardless of grid.
+
+---
+
+## Editorial Composition
+
+---
+
+## Project Detail
+
+### Project Detail Layout
+
+Single-column editorial layout. No sidebar at any breakpoint.
+
+```yaml
+project-detail:
+  maxWidth: 960px
+  margin: 0 auto
+
+  sections-in-order:
+    - project-header      # tags, title, subtitle, links row
+    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
+    - overview            # editorial-dl layout (see below)
+    - tech-stack          # editorial-dl layout under a prose-h2
+    - mdx-deep-dive       # MDX body
+    - backlink            # "← Back to Work"
+```
+
+### Project Header
+
+```yaml
+project-header:
+  layout: flex-col, gap lg
+
+  tags-row:
+    Tag chips (canonical treatment), gap xs
+
+  title:
+    type: display-primary
+
+  subtitle:                           # optional
+    type: body-secondary
+    color: on-surface-muted
+
+  links-row:                          # optional, renders if links exist
+    layout: flex-wrap, gap lg
+    link:
+      type: interactive-label, font-semibold
+      padding: spacing-xs spacing-sm
+      borderRadius: sm
+      hover:
+        background: accent-muted
+        color: accent
+        external-icon: translate-x 2px
+      active: opacity 0.70
+```
+
+### Section Progress Nav
+
+Desktop-only sticky TOC derived from H2 headings in the MDX body. Replaces the earlier thin scroll-progress bar.
+
+```yaml
+section-progress-nav:
+  position: fixed, right side of viewport
+  visible: desktop only (hidden < md)
+  appears: after hero scrolls out of view
+  behavior: highlights active section as user scrolls
+  zIndex: sticky-content (20)
+```
+
+### Project Section Label
+
+Architectural divider used on project detail pages to separate major reading sections (e.g. `OVERVIEW`, `DEEP DIVE`). Not authored in MDX — emitted by the project page template.
+
+```yaml
+project-section-label:
+  borderTop: 1px solid outline-variant
+  paddingTop: spacing-lg
+  label:
+    type: mono-label
+    color: on-surface-muted
+    opacity: 0.40
+  # Section content begins below the label, separated by spacing-xl
+```
+
+---
+
+## About Layouts
+
+### About — Two-panel Intro
+
+PRODUCT.md §7.4 #3.
+
+```yaml
+about-intro:
+  desktop (>= lg):
+    display: grid
+    grid-template-columns: 5fr 7fr     # ~40/60 split
+    gap: xl                             # 32px
+    align-items: stretch
+    
+    headshot-panel:
+      gridColumn: 1
+      # Image height extends through the philosophy section using
+      # CSS grid stretch — image element uses object-fit: cover and
+      # height: 100% within its grid cell. The grid row spans both
+      # the intro and the next section (philosophy).
+      height: 100%
+      borderRadius: md
+      filter: grayscale(100%)            # B&W per PRODUCT.md
+      objectFit: cover
+    
+    content-panel:
+      gridColumn: 2
+      # contains intro copy + philosophy section in a vertical stack
+  
+  mobile (< lg):
+    display: flex
+    flexDirection: column
+    gap: lg
+    headshot-panel:
+      aspectRatio: 4/5
+      width: 100%
+```
+
+### About — Two-column Structured Layout
+
+PRODUCT.md §7.4 #4. Used for sections 5–8 (Approach, Capabilities, Experience, Education).
+
+```yaml
+about-two-col:
+  desktop (>= lg):
+    display: grid
+    grid-template-columns: 3fr 9fr        # 25/75
+    gap: xl                                # 32px
+    paddingVertical: 3xl                   # 64px between sections
+    borderTop: 1px solid outline-variant
+    
+    heading-col:
+      gridColumn: 1
+      # Section heading sticks to the top of its grid row only on lg+
+      position: sticky
+      top: 96px
+      alignSelf: flex-start
+      typography: headline-md
+      color: on-surface
+    
+    content-col:
+      gridColumn: 2
+      gap: lg
+  
+  mobile (< lg):
+    display: flex
+    flexDirection: column
+    gap: md
+```
+
+---
+
 ## Iteration Notes
 
 ### Open Decisions
@@ -1003,7 +1013,7 @@ Components must use z-index tokens, not raw numbers.
 
 ### Known Gaps
 
-- `Do's & Don'ts` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
-- `Responsive Behavior → Touch Targets` and `Responsive Behavior → Collapsing Strategy` are empty headings with no content.
-- `Technical Conventions → Reduced Motion Rules` and `Technical Conventions → Token Usage Conventions` are empty headings with no content.
+- `Cross-Cutting Rules` section is unpopulated — both `### Do` and `### Don't` are empty shells. Needs content before this doc is considered complete.
+- `Interaction Rules → Responsive Behavior → Touch Targets` and `→ Collapsing Strategy` are empty headings with no content.
+- `Technical Conventions → Reduced Motion Rules` and `→ Token Usage Conventions` are empty headings with no content.
 - `Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
