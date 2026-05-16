@@ -187,21 +187,13 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 ### Spacing
 
-#### Spacing Scale
-
-Strict 4px base. Used for padding, margins, gaps, and rhythm.
-
-#### Density Rules
-
+- Strict 4px base. Used for padding, margins, gaps, and rhythm.
 - Major section gaps: `{spacing.3xl}` (64px) desktop, `{spacing.2xl}` (48px) mobile.
 - Paragraph separation: `{spacing.md}` (16px). List item separation: `{spacing.sm}` (8px).
 - Card internal padding: `{spacing.lg}` (24px).
-
-Whitespace beyond these minimums is intentional, not arbitrary.
+- Whitespace beyond these minimums is intentional, not arbitrary.
 
 ### Shapes
-
-#### Structural vs Interactive vs Media Surfaces
 
 Four surface categories, each with a fixed radius:
 
@@ -248,10 +240,6 @@ applies-to:
   - mobile nav slide-out panel
   - scroll-to-top button
 ```
-
-#### No Shadows
-
-Shadows are not used in v1. The `<Highlight>` shadow carve-out that previously existed has been removed. Elevation is communicated by border + tonal surface alone.
 
 ### Motion & Interaction
 
