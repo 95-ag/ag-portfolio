@@ -17,7 +17,7 @@ Motion timing, easing, and component-specific specs are defined in `docs/DESIGN.
 ## Permitted
 
 - Opacity transitions (fade in/out)
-- Small transforms (max values in `docs/DESIGN.md` — Foundations → Motion & Interaction → Permitted Motion)
+- Small transforms (max values in `docs/DESIGN.md` — Foundations → Motion & Interaction → Motion Principles)
 - Color transitions (border, background, text)
 - Slide-in for mobile menu
 - Pulse on the Hire Me CTA **icon only** — never the full button, stops on hover

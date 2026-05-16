@@ -338,7 +338,7 @@ Engineering maturity — what would improve this further.
 
 ### Reading width
 
-Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md — Components → Project Detail → Project Detail Layout). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
+Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md — Project Detail → Project Detail Layout). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
 
 ---
 
@@ -472,7 +472,7 @@ Within MDX body, standard markdown is used:
 
 PRODUCT.md §7.4 specifies About-page sections. Content for these sections is **not** in MDX body — it lives in structured frontmatter on a single `/content/about/about.mdx` file.
 
-Reason: the About page has a structured two-column layout (DESIGN.md — Components → About Layouts) where each section's heading and body must be rendered consistently. Frontmatter enforces structure better than MDX body for this case.
+Reason: the About page has a structured two-column layout (DESIGN.md — About Layouts) where each section's heading and body must be rendered consistently. Frontmatter enforces structure better than MDX body for this case.
 
 ```yaml
 ---

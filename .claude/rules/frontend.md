@@ -10,7 +10,7 @@
 ## Fonts
 
 - All fonts loaded via `next/font` — no Google Fonts CDN requests
-- Font families and CSS variable names are defined in `docs/DESIGN.md` — Foundations → Typography → Font Families
+- Font families and CSS variable names are defined in `docs/DESIGN.md` — Foundations → Typography
 
 ## Images & Media
 

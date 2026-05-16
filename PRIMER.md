@@ -129,7 +129,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` — restructured into 8-section hierarchy: Overview / Foundations / Layout & Composition / Do's & Don'ts / Components / Accessibility / Technical Conventions / Iteration Notes. All §N section numbers removed; cross-references now use named section paths (e.g. "Foundations → Colors"). Content preserved verbatim.
+- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. YAML Registry + 8-section spine: Overview / Foundations / Components / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions + domain extensions (Long-form Reading Layout, Editorial Composition, Project Detail, About Layouts, Iteration Notes). All §N section numbers removed; cross-references use named section paths (e.g. "Foundations → Colors").
 - `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths in `design-system.md`, `motion.md`, `accessibility.md`, `frontend.md`
 - `.claude/docs/CONTENT-SCHEMA.md` — DESIGN.md §N references updated
 - `.claude/CLAUDE.md` — blur and shadow constraints updated

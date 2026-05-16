@@ -41,5 +41,5 @@ Token values, type scale, color palette, spacing scale, and component specs are 
 
 ## Layout
 
-- Respect max content width and reading column width from `docs/DESIGN.md` — Layout & Composition → Grid & Containers
+- Respect max content width and reading column width from `docs/DESIGN.md` — Foundations → Layout → Grid & Containers
 - Nav pill centers relative to the content container, not the viewport
