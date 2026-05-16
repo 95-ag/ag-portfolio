@@ -85,7 +85,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `card.tsx` — **DELETED** (was unused)
 - `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
 - `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
-- `theme-toggle.tsx` — `PillThemeSelector` + `InlineThemeSelector`; both use MaterialSymbol
+- `theme-toggle.tsx` — `PillThemeSelector` (collapsed, expands on hover) + `InlineThemeSelector` (always expanded); both use MaterialSymbol
 - `material-symbol.tsx` — inline SVG; 5 icons
 
 **Navigation (complete):**
@@ -129,10 +129,12 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. YAML Registry + 8-section spine: Overview / Foundations / Components / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions + domain extensions (Long-form Reading Layout, Editorial Composition, Project Detail, About Layouts, Iteration Notes). All §N section numbers removed; cross-references use named section paths (e.g. "Foundations → Colors").
-- `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths in `design-system.md`, `motion.md`, `accessibility.md`, `frontend.md`
-- `.claude/docs/CONTENT-SCHEMA.md` — DESIGN.md §N references updated
-- `.claude/CLAUDE.md` — blur and shadow constraints updated
+- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. Canonical spine: Overview / Foundations / Components / **Domain Components** / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions / Iteration Notes. All §N section numbers removed; cross-references use named section paths (e.g. "Foundations → Colors").
+- **DESIGN.md spine distinction:** `## Components` = reusable/portable UI systems; `## Domain Components` = page/domain-bound compositions (Project Detail with Prose Layout + Editorial Two-column, About Layouts).
+- `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths
+- `.claude/docs/CONTENT-SCHEMA.md` — cross-references updated to Domain Components paths
+- `.claude/skills/design-writing-contract.md` — updated for Domain Components taxonomy
+- `.claude/skills/design-doc-rewriter/references/` — validation-heuristics, safety-rules, rewrite-passes updated
 
 **Placeholder content:**
 - `content/projects/lane-refinement-rl.mdx` — academic, `featured: true`, order 10
@@ -143,30 +145,33 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**DESIGN.md restructured — committed (`aaef6ac`).**
+**DESIGN.md doc cleanup and architectural restructure — 5 commits.**
 
-Structural-only pass: 14 flat §N sections → 8-bucket hierarchy. All content preserved verbatim. Cross-references in `rules/` and `docs/` migrated from `§N` to named section paths.
+1. `3dbebf7` — post-Foundations component cleanup pass: all component sections after Foundations normalized to identity sentence → semantic bullets → YAML spec; semantic YAML comments lifted to prose; stale cross-doc citations removed.
+2. `930cfbc` — introduced `## Domain Components` section; moved Project Detail, About Layouts, Prose Layout, Editorial Two-column into it; deleted stale Long-form Reading Layout and empty Editorial Composition sections.
+3. `ec539fb` — updated writing contract and rewriter skills for Domain Components taxonomy.
+4. `408a5c3` — committed file-protect hook change.
 
-**DESIGN.md hierarchy (current):**
+**DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid
-- **Foundations** — Colors, Typography, Spacing, Shapes, Elevation & Depth, Motion & Interaction
-- **Layout & Composition** — Breakpoints, Grid & Containers, Responsive Behavior *(empty)*, Long-form Reading Layout, Editorial Composition *(empty)*, Imagery
-- **Do's & Don'ts** *(empty placeholder)*
-- **Components** — Navigation, Actions & Interactive, Content Surfaces, Project Detail, Editorial & Prose, About Layouts, Footer
-- **Accessibility**
-- **Technical Conventions** — Z-Index Scale, Reduced Motion Rules *(empty)*, Token Usage Conventions *(empty)*
-- **Iteration Notes** — Open Decisions, Known Gaps *(empty)*
+- **Foundations** — Colors, Typography, Spacing, Shapes, Elevation & Depth, Motion & Interaction, Layout
+- **Components** — Navigation, Actions & Interactive, Content Surfaces, Footer
+- **Domain Components** — Project Detail (Layout, Header, Progress Nav, Section Label, Prose Layout, Editorial Two-column), About Layouts (Two-panel Intro, Two-column Structured)
+- **Interaction Rules** — Responsive Behavior *(Touch Targets, Collapsing Strategy empty)*
+- **Accessibility Rules**
+- **Cross-Cutting Rules** *(Do/Don't empty)*
+- **Technical Conventions** — Z-Index Scale *(Reduced Motion Rules, Token Usage Conventions empty)*
+- **Iteration Notes** — Open Decisions, Known Gaps
 
 ---
 
 ## Next Steps
 
-1. **Commit elevation work** (3 clusters — see git plan in session)
-2. **About page visual polish** — now that elevation is stable, do a visual pass
-3. **Home page v1 spec items:**
+1. **About page visual polish** — visual pass on the About page
+2. **Home page v1 spec items:**
    - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
    - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
-   - Theme toggle tooltip — 500ms hover delay, optional/lower priority
+3. **doc-maintainer passes** — fill empty placeholder sections (Cross-Cutting Rules, Interaction Rules → Touch Targets / Collapsing Strategy, Technical Conventions → Reduced Motion / Token Usage Conventions)
 4. **Merge to main** when phase-5 polish is complete
 5. **Content** — placeholder MDX files need real content
 
