@@ -40,9 +40,13 @@ The portfolio combines the structural clarity of a technical journal with the pr
 
 ### Colors
 
+- One accent — identity signal. `accent-strong` is intentionally not defined. For more emphasis, use weight or size, not a louder color.
+- `{surface-selection}` and `{surface-sunken}` are intentionally distinct — selected states use `{surface-selection}`; hover states use `{surface-sunken}`.
+
 #### Semantic Roles
 
-Tokens are role-based. The same role has different hex values per theme to maintain contrast and visual weight.
+- Tokens are role-based.
+- The same role has different hex values per theme to maintain contrast and visual weight.
 
 | Role | Light | Dark | Used for |
 |---|---|---|---|
@@ -71,16 +75,6 @@ Tokens are role-based. The same role has different hex values per theme to maint
 | `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
 | `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
 
-#### Usage Notes
-
-- **One accent.** The portfolio is identity-led by a single green. `accent-strong` is intentionally not defined — if you need more emphasis, use weight or size, not a louder color.
-- **`secondary` and `tertiary` are reserved tokens.** Available for future categorical needs (callout variants, status differentiation), not used in v1 layouts.
-- **Surface polarity is inverted in light theme.** `surface-raised` (`#f2f2f1`) is slightly off-white — cards and panels sit at a recessed tone. `surface-sunken` (`#ffffff`) is pure white — used for code blocks and inline code where maximum contrast aids legibility. Body background is `#f8f8f7`.
-- **Dark theme is deep but not black.** `#131313` is the deepest surface; `surface-sunken` goes slightly darker for code blocks only.
-- **`surface-nav` is the only permitted blur surface.** Use it for all floating nav and utility UI. Do not use `surface-overlay` or `surface-overlay-panel` for new work.
-- **`surface-selection` is not `surface-sunken`.** Active/selected states use the accent-tinted `surface-selection` token. Hover states use `surface-sunken`. These are intentionally distinct.
-- **Accent and success share a value in v1.** Acceptable because there is no scenario in v1 where both are visible together (success states are post-launch).
-
 ### Typography
 
 Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
@@ -91,7 +85,10 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 #### Semantic Token Table
 
-16 tokens, role-based. Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
+- 16 tokens, role-based.
+- Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
+- Mobile override: `display-primary` and `display-accent` scale to 36px / 44px line-height at ≤768px.
+- Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
@@ -111,10 +108,6 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 | `insight-label` | JetBrains Mono | 13px | 500 | 16px | +0.05em | `on-surface-muted` | Callout/highlight markers (uppercase) |
 | `mono-code` | JetBrains Mono | 16px | 400 | 24px | — | `on-surface-muted` | Inline code, code blocks |
 | `support-meta` | Inter | 13px | 400 | 20px | — | `on-surface-muted` | Footer, TOC items, section progress nav |
-
-**Mobile overrides** (≤768px): `display-primary` and `display-accent` scale down to 36px / 44px line-height.
-
-**Footer responsive exception**: `support-meta` is 13px by default; footer.tsx applies a local Tailwind override to 11px / 18px on mobile, 15px / 24px on desktop. This is the only component-level responsive exception to a semantic token.
 
 #### Prose Composition Rules
 
