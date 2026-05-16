@@ -304,13 +304,18 @@ layout:
 
 #### Floating Pill Nav
 
-PRODUCT.md §5 mandates this pattern. Visual spec:
+Fixed top-center navigation bar that persists across all scroll positions; the primary wayfinding surface and identity anchor of the site.
+
+- Centered relative to the content max-width, not the viewport — aligns with content on ultrawide displays.
+- Active item signals current location; hover signals affordance — states are visually distinct by design.
+- Logomark replaces the Home nav item — no separate Home link at any viewport size.
+- Blur surface maintains legibility above any page background at any scroll position.
 
 ```yaml
 pill-nav:
   position: fixed
   top: 24px
-  horizontalPlacement: center      # centered relative to max-content-width container, NOT viewport
+  horizontalPlacement: center
   height: 44px
   paddingHorizontal: 8px
   borderRadius: pill
@@ -340,34 +345,31 @@ pill-nav-item:
 pill-nav-item-active:
   background: surface-selection
   color: on-surface
-  # Uses surface-selection (accent-tinted), not surface-sunken.
-  # Accent icon reinforces the active signal; fill keeps it tonal rather than loud.
 
 pill-nav-item-hover:
   background: surface-sunken
   color: on-surface
-  # Hover uses surface-sunken (neutral) — distinct from active (surface-selection).
   transition: background 150ms
 
 pill-nav-divider:
   width: 1px
   height: 20px
   background: outline-variant
-  # one divider after logo, one before theme toggle
 ```
 
-**Top-center caveat:** centered relative to the 1200px content max-width, not the viewport. On ultrawide monitors the pill aligns with content rather than floating in empty space.
-
-**Logo mark:** `cat_head_icon.svg` at `/public/cat_head_icon.svg`, rendered via `next/image` (unoptimized). The logo always links to `/` and replaces the "Home" nav item — no separate Home link on desktop or mobile.
-
 #### Theme Toggle
+
+Explicit three-option theme selector in the pill nav; shows the active mode icon collapsed and expands to all three options on hover.
+
+- Three direct options — Light, Dark, System — set immediately on click; no cycling.
+- Collapsed by default (active icon only); hovering reveals all three buttons inline.
+- In the mobile slide-out panel: always expanded, grouped in a `surface-sunken` pill container.
 
 ```yaml
 theme-toggle:
   size: 40px x 40px
   borderRadius: pill
   iconSize: 18px
-  # no fill background; just the icon
   
   hover:
     background: accent-muted
@@ -388,9 +390,14 @@ icons:
   system: half-filled circle (◐) or monitor glyph
 ```
 
-Click cycles Light → Dark → System → Light. State persisted to localStorage (System clears the override).
-
 #### Mobile Slide-out Menu
+
+Touch-primary navigation panel for mobile viewports; mirrors pill nav structure and active state logic in a full-height slide-over overlay.
+
+- Fixed trigger button in the top-right corner; opens with a slide-in from the right over a dimmed overlay.
+- Active items use `surface-selection` — same token as pill nav active state; hover uses `surface-sunken`.
+- Blur surface matches the pill nav visually; no left border — separation is achieved by the overlay and blur alone.
+- Traps focus while open; overlay tap and close button both dismiss the panel.
 
 ```yaml
 mobile-menu-trigger:
@@ -410,9 +417,9 @@ mobile-slide-out:
   right: 0
   width: min(280px, 80vw)
   height: 100vh
-  background: surface-nav             # see Foundations → Elevation & Depth → Backdrop-Blur Carve-out
-  backdropFilter: blur(12px)          # matched to pill nav for visual parity
-  border-left: none                   # separation achieved by the overlay + blur alone
+  background: surface-nav
+  backdropFilter: blur(12px)
+  border-left: none
   padding: 24px
   zIndex: 60
   
@@ -436,13 +443,19 @@ mobile-slide-out-layout:
     fontSize: 14px
     fontWeight: 500
     borderRadius: pill
-    active: surface-selection / on-surface (accent-tinted — not surface-sunken)
+    active: surface-selection / on-surface
     hover: surface-sunken / on-surface
   flex-spacer
   theme-toggle: bottom of panel (no label, no divider)
 ```
 
 #### Scroll-to-top Button
+
+Utility button fixed to the bottom-right corner; appears after scrolling one viewport height and provides a one-tap return to page top.
+
+- Bottom-right position does not collide with the pill nav (top-center).
+- Fades in on scroll threshold; hover shifts to `accent` border and color.
+- Hidden when the mobile slide-out menu is open.
 
 ```yaml
 scroll-to-top:
@@ -467,11 +480,15 @@ scroll-to-top:
     color: accent
 ```
 
-Bottom-right does not collide with pill nav (top-center). Hidden when the slide-out menu is open.
-
 ### Actions & Interactive
 
 #### Buttons
+
+Committed action controls; used for CTAs, form submissions, and external link triggers.
+
+- Two variants: `primary` (filled `accent`) and `secondary` (outlined, transparent background).
+- `<Button href="...">` renders as `<a>` — same visual spec regardless of rendering mode; navigating is still a committed action.
+- No shadows, no gradients — hover handled by opacity or color transition alone.
 
 ```yaml
 button-primary:
@@ -485,8 +502,6 @@ button-primary:
   border: none
   
   hover:
-    # Use a slightly darkened accent — define as accent-hover token if needed.
-    # In v1: drop opacity to 0.9.
     opacity: 0.9
     transition: opacity 150ms
 
@@ -509,13 +524,13 @@ button-icon-leading:
   gap-icon-label: 8px
 ```
 
-Buttons rely on spacing, type, and contrast. No shadows. No gradients.
-
-**Anchor rendering:** `<Button href="...">` renders as `<a>` — same variants, same visual spec. A CTA that navigates is still a committed action; rendering mode is not a design distinction.
-
 #### SocialLink
 
-Quiet utility affordance — sits between a static Tag and a committed Button in visual weight. Used for adjacent quick links (GitHub, LinkedIn, Email row on About). Distinct from `<Button>` by height (h-9 vs h-11), transparent bordered surface vs. filled/outlined Button treatment.
+Quiet utility link for profile and contact links; lighter visual weight than `Button`, heavier than a static `Tag`.
+
+- Smaller than `Button` (36px vs 44px) with a transparent bordered surface rather than filled.
+- Used on the About page identity row for GitHub, LinkedIn, and Email.
+- Hover intensifies border and text to `outline` / `on-surface` — no fill change.
 
 ```yaml
 social-link:
@@ -536,32 +551,34 @@ social-link:
   external: adds target="_blank" rel="noopener noreferrer" when external prop is true
 ```
 
-**Interaction hierarchy:** `Tag` (static, no hover) → `SocialLink` (h-9, border-chip, quiet utility) → `Button` (h-11, committed action).
-
 #### Tag
 
-Single canonical static label. No variants — one treatment across all contexts.
+Compact chip label used to categorize and surface topics on cards and in content headers; single treatment with no variants.
+
+- Static — no hover state, no interactive affordance.
+- Used on project cards (tech/topic tags) and project headers.
 
 ```yaml
 tag:
   type: tag-chip, normal-case, tracking-normal
-  paddingX: spacing-sm               # 8px
+  paddingX: spacing-sm
   paddingY: 2px
-  borderRadius: sm                   # 4px — interactive-control scale
+  borderRadius: sm
   background: surface-tag
-  color: on-surface                  # darker of the two options; strongest legibility
+  color: on-surface
   border: none
-  # No hover state — Tag is a static label, not an interactive control.
 ```
-
-`surface-tag` provides the tonal distinction from surrounding surfaces without an explicit border. Use `on-surface` (not `on-surface-muted`) universally — previously the About/Capabilities section used the muted variant, creating visual inconsistency with card tags. Now unified.
 
 #### Hire Me CTA Pulse
 
+Primary button variant on the homepage with an animated leading icon; used exclusively for the Hire Me CTA.
+
+- Pulse is on the leading icon only — never the button shell.
+- Animation stops on hover, settling the control as the user approaches the click target.
+- Reduced-motion fallback: icon holds at default state, no animation.
+
 ```yaml
 hire-me-cta:
-  # Standard primary button styling (see Components → Actions & Interactive → Buttons)
-  # Plus pulse on the leading icon only:
 
 icon-pulse:
   animation: pulse 2400ms ease-in-out infinite
@@ -572,20 +589,23 @@ icon-pulse:
   
   reduced-motion-fallback:
     animation: none
-    # icon stays at default state, no pulse
 ```
-
-The pulse is on the icon only, never the entire button. Stops if the button is hovered (gives a settled feeling on intent-to-click).
 
 ### Content Surfaces
 
 #### Project Card
 
+Entry point to a project; communicates type, media, and scope at a glance and links to the detail page.
+
+- Three layout variants: `compact` (1:1 hero), `featured` (4:3 hero), `text` (no hero, category icon). The `text` variant is an intentional editorial choice, not a fallback for a missing hero image.
+- Hero image is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
+- Hover: title underlines with `accent` decoration; border shifts from `outline-variant` to `outline`.
+
 ```yaml
 project-card:
   background: surface-raised
   border: 1px solid outline-variant
-  borderRadius: 0px                   # architectural container — sharp corners
+  borderRadius: 0px
   display: flex
   flexDirection: column
   transition: border-color 150ms
@@ -594,14 +614,11 @@ project-card:
     borderColor: outline
 
   variants:
-    compact:   heroAspect 1/1         # default — Work grid
-    featured:  heroAspect 4/3         # homepage featured
+    compact:   heroAspect 1/1
+    featured:  heroAspect 4/3
     text:      no hero, categoryIcon visible
-      # Intentional editorial variant for text-led projects.
-      # NOT a fallback when heroImage is missing — heroImage is required by schema.
 
 project-card-hero:
-  # Hero is inset with breathing room — not edge-to-edge
   wrapperPadding: spacing-md
   innerBackground: surface-sunken
   innerBorderRadius: md               # 8px — media surface, matches all image/media radius
@@ -623,15 +640,11 @@ project-card-text-variant:
   layout: icon → title (headline-sm) → summary → tags
 ```
 
-**Click affordances on card-hover:**
-- Title underline (decoration uses `accent`).
-- Border color shifts from `outline-variant` → `outline`.
-
-No card number, no chevron, no "View case study →" text.
-
 #### Highlight
 
-Standalone elevated pull-quote for a single key insight. Not a Callout variant — this is a physically separated panel, not an inline aside.
+Standalone elevated pull-quote for a single key insight; a physically separated panel, not an inline aside.
+
+- Optional `<figcaption>` heading above the body; no border-bottom, the heading floats.
 
 ```yaml
 highlight:
@@ -642,14 +655,12 @@ highlight:
   paddingX: spacing-2xl
   paddingY: spacing-xl
   marginY: spacing-2xl
-  # Elevation via border + raised fill only. No shadow.
 
   heading (optional):
     element: <figcaption>
     type: mono-label
     color: on-surface-muted
     margin-bottom: spacing-lg
-    # No border-bottom — heading floats above body without a divider
 
   body:
     type: body-md
@@ -660,13 +671,16 @@ highlight:
 
 #### Callout
 
-Editorial pull block — integrated with prose flow, not a UI card.
+Editorial pull block integrated with prose flow; level-5 elevation with `accent` left border and `surface-raised` fill.
+
+- Single treatment, no variants — thin left border keeps the block integrated with prose, not reading as a card.
+- Flush with prose column (no border-radius).
 
 ```yaml
 callout:
-  background: surface-raised              # raised fill — level 5 elevation (accent left border + raised)
+  background: surface-raised
   borderLeft: 2px solid accent
-  borderRadius: none                      # flush with prose
+  borderRadius: none
   padding: spacing-lg
   marginY: spacing-xl
 
@@ -677,21 +691,22 @@ callout-title:
   marginBottom: spacing-sm
 ```
 
-Single treatment — no type variants. The accent border is intentionally thin (2px) to keep the block integrated with prose flow rather than reading as a UI card.
-
 ### Editorial & Prose
 
 #### Prose (MDX Deep-dive) Layout
 
-Pairs with the prose composition rules in Foundations → Typography → Prose Composition Rules.
+Spacing and vertical rhythm for MDX long-form content; typographic treatment defined in Foundations → Typography → Prose Composition Rules.
+
+- H2s function as section anchors: `1px currentColor` bottom border (inheriting `on-surface-muted`) creates a thin ruled separator.
+- First H2 in `.prose-content` has `margin-top: 0` — separation is provided by the project section label above.
+- H3s are clearly subordinate: no rule, reduced weight and margin.
 
 ```yaml
 prose-h2-layout:
   marginTop: spacing-3xl
-  borderBottom: 1px solid currentColor   # inherits on-surface-muted; always matches text
+  borderBottom: 1px solid currentColor
   paddingBottom: spacing-md
   marginBottom: spacing-2xl
-  # First h2 inside .prose-content: margin-top 0 (section label above provides separation)
 
 prose-h3-layout:
   marginTop: spacing-2xl
@@ -704,11 +719,12 @@ prose-list-item:
   marginBottom: spacing-xs
 ```
 
-H2s function as section anchors via their own thin top rule. H3s sit clearly subordinate (lighter weight, smaller, no rule).
-
 #### Editorial Two-column Layout
 
-Used for both the Overview and Tech Stack sections. Renders structured content as a definition list grid — not a general prose pattern.
+Definition list grid for structured label/value content; used for the project Overview and Tech Stack sections.
+
+- Fixed 180px label column with a fluid content column on desktop; single column on mobile.
+- Not a general prose pattern — purpose-built for project metadata entries.
 
 ```yaml
 editorial-dl:
@@ -735,6 +751,11 @@ editorial-dl:
 
 ### Footer
 
+Single-row page footer with copyright copy, a social icon, and branding text; no theme toggle.
+
+- Copyright: separators dimmed to 50% opacity; name at full `on-surface`; repo link label underlined.
+- No top border; top separation comes from content margin above.
+
 ```yaml
 footer:
   marginTop: spacing-4xl
@@ -745,12 +766,11 @@ footer:
   layout: flex-row, space-between, align-center — single row at all viewport sizes
 
 copyright-format:
-  # Exact copy: "© {year} / Aishwarya Ganesan / Designed & developed by me."
   type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
   color: on-surface-muted
   opacity-spans:                      # "© {year} /" and "/" separators
     opacity: 0.50
-  name-span:                          # "Aishwarya Ganesan"
+  name-span:                          # "<name>"
     color: on-surface
   repo-link:                          # "Designed & developed by me."
     underline: yes, underline-offset 2px
@@ -764,8 +784,6 @@ social-icon:
     scale: 1.1
     transition: all 150ms
 ```
-
-No theme toggle in the footer. (It lives in the pill nav / slide-out menu.)
 
 ---
 
@@ -786,8 +804,6 @@ No theme toggle in the footer. (It lives in the pill nav / slide-out menu.)
 ---
 
 ## Accessibility Rules
-
-Beyond PRODUCT.md §10's general requirements:
 
 - **Focus rings:** 2px solid `focus-ring` (= accent), 2px offset, on all keyboard-focused interactive elements. Use `:focus-visible`, not `:focus`, to avoid showing on mouse-click.
 - **Contrast:** all text/background combinations meet WCAG AA (4.5:1 for body, 3:1 for large text and UI components). Active pill nav fill (`accent` background + `accent-on` text) must pass AA in both themes.
@@ -845,7 +861,9 @@ Long-form pages constrain reading width to `~680px` (roughly 65–70 characters 
 
 ### Project Detail Layout
 
-Single-column editorial layout. No sidebar at any breakpoint.
+Single-column editorial layout optimized for long-form project reading; no sidebar at any breakpoint.
+
+- Content sections render in fixed order: header → hero → overview → tech stack → MDX body → backlink.
 
 ```yaml
 project-detail:
@@ -862,6 +880,11 @@ project-detail:
 ```
 
 ### Project Header
+
+Page header for a project detail page; communicates project identity, tags, and links before the hero media.
+
+- Vertical stack: tags row → display title → optional subtitle → optional links row.
+- Links row renders only when the project has external links.
 
 ```yaml
 project-header:
@@ -892,7 +915,10 @@ project-header:
 
 ### Section Progress Nav
 
-Desktop-only sticky TOC derived from H2 headings in the MDX body. Replaces the earlier thin scroll-progress bar.
+Desktop-only sticky TOC derived from H2 headings in the MDX body; highlights the active section as the user scrolls.
+
+- Fixed to the right side of the viewport; hidden below `md` breakpoint.
+- Appears after the hero scrolls out of view.
 
 ```yaml
 section-progress-nav:
@@ -905,7 +931,9 @@ section-progress-nav:
 
 ### Project Section Label
 
-Architectural divider used on project detail pages to separate major reading sections (e.g. `OVERVIEW`, `DEEP DIVE`). Not authored in MDX — emitted by the project page template.
+Architectural divider separating the overview block from the MDX body on project detail pages; emitted by the page template, not authored in MDX.
+
+- Section content begins below the label, separated by `spacing-xl`.
 
 ```yaml
 project-section-label:
@@ -915,7 +943,6 @@ project-section-label:
     type: mono-label
     color: on-surface-muted
     opacity: 0.40
-  # Section content begins below the label, separated by spacing-xl
 ```
 
 ---
@@ -924,25 +951,25 @@ project-section-label:
 
 ### About — Two-panel Intro
 
-PRODUCT.md §7.4 #3.
+Two-column intro layout for the About page; headshot panel beside intro copy and philosophy text on desktop.
+
+- Headshot stretches to fill both the intro and adjacent philosophy section via CSS grid row span — image uses `object-fit: cover` at `height: 100%`.
+- Image renders in black and white (`grayscale(100%)`).
+- On mobile: stacked single column, headshot at 4:5 aspect ratio.
 
 ```yaml
 about-intro:
   desktop (>= lg):
     display: grid
-    grid-template-columns: 5fr 7fr     # ~40/60 split
-    gap: xl                             # 32px
+    grid-template-columns: 5fr 7fr
+    gap: xl
     align-items: stretch
     
     headshot-panel:
       gridColumn: 1
-      # Image height extends through the philosophy section using
-      # CSS grid stretch — image element uses object-fit: cover and
-      # height: 100% within its grid cell. The grid row spans both
-      # the intro and the next section (philosophy).
       height: 100%
       borderRadius: md
-      filter: grayscale(100%)            # B&W per PRODUCT.md
+      filter: grayscale(100%)
       objectFit: cover
     
     content-panel:
@@ -960,20 +987,22 @@ about-intro:
 
 ### About — Two-column Structured Layout
 
-PRODUCT.md §7.4 #4. Used for sections 5–8 (Approach, Capabilities, Experience, Education).
+25/75 column layout for structured About sections (Approach, Capabilities, Experience, Education); heading column on the left, content on the right.
+
+- Heading column is sticky within its grid row at `lg+`; stacked single column below.
+- Each section separated by a `1px outline-variant` border-top.
 
 ```yaml
 about-two-col:
   desktop (>= lg):
     display: grid
-    grid-template-columns: 3fr 9fr        # 25/75
-    gap: xl                                # 32px
-    paddingVertical: 3xl                   # 64px between sections
+    grid-template-columns: 3fr 9fr
+    gap: xl
+    paddingVertical: 3xl
     borderTop: 1px solid outline-variant
     
     heading-col:
       gridColumn: 1
-      # Section heading sticks to the top of its grid row only on lg+
       position: sticky
       top: 96px
       alignSelf: flex-start
