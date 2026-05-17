@@ -9,7 +9,7 @@ export function Tag({ children, className }: TagProps) {
   return (
     <span
       className={cn(
-        "tag-chip normal-case tracking-normal inline-block rounded-[var(--radius-sm)] bg-[var(--surface-tag)] px-[var(--spacing-sm)] py-[2px] text-[var(--on-surface)]",
+        "tag-chip inline-block rounded-[var(--radius-sm)] bg-[var(--surface-tag)] px-[var(--spacing-sm)] py-[2px]",
         className,
       )}
     >
