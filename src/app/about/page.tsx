@@ -58,16 +58,16 @@ export default function AboutPage() {
           </header>
 
           {/* Portrait + editorial intro */}
-          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
-            <div className="w-full shrink-0 lg:w-[240px]">
-              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
+          <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-start md:gap-[var(--spacing-2xl)]">
+            <div className="w-full shrink-0 md:w-[clamp(200px,24vw,320px)]">
+              <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] grayscale md:aspect-[3/4]">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
                   fill
-                  className="object-cover"
+                  className="object-cover object-[center_25%]"
                   unoptimized={about.headshot.endsWith(".svg")}
-                  sizes="240px"
+                  sizes="(min-width: 768px) clamp(200px, 24vw, 320px), 100vw"
                 />
               </div>
             </div>
@@ -86,8 +86,8 @@ export default function AboutPage() {
           </div>
 
           {/* Capabilities */}
-          <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
-            <div className="w-full shrink-0 lg:w-[200px]">
+          <div className="flex flex-col gap-[var(--spacing-lg)] md:flex-row md:gap-[var(--spacing-3xl)]">
+            <div className="w-full shrink-0 md:w-[200px]">
               <p className="heading-section">Capabilities</p>
             </div>
             <div className="min-w-0 flex-1">
@@ -117,7 +117,7 @@ export default function AboutPage() {
             <Heading level={2} type="heading-section">
               Approach
             </Heading>
-            <div className="grid grid-cols-1 gap-[var(--spacing-2xl)] md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2 md:gap-[var(--spacing-2xl)] xl:grid-cols-3">
               {about.approach.map((item, i) => (
                 <div key={item.title} className="flex gap-[var(--spacing-md)]">
                   <span className="mono-anchor w-6 shrink-0">

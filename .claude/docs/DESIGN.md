@@ -897,50 +897,53 @@ editorial-dl:
 
 #### About — Two-panel Intro
 
-Two-column intro layout for the About page; headshot panel beside intro copy and philosophy text on desktop.
+Flex row intro layout for the About page; headshot panel beside intro copy on tablet and desktop, stacked identity block on mobile.
 
-- Headshot stretches to fill both the intro and adjacent philosophy section via CSS grid row span — image uses `object-fit: cover` at `height: 100%`.
-- Image renders in black and white (`grayscale(100%)`).
-- On mobile: stacked single column, headshot at 4:5 aspect ratio.
+- Headshot column is a fluid clamp — `clamp(200px, 24vw, 320px)` — giving progressive portrait presence from tablet through desktop without exceeding a restrained ceiling. Text column takes the remaining width.
+- Image renders in black and white (`grayscale(100%)`), `object-fit: cover`. `object-position` should be tuned to the source image composition to preserve face/shoulder framing at both aspect ratios.
+- On mobile (below `md`, 768px): stacked single column, headshot goes full container width at 1:1 square aspect — acts as a contextual identity block, not a collapsed sidebar asset.
 
 ```yaml
 about-intro:
-  desktop (>= lg):
-    display: grid
-    grid-template-columns: 5fr 7fr
-    gap: xl
-    align-items: stretch
-    
+  row (>= md, 768px):
+    display: flex
+    flexDirection: row
+    gap: "{spacing.2xl}"   # 48px
+    alignItems: start
+
     headshot-panel:
-      gridColumn: 1
-      height: 100%
-      borderRadius: md
+      width: "clamp(200px, 24vw, 320px)"
+      aspectRatio: 3/4
+      borderRadius: "{radius.md}"
       filter: grayscale(100%)
       objectFit: cover
-    
+
     content-panel:
-      gridColumn: 2
-      # contains intro copy + philosophy section in a vertical stack
-  
-  mobile (< lg):
+      flex: 1
+
+  stacked (< md):
     display: flex
     flexDirection: column
-    gap: lg
+    gap: "{spacing.xl}"    # 32px
+
     headshot-panel:
-      aspectRatio: 4/5
       width: 100%
+      aspectRatio: 1/1
+      borderRadius: "{radius.md}"
+      filter: grayscale(100%)
+      objectFit: cover
 ```
 
 #### About — Two-column Structured Layout
 
 25/75 column layout for structured About sections (Approach, Capabilities); heading column on the left, content on the right.
 
-- Heading column is sticky within its grid row at `lg+`; stacked single column below.
+- Heading column at `md+`; stacked single column below `md` (768px).
 - Each section separated by a `1px outline-variant` border-top.
 
 ```yaml
 about-two-col:
-  desktop (>= lg):
+  row (>= md):
     display: grid
     grid-template-columns: 3fr 9fr
     gap: xl
@@ -949,9 +952,6 @@ about-two-col:
     
     heading-col:
       gridColumn: 1
-      position: sticky
-      top: 96px
-      alignSelf: flex-start
       typography: headline-md
       color: on-surface
     
@@ -959,7 +959,7 @@ about-two-col:
       gridColumn: 2
       gap: lg
   
-  mobile (< lg):
+  stacked (< md):
     display: flex
     flexDirection: column
     gap: md
