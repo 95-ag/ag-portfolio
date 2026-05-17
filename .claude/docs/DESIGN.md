@@ -647,7 +647,7 @@ project-card-body:
 
 project-card-text-variant:
   # No hero. Category icon mapped from projectType (academic|freelance|personal):
-  #   academic → FlaskConical, freelance → Briefcase, personal → Code2 (lucide-react)
+  #   academic → ScienceIcon, freelance → WorkIcon, personal → CodeIcon
   iconSize: 18px
   iconColor: on-surface-muted at opacity 60
   layout: icon → title (headline-sm) → summary → tags

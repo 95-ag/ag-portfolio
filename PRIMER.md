@@ -18,7 +18,7 @@ Phase 5 UI polish in progress. Build passes (10 static pages), Biome clean, Type
 **Installed:**
 - Next.js 16.2.6, React 19, TypeScript, Tailwind CSS v4, Biome
 - framer-motion, next-themes, gray-matter, next-mdx-remote, zod, remark-gfm
-- clsx, tailwind-merge, lucide-react
+- clsx, tailwind-merge
 
 **Design tokens — `src/app/globals.css` (current values):**
 - Full semantic color map (light + dark): 21 roles
