@@ -5,7 +5,6 @@ import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
-import { Sticky } from "@/components/layout/sticky";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { SocialLink } from "@/components/ui/social-link";
@@ -17,25 +16,6 @@ export const metadata = {
   description:
     "AI/ML engineer building practical systems for real-world constraints.",
 };
-
-function TwoColumnRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
-      <div className="w-full shrink-0 lg:w-[200px]">
-        <Sticky top="var(--spacing-3xl)">
-          <p className="heading-component">{label}</p>
-        </Sticky>
-      </div>
-      <div className="min-w-0 flex-1">{children}</div>
-    </div>
-  );
-}
 
 export default function AboutPage() {
   const { frontmatter: about } = getAbout();
@@ -93,12 +73,12 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-md)]">
-              <p className="heading-component">{about.positioning}</p>
+              <p className="heading-display">{about.positioning}</p>
               {about.detailedPositioning
                 .split("\n\n")
                 .filter(Boolean)
                 .map((para) => (
-                  <p key={para} className="body-secondary">
+                  <p key={para} className="body-lead">
                     {para.trim()}
                   </p>
                 ))}
@@ -108,9 +88,7 @@ export default function AboutPage() {
           {/* Capabilities */}
           <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
             <div className="w-full shrink-0 lg:w-[200px]">
-              <Sticky top="var(--spacing-3xl)">
-                <p className="heading-component">Capabilities</p>
-              </Sticky>
+              <p className="heading-section">Capabilities</p>
             </div>
             <div className="min-w-0 flex-1">
               <Stack gap="xl">
@@ -119,7 +97,7 @@ export default function AboutPage() {
                     key={cap.area}
                     className="flex flex-col gap-[var(--spacing-xs)]"
                   >
-                    <p className="body-primary">{cap.area}</p>
+                    <p className="body-lead">{cap.area}</p>
                     {cap.description && (
                       <p className="body-secondary">{cap.description}</p>
                     )}
@@ -136,13 +114,13 @@ export default function AboutPage() {
 
           {/* Approach */}
           <div className="flex flex-col gap-[var(--spacing-xl)]">
-            <Heading level={2} type="heading-component">
+            <Heading level={2} type="heading-section">
               Approach
             </Heading>
             <div className="grid grid-cols-1 gap-[var(--spacing-2xl)] md:grid-cols-2 lg:grid-cols-3">
               {about.approach.map((item, i) => (
                 <div key={item.title} className="flex gap-[var(--spacing-md)]">
-                  <span className="mono-code w-6 shrink-0">
+                  <span className="mono-anchor w-6 shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className="flex flex-col gap-[var(--spacing-xs)]">
@@ -156,7 +134,7 @@ export default function AboutPage() {
 
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
-            <Heading level={2} type="heading-component">
+            <Heading level={2} type="heading-section">
               Get in touch
             </Heading>
             <p className="body-secondary max-w-[480px]">
