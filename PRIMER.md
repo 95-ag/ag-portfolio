@@ -31,29 +31,32 @@ Phase 5 UI polish in progress. Build passes (10 static pages), Biome clean, Type
 - Spacing: `xs` → `5xl` + `gutter`, `margin-mobile`, `margin-desktop`
 - Radius: `sm`, `md`, `lg`, `pill`; Z-index: 10-level; Motion: `duration-fast/base/slow`, `ease-standard`, `ease-emphasis`
 
-**Typography system — semantic tokens (16 classes in `globals.css`):**
+**Typography system — semantic tokens (19 classes in `globals.css`):**
 All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`), Muted (`on-surface-muted`), Accent (`accent`).
 
-| Token | Role |
-|---|---|
-| `display-primary` | Hero headline, page H1 — Ink |
-| `display-accent` | Section title with Accent color |
-| `heading-component` | Card titles, section headings — Ink |
-| `heading-narrative` | H4 in prose, editorial subheads — Accent |
-| `body-primary` | Long-form prose — Ink |
-| `body-secondary` | Supporting copy, summaries — Muted |
-| `body-caption` | Captions, timestamps — Muted |
-| `body-emphasis` | Highlighted callout body — Ink |
-| `callout-title` | Callout lead-in — Accent |
-| `interactive-label` | Committed actions (buttons, CTAs) — stateful |
-| `nav-link` | Navigational/location indicators — stateful |
-| `mono-anchor` | Page eyebrows, structural metadata — Muted, uppercase |
-| `tag-chip` | Tag chips on cards — Muted, uppercase |
-| `insight-label` | Callout/highlight markers — Muted, uppercase |
-| `mono-code` | Inline code, code blocks — Muted |
-| `support-meta` | Footer, TOC items — Muted |
+| Token | Size (desktop) | Role |
+|---|---|---|
+| `display-primary` | 56px | Hero headline, page H1 — Ink |
+| `display-accent` | 56px | Section title — Accent |
+| `heading-display` | 36px | Editorial deck / tagline under H1 — Ink |
+| `heading-section` | 26px | Major section headings on editorial pages — Ink |
+| `heading-component` | 22px | Card titles, UI section headings — Ink |
+| `heading-narrative` | 20px | H4 in prose, editorial subheads — Accent |
+| `body-lead` | 20px | Lead narrative paragraphs, capability group labels — Ink |
+| `body-primary` | 18px | Long-form prose — Ink |
+| `body-secondary` | 18px | Supporting copy, summaries — Muted |
+| `body-caption` | 14px | Captions, timestamps — Muted |
+| `body-emphasis` | 18px | Highlighted callout body — Ink, 500 weight |
+| `callout-title` | 16px | Callout lead-in — Accent |
+| `interactive-label` | 14px | Committed actions (buttons, CTAs) — stateful |
+| `nav-link` | 14px | Navigational/location indicators — stateful |
+| `mono-anchor` | 15px | Page eyebrows, structural metadata — Muted, uppercase |
+| `tag-chip` | 12px | Tag chips on cards — Ink, uppercase |
+| `insight-label` | 13px | Callout/highlight markers — Muted, uppercase |
+| `mono-code` | 16px | Inline code, code blocks — Muted |
+| `support-meta` | 13px | Footer, TOC items — Muted |
 
-Mobile overrides (≤768px): `display-primary` / `display-accent` scale to 36px / 44px.
+Mobile overrides (≤768px): `display-primary`/`display-accent` → 36px/44px; `heading-display` → 28px/36px; `heading-section` → 22px/30px; `body-lead` → 18px/28px.
 Footer responsive exception: `support-meta` + local Tailwind override to 11px/18px mobile, 15px/24px desktop.
 
 **Prose composition (`.prose-content`):**
@@ -151,20 +154,28 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**About page typography and structure refinements.**
+**Typography audit + token expansion (phase-5-about-page).**
 
-- Social links: icon + text use `on-surface` ink; hover adds `surface-raised` fill.
-- Intro: positioning line uses `heading-component`, detail paragraphs use `body-secondary`.
-- Capabilities: section label uses `heading-component` (ink); group titles use `body-primary` (no bold); `description` optional and skipped when absent.
-- Approach: number in fixed left lane (`mono-code w-6`), title + body stacked right; `gap-2xl` between items; 3-col grid preserved.
+Full typography audit comparing globals.css against DESIGN.md. Fixes applied:
+- `tag-chip` color corrected to `on-surface` (was `on-surface-muted`); Tag component overrides (`normal-case`, `tracking-normal`) removed — token fully owns behavior.
+- Prose `h2` border-bottom: `currentColor` → explicit `var(--on-surface-muted)`; DESIGN.md updated.
+- `mono-label` references in DESIGN.md replaced with `insight-label` (the defined token).
+- DESIGN.md prose composition rules corrected: h2 margin-bottom `spacing.lg` → `spacing.2xl`; h2 border token `outline-variant` → `on-surface-muted`; tag spec stripped `normal-case, tracking-normal`.
 
-**Typography semantic migration — tokens now own default color.**
+**Three new typography tokens added (19 total):**
+- `heading-display` (36px → 28px mobile): editorial deck/tagline under H1
+- `heading-section` (26px → 22px mobile): major section headings on editorial pages
+- `body-lead` (20px → 18px mobile): lead narrative paragraphs, capability group labels
 
-- Added `color: var(--on-surface)` to `display-primary`, `heading-component`, `body-primary`, `body-emphasis` in `globals.css`.
-- Removed `needsInkColor` patch from `Heading` component.
-- Stripped all redundant `text-[--on-surface]` overrides from `about/page.tsx`, `project-card.tsx`, `project-header.tsx`.
-- Removed muted override from `TwoColumnRow` section labels — `heading-component` now renders at ink by default.
-- Replaced `opacity-30/50/60` dimming with semantic muted token color throughout.
+**About page token migration:**
+- Positioning tagline: `heading-component` → `heading-display`
+- Bio paragraphs: `body-secondary` → `body-lead`
+- Capabilities label + Approach H2 + Get in touch H2: `heading-component` → `heading-section`
+- Approach index numbers: `mono-code` → `mono-anchor`
+- Capabilities label: `<Sticky>` wrapper removed (overkill for 3-item list)
+- `TwoColumnRow` dead function + unused `Sticky` import removed
+
+**`heading.tsx` SemanticType union extended** to include `heading-display` and `heading-section`.
 
 **DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid
