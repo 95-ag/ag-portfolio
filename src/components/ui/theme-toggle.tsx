@@ -2,20 +2,23 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
-import {
-  MaterialSymbol,
-  type MaterialSymbolName,
-} from "@/components/ui/material-symbol";
+import { ComputerIcon } from "@/components/icons/material/computer";
+import { DarkModeIcon } from "@/components/icons/material/dark-mode";
+import { LightModeIcon } from "@/components/icons/material/light-mode";
 import { cn } from "@/lib/utils/cn";
 
 type ThemeMode = "light" | "dark" | "system";
+type IconComponent = (props: {
+  size?: number;
+  className?: string;
+}) => React.ReactElement;
 
 const MODES: ThemeMode[] = ["light", "dark", "system"];
 
-const ICON: Record<ThemeMode, MaterialSymbolName> = {
-  light: "light_mode",
-  dark: "dark_mode",
-  system: "computer",
+const ICON: Record<ThemeMode, IconComponent> = {
+  light: LightModeIcon,
+  dark: DarkModeIcon,
+  system: ComputerIcon,
 };
 
 const LABEL: Record<ThemeMode, string> = {
@@ -62,6 +65,7 @@ export function PillThemeSelector() {
         const isSelected = mode === current;
         // Selected button is always visible; others appear only when expanded
         const visible = isSelected || expanded;
+        const ModeIcon = ICON[mode];
         return (
           <div
             key={mode}
@@ -83,7 +87,7 @@ export function PillThemeSelector() {
                   : "text-[var(--on-surface-muted)] hover:text-[var(--on-surface)]",
               )}
             >
-              <MaterialSymbol name={ICON[mode]} size={16} />
+              <ModeIcon size={16} />
             </button>
           </div>
         );
@@ -105,6 +109,7 @@ export function InlineThemeSelector({ className }: { className?: string }) {
     >
       {MODES.map((mode) => {
         const isSelected = mode === current;
+        const ModeIcon = ICON[mode];
         return (
           <button
             key={mode}
@@ -120,7 +125,7 @@ export function InlineThemeSelector({ className }: { className?: string }) {
                 : "text-[var(--on-surface-muted)] hover:text-[var(--on-surface)]",
             )}
           >
-            <MaterialSymbol name={ICON[mode]} size={16} />
+            <ModeIcon size={16} />
           </button>
         );
       })}

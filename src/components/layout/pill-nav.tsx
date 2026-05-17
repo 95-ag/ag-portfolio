@@ -3,14 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MaterialSymbol } from "@/components/ui/material-symbol";
+import type { IconProps } from "@/components/icons/icon-base";
+import { FingerprintIcon } from "@/components/icons/material/fingerprint";
+import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { PillThemeSelector } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils/cn";
 
-const NAV_ITEMS = [
-  { href: "/about", label: "About", icon: "fingerprint" },
-  { href: "/work", label: "Work", icon: "folder_code" },
-] as const;
+type NavIconComponent = (props: IconProps) => React.ReactElement;
+
+const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
+  { href: "/about", label: "About", Icon: FingerprintIcon },
+  { href: "/work", label: "Work", Icon: FolderCodeIcon },
+];
 
 function LogoMark() {
   return (
@@ -47,7 +51,7 @@ export function PillNav() {
           className="h-5 w-px bg-[var(--outline-variant)]"
         />
 
-        {NAV_ITEMS.map(({ href, label, icon }) => {
+        {NAV_ITEMS.map(({ href, label, Icon }) => {
           const isActive = pathname.startsWith(href);
           return (
             <Link
@@ -61,8 +65,7 @@ export function PillNav() {
                   : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
               )}
             >
-              <MaterialSymbol
-                name={icon}
+              <Icon
                 size={16}
                 className={isActive ? "text-[var(--accent)]" : ""}
               />

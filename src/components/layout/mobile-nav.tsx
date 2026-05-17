@@ -1,20 +1,25 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { MaterialSymbol } from "@/components/ui/material-symbol";
+import type { IconProps } from "@/components/icons/icon-base";
+import { CloseIcon } from "@/components/icons/material/close";
+import { FingerprintIcon } from "@/components/icons/material/fingerprint";
+import { FolderCodeIcon } from "@/components/icons/material/folder-code";
+import { MenuIcon } from "@/components/icons/material/menu";
 import { InlineThemeSelector } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
 
-const NAV_ITEMS = [
-  { href: "/about", label: "About", icon: "fingerprint" },
-  { href: "/work", label: "Work", icon: "folder_code" },
-] as const;
+type NavIconComponent = (props: IconProps) => React.ReactElement;
+
+const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
+  { href: "/about", label: "About", Icon: FingerprintIcon },
+  { href: "/work", label: "Work", Icon: FolderCodeIcon },
+];
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -73,20 +78,7 @@ export function MobileNav() {
         aria-expanded={open}
         className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          aria-hidden="true"
-        >
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
+        <MenuIcon size={18} />
       </button>
 
       <AnimatePresence>
@@ -144,7 +136,7 @@ export function MobileNav() {
                   aria-label="Close navigation menu"
                   className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-pill)] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]"
                 >
-                  <X size={18} aria-hidden />
+                  <CloseIcon size={18} />
                 </button>
               </div>
 
@@ -153,7 +145,7 @@ export function MobileNav() {
                 aria-label="Primary"
                 className="mt-[var(--spacing-xl)] flex flex-col gap-[var(--spacing-xs)]"
               >
-                {NAV_ITEMS.map(({ href, label, icon }) => {
+                {NAV_ITEMS.map(({ href, label, Icon }) => {
                   const isActive = pathname.startsWith(href);
                   return (
                     <Link
@@ -167,8 +159,7 @@ export function MobileNav() {
                           : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
                       )}
                     >
-                      <MaterialSymbol
-                        name={icon}
+                      <Icon
                         size={16}
                         className={isActive ? "text-[var(--accent)]" : ""}
                       />

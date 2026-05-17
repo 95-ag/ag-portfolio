@@ -1,5 +1,6 @@
-import { Download, Mail } from "lucide-react";
 import Link from "next/link";
+import { DownloadIcon } from "@/components/icons/material/download";
+import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
@@ -87,14 +88,14 @@ export default function HomePage() {
                 variant="secondary"
                 href="/AishwaryaGanesan_Resume.pdf"
                 download
-                icon={<Download size={16} aria-hidden="true" />}
+                icon={<DownloadIcon size={16} />}
               >
                 Download Resume
               </Button>
               <Button
                 variant="primary"
                 href="mailto:aishwaryaganesan95@gmail.com"
-                icon={<Mail size={16} aria-hidden="true" />}
+                icon={<MailIcon size={16} />}
               >
                 Get in Touch
               </Button>
