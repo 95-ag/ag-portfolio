@@ -296,6 +296,19 @@ layout:
 - Diagrams in project deep dives must be production-quality and visually consistent.
 - Tooling is decided once and applied uniformly across all projects.
 
+### Iconography
+
+- UI/system icons use Material Symbols Outlined — inline SVG React components, inheriting `currentColor`.
+- Brand and platform icons use official monochrome SVG marks, kept distinct from Material style.
+- Icons communicate function. Navigation pairs icon + text label. Buttons use leading icons.
+
+| Context | Size |
+|---|---|
+| Standalone icon links (footer) | 20px |
+| Buttons, nav items, utility controls | 16px |
+| Card/list metadata icons | 18px |
+| Inline action indicators | 12px |
+
 ---
 
 ## Components
