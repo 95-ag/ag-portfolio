@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils/cn";
 type SemanticType =
   | "display-primary"
   | "display-accent"
+  | "heading-display"
+  | "heading-section"
   | "heading-component"
   | "heading-narrative";
 
