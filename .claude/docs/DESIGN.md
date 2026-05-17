@@ -398,9 +398,9 @@ theme-toggle:
     borderRadius: 4px
 
 icons:
-  light: sun glyph
-  dark: moon glyph  
-  system: half-filled circle (◐) or monitor glyph
+  light: LightModeIcon
+  dark: DarkModeIcon
+  system: ComputerIcon
 ```
 
 #### Mobile Slide-out Menu
