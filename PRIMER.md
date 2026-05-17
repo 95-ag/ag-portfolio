@@ -85,8 +85,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `card.tsx` — **DELETED** (was unused)
 - `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
 - `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
-- `theme-toggle.tsx` — `PillThemeSelector` (collapsed, expands on hover) + `InlineThemeSelector` (always expanded); both use MaterialSymbol
-- `material-symbol.tsx` — inline SVG; 5 icons
+- `theme-toggle.tsx` — `PillThemeSelector` (collapsed, expands on hover) + `InlineThemeSelector` (always expanded); uses `LightModeIcon`, `DarkModeIcon`, `ComputerIcon`
 
 **Navigation (complete):**
 - `pill-nav.tsx` — active state: `surface-selection` (accent-tinted); hover: `surface-sunken`; container: `surface-nav` + blur
@@ -109,12 +108,19 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `React.Fragment` (explicit) required when `key` needed in map — `<>` cannot take `key`
 - Biome `noStaticElementInteractions` fires on hover wrappers — biome-ignore with justification
 - Material Symbols SVG paths use viewBox `0 -960 960 960` (not `0 0 24 24`)
+- Brand icons (GitHub, LinkedIn) use viewBox `0 0 24 24` — kept as standalone SVG wrappers, not via `IconBase`
 - Prose cascade specificity: `.prose-content <element>` rules beat `@layer components` token classes — always add explicit Tailwind arbitrary color utilities on elements that must hold a fixed color inside prose
-- `lucide-react` has no Github icon — use inline SVG
 - `surface-selection` vs `surface-sunken`: selection = accent-tinted (active states), sunken = neutral (hover states, code surfaces, recessed wells)
+
+**Icon system (complete) — `src/components/icons/`:**
+- `icon-base.tsx` — shared `IconBase` + `IconProps`; handles viewBox, sizing, `aria-hidden`, `currentColor`
+- `material/` — 18 Material Symbols Outlined components (one per file); viewBox `0 -960 960 960`
+- `brands/` — `GitHubIcon`, `LinkedInIcon`; viewBox `0 0 24 24`; standalone SVG wrappers (not via IconBase)
+- lucide-react removed entirely
 
 **Project components (complete) — `src/components/project/`:**
 - `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; outer: `surface-raised` + `outline-variant` border (0px radius); inner media: `surface-sunken` + `radius-md`
+- `project-header.tsx` — link pills: 16px leading icon + label + 12px `OpenInNewIcon` trailing indicator; Demo uses `DeployedCodeIcon`
 - `hero-media.tsx`, `project-overview.tsx`, `stack-summary.tsx`, `project-sidebar.tsx`
 - `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
 
@@ -129,7 +135,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. Canonical spine: Overview / Foundations / Components / **Domain Components** / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions / Iteration Notes. All §N section numbers removed; cross-references use named section paths (e.g. "Foundations → Colors").
+- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. Canonical spine: Overview / Foundations (incl. Iconography) / Components / **Domain Components** / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions / Iteration Notes.
 - **DESIGN.md spine distinction:** `## Components` = reusable/portable UI systems; `## Domain Components` = page/domain-bound compositions (Project Detail with Prose Layout + Editorial Two-column, About Layouts).
 - `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths
 - `.claude/docs/CONTENT-SCHEMA.md` — cross-references updated to Domain Components paths
@@ -145,13 +151,16 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**DESIGN.md doc cleanup and section population — 6 commits.**
+**Icon system migration + DESIGN.md doc sync — 9 commits.**
 
-1. `3dbebf7` — post-Foundations component cleanup pass.
-2. `930cfbc` — introduced `## Domain Components`; moved Project Detail and About Layouts into it.
-3. `ec539fb` — updated writing contract and rewriter skills for Domain Components taxonomy.
-4. `408a5c3` — file-protect hook update.
-5. `bc0d189` — populated Cross-Cutting Rules (Do/Don't), Touch Targets, Collapsing Strategy; removed empty Reduced Motion Rules and Token Usage Conventions headings; cleared all related Known Gaps entries.
+1. `f651bcd` — migrated icon system: lucide-react removed, all icons replaced with local Material Symbols + brand SVGs.
+2. `01eb8d5` — added `### Iconography` section to DESIGN.md Foundations with sizing table.
+3. `cb215bd` — removed stale lucide-react references from DESIGN.md and PRIMER.md.
+4. `63817b7` — fixed three YAML iconSize mismatches (theme-toggle, scroll-to-top, mobile-nav-trigger); added project-header link pattern note.
+5. `674164a` — replaced `ContentCopyIcon` with `DeployedCodeIcon` for Demo project links.
+6. `52ee0f3` — tracked icon component files missed in migration commit; deleted unused `ContentCopyIcon`.
+7. `6aad875` — updated theme-toggle YAML icon names to match implementation.
+8. Updated `button-icon-leading.iconSize` 18→16px; added leading-only icon slot note to Buttons section.
 
 **DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid
