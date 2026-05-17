@@ -142,17 +142,20 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 #### Semantic Token Table
 
-- 16 tokens, role-based.
+- 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
-- Mobile override: `display-primary` and `display-accent` scale to 36px / 44px line-height at ≤768px.
+- Mobile overrides at ≤768px: `display-primary` and `display-accent` → 36px / 44px; `heading-display` → 28px / 36px; `heading-section` → 22px / 30px; `body-lead` → 18px / 28px.
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
 | `display-primary` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
 | `display-accent` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
+| `heading-display` | Manrope | 36px → 28px mobile | 600 | 44px → 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
+| `heading-section` | Manrope | 26px → 22px mobile | 600 | 34px → 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
+| `body-lead` | Inter | 20px → 18px mobile | 400 | 30px → 28px | — | — (Ink) | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
 | `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
 | `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
 | `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
@@ -173,7 +176,7 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 | Element | Semantic token | Composition additions |
 |---|---|---|
-| `h2` | `mono-anchor` values | `border-bottom: 1px solid {outline-variant}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.lg}` |
+| `h2` | `mono-anchor` values | `border-bottom: 1px solid {on-surface-muted}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.2xl}` |
 | `h3` | `heading-component` values | `margin-top: {spacing.2xl}`, `margin-bottom: {spacing.sm}` |
 | `h4` | `heading-narrative` values | `margin-top: {spacing.xl}`, `margin-bottom: {spacing.xs}` |
 | `p`, `li` | `body-primary` values (18px) | — |
@@ -574,7 +577,7 @@ Compact chip label used to categorize and surface topics on cards and in content
 
 ```yaml
 tag:
-  type: tag-chip, normal-case, tracking-normal
+  type: tag-chip
   paddingX: spacing-sm
   paddingY: 2px
   borderRadius: sm
@@ -672,7 +675,7 @@ highlight:
 
   heading (optional):
     element: <figcaption>
-    type: mono-label
+    type: insight-label
     color: on-surface-muted
     margin-bottom: spacing-lg
 
@@ -829,7 +832,7 @@ project-section-label:
   borderTop: 1px solid outline-variant
   paddingTop: spacing-lg
   label:
-    type: mono-label
+    type: insight-label
     color: on-surface-muted
     opacity: 0.40
 ```
@@ -838,14 +841,14 @@ project-section-label:
 
 Spacing and vertical rhythm for MDX long-form content; typographic treatment defined in Foundations → Typography → Prose Composition Rules.
 
-- H2s function as section anchors: `1px currentColor` bottom border (inheriting `on-surface-muted`) creates a thin ruled separator.
+- H2s function as section anchors: `1px solid on-surface-muted` bottom border creates a thin ruled separator.
 - First H2 in `.prose-content` has `margin-top: 0` — separation is provided by the project section label above.
 - H3s are clearly subordinate: no rule, reduced weight and margin.
 
 ```yaml
 prose-h2-layout:
   marginTop: spacing-3xl
-  borderBottom: 1px solid currentColor
+  borderBottom: 1px solid on-surface-muted
   paddingBottom: spacing-md
   marginBottom: spacing-2xl
 
