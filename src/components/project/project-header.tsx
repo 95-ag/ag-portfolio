@@ -1,5 +1,5 @@
 import { GitHubIcon } from "@/components/icons/brands/github";
-import { ContentCopyIcon } from "@/components/icons/material/content-copy";
+import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Tag } from "@/components/ui/tag";
@@ -19,7 +19,7 @@ const LINK_META: Record<
   },
   demo: {
     label: "Demo",
-    Icon: () => <ContentCopyIcon size={16} />,
+    Icon: () => <DeployedCodeIcon size={16} />,
   },
   paper: {
     label: "Paper",
