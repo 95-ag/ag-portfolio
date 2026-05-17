@@ -140,7 +140,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths
 - `.claude/docs/CONTENT-SCHEMA.md` — cross-references updated to Domain Components paths
 - `.claude/skills/design-writing-contract.md` — updated for Domain Components taxonomy
-- `.claude/skills/design-doc-rewriter/references/` — validation-heuristics, safety-rules, rewrite-passes updated
+- `.claude/skills/design-rewrite/references/` — validation-heuristics, safety-rules, rewrite-passes updated
 
 **Placeholder content:**
 - `content/projects/lane-refinement-rl.mdx` — academic, `featured: true`, order 10

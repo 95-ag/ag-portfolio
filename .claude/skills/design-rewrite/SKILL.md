@@ -1,5 +1,5 @@
 ---
-name: design-doc-rewriter
+name: design-rewrite
 description: >
   Heavyweight structural transformation tool for DESIGN.md files. Use this skill when the user wants
   to rewrite, restructure, align, or normalize a design doc — including large-scale migrations, full
@@ -9,7 +9,7 @@ description: >
   "bring the design doc into compliance", "reorganize the hierarchy", "consolidate duplication",
   "migrate sections", or any request that touches more than two top-level sections or implies
   moving/renaming canonical sections. Do NOT use for targeted single-section edits, token additions,
-  or cross-reference fixes — use design-doc-maintainer for those.
+  or cross-reference fixes — use design-update for those.
 ---
 
 # Design Doc Rewriter
@@ -29,7 +29,7 @@ If the user hasn't specified a pass type, read the doc first, then ask which pas
 
 ## Disambiguation
 
-If the user's request touches ≤ 2 top-level sections and requires no structural moves, recommend `design-doc-maintainer` instead and stop.
+If the user's request touches ≤ 2 top-level sections and requires no structural moves, recommend `design-update` instead and stop.
 
 If the scope is ambiguous, ask one clarifying question before starting.
 

@@ -1,5 +1,5 @@
 ---
-name: design-doc-maintainer
+name: design-update
 description: >
   Conservative, minimal-diff editing tool for already-compliant DESIGN.md files. Use this skill
   when the user wants to make a targeted edit to a design doc — adding or removing a token, updating
@@ -8,7 +8,7 @@ description: >
   "rename surface-overlay", "fix the cross-reference to Foundations → Colors", "propagate the new
   term", "tighten this section", "add this token to the design doc", or any single-section or
   single-token edit. Do NOT use when the request touches more than two top-level sections, requires
-  relocating content across sections, or implies a full structural overhaul — use design-doc-rewriter
+  relocating content across sections, or implies a full structural overhaul — use design-rewrite
   for those.
 ---
 
@@ -32,7 +32,7 @@ If the user's request implies:
 - Renaming canonical section headings
 - Touching more than 2 top-level sections
 
-Stop and recommend `design-doc-rewriter` instead. Ask one clarifying question if the scope is ambiguous.
+Stop and recommend `design-rewrite` instead. Ask one clarifying question if the scope is ambiguous.
 
 **Cross-layer edits** — edits that touch both the YAML Registry *and* the markdown body (e.g., adding a token and updating its prose reference) are still within maintainer scope when they affect ≤ 2 canonical sections. Emit separate diff entries for the registry change and the markdown follow-on:
 
