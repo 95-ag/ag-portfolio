@@ -154,49 +154,49 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Typography audit + token expansion (phase-5-about-page).**
+**Responsive layout improvements + portrait scaling (phase-5-about-page). Committed: `0ef96b7`.**
 
-Full typography audit comparing globals.css against DESIGN.md. Fixes applied:
-- `tag-chip` color corrected to `on-surface` (was `on-surface-muted`); Tag component overrides (`normal-case`, `tracking-normal`) removed — token fully owns behavior.
-- Prose `h2` border-bottom: `currentColor` → explicit `var(--on-surface-muted)`; DESIGN.md updated.
-- `mono-label` references in DESIGN.md replaced with `insight-label` (the defined token).
-- DESIGN.md prose composition rules corrected: h2 margin-bottom `spacing.lg` → `spacing.2xl`; h2 border token `outline-variant` → `on-surface-muted`; tag spec stripped `normal-case, tracking-normal`.
+**Approach grid:**
+- `lg:grid-cols-3` → `xl:grid-cols-3` — 3-col now holds from 1280px+; 900–1100px range is 2-col (was cramped 3-col)
+- Gap responsive: `spacing.xl` (32px) below `md`, `spacing.2xl` (48px) at `md+`
 
-**Three new typography tokens added (19 total):**
-- `heading-display` (36px → 28px mobile): editorial deck/tagline under H1
-- `heading-section` (26px → 22px mobile): major section headings on editorial pages
-- `body-lead` (20px → 18px mobile): lead narrative paragraphs, capability group labels
+**Intro + Capabilities breakpoints:**
+- Both now `md:flex-row` (768px) instead of `lg` (1024px) — side-by-side layout starts earlier, page transitions to desktop layout in one step
 
-**About page token migration:**
-- Positioning tagline: `heading-component` → `heading-display`
-- Bio paragraphs: `body-secondary` → `body-lead`
-- Capabilities label + Approach H2 + Get in touch H2: `heading-component` → `heading-section`
-- Approach index numbers: `mono-code` → `mono-anchor`
-- Capabilities label: `<Sticky>` wrapper removed (overkill for 3-item list)
-- `TwoColumnRow` dead function + unused `Sticky` import removed
+**Headshot column — progressive scaling:**
+- Was: fixed `200px` floor, frozen from 768–1176px viewport
+- Now: `clamp(200px, 24vw, 320px)` — fluid across entire tablet-to-desktop range; 320px ceiling preserves text-first hierarchy
 
-**`heading.tsx` SemanticType union extended** to include `heading-display` and `heading-section`.
+**Mobile portrait — square identity block:**
+- Below `md`: full container width, `aspect-square` — reads as contextual identity block not a collapsed sidebar asset
+- Above `md`: 3:4 portrait, clamp-controlled width
+- `object-[center_25%]` tunes crop for current headshot composition (face/shoulder framing)
 
-**DESIGN.md canonical spine (current):**
-- **Overview** — Design Philosophy, Core Principles, Things to Avoid
-- **Foundations** — Colors, Typography, Spacing, Shapes, Elevation & Depth, Motion & Interaction, Layout
-- **Components** — Navigation, Actions & Interactive, Content Surfaces, Footer
-- **Domain Components** — Project Detail (Layout, Header, Progress Nav, Section Label, Prose Layout, Editorial Two-column), About Layouts (Two-panel Intro, Two-column Structured)
-- **Interaction Rules** — Responsive Behavior (Breakpoints, Touch Targets, Collapsing Strategy)
-- **Accessibility Rules**
-- **Cross-Cutting Rules** — Do / Don't
-- **Technical Conventions** — Z-Index Scale
-- **Iteration Notes** — Open Decisions, Known Gaps
+**DESIGN.md aligned:**
+- Two-panel Intro spec rewritten: breakpoint `lg` → `md`, aspect corrected `4:5` → `1:1` mobile, clamp documented, `object-position` framed as composition-dependent tuning
+- Two-column Structured Layout: breakpoint corrected `lg` → `md` throughout
+
+**Process note:** always propose commit clusters and await approval before any `git` operation.
 
 ---
 
 ## Next Steps
 
-1. **Home page v1 spec items:**
-   - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
-   - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
-3. **Merge to main** when phase-5 polish is complete
-5. **Content** — placeholder MDX files need real content
+**About page polish (before merge):**
+1. Headshot crop/focus — current `object-[center_25%]` not working well; needs a different approach
+2. Name text (`display-accent`) weight — could be thinner
+3. Em-dash + hyphen clash in positioning tagline at responsive widths — fix punctuation or reflow
+4. Increase spacing between major page sections (currently `Stack gap="3xl"`)
+5. Typography size steps — about page needs 3 steps to match ref's behavior (currently 2)
+6. Primary buttons — increase size
+
+**Home page v1 spec items:**
+- Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
+- Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
+
+**Then:** Merge to main when phase-5 polish is complete.
+
+**Content** — placeholder MDX files need real content.
 
 ---
 
