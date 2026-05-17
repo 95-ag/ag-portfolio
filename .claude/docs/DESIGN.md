@@ -382,7 +382,7 @@ Explicit three-option theme selector in the pill nav; shows the active mode icon
 theme-toggle:
   size: 40px x 40px
   borderRadius: pill
-  iconSize: 18px
+  iconSize: 16px
   
   hover:
     background: accent-muted
@@ -422,7 +422,7 @@ mobile-menu-trigger:
   background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
-  iconSize: 20px
+  iconSize: 18px
 
 mobile-slide-out:
   position: fixed
@@ -480,7 +480,7 @@ scroll-to-top:
   background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
-  iconSize: 18px
+  iconSize: 16px
   color: on-surface
   zIndex: 40
   
@@ -502,6 +502,7 @@ Committed action controls; used for CTAs, form submissions, and external link tr
 - Two variants: `primary` (filled `accent`) and `secondary` (outlined, transparent background).
 - `<Button href="...">` renders as `<a>` — same visual spec regardless of rendering mode; navigating is still a committed action.
 - No shadows, no gradients — hover handled by opacity or color transition alone.
+- Icon slot is leading-only — the component renders a single icon before the label.
 
 ```yaml
 button-primary:
@@ -533,7 +534,7 @@ button-secondary:
     transition: all 150ms
 
 button-icon-leading:
-  iconSize: 18px
+  iconSize: 16px
   gap-icon-label: 8px
 ```
 
@@ -772,6 +773,7 @@ Page header for a project detail page; communicates project identity, tags, and 
 
 - Vertical stack: tags row → display title → optional subtitle → optional links row.
 - Links row renders only when the project has external links.
+- Each link: 16px leading type icon (brand or Material) → text label → 12px trailing `OpenInNewIcon` as external link indicator.
 
 ```yaml
 project-header:
