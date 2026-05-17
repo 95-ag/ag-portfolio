@@ -13,26 +13,6 @@ const CapabilitySchema = z.object({
   tags: z.array(z.string()),
 });
 
-const ExperienceImageSchema = z.object({
-  src: z.string().startsWith("/"),
-  alt: z.string().min(1),
-});
-
-const ExperienceSchema = z.object({
-  company: z.string().min(1),
-  role: z.string().min(1),
-  timeframe: z.string().min(1),
-  achievements: z.array(z.string()).min(1),
-  image: ExperienceImageSchema.optional(),
-});
-
-const EducationSchema = z.object({
-  institution: z.string().min(1),
-  degree: z.string().min(1),
-  specialization: z.string().optional(),
-  timeframe: z.string().min(1),
-});
-
 export const AboutFrontmatterSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
@@ -46,8 +26,6 @@ export const AboutFrontmatterSchema = z.object({
   contactEmail: z.string().email(),
   approach: z.array(ApproachItemSchema).min(1),
   capabilities: z.array(CapabilitySchema).min(2),
-  experience: z.array(ExperienceSchema).min(1),
-  education: z.array(EducationSchema).min(1),
 });
 
 export type AboutFrontmatter = z.infer<typeof AboutFrontmatterSchema>;

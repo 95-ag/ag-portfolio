@@ -128,7 +128,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/app/page.tsx` — two-column hero, featured grid, CTA block
 - `src/app/work/page.tsx` — heading + project grid
 - `src/app/work/[slug]/page.tsx` — SectionProgressNav, HeroMedia, ProjectOverview, MDX body, backlink
-- `src/app/about/page.tsx` — identity row, two-panel intro, Approach, Capabilities, Experience, Education
+- `src/app/about/page.tsx` — identity row, two-panel intro, Approach, Capabilities
 - `src/app/not-found.tsx` — 404 with Home + Work links
 
 **Content pipeline (complete):**
@@ -151,16 +151,12 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Icon system migration + DESIGN.md doc sync — 9 commits.**
+**Removed Experience and Education from About page.**
 
-1. `f651bcd` — migrated icon system: lucide-react removed, all icons replaced with local Material Symbols + brand SVGs.
-2. `01eb8d5` — added `### Iconography` section to DESIGN.md Foundations with sizing table.
-3. `cb215bd` — removed stale lucide-react references from DESIGN.md and PRIMER.md.
-4. `63817b7` — fixed three YAML iconSize mismatches (theme-toggle, scroll-to-top, mobile-nav-trigger); added project-header link pattern note.
-5. `674164a` — replaced `ContentCopyIcon` with `DeployedCodeIcon` for Demo project links.
-6. `52ee0f3` — tracked icon component files missed in migration commit; deleted unused `ContentCopyIcon`.
-7. `6aad875` — updated theme-toggle YAML icon names to match implementation.
-8. Updated `button-icon-leading.iconSize` 18→16px; added leading-only icon slot note to Buttons section.
+- Deleted Experience and Education JSX sections from `src/app/about/page.tsx`.
+- Removed `ExperienceSchema`, `ExperienceImageSchema`, `EducationSchema`, and the `experience`/`education` fields from `src/lib/schemas/about.ts`.
+- Pruned `experience` and `education` frontmatter blocks from `content/about/about.mdx`.
+- Updated docs: PRODUCT.md §7 section list, CONTENT-SCHEMA.md example + rules, DESIGN.md two-column description, build-flow.md About implement list.
 
 **DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid

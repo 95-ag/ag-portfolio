@@ -195,10 +195,8 @@ The system is uniform; honest content depth varies by project type. Personal pro
 3. **Two-column structured layout for sections below.** Desktop: left = section heading, right = section body. Mobile: stacked. Sections separated by spacing only — no horizontal dividers.
 4. **Approach.** Short principles: systems thinking, iteration, communication, modular design, balancing research and real-world constraints. No motivational language.
 5. **Technical capabilities.** Grouped by capability area. Each group: short description + tag list. No skill-bar percentages.
-6. **Experience.** Structured entries: company, role, timeframe, 2–4 achievement bullets, optional image.
-7. **Education.** Concise: institution, degree, specialization or short note.
-8. **Testimonials** — v2.
-9. **Contact section** — v2: conversational/chat interface.
+6. **Testimonials** — v2.
+7. **Contact section** — v2: conversational/chat interface.
 
 ---
 

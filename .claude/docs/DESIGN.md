@@ -930,7 +930,7 @@ about-intro:
 
 #### About — Two-column Structured Layout
 
-25/75 column layout for structured About sections (Approach, Capabilities, Experience, Education); heading column on the left, content on the right.
+25/75 column layout for structured About sections (Approach, Capabilities); heading column on the left, content on the right.
 
 - Heading column is sticky within its grid row at `lg+`; stacked single column below.
 - Each section separated by a `1px outline-variant` border-top.

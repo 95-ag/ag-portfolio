@@ -523,33 +523,13 @@ capabilities:
   - area: "Backend & Infra"
     description: "..."
     tags: [FastAPI, Postgres, Docker]
-
-# Experience
-experience:
-  - company: "Company"
-    role: "Role"
-    timeframe: "2022 — Present"
-    achievements:
-      - "Quantified achievement 1"
-      - "Quantified achievement 2"
-    image:                      # optional
-      src: "/about/company-product.png"
-      alt: "..."
-
-# Education
-education:
-  - institution: "University"
-    degree: "MSc Computer Science"
-    specialization: "Machine Learning"
-    timeframe: "2020 — 2022"
 ---
 ```
 
 ### About frontmatter rules
 
-- All top-level fields except `image` (in experience) and `socials` are required.
+- All top-level fields except `socials` are required.
 - `socials` requires at least one entry.
-- `experience` and `education` are arrays; minimum one entry each.
 - `capabilities` minimum two entries (single-area capabilities read as thin).
 - Date strings are free-form for human readability ("2022 — Present", "Sep 2024") because they're displayed verbatim, not sorted.
 

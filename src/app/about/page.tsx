@@ -160,62 +160,6 @@ export default function AboutPage() {
             </Stack>
           </TwoColumnRow>
 
-          {/* Experience */}
-          <TwoColumnRow label="Experience">
-            <Stack gap="2xl">
-              {about.experience.map((exp) => (
-                <div
-                  key={`${exp.company}-${exp.role}`}
-                  className="flex flex-col gap-[var(--spacing-sm)]"
-                >
-                  <div className="flex flex-col gap-[var(--spacing-xs)]">
-                    <p className="heading-component text-[var(--on-surface)]">
-                      {exp.role}
-                    </p>
-                    <p className="mono-anchor">
-                      {exp.company} · {exp.timeframe}
-                    </p>
-                  </div>
-                  <ul className="flex flex-col gap-[var(--spacing-xs)]">
-                    {exp.achievements.map((achievement) => (
-                      <li
-                        key={achievement}
-                        className="body-secondary flex gap-[var(--spacing-sm)]"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="mt-[8px] h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--outline-variant)]"
-                        />
-                        {achievement}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </Stack>
-          </TwoColumnRow>
-
-          {/* Education */}
-          <TwoColumnRow label="Education">
-            <Stack gap="lg">
-              {about.education.map((edu) => (
-                <div
-                  key={edu.institution}
-                  className="flex flex-col gap-[var(--spacing-xs)]"
-                >
-                  <p className="heading-component text-[var(--on-surface)]">
-                    {edu.institution}
-                  </p>
-                  <p className="body-secondary">
-                    {edu.degree}
-                    {edu.specialization && ` — ${edu.specialization}`}
-                  </p>
-                  <p className="mono-anchor">{edu.timeframe}</p>
-                </div>
-              ))}
-            </Stack>
-          </TwoColumnRow>
-
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={2} type="heading-component">
