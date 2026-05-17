@@ -151,12 +151,20 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Removed Experience and Education from About page.**
+**About page typography and structure refinements.**
 
-- Deleted Experience and Education JSX sections from `src/app/about/page.tsx`.
-- Removed `ExperienceSchema`, `ExperienceImageSchema`, `EducationSchema`, and the `experience`/`education` fields from `src/lib/schemas/about.ts`.
-- Pruned `experience` and `education` frontmatter blocks from `content/about/about.mdx`.
-- Updated docs: PRODUCT.md §7 section list, CONTENT-SCHEMA.md example + rules, DESIGN.md two-column description, build-flow.md About implement list.
+- Social links: icon + text use `on-surface` ink; hover adds `surface-raised` fill.
+- Intro: positioning line uses `heading-component`, detail paragraphs use `body-secondary`.
+- Capabilities: section label uses `heading-component` (ink); group titles use `body-primary` (no bold); `description` optional and skipped when absent.
+- Approach: number in fixed left lane (`mono-code w-6`), title + body stacked right; `gap-2xl` between items; 3-col grid preserved.
+
+**Typography semantic migration — tokens now own default color.**
+
+- Added `color: var(--on-surface)` to `display-primary`, `heading-component`, `body-primary`, `body-emphasis` in `globals.css`.
+- Removed `needsInkColor` patch from `Heading` component.
+- Stripped all redundant `text-[--on-surface]` overrides from `about/page.tsx`, `project-card.tsx`, `project-header.tsx`.
+- Removed muted override from `TwoColumnRow` section labels — `heading-component` now renders at ink by default.
+- Replaced `opacity-30/50/60` dimming with semantic muted token color throughout.
 
 **DESIGN.md canonical spine (current):**
 - **Overview** — Design Philosophy, Core Principles, Things to Avoid
@@ -173,8 +181,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Next Steps
 
-1. **About page visual polish** — visual pass on the About page
-2. **Home page v1 spec items:**
+1. **Home page v1 spec items:**
    - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
    - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
 3. **Merge to main** when phase-5 polish is complete
