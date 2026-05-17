@@ -12,9 +12,9 @@ export function Footer() {
         <div className="flex items-center justify-between gap-[var(--spacing-md)]">
           {/* Left: copyright + name + repo link */}
           <p className="support-meta min-w-0 [font-size:11px] [line-height:18px] md:[font-size:15px] md:[line-height:24px]">
-            <span className="opacity-50">© {year} / </span>
+            <span>© {year} / </span>
             <span className="text-[var(--on-surface)]">Aishwarya Ganesan</span>
-            <span className="opacity-50"> / </span>
+            <span> / </span>
             <a
               href="https://github.com/95-ag/ag-portfolio"
               target="_blank"

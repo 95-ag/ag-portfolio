@@ -43,11 +43,11 @@ export function ProjectCard({
       {variant === "text" ? (
         /* Text-only variant — intentional, no media area */
         <div className="flex flex-1 flex-col gap-[var(--spacing-md)] p-[var(--spacing-lg)]">
-          <div className="text-[var(--on-surface-muted)] opacity-60">
+          <div className="text-[var(--on-surface-muted)]">
             {CategoryIcon && <CategoryIcon size={18} />}
           </div>
           <div className="flex flex-1 flex-col gap-[var(--spacing-xs)]">
-            <p className="heading-component font-semibold text-[var(--on-surface)] group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
+            <p className="heading-component font-semibold group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
               {fm.title}
             </p>
             <p className="body-caption">{displayText}</p>
@@ -80,9 +80,8 @@ export function ProjectCard({
             <div className="flex items-start justify-between gap-[var(--spacing-sm)]">
               <p
                 className={cn(
-                  "font-semibold text-[var(--on-surface)]",
+                  "heading-component font-semibold",
                   "group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2",
-                  "heading-component",
                 )}
               >
                 {fm.title}

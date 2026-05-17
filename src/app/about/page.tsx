@@ -29,9 +29,7 @@ function TwoColumnRow({
     <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
       <div className="w-full shrink-0 lg:w-[200px]">
         <Sticky top="var(--spacing-3xl)">
-          <p className="heading-component text-[var(--on-surface-muted)]">
-            {label}
-          </p>
+          <p className="heading-component">{label}</p>
         </Sticky>
       </div>
       <div className="min-w-0 flex-1">{children}</div>
@@ -82,12 +80,12 @@ export default function AboutPage() {
           {/* Portrait + editorial intro */}
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
             <div className="w-full shrink-0 lg:w-[240px]">
-              <div className="relative aspect-square w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
+              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
                   fill
-                  className="object-cover object-center"
+                  className="object-cover"
                   unoptimized={about.headshot.endsWith(".svg")}
                   sizes="240px"
                 />
@@ -95,9 +93,7 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-md)]">
-              <p className="heading-component text-[var(--on-surface)]">
-                {about.positioning}
-              </p>
+              <p className="heading-component">{about.positioning}</p>
               {about.detailedPositioning
                 .split("\n\n")
                 .filter(Boolean)
@@ -110,48 +106,53 @@ export default function AboutPage() {
           </div>
 
           {/* Capabilities */}
-          <TwoColumnRow label="Capabilities">
-            <Stack gap="xl">
-              {about.capabilities.map((cap) => (
-                <div
-                  key={cap.area}
-                  className="flex flex-col gap-[var(--spacing-xs)]"
-                >
-                  <p className="body-primary font-semibold text-[var(--on-surface)]">
-                    {cap.area}
-                  </p>
-                  {cap.description && (
-                    <p className="body-secondary">{cap.description}</p>
-                  )}
-                  <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
-                    {cap.tags.map((tag) => (
-                      <Tag key={tag}>{tag}</Tag>
-                    ))}
+          <div className="flex flex-col gap-[var(--spacing-lg)] lg:flex-row lg:gap-[var(--spacing-3xl)]">
+            <div className="w-full shrink-0 lg:w-[200px]">
+              <Sticky top="var(--spacing-3xl)">
+                <p className="heading-component">Capabilities</p>
+              </Sticky>
+            </div>
+            <div className="min-w-0 flex-1">
+              <Stack gap="xl">
+                {about.capabilities.map((cap) => (
+                  <div
+                    key={cap.area}
+                    className="flex flex-col gap-[var(--spacing-xs)]"
+                  >
+                    <p className="body-primary">{cap.area}</p>
+                    {cap.description && (
+                      <p className="body-secondary">{cap.description}</p>
+                    )}
+                    <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
+                      {cap.tags.map((tag) => (
+                        <Tag key={tag}>{tag}</Tag>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </Stack>
+            </div>
+          </div>
+
+          {/* Approach */}
+          <div className="flex flex-col gap-[var(--spacing-xl)]">
+            <Heading level={2} type="heading-component">
+              Approach
+            </Heading>
+            <div className="grid grid-cols-1 gap-[var(--spacing-2xl)] md:grid-cols-2 lg:grid-cols-3">
+              {about.approach.map((item, i) => (
+                <div key={item.title} className="flex gap-[var(--spacing-md)]">
+                  <span className="mono-code w-6 shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex flex-col gap-[var(--spacing-xs)]">
+                    <p className="body-primary">{item.title}</p>
+                    <p className="body-secondary">{item.body}</p>
                   </div>
                 </div>
               ))}
-            </Stack>
-          </TwoColumnRow>
-
-          {/* Approach */}
-          <TwoColumnRow label="Approach">
-            <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2">
-              {about.approach.map((item, i) => (
-                <div
-                  key={item.title}
-                  className="flex flex-col gap-[var(--spacing-xs)]"
-                >
-                  <p className="mono-code opacity-40">
-                    {String(i + 1).padStart(2, "0")}
-                  </p>
-                  <p className="body-primary font-semibold text-[var(--on-surface)]">
-                    {item.title}
-                  </p>
-                  <p className="body-secondary">{item.body}</p>
-                </div>
-              ))}
             </div>
-          </TwoColumnRow>
+          </div>
 
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
@@ -170,9 +171,7 @@ export default function AboutPage() {
               >
                 Email me
               </Button>
-              <span className="body-caption opacity-60">
-                {about.contactEmail}
-              </span>
+              <span className="body-caption">{about.contactEmail}</span>
             </div>
           </div>
         </Stack>

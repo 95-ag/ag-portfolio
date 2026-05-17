@@ -40,7 +40,7 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
         </div>
       )}
 
-      <h1 className="display-primary text-[var(--on-surface)]">{fm.title}</h1>
+      <h1 className="display-primary">{fm.title}</h1>
 
       {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
 

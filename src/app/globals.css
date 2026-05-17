@@ -198,6 +198,7 @@ body {
     font-weight: 600;
     line-height: 64px;
     letter-spacing: -0.025em;
+    color: var(--on-surface);
   }
   .display-accent {
     font-family: var(--font-display), system-ui, sans-serif;
@@ -215,6 +216,7 @@ body {
     font-weight: 600;
     line-height: 30px;
     letter-spacing: -0.01em;
+    color: var(--on-surface);
   }
   .heading-narrative {
     font-family: var(--font-display), system-ui, sans-serif;
@@ -231,6 +233,7 @@ body {
     font-size: 18px;
     font-weight: 400;
     line-height: 28px;
+    color: var(--on-surface);
   }
   .body-secondary {
     font-family: var(--font-sans), system-ui, sans-serif;
@@ -251,6 +254,7 @@ body {
     font-size: 18px;
     font-weight: 500;
     line-height: 28px;
+    color: var(--on-surface);
   }
   .callout-title {
     font-family: var(--font-sans), system-ui, sans-serif;
