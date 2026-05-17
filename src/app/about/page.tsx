@@ -48,12 +48,9 @@ export default function AboutPage() {
         <Stack gap="3xl">
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
-            <div className="flex flex-col gap-[var(--spacing-xs)]">
-              <Heading level={1} type="display-accent">
-                {about.name}
-              </Heading>
-              <p className="body-secondary">{about.role}</p>
-            </div>
+            <Heading level={1} type="display-accent">
+              {about.name}
+            </Heading>
             {/* Labeled social chips */}
             <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
@@ -102,19 +99,42 @@ export default function AboutPage() {
             {/* Editorial content — sourced from about.mdx frontmatter */}
             <div className="flex flex-col gap-[var(--spacing-lg)]">
               <p className="body-secondary">{about.positioning}</p>
-              <ul className="flex flex-col gap-[var(--spacing-sm)]">
-                {about.detailedPositioning.map((point) => (
-                  <li key={point} className="flex gap-[var(--spacing-sm)]">
-                    <span
-                      aria-hidden="true"
-                      className="mt-[10px] h-[4px] w-[4px] shrink-0 rounded-full bg-[var(--outline-variant)]"
-                    />
-                    <p className="body-secondary">{point}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-col gap-[var(--spacing-md)]">
+                {about.detailedPositioning
+                  .split("\n\n")
+                  .filter(Boolean)
+                  .map((para) => (
+                    <p key={para} className="body-secondary">
+                      {para.trim()}
+                    </p>
+                  ))}
+              </div>
             </div>
           </div>
+
+          {/* Capabilities */}
+          <TwoColumnRow label="Capabilities">
+            <Stack gap="2xl">
+              {about.capabilities.map((cap) => (
+                <div
+                  key={cap.area}
+                  className="flex flex-col gap-[var(--spacing-sm)]"
+                >
+                  <p className="heading-component text-[var(--on-surface)]">
+                    {cap.area}
+                  </p>
+                  {cap.description && (
+                    <p className="body-secondary">{cap.description}</p>
+                  )}
+                  <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
+                    {cap.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </Stack>
+          </TwoColumnRow>
 
           {/* Approach */}
           <div className="flex flex-col gap-[var(--spacing-xl)]">
@@ -131,34 +151,12 @@ export default function AboutPage() {
                     {String(i + 1).padStart(2, "0")}
                   </p>
                   <p className="body-primary text-[var(--on-surface)]">
-                    <strong>{item.title}.</strong> {item.body}
+                    <strong>{item.title}</strong> {item.body}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Capabilities */}
-          <TwoColumnRow label="Capabilities">
-            <Stack gap="2xl">
-              {about.capabilities.map((cap) => (
-                <div
-                  key={cap.area}
-                  className="flex flex-col gap-[var(--spacing-sm)]"
-                >
-                  <p className="heading-component text-[var(--on-surface)]">
-                    {cap.area}
-                  </p>
-                  <p className="body-secondary">{cap.description}</p>
-                  <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
-                    {cap.tags.map((tag) => (
-                      <Tag key={tag}>{tag}</Tag>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </Stack>
-          </TwoColumnRow>
 
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
