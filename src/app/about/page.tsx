@@ -51,7 +51,6 @@ export default function AboutPage() {
             <Heading level={1} type="display-accent">
               {about.name}
             </Heading>
-            {/* Labeled social chips */}
             <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
                 <SocialLink
@@ -82,45 +81,43 @@ export default function AboutPage() {
 
           {/* Portrait + editorial intro */}
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-start lg:gap-[var(--spacing-2xl)]">
-            {/* Headshot — softer radius, integrated into composition */}
             <div className="w-full shrink-0 lg:w-[240px]">
-              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
+              <div className="relative aspect-square w-full max-w-[240px] overflow-hidden rounded-[var(--radius-md)] grayscale">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
                   fill
-                  className="object-cover"
+                  className="object-cover object-center"
                   unoptimized={about.headshot.endsWith(".svg")}
                   sizes="240px"
                 />
               </div>
             </div>
 
-            {/* Editorial content — sourced from about.mdx frontmatter */}
-            <div className="flex flex-col gap-[var(--spacing-lg)]">
-              <p className="body-secondary">{about.positioning}</p>
-              <div className="flex flex-col gap-[var(--spacing-md)]">
-                {about.detailedPositioning
-                  .split("\n\n")
-                  .filter(Boolean)
-                  .map((para) => (
-                    <p key={para} className="body-secondary">
-                      {para.trim()}
-                    </p>
-                  ))}
-              </div>
+            <div className="flex flex-col gap-[var(--spacing-md)]">
+              <p className="heading-component text-[var(--on-surface)]">
+                {about.positioning}
+              </p>
+              {about.detailedPositioning
+                .split("\n\n")
+                .filter(Boolean)
+                .map((para) => (
+                  <p key={para} className="body-secondary">
+                    {para.trim()}
+                  </p>
+                ))}
             </div>
           </div>
 
           {/* Capabilities */}
           <TwoColumnRow label="Capabilities">
-            <Stack gap="2xl">
+            <Stack gap="xl">
               {about.capabilities.map((cap) => (
                 <div
                   key={cap.area}
-                  className="flex flex-col gap-[var(--spacing-sm)]"
+                  className="flex flex-col gap-[var(--spacing-xs)]"
                 >
-                  <p className="heading-component text-[var(--on-surface)]">
+                  <p className="body-primary font-semibold text-[var(--on-surface)]">
                     {cap.area}
                   </p>
                   {cap.description && (
@@ -137,26 +134,24 @@ export default function AboutPage() {
           </TwoColumnRow>
 
           {/* Approach */}
-          <div className="flex flex-col gap-[var(--spacing-xl)]">
-            <Heading level={2} type="heading-component">
-              Approach
-            </Heading>
-            <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2 lg:grid-cols-3">
+          <TwoColumnRow label="Approach">
+            <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2">
               {about.approach.map((item, i) => (
                 <div
                   key={item.title}
-                  className="flex flex-col gap-[var(--spacing-sm)]"
+                  className="flex flex-col gap-[var(--spacing-xs)]"
                 >
                   <p className="mono-code opacity-40">
                     {String(i + 1).padStart(2, "0")}
                   </p>
-                  <p className="body-primary text-[var(--on-surface)]">
-                    <strong>{item.title}</strong> {item.body}
+                  <p className="body-primary font-semibold text-[var(--on-surface)]">
+                    {item.title}
                   </p>
+                  <p className="body-secondary">{item.body}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </TwoColumnRow>
 
           {/* Contact */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
