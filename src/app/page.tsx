@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
 import { MailIcon } from "@/components/icons/material/mail";
@@ -51,9 +52,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Reserved future hero-image region */}
-            {/* Drop a <Image> inside the inner div when the headshot is ready.
-                The mask fades the left edge into the page background in both themes. */}
             <div className="hidden lg:block lg:w-[420px] xl:w-[480px] shrink-0 self-stretch">
               <div
                 className="relative h-full min-h-[320px] aspect-[4/5] overflow-hidden"
@@ -63,7 +61,15 @@ export default function HomePage() {
                   WebkitMaskImage:
                     "linear-gradient(to right, transparent 0%, black 35%, black 100%)",
                 }}
-              />
+              >
+                <Image
+                  src="/hero.png"
+                  alt="Aishwarya Ganesan"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </Container>
