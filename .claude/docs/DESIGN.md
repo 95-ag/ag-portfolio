@@ -145,18 +145,18 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 - Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
-- Mid-tier values (769–1279): `display-primary`/`display-accent` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 2-step only (18/28 mobile ↔ 20/30 desktop — mid delta too small to subdivide).
+- Mid-tier values (769–1279): `display-primary`/`display-accent` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
 | `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
 | `display-accent` | Manrope | 56 / 46 / 36px | 500 | 64 / 54 / 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
-| `heading-display` | Manrope | 36 / 32 / 28px | 600 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
+| `heading-display` | Manrope | 36 / 32 / 28px | 500 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
 | `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
-| `body-lead` | Inter | 20px → 18px mobile | 400 | 30px → 28px | — | — (Ink) | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
+| `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface-muted` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
 | `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
 | `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
 | `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
@@ -510,8 +510,8 @@ Committed action controls; used for CTAs, form submissions, and external link tr
 
 ```yaml
 button-primary:
-  height: 48px
-  paddingHorizontal: 32px
+  height: 56px
+  paddingHorizontal: 48px
   background: accent
   color: accent-on
   fontSize: 14px
@@ -524,8 +524,8 @@ button-primary:
     transition: opacity 150ms
 
 button-secondary:
-  height: 48px
-  paddingHorizontal: 32px
+  height: 56px
+  paddingHorizontal: 48px
   background: transparent
   color: on-surface
   border: 1px solid outline
@@ -542,17 +542,82 @@ button-icon-leading:
   gap-icon-label: 8px
 ```
 
+#### CopyableCode
+
+Interactive code chip that copies its value to clipboard; elevation-level-4 surface treatment (sunken bg + outline-variant border) reads as an inline code block that is also a control.
+
+- Surface: `surface-sunken` background, `outline-variant` 1px border, `radius-sm` — matches inline code visual vocabulary.
+- Height `h-11` (44px), `px-md` (16px) — meets accessible touch target floor while reading as a compact chip.
+- Trailing icon swaps `ContentCopyIcon` → `CheckIcon` for 1500ms on copy, then reverts; `aria-live="polite"` announces success.
+- Hover and focus shift border and text to `accent`; focus uses `focus-ring` outline.
+- Intended for project detail pages, blog/MDX contexts, and any surface where displaying a copyable string with code-chip styling is appropriate.
+
+```yaml
+copyable-code:
+  height: 44px
+  paddingHorizontal: 16px
+  background: surface-sunken
+  border: 1px solid outline-variant
+  borderRadius: sm
+  color: on-surface-muted
+  fontSize: 16px       # mono-code
+  fontFamily: JetBrains Mono
+  fontWeight: 400
+
+  hover:
+    borderColor: accent
+    color: accent
+    transition: colors 150ms
+
+  copied-state:
+    icon: CheckIcon
+    duration: 1500ms
+```
+
+#### CopyLink
+
+Low-visual-weight copy interaction for editorial and contact contexts; deliberately avoids code-surface styling.
+
+- Idle state: `body-caption` (14px Inter), `on-surface-muted`, underline always visible. No border, no background, no code-chip surface.
+- Copied state: text changes to "email copied!", underline removed for 1500ms, then reverts to idle.
+- Hover and focus-visible: underline retained; focus uses `focus-ring` outline.
+- Used in editorial contact sections where the code-chip surface of `CopyableCode` would interrupt the reading rhythm.
+
+```yaml
+copy-link:
+  height: auto
+  fontSize: 14px       # body-caption
+  fontWeight: 400
+  color: on-surface-muted
+  textDecoration: underline
+  underlineOffset: 2px
+  background: none
+  border: none
+
+  copied-state:
+    textDecoration: none
+    label: "email copied!"
+
+  hover:
+    textDecoration: underline
+
+  focus-visible:
+    textDecoration: underline
+    outline: 2px solid focus-ring
+    outlineOffset: 2px
+```
+
 #### SocialLink
 
 Quiet utility link for profile and contact links; lighter visual weight than `Button`, heavier than a static `Tag`.
 
-- Smaller than `Button` (36px vs 48px) with a transparent bordered surface rather than filled.
+- Smaller than `Button` (36px vs 56px) with a transparent bordered surface rather than filled.
 - Used on the About page identity row for GitHub, LinkedIn, and Email.
 - Hover intensifies border and text to `outline` / `on-surface` — no fill change.
 
 ```yaml
 social-link:
-  height: 36px                       # h-9 — quieter than Button (48px)
+  height: 36px                       # h-9 — quieter than Button (56px)
   paddingHorizontal: spacing-md      # 16px
   gap-icon-label: spacing-sm         # 8px
   borderRadius: sm                   # 4px — matches interactive controls

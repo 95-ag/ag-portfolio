@@ -38,11 +38,11 @@ All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`
 |---|---|---|---|---|
 | `display-primary` | 36/44 | 46/54 | 56/64 | Hero headline, page H1 — Ink |
 | `display-accent` | 36/44 | 46/54 | 56/64 | Section title — Accent, **500 weight** |
-| `heading-display` | 28/36 | 32/40 | 36/44 | Editorial deck / tagline under H1 — Ink |
+| `heading-display` | 28/36 | 32/40 | 36/44 | Editorial deck / tagline under H1 — Ink, **500 weight** |
 | `heading-section` | 22/30 | 24/32 | 26/34 | Major section headings on editorial pages — Ink |
 | `heading-component` | 22px | Card titles, UI section headings — Ink |
 | `heading-narrative` | 20px | H4 in prose, editorial subheads — Accent |
-| `body-lead` | 20px | Lead narrative paragraphs, capability group labels — Ink |
+| `body-lead` | 18/28 | 20/30 | 24/34 | Lead narrative paragraphs, capability group labels — **Muted** |
 | `body-primary` | 18px | Long-form prose — Ink |
 | `body-secondary` | 18px | Supporting copy, summaries — Muted |
 | `body-caption` | 14px | Captions, timestamps — Muted |
@@ -56,7 +56,7 @@ All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`
 | `mono-code` | 16px | Inline code, code blocks — Muted |
 | `support-meta` | 13px | Footer, TOC items — Muted |
 
-Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). All three tiers in the table above. `body-lead` is 2-step only (18/28 mobile, 20/30 desktop — mid jump too small to subdivide). Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
+Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). All three tiers in the table above. `body-lead` is fully 3-tier: 18/28 → 20/30 → 24/34. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
 Footer responsive exception: `support-meta` + local Tailwind override to 11px/18px mobile, 15px/24px desktop.
 
 **Prose composition (`.prose-content`):**
@@ -84,7 +84,9 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `container.tsx`, `section.tsx`, `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
 
 **UI primitives (complete) — `src/components/ui/`:**
-- `button.tsx` — primary/secondary variants, h-12 (48px), px-xl (32px), `radius-sm`, icon slot
+- `button.tsx` — primary/secondary variants, h-14 (56px), px-2xl (48px), `radius-sm`, icon slot
+- `copy-link.tsx` — text-link copy interaction: `body-caption`, `on-surface-muted`, underline idle/no-underline copied, 1500ms revert
+- `copyable-code.tsx` — code-chip copy interaction: `surface-sunken` + `outline-variant` border, mono-code, 1500ms icon swap
 - `card.tsx` — **DELETED** (was unused)
 - `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
 - `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
@@ -128,10 +130,10 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
 
 **Pages (complete):**
-- `src/app/page.tsx` — two-column hero, featured grid, CTA block
+- `src/app/page.tsx` — two-column hero, featured grid (Collaboration & Hiring CTA removed)
 - `src/app/work/page.tsx` — heading + project grid
 - `src/app/work/[slug]/page.tsx` — SectionProgressNav, HeroMedia, ProjectOverview, MDX body, backlink
-- `src/app/about/page.tsx` — identity row, two-panel intro, Approach, Capabilities
+- `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary)
 - `src/app/not-found.tsx` — 404 with Home + Work links
 
 **Content pipeline (complete):**
@@ -154,16 +156,19 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**About page polish — all four items complete. Committed: `fd64e18`, `9214559`, `b5f6cf9`, `904a702`.**
+**About page polish — Pass 2 complete.**
 
-- **Spacing rhythm:** `Stack gap="3xl"` → responsive div `gap-2xl md:gap-3xl xl:gap-4xl` (48/64/96px). Breakpoints align with all layout transitions on the page.
-- **3-tier type scale:** Added `@media (max-width: 1279px)` middle tier in `globals.css`. `display-primary/accent` 46px, `heading-display` 32px, `heading-section` 24px at 769–1279. Mobile (≤768) and desktop (≥1280) values unchanged.
-- **Button size:** `h-11`→`h-12` (48px), `px-lg`→`px-xl` (32px) on both primary/secondary. Label size unchanged.
-- **Name weight:** `display-accent` font-weight 600→500 — lighter, more editorial at display scale in accent green.
+- **body-lead:** color `on-surface` → `on-surface-muted`; full 3-tier scale (18/20/24px); intro paragraphs `xl:text-justify xl:hyphens-auto`.
+- **heading-display:** weight 600 → 500.
+- **Button:** h-12→h-14 (56px), px-xl→px-2xl (48px). Label unchanged.
+- **Contact section:** rebuilt as "Work with me" — flat/editorial, no card. Buttons: "Let's talk" (primary, mailto) + "Download Resume" (secondary). `CopyLink` text link beneath primary.
+- **Home page:** Collaboration & Hiring CTA section removed. Home = hero + featured projects only.
+- **New components:** `CopyableCode` (code-chip, reusable for project-detail/MDX contexts); `CopyLink` (text-link, low visual weight for editorial/contact contexts).
+- **New icons:** `content-copy.tsx`, `check.tsx`.
 
 **Process note:** always propose commit clusters and await approval before any `git` operation.
 
-**Home page v1 spec items:**
+**Home page v1 spec items (deferred):**
 - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
 - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
 
