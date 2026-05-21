@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
+import { BackgroundLayer } from "@/components/bg/background-layer";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
@@ -25,8 +26,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh flex-col">
         <Providers>
+          <BackgroundLayer />
           <Nav />
-          <main className="flex flex-1 flex-col pt-[var(--spacing-3xl)]">
+          <main className="relative flex flex-1 flex-col pt-[var(--spacing-3xl)]">
             {children}
           </main>
           <Footer />
