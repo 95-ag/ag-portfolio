@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils/cn";
 type SemanticType =
   | "display-primary"
   | "display-accent"
+  | "heading-display"
+  | "heading-section"
   | "heading-component"
   | "heading-narrative";
 
@@ -15,17 +17,5 @@ interface HeadingProps {
 
 export function Heading({ level, type, children, className }: HeadingProps) {
   const Tag = `h${level}` as const;
-  const needsInkColor =
-    type === "display-primary" || type === "heading-component";
-  return (
-    <Tag
-      className={cn(
-        type,
-        needsInkColor && "text-[var(--on-surface)]",
-        className,
-      )}
-    >
-      {children}
-    </Tag>
-  );
+  return <Tag className={cn(type, className)}>{children}</Tag>;
 }

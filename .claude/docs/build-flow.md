@@ -394,7 +394,6 @@ Implement:
 * two-panel intro layout
 * structured content sections
 * sticky/structured headings where appropriate
-* experience section
 * technical capability section
 * contact section
 

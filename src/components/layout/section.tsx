@@ -14,7 +14,7 @@ export function Section({
   return (
     <Tag
       className={cn(
-        "py-[var(--spacing-2xl)] md:py-[var(--spacing-3xl)]",
+        "pt-[var(--spacing-xl)] pb-[var(--spacing-xl)] md:pt-[var(--spacing-3xl)] md:pb-[var(--spacing-2xl)]",
         className,
       )}
     >

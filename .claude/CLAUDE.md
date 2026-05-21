@@ -44,8 +44,8 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 - Do not skip build phases — see `build-flow.md` for phase gates
 - No client-side syntax highlighting — build-time only via Shiki
 - No animation libraries beyond Framer Motion
-- No shadows in v1 — elevation via tonal borders only
-- Backdrop-blur only on pill nav and mobile slide-out menu
+- No shadows — elevation via tonal borders and surface fills only (Highlight shadow carve-out removed)
+- Backdrop-blur only on floating nav/utility UI: pill nav, mobile nav trigger, mobile slide-out panel, scroll-to-top button
 - Build fails on invalid frontmatter — enforced via Zod in `/lib/schemas/`
 - Missing optional frontmatter fields render nothing — never placeholders or "TBD"
 - `projectType` is internal metadata — never displayed as a badge or label on the site

@@ -9,10 +9,14 @@
   /* Surfaces */
   --background: #f8f8f7;
   --surface: #f8f8f7;
-  --surface-raised: #ffffff;
-  --surface-sunken: #f2f2f1;
+  --surface-raised: #f2f2f1;
+  --surface-sunken: #ffffff;
   --surface-overlay: #ffffffd9;
   --surface-overlay-panel: #ffffffb8;
+  /* Floating nav/utility blur surface */
+  --surface-nav: #ffffffd9;
+  /* Selection state — active nav, future tabs/segmented controls */
+  --surface-selection: #e6f4ec;
 
   /* Text */
   --on-background: #191c1d;
@@ -49,6 +53,8 @@
   --surface-sunken: #0e0e0e;
   --surface-overlay: #1c1b1bd9;
   --surface-overlay-panel: #1c1b1bba;
+  --surface-nav: #1c1b1bd9;
+  --surface-selection: #1a2e1f;
 
   --on-background: #e5e2e1;
   --on-surface: #e5e2e1;
@@ -86,6 +92,8 @@
   --color-surface-sunken: var(--surface-sunken);
   --color-surface-overlay: var(--surface-overlay);
   --color-surface-overlay-panel: var(--surface-overlay-panel);
+  --color-surface-nav: var(--surface-nav);
+  --color-surface-selection: var(--surface-selection);
   --color-surface-tag: var(--surface-tag);
   --color-on-background: var(--on-background);
   --color-on-surface: var(--on-surface);
@@ -190,23 +198,43 @@ body {
     font-weight: 600;
     line-height: 64px;
     letter-spacing: -0.025em;
+    color: var(--on-surface);
   }
   .display-accent {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 56px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 64px;
     letter-spacing: -0.025em;
     color: var(--accent);
   }
 
+  /* Editorial display tier */
+  .heading-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 44px;
+    letter-spacing: -0.015em;
+    color: var(--on-surface);
+  }
+
   /* Headings */
+  .heading-section {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: -0.015em;
+    color: var(--on-surface);
+  }
   .heading-component {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 22px;
     font-weight: 600;
     line-height: 30px;
     letter-spacing: -0.01em;
+    color: var(--on-surface);
   }
   .heading-narrative {
     font-family: var(--font-display), system-ui, sans-serif;
@@ -217,12 +245,22 @@ body {
     color: var(--accent);
   }
 
+  /* Body — lead tier */
+  .body-lead {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 34px;
+    color: var(--on-surface-muted);
+  }
+
   /* Body */
   .body-primary {
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 18px;
     font-weight: 400;
     line-height: 28px;
+    color: var(--on-surface);
   }
   .body-secondary {
     font-family: var(--font-sans), system-ui, sans-serif;
@@ -243,6 +281,7 @@ body {
     font-size: 18px;
     font-weight: 500;
     line-height: 28px;
+    color: var(--on-surface);
   }
   .callout-title {
     font-family: var(--font-sans), system-ui, sans-serif;
@@ -283,7 +322,7 @@ body {
     line-height: 16px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--on-surface-muted);
+    color: var(--on-surface);
   }
   .insight-label {
     font-family: var(--font-mono), monospace;
@@ -327,7 +366,7 @@ body {
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--on-surface-muted);
-    border-bottom: 1px solid currentColor;
+    border-bottom: 1px solid var(--on-surface-muted);
     padding-bottom: var(--spacing-md);
     margin-top: var(--spacing-3xl);
     margin-bottom: var(--spacing-2xl);
@@ -389,12 +428,13 @@ body {
     color: var(--on-surface);
   }
   .prose-content blockquote {
-    /* body-secondary values + left border */
+    /* body-secondary values + accent left border + raised fill */
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 18px;
     line-height: 28px;
-    border-left: 3px solid var(--accent);
-    padding-left: var(--spacing-lg);
+    border-left: 2px solid var(--accent);
+    background: var(--surface-raised);
+    padding: var(--spacing-md) var(--spacing-lg);
     color: var(--on-surface-muted);
     font-style: italic;
     margin: var(--spacing-lg) 0;
@@ -436,19 +476,7 @@ body {
     padding: 2px 6px;
   }
 
-  /* Highlight panel — editorial pull-quote */
-  .highlight-panel {
-    box-shadow:
-      0 1px 4px rgba(0, 0, 0, 0.08),
-      0 4px 16px rgba(0, 0, 0, 0.07),
-      0 8px 24px rgba(0, 0, 0, 0.04);
-  }
-  [data-theme="dark"] .highlight-panel {
-    box-shadow:
-      0 1px 4px rgba(0, 0, 0, 0.5),
-      0 4px 16px rgba(0, 0, 0, 0.4),
-      0 8px 24px rgba(0, 0, 0, 0.25);
-  }
+  /* Highlight panel — editorial pull-quote; elevation via border + raised fill only */
 
   /* Editorial two-column DL layout for Overview + Tech Stack */
   .editorial-dl {
@@ -499,12 +527,45 @@ body {
     color: var(--on-surface);
   }
 
-  /* Mobile overrides */
+  /* Mid-tier overrides (tablet / small-desktop — 769–1279) */
+  @media (max-width: 1279px) {
+    .display-primary,
+    .display-accent {
+      font-size: 46px;
+      line-height: 54px;
+    }
+    .heading-display {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .heading-section {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .body-lead {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  /* Mobile overrides (≤768) */
   @media (max-width: 768px) {
     .display-primary,
     .display-accent {
       font-size: 36px;
       line-height: 44px;
+    }
+    .heading-display {
+      font-size: 28px;
+      line-height: 36px;
+    }
+    .heading-section {
+      font-size: 22px;
+      line-height: 30px;
+    }
+    .body-lead {
+      font-size: 18px;
+      line-height: 28px;
     }
   }
 }

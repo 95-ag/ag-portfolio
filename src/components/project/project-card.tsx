@@ -1,5 +1,9 @@
-import { ArrowRight, Briefcase, Code2, FlaskConical } from "lucide-react";
 import Link from "next/link";
+import type { IconProps } from "@/components/icons/icon-base";
+import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
+import { CodeIcon } from "@/components/icons/material/code";
+import { ScienceIcon } from "@/components/icons/material/science";
+import { WorkIcon } from "@/components/icons/material/work";
 import { HeroMedia } from "@/components/project/hero-media";
 import { Tag } from "@/components/ui/tag";
 import type { Project } from "@/lib/content/projects";
@@ -10,11 +14,13 @@ interface ProjectCardProps {
   variant?: "compact" | "featured" | "text";
 }
 
-const categoryIcon = {
-  academic: FlaskConical,
-  freelance: Briefcase,
-  personal: Code2,
-} as const;
+type IconComponent = (props: IconProps) => React.ReactElement;
+
+const categoryIcon: Record<string, IconComponent> = {
+  academic: ScienceIcon,
+  freelance: WorkIcon,
+  personal: CodeIcon,
+};
 
 export function ProjectCard({
   project,
@@ -37,11 +43,11 @@ export function ProjectCard({
       {variant === "text" ? (
         /* Text-only variant — intentional, no media area */
         <div className="flex flex-1 flex-col gap-[var(--spacing-md)] p-[var(--spacing-lg)]">
-          <div className="text-[var(--on-surface-muted)] opacity-60">
-            <CategoryIcon size={18} aria-hidden="true" />
+          <div className="text-[var(--on-surface-muted)]">
+            {CategoryIcon && <CategoryIcon size={18} />}
           </div>
           <div className="flex flex-1 flex-col gap-[var(--spacing-xs)]">
-            <p className="heading-component font-semibold text-[var(--on-surface)] group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
+            <p className="heading-component font-semibold group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
               {fm.title}
             </p>
             <p className="body-caption">{displayText}</p>
@@ -74,16 +80,14 @@ export function ProjectCard({
             <div className="flex items-start justify-between gap-[var(--spacing-sm)]">
               <p
                 className={cn(
-                  "font-semibold text-[var(--on-surface)]",
+                  "heading-component font-semibold",
                   "group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2",
-                  "heading-component",
                 )}
               >
                 {fm.title}
               </p>
-              <ArrowRight
+              <ArrowForwardIcon
                 size={16}
-                aria-hidden
                 className="mt-[3px] shrink-0 text-[var(--on-surface-muted)] opacity-0 transition-all duration-[var(--duration-fast)] group-hover:translate-x-[3px] group-hover:text-[var(--accent)] group-hover:opacity-100"
               />
             </div>
