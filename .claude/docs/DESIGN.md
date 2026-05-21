@@ -713,8 +713,10 @@ project-card-body:
   gap: spacing-sm
   - title:    heading-component, on-surface, font-semibold
               hover: underline (decoration: accent, offset 2px)
-  - summary:  body-caption, on-surface-muted
+  - summary:  body-caption, on-surface-muted, line-clamp: 3
+              no flex-1 or reserved spacer — tags follow immediately after visible text
   - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
+  card-height: equal within grid row via CSS grid row-stretch; content top-anchored, whitespace falls to bottom
 
 project-card-text-variant:
   # No hero. Category icon mapped from projectType (academic|freelance|personal):
@@ -814,6 +816,25 @@ social-icon:
 ## Domain Components
 
 Page- and domain-bound composition systems that orchestrate Components and Foundations into product surfaces; assume a specific page context, content schema, or editorial purpose.
+
+### Home Page
+
+#### Hero
+
+Two-column desktop layout: content left, reserved future hero-image region right. Single-column on mobile (right region hidden below `lg`, 1024px).
+
+- Left column (`flex-1`, `lg:max-w-[640px]`): eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
+- CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
+- Right column (`lg:w-[420px]` / `xl:w-[480px]`, `aspect-[4/5]`): reserved for future hero image — currently empty, no fill, no border. CSS `mask-image: linear-gradient(to right, transparent 0%, black 35%, black 100%)` fades a dropped-in image into the page background in both themes without theme-specific overlays.
+- Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
+
+#### Featured Projects Grid
+
+Three-column project grid anchored with `id="featured"` as the scroll target for the hero primary CTA.
+
+- No section heading above the grid — content leads directly.
+- "View all projects →" link sits below the grid, right-aligned.
+- Grid: `grid-cols-1` mobile → `grid-cols-2` mid → `grid-cols-3` desktop, `gap-gutter`.
 
 ### Project Detail
 
@@ -1034,6 +1055,15 @@ about-two-col:
     gap: md
 ```
 
+### 404 Not Found
+
+Vertically centered error page that fits within the viewport without scrolling; footer pins to the bottom.
+
+- Layout: `flex flex-1 items-center` wrapper within expanded `main` — content centers vertically in remaining space after nav.
+- Copy: "404" eyebrow (`mono-anchor`) → H1 (`display-primary`, "This page doesn't exist — but my work does.") → `body-lead` paragraph. No `max-width` constraint on body copy.
+- CTAs: Primary "See Projects" (`Button` primary, `/work`, `ArrowForwardIcon` 16px) + Secondary "Go Home" (`Button` secondary, `/`, site logomark `<Image src="/cat_head_icon.svg" width={18} height={18} className="rounded-full" unoptimized />` — matches nav pill logomark pattern).
+- No illustrations or special visual effects. `<Container>` provides horizontal rhythm.
+
 ---
 
 ## Interaction Rules
@@ -1118,6 +1148,10 @@ Components must use z-index tokens, not raw numbers.
 | `tooltip` | 70 | Tooltip popups |
 | `modal` | 80 | Reserved |
 | `toast` | 90 | Reserved |
+
+### Root Layout Shell
+
+`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom.
 
 ---
 
