@@ -136,7 +136,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
 
 **Pages (complete):**
-- `src/app/page.tsx` — two-column desktop hero (content left, reserved media region right with mask-fade); featured grid (`id="featured"`, no heading, "View all →" below grid)
+- `src/app/page.tsx` — two-column desktop hero (content left `shrink-0 lg:w-[480px] xl:w-[560px]`, portrait right `flex-1 height:600px`, `overflow-hidden` section, left-edge linear mask fade); featured grid (`id="featured"`, no heading, "View all →" below grid)
 - `src/app/work/page.tsx` — heading + project grid
 - `src/app/work/[slug]/page.tsx` — SectionProgressNav, HeroMedia, ProjectOverview, MDX body, backlink
 - `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary)
@@ -158,15 +158,10 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Home page restructure + 404 rebuild — complete. Branch: `phase-5-home-polish`.**
+**Background layer + hero portrait — complete. Branch: `phase-5-home-polish`.**
 
-- **Home hero:** two-column desktop (content left, reserved right region with CSS mask-fade). Copy: "Aishwarya Ganesan — AI Engineer" eyebrow, "I build for production, not proof of concept." H1, three-sentence body-lead. CTAs: "See Projects" (ArrowDownwardIcon, `#featured` anchor) + "Get in Touch" (MailIcon, mailto).
-- **Featured grid:** no heading above, `id="featured"` anchor, "View all projects →" right-aligned below grid. Mobile hero→grid gap: `spacing-2xl` (48px).
-- **ProjectCard (global):** description `line-clamp-3`, no spacer, tags flow immediately. Card heights equal via CSS grid row-stretch.
-- **Root layout:** `body` → `flex min-h-dvh flex-col`; `main` → `flex flex-1 flex-col` for footer pinning on short pages.
-- **404 page:** vertically centered via `flex flex-1 items-center` in expanded main. Button components, editorial copy, logomark on "Go Home" via `<Image src="/cat_head_icon.svg" />` matching nav pill pattern.
-- **New icon:** `arrow-downward.tsx` (Material Symbols Outlined `arrow_downward`).
-- **Section component:** added `id` prop passthrough.
+- **Background layer:** `src/components/bg/` — `AsciiField` (ambient structural texture, always-on), `MeteorShower` (WebGL shader via Three.js, capability-gated), `BackgroundLayer` orchestrator. Fixed z-index 0, `isolation: isolate`. Meteor excluded on reduced-motion, touch-only devices, low CPU, and `/work/[slug]` routes. Theme-aware palette: light uses muted sage alt color, dark uses steel blue. CSS palette tokens added to `globals.css`.
+- **Hero portrait:** `hero.png` wired into home page. Content column fixed-width (`shrink-0 lg:w-[480px] xl:w-[560px]`), portrait column `flex-1 height:600px`, `object-cover object-left-top`, left-edge linear mask fade, section `overflow-hidden`.
 
 **Process note:** always propose commit clusters and await approval before any `git` operation.
 
@@ -176,14 +171,13 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 **Missing production assets (needed before launch):**
 - `/public/resume.pdf` — About page "Download Resume" button targets this
-- `/public/headshot.jpg` (or `.jpeg`) — reserved hero image region on home page
 
 ---
 
 ## Phase 5 Remaining (before any PR/merge)
 
-1. **Background treatment** — add restrained, consistent background texture/pattern across pages (if any; decision needed first).
-2. **Hero image** — wire up real headshot into the reserved right region; confirm mask-fade blends correctly in both themes.
+1. ~~**Background treatment**~~ — complete. ASCII field + meteor shower layer live.
+2. ~~**Hero image**~~ — complete. `hero.png` wired with mask-fade, verified light + dark.
 3. **Page transitions** — extremely restrained (opacity fade ≤200ms), optional only. Skip if it adds routing complexity or visible motion overhead.
 4. **Full page-layout review** across all routes at 375 / 768 / 1280:
    - Home, Work, Project detail, About, 404

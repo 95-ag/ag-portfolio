@@ -823,11 +823,11 @@ Page- and domain-bound composition systems that orchestrate Components and Found
 
 #### Hero
 
-Two-column desktop layout: content left, reserved future hero-image region right. Single-column on mobile (right region hidden below `lg`, 1024px).
+Two-column desktop layout: content left, portrait right. Single-column on mobile (portrait hidden below `lg`, 1024px). Section carries `overflow-hidden` to contain the portrait bleed.
 
-- Left column (`flex-1`, `lg:max-w-[640px]`): eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
+- Content column (`shrink-0`, `lg:w-[480px]` / `xl:w-[560px]`): fixed width locks the headline to 2 lines across breakpoints. Eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
 - CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
-- Right column (`lg:w-[420px]` / `xl:w-[480px]`, `aspect-[4/5]`): reserved for future hero image — currently empty, no fill, no border. CSS `mask-image: linear-gradient(to right, transparent 0%, black 35%, black 100%)` fades a dropped-in image into the page background in both themes without theme-specific overlays.
+- Portrait column (`flex-1`, `height: 600px`): `hero.png` via `next/image` with `fill`, `object-cover object-left-top`. Left-edge linear mask (`transparent 0% → black 15%`) fades the portrait into the page background in both themes without theme-specific overlays.
 - Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
 #### Featured Projects Grid
