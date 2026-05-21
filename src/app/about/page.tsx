@@ -148,11 +148,12 @@ export default function AboutPage() {
               specialise in bridging research and production — from model
               development to scalable backend systems.
             </p>
-            <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
+            <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:w-fit sm:grid-cols-2">
               <Button
                 variant="primary"
                 href={`mailto:${about.contactEmail}`}
                 icon={<MailIcon size={16} />}
+                className="justify-center"
               >
                 Email me
               </Button>
@@ -161,6 +162,7 @@ export default function AboutPage() {
                 href="/AishwaryaGanesan_Resume.pdf"
                 download
                 icon={<DownloadIcon size={16} />}
+                className="justify-center"
               >
                 Download Resume
               </Button>
@@ -168,6 +170,7 @@ export default function AboutPage() {
             <CopyableCode
               value={about.contactEmail}
               ariaLabel="Copy email address"
+              className="self-start"
             />
           </div>
         </div>
