@@ -16,7 +16,7 @@ export default function HomePage() {
       {/* Hero */}
       <Section
         as="header"
-        className="pb-[var(--spacing-md)] lg:pb-[var(--spacing-lg)]"
+        className="pb-[var(--spacing-2xl)] lg:pb-[var(--spacing-lg)]"
       >
         <Container>
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center lg:gap-[var(--spacing-3xl)]">
