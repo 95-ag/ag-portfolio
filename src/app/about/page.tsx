@@ -25,7 +25,7 @@ export default function AboutPage() {
   return (
     <Section>
       <Container>
-        <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-4xl)]">
+        <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-5xl)]">
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={1} type="display-accent">
