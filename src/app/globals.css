@@ -213,7 +213,7 @@ body {
   .heading-display {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 36px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 44px;
     letter-spacing: -0.015em;
     color: var(--on-surface);
@@ -248,9 +248,9 @@ body {
   /* Body — lead tier */
   .body-lead {
     font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 400;
-    line-height: 32px;
+    line-height: 34px;
     color: var(--on-surface-muted);
   }
 
