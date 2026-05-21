@@ -54,19 +54,33 @@ export default function HomePage() {
 
             <div className="hidden lg:block lg:w-[420px] xl:w-[480px] shrink-0 self-stretch">
               <div
-                className="relative h-full min-h-[320px] aspect-[4/5] overflow-hidden"
+                className="relative h-full min-h-[320px]"
                 style={{
-                  maskImage:
-                    "linear-gradient(to right, transparent 0%, black 35%, black 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to right, transparent 0%, black 35%, black 100%)",
+                  maskImage: `
+                    radial-gradient(
+                      ellipse 85% 90% at 60% 35%,
+                      black 40%,
+                      rgba(0,0,0,0.8) 55%,
+                      rgba(0,0,0,0.3) 70%,
+                      transparent 100%
+                    )
+                  `,
+                  WebkitMaskImage: `
+                    radial-gradient(
+                      ellipse 85% 90% at 60% 35%,
+                      black 40%,
+                      rgba(0,0,0,0.8) 55%,
+                      rgba(0,0,0,0.3) 70%,
+                      transparent 100%
+                    )
+                  `,
                 }}
               >
                 <Image
                   src="/hero.png"
                   alt="Aishwarya Ganesan"
                   fill
-                  className="object-cover object-top"
+                  className="object-contain object-top"
                   priority
                 />
               </div>
