@@ -143,7 +143,7 @@ export default function AboutPage() {
             <Heading level={2} type="heading-section">
               Collaboration &amp; Hiring
             </Heading>
-            <p className="body-secondary max-w-[680px]">
+            <p className="body-secondary">
               Available for full-time roles and scoped freelance projects. I
               specialise in bridging research and production — from model
               development to scalable backend systems.
@@ -170,7 +170,7 @@ export default function AboutPage() {
             <CopyableCode
               value={about.contactEmail}
               ariaLabel="Copy email address"
-              className="self-start text-[14px]"
+              className="self-start h-9 px-[var(--spacing-sm)] text-[14px]"
             />
           </div>
         </div>
