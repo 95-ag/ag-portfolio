@@ -23,7 +23,7 @@ export default function AboutPage() {
   return (
     <Section>
       <Container>
-        <Stack gap="3xl">
+        <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-4xl)]">
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={1} type="display-accent">
@@ -153,7 +153,7 @@ export default function AboutPage() {
               <span className="body-caption">{about.contactEmail}</span>
             </div>
           </div>
-        </Stack>
+        </div>
       </Container>
     </Section>
   );
