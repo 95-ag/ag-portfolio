@@ -23,10 +23,12 @@ export default function RootLayout({
       className={`${manrope.variable} ${inter.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <Providers>
           <Nav />
-          <main className="pt-[var(--spacing-3xl)]">{children}</main>
+          <main className="flex flex-1 flex-col pt-[var(--spacing-3xl)]">
+            {children}
+          </main>
           <Footer />
           <ScrollToTop />
         </Providers>
