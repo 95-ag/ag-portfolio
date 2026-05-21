@@ -7,7 +7,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/button";
-import { CopyableCode } from "@/components/ui/copyable-code";
+import { CopyLink } from "@/components/ui/copy-link";
 import { Heading } from "@/components/ui/heading";
 import { SocialLink } from "@/components/ui/social-link";
 import { Tag } from "@/components/ui/tag";
@@ -138,25 +138,27 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Collaboration & Hiring */}
+          {/* Work with me */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={2} type="heading-section">
-              Collaboration &amp; Hiring
+              Work with me
             </Heading>
             <p className="body-secondary">
-              Available for full-time roles and scoped freelance projects. I
-              specialise in bridging research and production — from model
-              development to scalable backend systems.
+              Available for freelance projects and full-time roles. If you want
+              AI systems built like real engineering, let&apos;s talk.
             </p>
             <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:w-fit sm:grid-cols-2">
-              <Button
-                variant="primary"
-                href={`mailto:${about.contactEmail}`}
-                icon={<MailIcon size={16} />}
-                className="justify-center"
-              >
-                Email me
-              </Button>
+              <div className="flex flex-col gap-[var(--spacing-xs)]">
+                <Button
+                  variant="primary"
+                  href={`mailto:${about.contactEmail}`}
+                  icon={<MailIcon size={16} />}
+                  className="justify-center"
+                >
+                  Let&apos;s talk
+                </Button>
+                <CopyLink value={about.contactEmail} />
+              </div>
               <Button
                 variant="secondary"
                 href="/AishwaryaGanesan_Resume.pdf"
@@ -167,11 +169,6 @@ export default function AboutPage() {
                 Download Resume
               </Button>
             </div>
-            <CopyableCode
-              value={about.contactEmail}
-              ariaLabel="Copy email address"
-              className="self-start h-9 px-[var(--spacing-sm)] text-[14px]"
-            />
           </div>
         </div>
       </Container>
