@@ -132,6 +132,8 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
 | `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
 
+Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/bg/`. Do not use these directly in CSS.
+
 ### Typography
 
 Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
@@ -1066,6 +1068,19 @@ Vertically centered error page that fits within the viewport without scrolling; 
 
 ---
 
+### Background Layer
+
+Atmospheric, secondary visual layer providing environmental depth. Must remain visually subordinate to typography and content surfaces at all times — visibility biases toward peripheral and negative-space perception rather than direct focal attention.
+
+- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/bg/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
+- **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
+- **ASCII field:** ambient structural texture, not decorative ornamentation. Rendered on all routes and devices. Static — no animation. Three opacity tiers (accent, ink, mute); light-theme values are slightly higher to compensate for the cream background's lower contrast.
+- **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes — intentionally suppressed on project detail pages to preserve reading focus.
+- **Theme-aware palette:** meteor color responds to `data-theme` changes via `MutationObserver` with no flash. Light theme uses the accent green family with a muted sage secondary; dark theme uses accent green with a steel-blue secondary.
+- **Performance:** Three.js loaded via `next/dynamic` (`ssr: false`) to preserve initial bundle size and interaction responsiveness. DPR capped at 1.5 and frame delta clamped to maintain rendering comfort on HiDPI screens and across tab focus changes.
+
+---
+
 ## Interaction Rules
 
 ### Responsive Behavior
@@ -1151,7 +1166,7 @@ Components must use z-index tokens, not raw numbers.
 
 ### Root Layout Shell
 
-`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom.
+`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom. `<BackgroundLayer />` mounts as first child of `<Providers>`, before `<Nav>` — fixed-position, does not affect document flow.
 
 ---
 
