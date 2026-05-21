@@ -193,6 +193,7 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 - Strict 4px base. Used for padding, margins, gaps, and rhythm.
 - Major section gaps: `{spacing.3xl}` (64px) desktop, `{spacing.2xl}` (48px) mobile.
+- Section page-edge padding: `pt-xl / pb-xl` (32px each) mobile; `pt-3xl / pb-2xl` (64px / 48px) desktop. Top is asymmetric at desktop — calibrated for pill-nav clearance. Mobile uses less top padding because the slide-out trigger occupies less vertical real estate than the pill nav.
 - Paragraph separation: `{spacing.md}` (16px). List item separation: `{spacing.sm}` (8px).
 - Card internal padding: `{spacing.lg}` (24px).
 - Whitespace beyond these minimums is intentional, not arbitrary.
@@ -960,6 +961,8 @@ editorial-dl:
 ```
 
 ### About Layouts
+
+- Inter-section gap (top-level flex container): `{spacing.2xl}` (48px) mobile → `{spacing.3xl}` (64px) mid → `{spacing.5xl}` (128px) desktop (≥1280). Breakpoints align with layout transitions: portrait+intro and capabilities go row at `md`; Approach 3-col grid at `xl`.
 
 #### About — Two-panel Intro
 

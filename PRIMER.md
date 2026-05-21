@@ -82,6 +82,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 **Layout primitives (complete) — `src/components/layout/`:**
 - `container.tsx`, `section.tsx`, `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
+- `section.tsx` padding: `pt-xl / pb-xl` (32px) mobile; `pt-3xl / pb-2xl` (64px top / 48px bottom) desktop. Top asymmetric at desktop for pill-nav clearance; mobile reduced for slide-out trigger viewport.
 
 **UI primitives (complete) — `src/components/ui/`:**
 - `button.tsx` — primary/secondary variants, h-14 (56px), px-2xl (48px), `radius-sm`, icon slot
@@ -133,7 +134,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `src/app/page.tsx` — two-column hero, featured grid (Collaboration & Hiring CTA removed)
 - `src/app/work/page.tsx` — heading + project grid
 - `src/app/work/[slug]/page.tsx` — SectionProgressNav, HeroMedia, ProjectOverview, MDX body, backlink
-- `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary)
+- `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary); inter-section gap `2xl/3xl/5xl` (48/64/128px) at mobile/mid/xl
 - `src/app/not-found.tsx` — 404 with Home + Work links
 
 **Content pipeline (complete):**
