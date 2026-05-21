@@ -66,6 +66,7 @@ export default function AboutPage() {
                   alt={about.headshotAlt}
                   fill
                   className="object-cover object-[center_25%]"
+                  priority
                   unoptimized={about.headshot.endsWith(".svg")}
                   sizes="(min-width: 768px) clamp(200px, 24vw, 320px), 100vw"
                 />

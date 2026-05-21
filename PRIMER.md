@@ -154,7 +154,15 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**Responsive layout improvements + portrait scaling (phase-5-about-page). Committed: `0ef96b7`.**
+**About page headshot fixes (phase-5-about-page).**
+
+**Headshot crop fixed:**
+- Replaced `public/headshot.jpeg` with a pre-cropped version of the image
+- Added `priority` prop to the `<Image>` in `src/app/about/page.tsx` — headshot is LCP element; `priority` adds `<link rel="preload">` and sets `loading="eager"`
+- `object-[center_25%]` positioning retained (composition tuning)
+- Cache fix: clearing `.next/cache/images` alone was insufficient — full `.next/` deletion required to bust the optimized image cache after source file replacement
+
+**Previous: Responsive layout improvements + portrait scaling (phase-5-about-page). Committed: `0ef96b7`.**
 
 **Approach grid:**
 - `lg:grid-cols-3` → `xl:grid-cols-3` — 3-col now holds from 1280px+; 900–1100px range is 2-col (was cramped 3-col)
@@ -183,8 +191,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 ## Next Steps
 
 **About page polish (before merge):**
-1. Headshot crop/focus — current `object-[center_25%]` not working well; needs a different approach
-2. Name text (`display-accent`) weight — could be thinner
+1. Name text (`display-accent`) weight — could be thinner
 3. Em-dash + hyphen clash in positioning tagline at responsive widths — fix punctuation or reflow
 4. Increase spacing between major page sections (currently `Stack gap="3xl"`)
 5. Typography size steps — about page needs 3 steps to match ref's behavior (currently 2)
