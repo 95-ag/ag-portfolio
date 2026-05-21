@@ -79,7 +79,10 @@ export default function AboutPage() {
                 .split("\n\n")
                 .filter(Boolean)
                 .map((para) => (
-                  <p key={para} className="body-lead">
+                  <p
+                    key={para}
+                    className="body-lead xl:text-justify xl:hyphens-auto"
+                  >
                     {para.trim()}
                   </p>
                 ))}
