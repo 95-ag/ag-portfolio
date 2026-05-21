@@ -17,12 +17,12 @@ export default function HomePage() {
       {/* Hero */}
       <Section
         as="header"
-        className="pb-[var(--spacing-2xl)] lg:pb-[var(--spacing-lg)]"
+        className="pb-[var(--spacing-2xl)] lg:pb-[var(--spacing-lg)] overflow-hidden"
       >
         <Container>
-          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center lg:gap-[var(--spacing-3xl)]">
-            {/* Content column */}
-            <div className="flex flex-1 flex-col gap-[var(--spacing-xl)] lg:max-w-[640px]">
+          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center">
+            {/* Content column - fixed width so headline stays 2 lines */}
+            <div className="flex shrink-0 flex-col gap-[var(--spacing-xl)] lg:w-[480px] xl:w-[560px]">
               <div className="flex flex-col gap-[var(--spacing-lg)]">
                 <p className="mono-anchor">Aishwarya Ganesan — AI Engineer</p>
                 <Heading level={1} type="display-primary">
@@ -52,35 +52,23 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="hidden lg:block lg:w-[420px] xl:w-[480px] shrink-0 self-stretch">
+            {/* Portrait - flex-1 takes remaining space, overflows right */}
+            <div
+              className="hidden lg:block flex-1 relative"
+              style={{ height: "600px" }}
+            >
               <div
-                className="relative h-full min-h-[320px]"
+                className="absolute inset-0"
                 style={{
-                  maskImage: `
-                    radial-gradient(
-                      ellipse 85% 90% at 60% 35%,
-                      black 40%,
-                      rgba(0,0,0,0.8) 55%,
-                      rgba(0,0,0,0.3) 70%,
-                      transparent 100%
-                    )
-                  `,
-                  WebkitMaskImage: `
-                    radial-gradient(
-                      ellipse 85% 90% at 60% 35%,
-                      black 40%,
-                      rgba(0,0,0,0.8) 55%,
-                      rgba(0,0,0,0.3) 70%,
-                      transparent 100%
-                    )
-                  `,
+                  maskImage: `linear-gradient(to right, transparent 0%, black 15%, black 100%)`,
+                  WebkitMaskImage: `linear-gradient(to right, transparent 0%, black 15%, black 100%)`,
                 }}
               >
                 <Image
                   src="/hero.png"
                   alt="Aishwarya Ganesan"
                   fill
-                  className="object-contain object-top"
+                  className="object-cover object-left-top"
                   priority
                 />
               </div>
