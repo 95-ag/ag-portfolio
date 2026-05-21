@@ -5,7 +5,7 @@
 ---
 
 ## Current Phase
-**Phase 5 — UI Polish** (branch: `phase-5-about-page`)
+**Phase 5 — UI Polish** (branch: `phase-5-home-polish`)
 
 See `.claude/docs/build-flow.md` for full phase requirements and verification checklist.
 
@@ -56,7 +56,7 @@ All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`
 | `mono-code` | 16px | Inline code, code blocks — Muted |
 | `support-meta` | 13px | Footer, TOC items — Muted |
 
-Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). All three tiers in the table above. `body-lead` is fully 3-tier: 18/28 → 20/30 → 24/34. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
+Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). `body-lead` is fully 3-tier: 18/28 → 20/30 → 24/34. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
 Footer responsive exception: `support-meta` + local Tailwind override to 11px/18px mobile, 15px/24px desktop.
 
 **Prose composition (`.prose-content`):**
@@ -80,21 +80,25 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 | 4 — Border + sunken | `1px outline-variant` + `surface-sunken` | `<CodeBlock>`, inline code, `<Diagram>` inner region, table `<th>`, card media well, hero bg |
 | 5 — Accent left border + raised | `2px accent` + `surface-raised` | `<Callout>`, prose blockquote |
 
+**Root layout shell — `src/app/layout.tsx`:**
+- `body`: `flex min-h-dvh flex-col` — footer always pins to viewport bottom; `min-h-dvh` avoids iOS Safari vh bugs
+- `main`: `flex flex-1 flex-col pt-[var(--spacing-3xl)]` — expands to fill remaining space; transparent on content-heavy pages
+- Short pages (404): child uses `flex flex-1 items-center` to vertically center content within expanded main
+
 **Layout primitives (complete) — `src/components/layout/`:**
-- `container.tsx`, `section.tsx`, `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
-- `section.tsx` padding: `pt-xl / pb-xl` (32px) mobile; `pt-3xl / pb-2xl` (64px top / 48px bottom) desktop. Top asymmetric at desktop for pill-nav clearance; mobile reduced for slide-out trigger viewport.
+- `container.tsx`, `section.tsx` (accepts `id` prop), `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
+- `section.tsx` padding: `pt-xl / pb-xl` (32px) mobile; `pt-3xl / pb-2xl` (64px top / 48px bottom) desktop.
 
 **UI primitives (complete) — `src/components/ui/`:**
 - `button.tsx` — primary/secondary variants, h-14 (56px), px-2xl (48px), `radius-sm`, icon slot
 - `copy-link.tsx` — text-link copy interaction: `body-caption`, `on-surface-muted`, underline idle/no-underline copied, 1500ms revert
 - `copyable-code.tsx` — code-chip copy interaction: `surface-sunken` + `outline-variant` border, mono-code, 1500ms icon swap
-- `card.tsx` — **DELETED** (was unused)
 - `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
 - `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
-- `theme-toggle.tsx` — `PillThemeSelector` (collapsed, expands on hover) + `InlineThemeSelector` (always expanded); uses `LightModeIcon`, `DarkModeIcon`, `ComputerIcon`
+- `theme-toggle.tsx` — `PillThemeSelector` (collapsed, expands on hover) + `InlineThemeSelector` (always expanded)
 
 **Navigation (complete):**
-- `pill-nav.tsx` — active state: `surface-selection` (accent-tinted); hover: `surface-sunken`; container: `surface-nav` + blur
+- `pill-nav.tsx` — logomark: `<Image src="/cat_head_icon.svg" width={32} height={32} />` via next/image; active state: `surface-selection`; hover: `surface-sunken`; container: `surface-nav` + blur
 - `mobile-nav.tsx` — active link: `surface-selection`; panel + trigger: `surface-nav` + blur
 - `nav.tsx` — CSS-only responsive switch
 
@@ -103,9 +107,9 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 **MDX components (complete) — `src/components/mdx/`:**
 - `figure.tsx` — border only (level 1)
-- `diagram.tsx` — outer shell border-only (`overflow-hidden`, no padding); inner image region gets `surface-sunken` fill
-- `callout.tsx` — `surface-raised` fill + 2px accent left border (level 5). Single treatment, no variants.
-- `highlight.tsx` — `surface-raised` fill + `outline-variant` border (level 3). **Shadow system removed permanently.**
+- `diagram.tsx` — outer shell border-only; inner image region gets `surface-sunken` fill
+- `callout.tsx` — `surface-raised` fill + 2px accent left border (level 5)
+- `highlight.tsx` — `surface-raised` fill + `outline-variant` border (level 3). Shadow system removed permanently.
 - `code-block.tsx` — `outline-variant` border + `surface-sunken` fill (level 4)
 - `mdx-components.tsx`
 
@@ -115,38 +119,35 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - Biome `noStaticElementInteractions` fires on hover wrappers — biome-ignore with justification
 - Material Symbols SVG paths use viewBox `0 -960 960 960` (not `0 0 24 24`)
 - Brand icons (GitHub, LinkedIn) use viewBox `0 0 24 24` — kept as standalone SVG wrappers, not via `IconBase`
+- Site logomark (`/cat_head_icon.svg`) rendered via `<Image ... unoptimized />` (not via IconBase/currentColor) — used in pill nav + 404 CTA
 - Prose cascade specificity: `.prose-content <element>` rules beat `@layer components` token classes — always add explicit Tailwind arbitrary color utilities on elements that must hold a fixed color inside prose
 - `surface-selection` vs `surface-sunken`: selection = accent-tinted (active states), sunken = neutral (hover states, code surfaces, recessed wells)
 
 **Icon system (complete) — `src/components/icons/`:**
 - `icon-base.tsx` — shared `IconBase` + `IconProps`; handles viewBox, sizing, `aria-hidden`, `currentColor`
-- `material/` — 18 Material Symbols Outlined components (one per file); viewBox `0 -960 960 960`
+- `material/` — 19 Material Symbols Outlined components (one per file); viewBox `0 -960 960 960`
 - `brands/` — `GitHubIcon`, `LinkedInIcon`; viewBox `0 0 24 24`; standalone SVG wrappers (not via IconBase)
 - lucide-react removed entirely
 
 **Project components (complete) — `src/components/project/`:**
-- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; outer: `surface-raised` + `outline-variant` border (0px radius); inner media: `surface-sunken` + `radius-md`
-- `project-header.tsx` — link pills: 16px leading icon + label + 12px `OpenInNewIcon` trailing indicator; Demo uses `DeployedCodeIcon`
+- `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; description `line-clamp-3`, tags flow immediately after visible text (no spacer); card heights equal via CSS grid row-stretch
+- `project-header.tsx` — link pills: 16px leading icon + label + 12px `OpenInNewIcon` trailing indicator
 - `hero-media.tsx`, `project-overview.tsx`, `stack-summary.tsx`, `project-sidebar.tsx`
 - `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
 
 **Pages (complete):**
-- `src/app/page.tsx` — two-column hero, featured grid (Collaboration & Hiring CTA removed)
+- `src/app/page.tsx` — two-column desktop hero (content left, reserved media region right with mask-fade); featured grid (`id="featured"`, no heading, "View all →" below grid)
 - `src/app/work/page.tsx` — heading + project grid
 - `src/app/work/[slug]/page.tsx` — SectionProgressNav, HeroMedia, ProjectOverview, MDX body, backlink
-- `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary); inter-section gap `2xl/3xl/5xl` (48/64/128px) at mobile/mid/xl
-- `src/app/not-found.tsx` — 404 with Home + Work links
+- `src/app/about/page.tsx` — identity row, two-panel intro, Capabilities, Approach, "Work with me" CTA (primary + CopyLink + secondary)
+- `src/app/not-found.tsx` — vertically centered in viewport, footer pinned; "404" eyebrow, display-primary H1, body-lead; Primary "See Projects" (ArrowForwardIcon) + Secondary "Go Home" (logomark via Image)
 
 **Content pipeline (complete):**
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
 **Documentation (synced):**
-- `.claude/docs/DESIGN.md` — v2.0, two-layer architecture. Canonical spine: Overview / Foundations (incl. Iconography) / Components / **Domain Components** / Interaction Rules / Accessibility Rules / Cross-Cutting Rules / Technical Conventions / Iteration Notes.
-- **DESIGN.md spine distinction:** `## Components` = reusable/portable UI systems; `## Domain Components` = page/domain-bound compositions (Project Detail with Prose Layout + Editorial Two-column, About Layouts).
-- `.claude/rules/` — all stale DESIGN.md §N references migrated to new named paths
-- `.claude/docs/CONTENT-SCHEMA.md` — cross-references updated to Domain Components paths
-- `.claude/skills/design-writing-contract.md` — updated for Domain Components taxonomy
-- `.claude/skills/design-rewrite/references/` — validation-heuristics, safety-rules, rewrite-passes updated
+- `.claude/docs/DESIGN.md` — Domain Components now includes: Home Page (hero, featured grid), Project Detail, About Layouts, 404 Not Found. Technical Conventions includes Root Layout Shell note. ProjectCard body spec updated with line-clamp-3.
+- `.claude/rules/` — all stale DESIGN.md §N references migrated to named paths
 
 **Placeholder content:**
 - `content/projects/lane-refinement-rl.mdx` — academic, `featured: true`, order 10
@@ -157,25 +158,55 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**About page polish — Pass 2 complete.**
+**Home page restructure + 404 rebuild — complete. Branch: `phase-5-home-polish`.**
 
-- **body-lead:** color `on-surface` → `on-surface-muted`; full 3-tier scale (18/20/24px); intro paragraphs `xl:text-justify xl:hyphens-auto`.
-- **heading-display:** weight 600 → 500.
-- **Button:** h-12→h-14 (56px), px-xl→px-2xl (48px). Label unchanged.
-- **Contact section:** rebuilt as "Work with me" — flat/editorial, no card. Buttons: "Let's talk" (primary, mailto) + "Download Resume" (secondary). `CopyLink` text link beneath primary.
-- **Home page:** Collaboration & Hiring CTA section removed. Home = hero + featured projects only.
-- **New components:** `CopyableCode` (code-chip, reusable for project-detail/MDX contexts); `CopyLink` (text-link, low visual weight for editorial/contact contexts).
-- **New icons:** `content-copy.tsx`, `check.tsx`.
+- **Home hero:** two-column desktop (content left, reserved right region with CSS mask-fade). Copy: "Aishwarya Ganesan — AI Engineer" eyebrow, "I build for production, not proof of concept." H1, three-sentence body-lead. CTAs: "See Projects" (ArrowDownwardIcon, `#featured` anchor) + "Get in Touch" (MailIcon, mailto).
+- **Featured grid:** no heading above, `id="featured"` anchor, "View all projects →" right-aligned below grid. Mobile hero→grid gap: `spacing-2xl` (48px).
+- **ProjectCard (global):** description `line-clamp-3`, no spacer, tags flow immediately. Card heights equal via CSS grid row-stretch.
+- **Root layout:** `body` → `flex min-h-dvh flex-col`; `main` → `flex flex-1 flex-col` for footer pinning on short pages.
+- **404 page:** vertically centered via `flex flex-1 items-center` in expanded main. Button components, editorial copy, logomark on "Go Home" via `<Image src="/cat_head_icon.svg" />` matching nav pill pattern.
+- **New icon:** `arrow-downward.tsx` (Material Symbols Outlined `arrow_downward`).
+- **Section component:** added `id` prop passthrough.
 
 **Process note:** always propose commit clusters and await approval before any `git` operation.
 
-**Home page v1 spec items (deferred):**
-- Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
-- Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
+**Known deviations from PRODUCT.md:**
+- **Hero CTAs (§7.1):** PRODUCT.md specifies no CTAs in the hero. Current implementation moves CTAs into the hero; the separate bottom CTA section was removed. Intentional — supersedes §7.1 item 3.
+- **Sidebar (§7.3):** Original spec described a sticky sidebar + main column. Replaced with single-column editorial layout.
 
-**Then:** Merge `phase-5-about-page` to main.
+**Missing production assets (needed before launch):**
+- `/public/resume.pdf` — About page "Download Resume" button targets this
+- `/public/headshot.jpg` (or `.jpeg`) — reserved hero image region on home page
 
-**Content** — placeholder MDX files need real content.
+---
+
+## Phase 5 Remaining (before any PR/merge)
+
+1. **Background treatment** — add restrained, consistent background texture/pattern across pages (if any; decision needed first).
+2. **Hero image** — wire up real headshot into the reserved right region; confirm mask-fade blends correctly in both themes.
+3. **Page transitions** — extremely restrained (opacity fade ≤200ms), optional only. Skip if it adds routing complexity or visible motion overhead.
+4. **Full page-layout review** across all routes at 375 / 768 / 1280:
+   - Home, Work, Project detail, About, 404
+   - Image load failure → alt text visible (no broken-icon glyph)
+   - Theme toggle: no layout shift
+5. **Reduced-motion verification** — all Framer Motion gated by `useReducedMotion()`; no motion added by recent changes.
+6. **Keyboard/focus accessibility audit** — all interactive elements reachable, focus rings visible in both themes.
+7. **Progressive-rendering / no-JS sanity check** — core content readable in initial HTML (static generation handles this, but verify).
+
+Phase 5 is complete only after all of the above are visually validated. No PR until then.
+
+---
+
+## After Phase 5 — Remaining Phases (in order)
+
+1. **Diagram tooling decision** ← prerequisite gate before real content begins. Must be decided so diagram visual style is consistent across all project pages before any MDX is authored.
+2. Replace placeholder project content with real project content.
+3. Full audits: typography, spacing, responsiveness, color/alignment consistency, desktop hover-state review.
+4. Accessibility audit (WCAG AA contrast, semantic HTML, keyboard nav).
+5. SEO + AI readability: per-page metadata, OG image + Twitter cards across all routes, favicon/app metadata, JSON-LD (`Person` on Home/About; `CreativeWork` on project pages), `sitemap.xml`, `robots.txt`, `llms.txt`.
+6. Performance: LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage, no layout shift.
+7. Refactor + cleanup + full docs alignment.
+8. Deployment.
 
 ---
 
