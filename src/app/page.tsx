@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { DownloadIcon } from "@/components/icons/material/download";
-import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { ProjectCard } from "@/components/project/project-card";
-import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { getFeaturedProjects } from "@/lib/content/projects";
 
@@ -68,41 +65,6 @@ export default function HomePage() {
           </Container>
         </Section>
       )}
-
-      {/* CTA — centered collaboration block */}
-      <Section className="pt-0">
-        <Container>
-          <div className="flex flex-col items-center gap-[var(--spacing-xl)] text-center">
-            <div className="flex flex-col gap-[var(--spacing-md)]">
-              <Heading level={2} type="heading-component">
-                Collaboration &amp; Hiring
-              </Heading>
-              <p className="body-secondary mx-auto max-w-[560px]">
-                Available for full-time roles and scoped freelance projects. I
-                specialise in bridging research and production — from model
-                development to scalable backend systems.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-[var(--spacing-md)]">
-              <Button
-                variant="secondary"
-                href="/AishwaryaGanesan_Resume.pdf"
-                download
-                icon={<DownloadIcon size={16} />}
-              >
-                Download Resume
-              </Button>
-              <Button
-                variant="primary"
-                href="mailto:aishwaryaganesan95@gmail.com"
-                icon={<MailIcon size={16} />}
-              >
-                Get in Touch
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </Section>
     </>
   );
 }
