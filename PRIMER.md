@@ -34,12 +34,12 @@ Phase 5 UI polish in progress. Build passes (10 static pages), Biome clean, Type
 **Typography system — semantic tokens (19 classes in `globals.css`):**
 All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`), Muted (`on-surface-muted`), Accent (`accent`).
 
-| Token | Size (desktop) | Role |
-|---|---|---|
-| `display-primary` | 56px | Hero headline, page H1 — Ink |
-| `display-accent` | 56px | Section title — Accent |
-| `heading-display` | 36px | Editorial deck / tagline under H1 — Ink |
-| `heading-section` | 26px | Major section headings on editorial pages — Ink |
+| Token | ≤768 | 769–1279 | ≥1280 (desktop) | Role |
+|---|---|---|---|---|
+| `display-primary` | 36/44 | 46/54 | 56/64 | Hero headline, page H1 — Ink |
+| `display-accent` | 36/44 | 46/54 | 56/64 | Section title — Accent, **500 weight** |
+| `heading-display` | 28/36 | 32/40 | 36/44 | Editorial deck / tagline under H1 — Ink |
+| `heading-section` | 22/30 | 24/32 | 26/34 | Major section headings on editorial pages — Ink |
 | `heading-component` | 22px | Card titles, UI section headings — Ink |
 | `heading-narrative` | 20px | H4 in prose, editorial subheads — Accent |
 | `body-lead` | 20px | Lead narrative paragraphs, capability group labels — Ink |
@@ -56,7 +56,7 @@ All old `type-*` aliases removed. Three operative text colors: Ink (`on-surface`
 | `mono-code` | 16px | Inline code, code blocks — Muted |
 | `support-meta` | 13px | Footer, TOC items — Muted |
 
-Mobile overrides (≤768px): `display-primary`/`display-accent` → 36px/44px; `heading-display` → 28px/36px; `heading-section` → 22px/30px; `body-lead` → 18px/28px.
+Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). All three tiers in the table above. `body-lead` is 2-step only (18/28 mobile, 20/30 desktop — mid jump too small to subdivide). Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
 Footer responsive exception: `support-meta` + local Tailwind override to 11px/18px mobile, 15px/24px desktop.
 
 **Prose composition (`.prose-content`):**
@@ -84,7 +84,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `container.tsx`, `section.tsx`, `grid.tsx`, `stack.tsx`, `divider.tsx`, `sticky.tsx`, `sidebar-layout.tsx`
 
 **UI primitives (complete) — `src/components/ui/`:**
-- `button.tsx` — primary/secondary variants, 44px, `radius-sm`, icon slot
+- `button.tsx` — primary/secondary variants, h-12 (48px), px-xl (32px), `radius-sm`, icon slot
 - `card.tsx` — **DELETED** (was unused)
 - `heading.tsx` — polymorphic h1–h6; `SemanticType` prop maps directly to token class
 - `tag.tsx` — single canonical treatment: `surface-tag` bg, `on-surface` text
@@ -154,54 +154,20 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
-**About page headshot fixes (phase-5-about-page).**
+**About page polish — all four items complete. Committed: `fd64e18`, `9214559`, `b5f6cf9`, `904a702`.**
 
-**Headshot crop fixed:**
-- Replaced `public/headshot.jpeg` with a pre-cropped version of the image
-- Added `priority` prop to the `<Image>` in `src/app/about/page.tsx` — headshot is LCP element; `priority` adds `<link rel="preload">` and sets `loading="eager"`
-- `object-[center_25%]` positioning retained (composition tuning)
-- Cache fix: clearing `.next/cache/images` alone was insufficient — full `.next/` deletion required to bust the optimized image cache after source file replacement
-
-**Previous: Responsive layout improvements + portrait scaling (phase-5-about-page). Committed: `0ef96b7`.**
-
-**Approach grid:**
-- `lg:grid-cols-3` → `xl:grid-cols-3` — 3-col now holds from 1280px+; 900–1100px range is 2-col (was cramped 3-col)
-- Gap responsive: `spacing.xl` (32px) below `md`, `spacing.2xl` (48px) at `md+`
-
-**Intro + Capabilities breakpoints:**
-- Both now `md:flex-row` (768px) instead of `lg` (1024px) — side-by-side layout starts earlier, page transitions to desktop layout in one step
-
-**Headshot column — progressive scaling:**
-- Was: fixed `200px` floor, frozen from 768–1176px viewport
-- Now: `clamp(200px, 24vw, 320px)` — fluid across entire tablet-to-desktop range; 320px ceiling preserves text-first hierarchy
-
-**Mobile portrait — square identity block:**
-- Below `md`: full container width, `aspect-square` — reads as contextual identity block not a collapsed sidebar asset
-- Above `md`: 3:4 portrait, clamp-controlled width
-- `object-[center_25%]` tunes crop for current headshot composition (face/shoulder framing)
-
-**DESIGN.md aligned:**
-- Two-panel Intro spec rewritten: breakpoint `lg` → `md`, aspect corrected `4:5` → `1:1` mobile, clamp documented, `object-position` framed as composition-dependent tuning
-- Two-column Structured Layout: breakpoint corrected `lg` → `md` throughout
+- **Spacing rhythm:** `Stack gap="3xl"` → responsive div `gap-2xl md:gap-3xl xl:gap-4xl` (48/64/96px). Breakpoints align with all layout transitions on the page.
+- **3-tier type scale:** Added `@media (max-width: 1279px)` middle tier in `globals.css`. `display-primary/accent` 46px, `heading-display` 32px, `heading-section` 24px at 769–1279. Mobile (≤768) and desktop (≥1280) values unchanged.
+- **Button size:** `h-11`→`h-12` (48px), `px-lg`→`px-xl` (32px) on both primary/secondary. Label size unchanged.
+- **Name weight:** `display-accent` font-weight 600→500 — lighter, more editorial at display scale in accent green.
 
 **Process note:** always propose commit clusters and await approval before any `git` operation.
-
----
-
-## Next Steps
-
-**About page polish (before merge):**
-1. Name text (`display-accent`) weight — could be thinner
-3. Em-dash + hyphen clash in positioning tagline at responsive widths — fix punctuation or reflow
-4. Increase spacing between major page sections (currently `Stack gap="3xl"`)
-5. Typography size steps — about page needs 3 steps to match ref's behavior (currently 2)
-6. Primary buttons — increase size
 
 **Home page v1 spec items:**
 - Hero portrait — wire up real headshot (`/public/headshot.jpeg`)
 - Hire Me CTA pulse — 2400ms opacity+scale on icon only, `useReducedMotion()` gated
 
-**Then:** Merge to main when phase-5 polish is complete.
+**Then:** Merge `phase-5-about-page` to main.
 
 **Content** — placeholder MDX files need real content.
 

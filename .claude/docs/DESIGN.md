@@ -144,15 +144,16 @@ Three families, each with a distinct semantic role. All self-hosted via `next/fo
 
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
-- Mobile overrides at ≤768px: `display-primary` and `display-accent` → 36px / 44px; `heading-display` → 28px / 36px; `heading-section` → 22px / 30px; `body-lead` → 18px / 28px.
+- Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
+- Mid-tier values (769–1279): `display-primary`/`display-accent` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 2-step only (18/28 mobile ↔ 20/30 desktop — mid delta too small to subdivide).
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
-| `display-primary` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
-| `display-accent` | Manrope | 56px → 36px mobile | 600 | 64px → 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
-| `heading-display` | Manrope | 36px → 28px mobile | 600 | 44px → 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
-| `heading-section` | Manrope | 26px → 22px mobile | 600 | 34px → 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
+| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
+| `display-accent` | Manrope | 56 / 46 / 36px | 500 | 64 / 54 / 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
+| `heading-display` | Manrope | 36 / 32 / 28px | 600 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
+| `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
 | `body-lead` | Inter | 20px → 18px mobile | 400 | 30px → 28px | — | — (Ink) | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
@@ -509,8 +510,8 @@ Committed action controls; used for CTAs, form submissions, and external link tr
 
 ```yaml
 button-primary:
-  height: 44px
-  paddingHorizontal: 24px
+  height: 48px
+  paddingHorizontal: 32px
   background: accent
   color: accent-on
   fontSize: 14px
@@ -523,8 +524,8 @@ button-primary:
     transition: opacity 150ms
 
 button-secondary:
-  height: 44px
-  paddingHorizontal: 24px
+  height: 48px
+  paddingHorizontal: 32px
   background: transparent
   color: on-surface
   border: 1px solid outline
@@ -545,13 +546,13 @@ button-icon-leading:
 
 Quiet utility link for profile and contact links; lighter visual weight than `Button`, heavier than a static `Tag`.
 
-- Smaller than `Button` (36px vs 44px) with a transparent bordered surface rather than filled.
+- Smaller than `Button` (36px vs 48px) with a transparent bordered surface rather than filled.
 - Used on the About page identity row for GitHub, LinkedIn, and Email.
 - Hover intensifies border and text to `outline` / `on-surface` — no fill change.
 
 ```yaml
 social-link:
-  height: 36px                       # h-9 — quieter than Button (44px)
+  height: 36px                       # h-9 — quieter than Button (48px)
   paddingHorizontal: spacing-md      # 16px
   gap-icon-label: spacing-sm         # 8px
   borderRadius: sm                   # 4px — matches interactive controls
