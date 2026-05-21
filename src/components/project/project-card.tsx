@@ -92,7 +92,7 @@ export function ProjectCard({
               />
             </div>
 
-            <p className="body-caption flex-1">{displayText}</p>
+            <p className="body-caption line-clamp-3">{displayText}</p>
             <div className="flex flex-wrap gap-[var(--spacing-xs)]">
               {fm.tags.slice(0, 3).map((tag) => (
                 <Tag key={tag}>{tag}</Tag>
