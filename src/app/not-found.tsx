@@ -1,39 +1,51 @@
-import Link from "next/link";
+import Image from "next/image";
+import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { Stack } from "@/components/layout/stack";
+import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 
 export default function NotFound() {
   return (
-    <Section>
+    <div className="flex flex-1 items-center py-[var(--spacing-2xl)]">
       <Container>
-        <Stack gap="xl">
-          <Stack gap="sm">
+        <div className="flex flex-col gap-[var(--spacing-2xl)]">
+          <div className="flex flex-col gap-[var(--spacing-lg)]">
             <p className="mono-anchor">404</p>
             <Heading level={1} type="display-primary">
-              Page not found
+              This page doesn&rsquo;t exist — but my work does.
             </Heading>
-            <p className="body-secondary max-w-[480px]">
-              This page does not exist. It may have been moved or removed.
+            <p className="body-lead">
+              You might have followed a broken link or mistyped the URL. Either
+              way, there&rsquo;s nothing here.
             </p>
-          </Stack>
-          <div className="flex flex-wrap gap-[var(--spacing-md)]">
-            <Link
-              href="/"
-              className="interactive-label inline-flex h-11 items-center rounded-[var(--radius-md)] bg-[var(--accent)] px-[var(--spacing-lg)] text-[var(--accent-on)] transition-opacity duration-[var(--duration-fast)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-            >
-              Go home
-            </Link>
-            <Link
-              href="/work"
-              className="interactive-label inline-flex h-11 items-center rounded-[var(--radius-md)] border border-[var(--outline)] bg-transparent px-[var(--spacing-lg)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-            >
-              View my work
-            </Link>
           </div>
-        </Stack>
+          <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
+            <Button
+              variant="primary"
+              href="/work"
+              icon={<ArrowForwardIcon size={16} />}
+            >
+              See Projects
+            </Button>
+            <Button
+              variant="secondary"
+              href="/"
+              icon={
+                <Image
+                  src="/cat_head_icon.svg"
+                  alt=""
+                  width={18}
+                  height={18}
+                  className="rounded-full"
+                  unoptimized
+                />
+              }
+            >
+              Go Home
+            </Button>
+          </div>
+        </div>
       </Container>
-    </Section>
+    </div>
   );
 }
