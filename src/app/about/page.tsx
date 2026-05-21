@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
+import { DownloadIcon } from "@/components/icons/material/download";
 import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/button";
+import { CopyableCode } from "@/components/ui/copyable-code";
 import { Heading } from "@/components/ui/heading";
 import { SocialLink } from "@/components/ui/social-link";
 import { Tag } from "@/components/ui/tag";
@@ -136,14 +138,15 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Collaboration & Hiring */}
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <Heading level={2} type="heading-section">
-              Get in touch
+              Collaboration &amp; Hiring
             </Heading>
-            <p className="body-secondary max-w-[480px]">
-              Open to full-time roles and scoped freelance projects. Email is
-              the fastest way to reach me.
+            <p className="body-secondary max-w-[560px]">
+              Available for full-time roles and scoped freelance projects. I
+              specialise in bridging research and production — from model
+              development to scalable backend systems.
             </p>
             <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
               <Button
@@ -153,8 +156,19 @@ export default function AboutPage() {
               >
                 Email me
               </Button>
-              <span className="body-caption">{about.contactEmail}</span>
+              <Button
+                variant="secondary"
+                href="/AishwaryaGanesan_Resume.pdf"
+                download
+                icon={<DownloadIcon size={16} />}
+              >
+                Download Resume
+              </Button>
             </div>
+            <CopyableCode
+              value={about.contactEmail}
+              ariaLabel="Copy email address"
+            />
           </div>
         </div>
       </Container>
