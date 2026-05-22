@@ -205,8 +205,37 @@ Typography, spacing, and visual consistency audits postponed to after SEO phase.
 
 ## Next Tasks (in order)
 
+> **Process rules for Phase 6:**
+> - Complete one project fully before moving to the next — avoids asset/content drift.
+> - No polish passes until all real project content exists.
+> - Execution order per project: MDX content/structure → assets → hero cover.
+
 ### Current — Phase 6 — Project Content
-- Replace all 3 placeholder MDX projects with real content (screenshots, diagrams, metrics, outcomes).
+
+**1. model-extraction-attacks**
+- Keep generated visual assets in `/public/projects/model-extraction-attacks/` until project stabilizes.
+- Follow `project-guide.md` for MDX writing and asset planning.
+- Complete MDX structure and content first.
+- Then generate/refine assets per `asset-guide.md`.
+- Delete obsolete/replaced assets as iterations stabilize.
+- Finally generate hero cover via `cover-system-guide.md`.
+
+**2. lane-refinement-rl**
+- Same execution order: MDX → assets → hero cover.
+
+**3. masked-autoencoders**
+- Same execution order: MDX → assets → hero cover.
+
+**4. Remove placeholder/demo projects**
+- Delete the 3 placeholder MDX files and their assets once real projects are stable.
+
+**5. Add freelance project**
+- After the 3 academic/personal projects are stabilized.
+
+**6. Featured projects (final state)**
+- `lane-refinement-rl` — featured
+- `model-extraction-attacks` — featured
+- freelance project — featured
 
 ### Phase 7 — SEO + AI Readability
 - Per-page `<title>` and `<meta description>` on all routes.
