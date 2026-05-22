@@ -350,7 +350,10 @@ pill-nav-logo:
   size: 32px x 32px
   borderRadius: pill (full circle)
   asset: /public/cat_head_icon.svg via next/image (unoptimized)
-  hover: opacity 0.8, transition 150ms
+  hover:
+    background: accent-muted
+    outline: 1px solid accent
+    transition: background 150ms
   links-to: /
 
 pill-nav-item:
@@ -508,7 +511,7 @@ Committed action controls; used for CTAs, form submissions, and external link tr
 
 - Two variants: `primary` (filled `accent`) and `secondary` (outlined, transparent background).
 - `<Button href="...">` renders as `<a>` — same visual spec regardless of rendering mode; navigating is still a committed action.
-- No shadows, no gradients — hover handled by opacity or color transition alone.
+- No shadows, no gradients — hover uses color and surface transitions only.
 - Icon slot is leading-only — the component renders a single icon before the label.
 
 ```yaml
@@ -523,8 +526,9 @@ button-primary:
   border: none
   
   hover:
-    opacity: 0.9
-    transition: opacity 150ms
+    background: on-surface
+    color: surface
+    transition: all 150ms
 
 button-secondary:
   height: 56px
@@ -1083,6 +1087,35 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 ## Interaction Rules
 
+### Hover
+
+Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
+
+- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top. Communicates affordance without color takeover.
+- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode, SocialLink. Communicates interactive intent on contained surfaces.
+- **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
+- **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
+- **Exception — project card directional:** border intensifies from `outline-variant` to `outline`; card title underlines with `accent` decoration. Communicates link affordance without recoloring the editorial surface.
+- **Exception — footer social icons:** color shifts to `accent` + `scale(1.1)`. Small persistent scale permitted here only.
+- When `prefers-reduced-motion` is active, all hover transforms reduce to color-only.
+
+Component YAML blocks remain colocated as the local spec source. This section documents the shared interaction language they implement.
+
+### Focus
+
+- All keyboard-focused interactive elements show 2px solid `focus-ring` (= `accent`) at 2px offset.
+- Use `:focus-visible` only — prevents focus ring on mouse click, preserves it for keyboard navigation.
+- Focus ring is applied via `outline`, never `box-shadow`.
+- Component YAML may restate focus behavior locally for clarity but must not deviate from this baseline.
+
+### Disabled
+
+No disabled states are defined in v1 — portfolio surfaces have no async controls or form inputs requiring disabled representation.
+
+### Loading
+
+No loading states are defined in v1 — all pages are statically generated; no async UI patterns exist.
+
 ### Responsive Behavior
 
 #### Breakpoints
@@ -1175,7 +1208,6 @@ Components must use z-index tokens, not raw numbers.
 ### Open Decisions
 
 1. **Diagram tooling** — deferred from PRODUCT.md, decide before any project page goes to production. Affects the visual identity of project deep-dive content.
-2. **`accent-hover` token** — v1 uses `opacity: 0.9` on hover for primary buttons. If this looks muddy in practice, define a dedicated darker/lighter accent variant per theme.
 
 ### Known Gaps
 
