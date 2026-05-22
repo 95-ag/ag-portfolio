@@ -115,7 +115,14 @@ Missing optional fields are omitted from rendering — no placeholders.
 - All Framer Motion gated by `prefers-reduced-motion`.
 - No scroll-jacking, no parallax, no per-section entrance animations.
 
-**Imagery.** Project hero images and About headshot are intentional, not decorative. Diagrams in deep dives must be production-quality. Diagram tooling decision is **deferred** — to be made when `DESIGN.md` is finalized so visual style is consistent across all diagrams.
+**Imagery.** Project hero images and About headshot are intentional, not decorative. Diagrams in deep dives must be production-quality and visually consistent across projects.
+
+**Diagram tooling:**
+- **Mermaid → SVG** — primary tool for flows, pipelines, state, and sequence diagrams
+- **matplotlib → SVG/PNG** — charts and metrics visualizations where source data exists; must be script-reproducible
+- **tldraw → SVG** — fallback only for spatial or custom layouts Mermaid cannot express
+
+See `asset-guide.md` for full tooling rules, directory structure, and export standards.
 
 **Avoid.** Awwwards-style layouts, scroll gimmicks, keyword-dump skill clouds, motivational copy, vague branding, LinkedIn-style resume dumps, dense walls of text, image-heavy layouts without context.
 
@@ -305,5 +312,4 @@ Touch devices: no hover-only affordances. All hover content also reachable via f
 
 ## Open Questions
 
-1. **Diagram tooling** — deferred to DESIGN.md finalization. Decide before any project page goes to production.
-2. **`projectType` display** — currently spec'd as **internal only** (no badges on cards). Reconsider if you want a "Freelance" badge specifically as a credibility signal for paid work.
+1. **`projectType` display** — currently spec'd as **internal only** (no badges on cards). Reconsider if you want a "Freelance" badge specifically as a credibility signal for paid work.

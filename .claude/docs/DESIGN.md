@@ -300,8 +300,11 @@ layout:
 - Avoid: stock imagery, oversaturated visuals, oversized hero images without supporting context, image-heavy sections with weak structure.
 
 **Diagrams**
-- Diagrams in project deep dives must be production-quality and visually consistent.
-- Tooling is decided once and applied uniformly across all projects.
+- Diagrams in project deep dives must be production-quality and visually consistent across projects.
+- **Mermaid → SVG** — primary tool for flows, pipelines, state, and sequence diagrams
+- **matplotlib → SVG/PNG** — charts and metrics visualizations where source data exists; must be script-reproducible
+- **tldraw → SVG** — fallback only for spatial or custom layouts Mermaid cannot express
+- See `asset-guide.md` for full tooling rules, directory structure, and export standards
 
 ### Iconography
 
@@ -690,6 +693,7 @@ Entry point to a project; communicates type, media, and scope at a glance and li
 - Three layout variants: `compact` (1:1 hero), `featured` (4:3 hero), `text` (no hero, category icon). The `text` variant is an intentional editorial choice, not a fallback for a missing hero image.
 - Hero image is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
 - Hover: title underlines with `accent` decoration; border shifts from `outline-variant` to `outline`.
+- Cover metadata overlays (`logos[]`, `contributors[]`) are presentational only in cards — no interactive affordances.
 
 ```yaml
 project-card:
@@ -869,7 +873,8 @@ project-detail:
 Page header for a project detail page; communicates project identity, tags, and links before the hero media.
 
 - Vertical stack: tags row → display title → optional subtitle → optional links row.
-- Links row renders only when the project has external links.
+- Links row renders only when the project has external links (`github`, `demo`, `paper`, `presentation`).
+- Cover metadata groups (`logos[]`, `contributors[]`) may be interactive in project detail pages when a `url` is present on the entry.
 - Each link: 16px leading type icon (brand or Material) → text label → 12px trailing `OpenInNewIcon` as external link indicator.
 
 ```yaml
@@ -1207,8 +1212,8 @@ Components must use z-index tokens, not raw numbers.
 
 ### Open Decisions
 
-1. **Diagram tooling** — deferred from PRODUCT.md, decide before any project page goes to production. Affects the visual identity of project deep-dive content.
+None.
 
 ### Known Gaps
 
-- `Foundations → Layout → Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
+None.
