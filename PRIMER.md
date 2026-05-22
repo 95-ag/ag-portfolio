@@ -5,7 +5,7 @@
 ---
 
 ## Current Phase
-**Phase 5 — UI Polish** (branch: `phase-5-home-polish`)
+**Phase 6 — Project Content** (branch: `phase-6-real-content`)
 
 See `.claude/docs/build-flow.md` for full phase requirements and verification checklist.
 
@@ -205,23 +205,23 @@ Typography, spacing, and visual consistency audits postponed to after SEO phase.
 
 ## Next Tasks (in order)
 
-### Immediate — Merge Phase 5
-- Merge `phase-5-home-polish` → `main` via PR. Verify build passes on main after merge.
-
-### Next — Real Content
-- **Diagram tooling decision** — gate before authoring any MDX. Affects visual style of all project deep-dives.
+### Current — Phase 6 — Project Content
 - Replace all 3 placeholder MDX projects with real content (screenshots, diagrams, metrics, outcomes).
-- Full audits post-content: typography, spacing, responsiveness, color/alignment consistency.
 
-### Then — SEO + Accessibility
-1. Per-page `<title>` and `<meta description>` on all routes.
-2. OG image + Twitter cards across all routes.
-3. Favicon + app metadata (`/public/favicon.ico`, `manifest.json`, apple-touch-icon).
-4. JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages.
-5. `sitemap.xml`, `robots.txt`, `llms.txt`.
-6. Accessibility audit: WCAG AA contrast, semantic HTML, keyboard nav sweep.
+### Phase 7 — SEO + AI Readability
+- Per-page `<title>` and `<meta description>` on all routes.
+- OG image + Twitter cards across all routes.
+- JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages.
+- `sitemap.xml`, `robots.txt`, `llms.txt`.
 
-### Then — Performance + Deploy
+### Phase 8 — Audits
+- Typography, spacing, hierarchy, consistency, responsiveness sweeps.
+- WCAG AA contrast, keyboard nav, semantic HTML, focus rings.
+
+### Phase 9 — Refactor / Clean / Align
+- Dead code removal, token compliance, doc–implementation alignment.
+
+### Phase 10 — Deploy
 - LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage.
 - Vercel deployment, custom domain, production validation.
 

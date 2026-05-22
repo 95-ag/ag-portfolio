@@ -490,15 +490,15 @@ Ensure:
 * layouts scale with real content
 * visuals support understanding rather than dominate layouts
 
-Do not begin Phase 5 until real content validates the system.
+Do not begin Phase 5 until page structure is stable.
 
 ---
 
-# Phase 5 — Polish Pass
+# Phase 5 — UI Polish
 
 ## Goals
 
-Refine visual quality, interaction quality, and consistency after real content exists.
+Refine visual quality, interaction quality, and consistency after the skeleton pages exist.
 
 Do not introduce unnecessary complexity during polish.
 
@@ -538,19 +538,6 @@ Motion should remain:
 
 ---
 
-## Run Audit Passes
-
-Perform:
-
-* typography audit
-* spacing audit
-* hierarchy audit
-* consistency audit
-* responsiveness audit
-* accessibility audit
-
----
-
 ## Verification Requirements
 
 Ensure:
@@ -559,18 +546,72 @@ Ensure:
 * visual polish does not reduce readability
 * motion remains restrained
 * layouts remain content-first
-* project storytelling remains clear
 * UI remains technically credible and mature
 
 Do not begin Phase 6 until visual consistency is stable.
 
 ---
 
-# Phase 6 — SEO + Accessibility + AI Readability
+# Phase 6 — Project Content
 
 ## Goals
 
-Ensure discoverability, semantic clarity, accessibility, and AI readability.
+Replace placeholder MDX projects with real content before running audits or SEO.
+
+This phase validates:
+
+* content density and storytelling
+* layout scalability with real assets
+* diagram and image handling
+* recruiter scanning quality at card and detail level
+
+---
+
+## Add Real Projects
+
+Add 2–3 fully real projects including:
+
+* actual screenshots or demo recordings
+* diagrams (Mermaid SVG, matplotlib, or tldraw per asset-guide.md)
+* metrics and outcomes
+* technical explanations, tradeoffs, implementation details
+
+Avoid placeholder or generated filler content.
+
+---
+
+## Validate Content System
+
+Verify:
+
+* project-card generation and metadata rendering
+* long-form MDX readability
+* image and diagram handling
+* MDX component behavior (`<Figure>`, `<Diagram>`, `<Callout>`, `<Highlight>`)
+* section consistency across project types
+* responsive content behavior at 375px / 768px / 1280px
+
+---
+
+## Verification Requirements
+
+Ensure:
+
+* project pages feel like engineering case studies, not blog posts
+* recruiter scanning works — overview readable without deep dive
+* deep technical reading works — deep dive adds real detail
+* layouts scale with real content and real assets
+* visuals support understanding rather than dominate layout
+
+Do not begin Phase 7 until at least two real projects are fully authored and verified.
+
+---
+
+# Phase 7 — SEO + AI Readability
+
+## Goals
+
+Ensure discoverability, semantic clarity, and AI readability.
 
 ---
 
@@ -578,14 +619,12 @@ Ensure discoverability, semantic clarity, accessibility, and AI readability.
 
 Add:
 
-* metadata
-* OpenGraph
-* Twitter cards
-* sitemap
-* robots.txt
+* per-page `<title>` and `<meta description>` from frontmatter
+* OpenGraph + Twitter card meta tags
+* default OG image fallback; per-project OG image when `heroImage` is set
+* sitemap.xml and robots.txt generated at build
 * canonical URLs
-* structured metadata
-* dynamic metadata generation
+* dynamic metadata generation for project and about pages
 
 ---
 
@@ -594,29 +633,48 @@ Add:
 Add:
 
 * llms.txt
-* semantic HTML
-* clean heading hierarchy
-* structured content organization
-* readable metadata structure
+* JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages
 
 Ensure:
 
-* content remains easily parsable
-* technical information remains semantically organized
+* content remains easily parsable from static HTML
+* technical information is semantically organized
+* clean heading hierarchy across all routes
 
 ---
 
-## Accessibility
+## Verification Requirements
 
-Audit and improve:
+Ensure:
 
-* keyboard navigation
-* focus states
-* semantic structure
-* color contrast
-* screen-reader compatibility
-* image alt handling
-* responsive readability
+* metadata renders correctly on all routes
+* OG previews render in link unfurlers
+* sitemap and robots.txt are valid
+* JSON-LD validates without errors
+* semantic structure is clean
+
+Do not begin Phase 8 until SEO and AI readability are stable.
+
+---
+
+# Phase 8 — Audits
+
+## Goals
+
+Systematic quality sweep across typography, spacing, accessibility, and cross-page consistency after real content and SEO exist.
+
+---
+
+## Audit Passes
+
+Perform:
+
+* typography audit — scale, hierarchy, line-height, weight contrast
+* spacing audit — rhythm, section gaps, component padding
+* hierarchy audit — visual attention flow, heading levels
+* consistency audit — tokens used correctly, no raw values
+* responsiveness audit — 375px / 768px / 1280px across all routes
+* accessibility audit — WCAG AA contrast, keyboard nav, focus rings, semantic HTML, screen-reader structure, image alt coverage
 
 ---
 
@@ -625,69 +683,57 @@ Audit and improve:
 Ensure:
 
 * Lighthouse scores are strong
-* metadata renders correctly
-* accessibility issues are resolved
-* semantic structure remains clean
-* pages remain readable in both themes
+* WCAG AA passes in both light and dark themes
+* no token violations (raw hex, arbitrary px outside scale)
+* all interactive elements keyboard-reachable with visible focus rings
+* heading hierarchy is logical and sequential on every page
+* responsive layouts hold at all three breakpoints
 
-Do not begin Phase 7 until accessibility and SEO are stable.
+Do not begin Phase 9 until all audit findings are resolved.
 
 ---
 
-# Phase 7 — Final QA
+# Phase 9 — Refactor / Clean / Align
 
 ## Goals
 
-Validate production readiness.
+Code quality, documentation, and doc–implementation alignment pass before deploy.
 
 ---
 
-## Cross-Check
+## Code Cleanup
 
-Test:
-
-* desktop
-* tablet
-* mobile
-* dark/light/system themes
-* long-form project pages
-* navigation behavior
-* broken links
-* loading states
-* MDX rendering
-* responsive layouts
+* remove dead code, unused imports, unused components
+* remove any temporary hacks or commented-out experiments
+* ensure no raw values remain in components (all tokens)
+* verify Biome passes with zero errors
 
 ---
 
-## Performance Optimization
+## Doc Alignment
 
-Optimize:
-
-* images
-* fonts
-* bundle size
-* MDX loading
-* animation performance
-* caching behavior
-
-Avoid premature micro-optimization.
+* verify DESIGN.md reflects current implementation
+* verify CONTENT-SCHEMA.md Zod schemas match current field usage
+* verify PRIMER.md is current
+* resolve any known gaps flagged during earlier phases
 
 ---
 
-## Final Review
+## Verification Requirements
 
 Ensure:
 
-* consistent design language
-* stable responsive behavior
-* scalable architecture
-* maintainable code quality
-* restrained interaction behavior
-* no visual inconsistency between pages
+* `npm run build` passes
+* TypeScript strict mode passes with zero errors
+* Biome passes with zero errors
+* no hydration errors in browser console
+* all docs reflect actual implementation state
+
+Do not begin Phase 10 until the codebase is clean and docs are aligned.
 
 ---
 
-# Phase 8 — Deploy
+# Phase 10 — Deploy
 
 ## Goals
 
