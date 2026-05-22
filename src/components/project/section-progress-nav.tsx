@@ -79,7 +79,7 @@ export function SectionProgressNav() {
                 block: "start",
               });
             }}
-            className="support-meta max-w-[140px] truncate transition-colors duration-[var(--duration-fast)]"
+            className="support-meta max-w-[140px] truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
             style={{
               color: isActive ? "var(--on-surface)" : "var(--on-surface-muted)",
               fontWeight: isActive ? 600 : 400,
