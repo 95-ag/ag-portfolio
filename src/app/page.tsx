@@ -68,6 +68,7 @@ export default function HomePage() {
                   src="/hero.png"
                   alt="Aishwarya Ganesan"
                   fill
+                  sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
                   className="object-cover object-left-top"
                   priority
                 />
