@@ -38,6 +38,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 | `rules/accessibility.md` | Semantic HTML, focus, contrast, ARIA |
 | `rules/build-verification.md` | Phase gates, always-required checks |
 | `rules/git.md` | Branching, commits, merge policy, public repo hygiene |
+| `rules/portfolio-system.md` | Portfolio case studies, assets, cover system, technical presentation |
 
 ## Key Constraints
 
