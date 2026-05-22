@@ -208,22 +208,21 @@ Typography, spacing, and visual consistency audits postponed to after SEO phase.
 ### Immediate — Merge Phase 5
 - Merge `phase-5-home-polish` → `main` via PR. Verify build passes on main after merge.
 
-### Phase 6 — SEO + Accessibility + AI Readability
+### Next — Real Content
+- **Diagram tooling decision** — gate before authoring any MDX. Affects visual style of all project deep-dives.
+- Replace all 3 placeholder MDX projects with real content (screenshots, diagrams, metrics, outcomes).
+- Full audits post-content: typography, spacing, responsiveness, color/alignment consistency.
+
+### Then — SEO + Accessibility
 1. Per-page `<title>` and `<meta description>` on all routes.
 2. OG image + Twitter cards across all routes.
 3. Favicon + app metadata (`/public/favicon.ico`, `manifest.json`, apple-touch-icon).
 4. JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages.
-5. `sitemap.xml` — auto-generated from project slugs.
-6. `robots.txt` + `llms.txt`.
-7. Accessibility audit: WCAG AA contrast verification, semantic HTML review, keyboard nav sweep.
+5. `sitemap.xml`, `robots.txt`, `llms.txt`.
+6. Accessibility audit: WCAG AA contrast, semantic HTML, keyboard nav sweep.
 
-### Phase 7 (Gate: real content first)
-- **Diagram tooling decision** — must be made before any MDX is authored. Affects visual style of all project deep-dives.
-- Replace all 3 placeholder MDX projects with real content (screenshots, diagrams, metrics).
-- Full audits: typography, spacing, responsiveness, color/alignment consistency.
-- Performance: LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage.
-
-### Phase 8 — Deploy
+### Then — Performance + Deploy
+- LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage.
 - Vercel deployment, custom domain, production validation.
 
 ---
