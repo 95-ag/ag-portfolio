@@ -44,6 +44,13 @@
   --success: #006e37;
   --focus-ring: #006e37;
   --selection: #006e3733;
+
+  /* Background layer RGB triples — consumed only by src/components/bg/.
+     Space-separated so Three.js can parse: rgb(var(--accent-rgb)). */
+  --accent-rgb: 0 110 55;
+  --on-surface-rgb: 25 28 29;
+  --on-surface-muted-rgb: 107 114 128;
+  --outline-variant-rgb: 187 202 191;
 }
 
 [data-theme="dark"] {
@@ -77,6 +84,12 @@
   --success: #35c27d;
   --focus-ring: #35c27d;
   --selection: #35c27d33;
+
+  /* Background layer RGB triples — dark theme */
+  --accent-rgb: 53 194 125;
+  --on-surface-rgb: 229 226 225;
+  --on-surface-muted-rgb: 160 160 160;
+  --outline-variant-rgb: 60 74 66;
 }
 
 /* ─────────────────────────────────────────────
@@ -568,4 +581,33 @@ body {
       line-height: 28px;
     }
   }
+}
+
+/* ─────────────────────────────────────────────
+   Background layer — ASCII glyph tiers
+   Classes assigned imperatively in AsciiField.tsx
+   Light values are raised: light bg has lower contrast so glyphs
+   need more opacity to register without becoming textural noise.
+   ───────────────────────────────────────────── */
+
+.ascii-bg-glyph-accent {
+  color: var(--accent);
+  opacity: 0.55;
+}
+.ascii-bg-glyph-ink {
+  color: var(--on-surface);
+  opacity: 0.3;
+}
+.ascii-bg-glyph-mute {
+  color: var(--on-surface-muted);
+  opacity: 0.22;
+}
+[data-theme="dark"] .ascii-bg-glyph-accent {
+  opacity: 0.5;
+}
+[data-theme="dark"] .ascii-bg-glyph-ink {
+  opacity: 0.26;
+}
+[data-theme="dark"] .ascii-bg-glyph-mute {
+  opacity: 0.2;
 }

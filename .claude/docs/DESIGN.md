@@ -132,6 +132,8 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
 | `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
 
+Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/bg/`. Do not use these directly in CSS.
+
 ### Typography
 
 Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
@@ -348,7 +350,10 @@ pill-nav-logo:
   size: 32px x 32px
   borderRadius: pill (full circle)
   asset: /public/cat_head_icon.svg via next/image (unoptimized)
-  hover: opacity 0.8, transition 150ms
+  hover:
+    background: accent-muted
+    outline: 1px solid accent
+    transition: background 150ms
   links-to: /
 
 pill-nav-item:
@@ -506,7 +511,7 @@ Committed action controls; used for CTAs, form submissions, and external link tr
 
 - Two variants: `primary` (filled `accent`) and `secondary` (outlined, transparent background).
 - `<Button href="...">` renders as `<a>` — same visual spec regardless of rendering mode; navigating is still a committed action.
-- No shadows, no gradients — hover handled by opacity or color transition alone.
+- No shadows, no gradients — hover uses color and surface transitions only.
 - Icon slot is leading-only — the component renders a single icon before the label.
 
 ```yaml
@@ -521,8 +526,9 @@ button-primary:
   border: none
   
   hover:
-    opacity: 0.9
-    transition: opacity 150ms
+    background: on-surface
+    color: surface
+    transition: all 150ms
 
 button-secondary:
   height: 56px
@@ -713,8 +719,10 @@ project-card-body:
   gap: spacing-sm
   - title:    heading-component, on-surface, font-semibold
               hover: underline (decoration: accent, offset 2px)
-  - summary:  body-caption, on-surface-muted
+  - summary:  body-caption, on-surface-muted, line-clamp: 3
+              no flex-1 or reserved spacer — tags follow immediately after visible text
   - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
+  card-height: equal within grid row via CSS grid row-stretch; content top-anchored, whitespace falls to bottom
 
 project-card-text-variant:
   # No hero. Category icon mapped from projectType (academic|freelance|personal):
@@ -814,6 +822,25 @@ social-icon:
 ## Domain Components
 
 Page- and domain-bound composition systems that orchestrate Components and Foundations into product surfaces; assume a specific page context, content schema, or editorial purpose.
+
+### Home Page
+
+#### Hero
+
+Two-column desktop layout: content left, portrait right. Single-column on mobile (portrait hidden below `lg`, 1024px). Section carries `overflow-hidden` to contain the portrait bleed.
+
+- Content column (`shrink-0`, `lg:w-[480px]` / `xl:w-[560px]`): fixed width locks the headline to 2 lines across breakpoints. Eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
+- CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
+- Portrait column (`flex-1`, `height: 600px`): `hero.png` via `next/image` with `fill`, `object-cover object-left-top`. Left-edge linear mask (`transparent 0% → black 15%`) fades the portrait into the page background in both themes without theme-specific overlays.
+- Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
+
+#### Featured Projects Grid
+
+Three-column project grid anchored with `id="featured"` as the scroll target for the hero primary CTA.
+
+- No section heading above the grid — content leads directly.
+- "View all projects →" link sits below the grid, right-aligned.
+- Grid: `grid-cols-1` mobile → `grid-cols-2` mid → `grid-cols-3` desktop, `gap-gutter`.
 
 ### Project Detail
 
@@ -1034,9 +1061,60 @@ about-two-col:
     gap: md
 ```
 
+### 404 Not Found
+
+Vertically centered error page that fits within the viewport without scrolling; footer pins to the bottom.
+
+- Layout: `flex flex-1 items-center` wrapper within expanded `main` — content centers vertically in remaining space after nav.
+- Copy: "404" eyebrow (`mono-anchor`) → H1 (`display-primary`, "This page doesn't exist — but my work does.") → `body-lead` paragraph. No `max-width` constraint on body copy.
+- CTAs: Primary "See Projects" (`Button` primary, `/work`, `ArrowForwardIcon` 16px) + Secondary "Go Home" (`Button` secondary, `/`, site logomark `<Image src="/cat_head_icon.svg" width={18} height={18} className="rounded-full" unoptimized />` — matches nav pill logomark pattern).
+- No illustrations or special visual effects. `<Container>` provides horizontal rhythm.
+
+---
+
+### Background Layer
+
+Atmospheric, secondary visual layer providing environmental depth. Must remain visually subordinate to typography and content surfaces at all times — visibility biases toward peripheral and negative-space perception rather than direct focal attention.
+
+- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/bg/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
+- **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
+- **ASCII field:** ambient structural texture, not decorative ornamentation. Rendered on all routes and devices. Static — no animation. Three opacity tiers (accent, ink, mute); light-theme values are slightly higher to compensate for the cream background's lower contrast.
+- **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes — intentionally suppressed on project detail pages to preserve reading focus.
+- **Theme-aware palette:** meteor color responds to `data-theme` changes via `MutationObserver` with no flash. Light theme uses the accent green family with a muted sage secondary; dark theme uses accent green with a steel-blue secondary.
+- **Performance:** Three.js loaded via `next/dynamic` (`ssr: false`) to preserve initial bundle size and interaction responsiveness. DPR capped at 1.5 and frame delta clamped to maintain rendering comfort on HiDPI screens and across tab focus changes.
+
 ---
 
 ## Interaction Rules
+
+### Hover
+
+Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
+
+- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top. Communicates affordance without color takeover.
+- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode, SocialLink. Communicates interactive intent on contained surfaces.
+- **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
+- **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
+- **Exception — project card directional:** border intensifies from `outline-variant` to `outline`; card title underlines with `accent` decoration. Communicates link affordance without recoloring the editorial surface.
+- **Exception — footer social icons:** color shifts to `accent` + `scale(1.1)`. Small persistent scale permitted here only.
+- When `prefers-reduced-motion` is active, all hover transforms reduce to color-only.
+
+Component YAML blocks remain colocated as the local spec source. This section documents the shared interaction language they implement.
+
+### Focus
+
+- All keyboard-focused interactive elements show 2px solid `focus-ring` (= `accent`) at 2px offset.
+- Use `:focus-visible` only — prevents focus ring on mouse click, preserves it for keyboard navigation.
+- Focus ring is applied via `outline`, never `box-shadow`.
+- Component YAML may restate focus behavior locally for clarity but must not deviate from this baseline.
+
+### Disabled
+
+No disabled states are defined in v1 — portfolio surfaces have no async controls or form inputs requiring disabled representation.
+
+### Loading
+
+No loading states are defined in v1 — all pages are statically generated; no async UI patterns exist.
 
 ### Responsive Behavior
 
@@ -1119,6 +1197,10 @@ Components must use z-index tokens, not raw numbers.
 | `modal` | 80 | Reserved |
 | `toast` | 90 | Reserved |
 
+### Root Layout Shell
+
+`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom. `<BackgroundLayer />` mounts as first child of `<Providers>`, before `<Nav>` — fixed-position, does not affect document flow.
+
 ---
 
 ## Iteration Notes
@@ -1126,7 +1208,6 @@ Components must use z-index tokens, not raw numbers.
 ### Open Decisions
 
 1. **Diagram tooling** — deferred from PRODUCT.md, decide before any project page goes to production. Affects the visual identity of project deep-dive content.
-2. **`accent-hover` token** — v1 uses `opacity: 0.9` on hover for primary buttons. If this looks muddy in practice, define a dedicated darker/lighter accent variant per theme.
 
 ### Known Gaps
 

@@ -76,7 +76,7 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]"
+        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       >
         <MenuIcon size={18} />
       </button>
@@ -119,7 +119,7 @@ export function MobileNav() {
                 <Link
                   href="/"
                   aria-label="Home"
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-opacity duration-[var(--duration-fast)] hover:opacity-80"
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]"
                 >
                   <Image
                     src="/cat_head_icon.svg"

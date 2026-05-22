@@ -21,7 +21,7 @@ function LogoMark() {
     <Link
       href="/"
       aria-label="Home"
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-opacity duration-[var(--duration-fast)] hover:opacity-80"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]"
     >
       <Image
         src="/cat_head_icon.svg"
