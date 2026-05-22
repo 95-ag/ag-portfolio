@@ -185,37 +185,46 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ---
 
-## Phase 5 Remaining (before any PR/merge)
+## Phase 5 — COMPLETE ✓
 
-1. ~~**Background treatment**~~ — complete.
-2. ~~**Hero image**~~ — complete.
-3. ~~**Page transitions**~~ — skipped for v1.
-4. ~~**Reduced-motion verification**~~ — complete.
-5. ~~**Keyboard/focus accessibility audit**~~ — complete.
-6. ~~**Progressive-rendering / no-JS sanity check**~~ — complete.
-7. ~~**Hover/interaction audit**~~ — complete. Missing states fixed; nav logo + primary button hover language refined.
-8. ~~**DESIGN.md interaction rules alignment**~~ — complete. Hover/Focus/Disabled/Loading sections added; stale pill-nav-logo + button-primary hover specs fixed; `accent-hover` open decision closed.
-9. **Full page-layout review** across all routes at 375 / 768 / 1280:
-   - Home, Work, Project detail, About, 404
-   - Image load failure → alt text visible (no broken-icon glyph)
-   - Theme toggle: no layout shift
+All items verified. Branch: `phase-5-home-polish`.
 
-Typography, spacing, and visual consistency audits are **postponed to after SEO phase**.
+1. ~~Background treatment~~ — ASCII field + meteor shower layer live.
+2. ~~Hero image~~ — `hero.png` wired with mask-fade, light + dark verified.
+3. ~~Page transitions~~ — skipped for v1.
+4. ~~Reduced-motion verification~~ — complete.
+5. ~~Keyboard/focus accessibility audit~~ — complete.
+6. ~~Progressive-rendering / no-JS sanity check~~ — complete.
+7. ~~Hover/interaction audit~~ — complete. Missing states fixed; nav logo + primary button hover language refined.
+8. ~~DESIGN.md interaction rules alignment~~ — Hover/Focus/Disabled/Loading sections added; stale specs fixed.
+9. ~~Full page-layout review~~ — all routes pass at 375/768/1280. Dark theme clean. Image failure degrades gracefully. No layout shift on theme toggle.
 
-Phase 5 is complete only after all of the above are visually validated. No PR until then.
+Typography, spacing, and visual consistency audits postponed to after SEO phase.
 
 ---
 
-## After Phase 5 — Remaining Phases (in order)
+## Next Tasks (in order)
 
-1. **Diagram tooling decision** ← prerequisite gate before real content begins. Must be decided so diagram visual style is consistent across all project pages before any MDX is authored.
-2. Replace placeholder project content with real project content.
-3. Full audits: typography, spacing, responsiveness, color/alignment consistency, desktop hover-state review.
-4. Accessibility audit (WCAG AA contrast, semantic HTML, keyboard nav).
-5. SEO + AI readability: per-page metadata, OG image + Twitter cards across all routes, favicon/app metadata, JSON-LD (`Person` on Home/About; `CreativeWork` on project pages), `sitemap.xml`, `robots.txt`, `llms.txt`.
-6. Performance: LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage, no layout shift.
-7. Refactor + cleanup + full docs alignment.
-8. Deployment.
+### Immediate — Merge Phase 5
+- Merge `phase-5-home-polish` → `main` via PR. Verify build passes on main after merge.
+
+### Phase 6 — SEO + Accessibility + AI Readability
+1. Per-page `<title>` and `<meta description>` on all routes.
+2. OG image + Twitter cards across all routes.
+3. Favicon + app metadata (`/public/favicon.ico`, `manifest.json`, apple-touch-icon).
+4. JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages.
+5. `sitemap.xml` — auto-generated from project slugs.
+6. `robots.txt` + `llms.txt`.
+7. Accessibility audit: WCAG AA contrast verification, semantic HTML review, keyboard nav sweep.
+
+### Phase 7 (Gate: real content first)
+- **Diagram tooling decision** — must be made before any MDX is authored. Affects visual style of all project deep-dives.
+- Replace all 3 placeholder MDX projects with real content (screenshots, diagrams, metrics).
+- Full audits: typography, spacing, responsiveness, color/alignment consistency.
+- Performance: LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage.
+
+### Phase 8 — Deploy
+- Vercel deployment, custom domain, production validation.
 
 ---
 
