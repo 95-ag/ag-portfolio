@@ -20,12 +20,19 @@ const LinksSchema = z
     github: z.string().url().optional(),
     demo: z.string().url().optional(),
     paper: z.string().optional(),
+    presentation: z.string().optional(),
   })
   .optional();
 
 const LogoSchema = z.object({
   src: z.string().startsWith("/"),
   alt: z.string().min(1),
+});
+
+const ContributorSchema = z.object({
+  name: z.string().min(1),
+  avatar: z.string().startsWith("/"),
+  url: z.string().url().optional(),
 });
 
 const VIDEO_EXTENSIONS = [".mp4", ".webm"];
@@ -50,6 +57,7 @@ export const ProjectFrontmatterSchema = z
     links: LinksSchema,
     featured: z.boolean().optional().default(false),
     logos: z.array(LogoSchema).optional(),
+    contributors: z.array(ContributorSchema).optional(),
     ogImage: z.string().startsWith("/").optional(),
     metaDescription: z.string().max(160).optional(),
     relatedProjects: z.array(z.string()).optional(),

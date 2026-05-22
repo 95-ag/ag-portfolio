@@ -128,6 +128,7 @@ links:
   github: "https://github.com/user/lane-rl"
   demo: "https://lane-rl.example.com"
   paper: "/projects/lane-rl/paper.pdf"
+  presentation: "/projects/lane-rl/slides.pdf"
 
 # === Optional: featured on homepage ===
 featured: true                          # default false; cap of 3 enforced at build
@@ -138,6 +139,14 @@ logos:
     alt: "Simon Fraser University"
   - src: "/projects/lane-rl/clientco-logo.svg"
     alt: "ClientCo"
+
+# === Optional: contributors ===
+contributors:
+  - name: "Jane Smith"
+    avatar: "/projects/lane-rl/jane-smith.jpg"
+    url: "https://janesmith.dev"           # optional
+  - name: "Alex Lee"
+    avatar: "/projects/lane-rl/alex-lee.jpg"
 
 # === Optional: SEO ===
 ogImage: "/projects/lane-rl/og.png"     # falls back to heroImage if omitted
@@ -167,9 +176,10 @@ relatedProjects:
 | `tags` | string[] | yes | 3–6 recommended. Free-form strings |
 | `stack` | object | yes | See §3.2 |
 | `overview` | object | yes | See §3.3 |
-| `links` | object | no | Optional `github`, `demo`, `paper`. Each is a URL string |
+| `links` | object | no | Optional `github`, `demo`, `paper`, `presentation`. Each is a URL or relative path string |
 | `featured` | boolean | no | Default `false`. Triggers homepage inclusion |
 | `logos` | array | no | Associated org/company logos. Each `{src, alt}` |
+| `contributors` | array | no | Presentational collaborator credits. Each `{name, avatar, url?}`. `avatar` required and must start with `/`. `url` optional |
 | `ogImage` | string | no | Falls back to `heroImage` |
 | `metaDescription` | string | no | Falls back to `summary` |
 | `relatedProjects` | string[] | no | Array of slugs. v2 — validated at build but not rendered in v1 |
@@ -587,11 +597,18 @@ const LinksSchema = z.object({
   github: z.string().url().optional(),
   demo: z.string().url().optional(),
   paper: z.string().optional(),                // can be relative path
+  presentation: z.string().optional(),         // can be relative path
 }).optional()
 
 const LogoSchema = z.object({
   src: z.string().startsWith('/'),
   alt: z.string().min(1),
+})
+
+const ContributorSchema = z.object({
+  name: z.string().min(1),
+  avatar: z.string().startsWith('/'),
+  url: z.string().url().optional(),
 })
 
 const VIDEO_EXTENSIONS = ['.mp4', '.webm']
@@ -615,6 +632,7 @@ export const ProjectFrontmatterSchema = z.object({
   links: LinksSchema,
   featured: z.boolean().optional().default(false),
   logos: z.array(LogoSchema).optional(),
+  contributors: z.array(ContributorSchema).optional(),
   ogImage: z.string().startsWith('/').optional(),
   metaDescription: z.string().max(160).optional(),
   relatedProjects: z.array(z.string()).optional(),
@@ -658,4 +676,4 @@ No code changes. No card-component edits. No manual route registration.
 
 1. **Tag normalization.** Tags are currently free-form strings, which means "Computer Vision" and "computer vision" are different tags for v2 search/filter. Decide before v2: case-insensitive matching, or a controlled tag vocabulary?
 2. **Stack vs tags overlap.** A project tagged `["Reinforcement Learning"]` with stack `frameworks: [PyTorch]` works, but the boundary is fuzzy. v1 ships as-is; revisit if it causes drift.
-3. **Multi-author / collaborator credit.** No field for co-authors or team members in v1. Add an optional `collaborators[]` field if/when needed — not pre-emptively.
+3. **Multi-author / collaborator credit.** `contributors[]` added as optional presentational metadata (`name`, `avatar`, `url?`). No contributor profile system or cross-link architecture.
