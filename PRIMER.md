@@ -158,6 +158,17 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Last Session
 
+**Interaction audit + hover language refinement — complete. Branch: `phase-5-home-polish`.**
+
+- Hover diagnostics confirmed: `hover:hover`, `pointer:fine`, no touch. All Tailwind `hover:` styles activate correctly.
+- Full hover audit across all routes — all states working.
+- Fixed: TOC links (no hover), CopyLink button (no hover), mobile nav trigger (missing `cursor-pointer` + focus ring), hero image missing `sizes` prop.
+- **Nav logo hover:** opacity-fade removed → `accent-muted` surface + `accent` outline ring (pill nav + mobile nav panel).
+- **Primary button hover:** opacity-fade removed → ink-flip (`on-surface` bg + `surface` text). Exclusive to primary CTA; secondary button unchanged.
+- Reduced-motion: WebGL gated, Framer Motion hooks in place.
+- Keyboard/focus: logical tab order, green focus rings, mobile nav trapped + Escape works, ARIA correct.
+- Progressive rendering: all core content in static HTML.
+
 **Background layer + hero portrait — complete. Branch: `phase-5-home-polish`.**
 
 - **Background layer:** `src/components/bg/` — `AsciiField` (ambient structural texture, always-on), `MeteorShower` (WebGL shader via Three.js, capability-gated), `BackgroundLayer` orchestrator. Fixed z-index 0, `isolation: isolate`. Meteor excluded on reduced-motion, touch-only devices, low CPU, and `/work/[slug]` routes. Theme-aware palette: light uses muted sage alt color, dark uses steel blue. CSS palette tokens added to `globals.css`.
@@ -176,16 +187,20 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ## Phase 5 Remaining (before any PR/merge)
 
-1. ~~**Background treatment**~~ — complete. ASCII field + meteor shower layer live.
-2. ~~**Hero image**~~ — complete. `hero.png` wired with mask-fade, verified light + dark.
-3. **Page transitions** — extremely restrained (opacity fade ≤200ms), optional only. Skip if it adds routing complexity or visible motion overhead.
-4. **Full page-layout review** across all routes at 375 / 768 / 1280:
+1. ~~**Background treatment**~~ — complete.
+2. ~~**Hero image**~~ — complete.
+3. ~~**Page transitions**~~ — skipped for v1.
+4. ~~**Reduced-motion verification**~~ — complete.
+5. ~~**Keyboard/focus accessibility audit**~~ — complete.
+6. ~~**Progressive-rendering / no-JS sanity check**~~ — complete.
+7. ~~**Hover/interaction audit**~~ — complete. Missing states fixed; nav logo + primary button hover language refined.
+8. ~~**DESIGN.md interaction rules alignment**~~ — complete. Hover/Focus/Disabled/Loading sections added; stale pill-nav-logo + button-primary hover specs fixed; `accent-hover` open decision closed.
+9. **Full page-layout review** across all routes at 375 / 768 / 1280:
    - Home, Work, Project detail, About, 404
    - Image load failure → alt text visible (no broken-icon glyph)
    - Theme toggle: no layout shift
-5. **Reduced-motion verification** — all Framer Motion gated by `useReducedMotion()`; no motion added by recent changes.
-6. **Keyboard/focus accessibility audit** — all interactive elements reachable, focus rings visible in both themes.
-7. **Progressive-rendering / no-JS sanity check** — core content readable in initial HTML (static generation handles this, but verify).
+
+Typography, spacing, and visual consistency audits are **postponed to after SEO phase**.
 
 Phase 5 is complete only after all of the above are visually validated. No PR until then.
 
