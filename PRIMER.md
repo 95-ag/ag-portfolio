@@ -13,7 +13,7 @@ See `.claude/docs/build-flow.md` for full phase requirements and verification ch
 
 ## Current State
 
-Phase 5 UI polish in progress. Build passes (10 static pages), Biome clean, TypeScript clean.
+Build passes (10 static pages), Biome clean, TypeScript clean.
 
 **Installed:**
 - Next.js 16.2.6, React 19, TypeScript, Tailwind CSS v4, Biome
@@ -64,7 +64,10 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `h3` → heading-component + margins
 - `h4` → heading-narrative + margins
 - `p` / `li` → body-primary (18px), Ink
-- `a` → Accent, underline
+- `ul` → `list-style-type: disc`, `padding-left: spacing-xl`; `ul > li::marker { color: var(--outline-variant) }` — toned to match overview bullet visual register
+- `ol` → `list-style-type: decimal`, `padding-left: spacing-xl` — native document flow
+- `li margin-bottom: spacing-xs` per DESIGN.md spec
+- `a` → Accent, underline; `a[href^="#"]` → on-surface, underline outline-variant, accent on hover
 - `strong` → Ink, weight 600
 - `blockquote` → body-secondary + italic + 2px Accent left border + `surface-raised` bg + `spacing-md spacing-lg` padding
 - `table th/td` → body-caption, Muted
@@ -122,6 +125,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - Site logomark (`/cat_head_icon.svg`) rendered via `<Image ... unoptimized />` (not via IconBase/currentColor) — used in pill nav + 404 CTA
 - Prose cascade specificity: `.prose-content <element>` rules beat `@layer components` token classes — always add explicit Tailwind arbitrary color utilities on elements that must hold a fixed color inside prose
 - `surface-selection` vs `surface-sunken`: selection = accent-tinted (active states), sunken = neutral (hover states, code surfaces, recessed wells)
+- Tailwind v4 preflight strips `list-style: none` globally — prose `ul`/`ol` must explicitly set `list-style-type`
 
 **Icon system (complete) — `src/components/icons/`:**
 - `icon-base.tsx` — shared `IconBase` + `IconProps`; handles viewBox, sizing, `aria-hidden`, `currentColor`
@@ -133,7 +137,7 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 - `project-card.tsx` — three variants: `compact` (1:1), `featured` (4:3), `text`; description `line-clamp-3`, tags flow immediately after visible text (no spacer); card heights equal via CSS grid row-stretch
 - `project-header.tsx` — link pills: 16px leading icon + label + 12px `OpenInNewIcon` trailing indicator
 - `hero-media.tsx`, `project-overview.tsx`, `stack-summary.tsx`, `project-sidebar.tsx`
-- `section-progress-nav.tsx` — TOC: active Ink, inactive Muted
+- `section-progress-nav.tsx` — TOC: active Ink, inactive Muted; only H2 elements get IDs; slugify strips `&` and collapses `--` → `-`
 
 **Pages (complete):**
 - `src/app/page.tsx` — two-column desktop hero (content left `shrink-0 lg:w-[480px] xl:w-[560px]`, portrait right `flex-1 height:600px`, `overflow-hidden` section, left-edge linear mask fade); featured grid (`id="featured"`, no heading, "View all →" below grid)
@@ -145,8 +149,9 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 **Content pipeline (complete):**
 - `src/lib/content/projects.ts`, `src/lib/content/about.ts`, `src/lib/schemas/project.ts`, `src/lib/schemas/about.ts`
 
-**Documentation (synced):**
-- `.claude/docs/DESIGN.md` — Domain Components now includes: Home Page (hero, featured grid), Project Detail, About Layouts, 404 Not Found. Technical Conventions includes Root Layout Shell note. ProjectCard body spec updated with line-clamp-3.
+**Documentation:**
+- `.claude/docs/DESIGN.md` — Domain Components: Home Page, Project Detail, About Layouts, 404 Not Found. Technical Conventions: Root Layout Shell.
+- `.claude/docs/portfolio/project-extraction-workflow.md` — operational workflow for report+repo → MDX extraction. Covers H2 spine, source-of-truth hierarchy, density reduction checklist, asset categorization, reviewer patterns. **Read before starting any Phase-6 project.**
 - `.claude/rules/` — all stale DESIGN.md §N references migrated to named paths
 
 **Placeholder content:**
@@ -156,105 +161,125 @@ Footer responsive exception: `support-meta` + local Tailwind override to 11px/18
 
 ---
 
-## Last Session
+## Phase 6 — model-extraction-attacks
 
-**Interaction audit + hover language refinement — complete. Branch: `phase-5-home-polish`.**
+### Content — COMPLETE ✓
 
-- Hover diagnostics confirmed: `hover:hover`, `pointer:fine`, no touch. All Tailwind `hover:` styles activate correctly.
-- Full hover audit across all routes — all states working.
-- Fixed: TOC links (no hover), CopyLink button (no hover), mobile nav trigger (missing `cursor-pointer` + focus ring), hero image missing `sizes` prop.
-- **Nav logo hover:** opacity-fade removed → `accent-muted` surface + `accent` outline ring (pill nav + mobile nav panel).
-- **Primary button hover:** opacity-fade removed → ink-flip (`on-surface` bg + `surface` text). Exclusive to primary CTA; secondary button unchanged.
-- Reduced-motion: WebGL gated, Framer Motion hooks in place.
-- Keyboard/focus: logical tab order, green focus rings, mobile nav trapped + Escape works, ARIA correct.
-- Progressive rendering: all core content in static HTML.
+MDX fully rewritten from source (PDF + repo). All metrics traceable to PDF tables. No placeholders.
 
-**Background layer + hero portrait — complete. Branch: `phase-5-home-polish`.**
+**Finalized decisions:**
+- Title: "Stealing Black-Box ML Models"
+- Section order: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps (Architecture before Data — improves comprehension)
+- Results subsections numbered 1–6 with summary paragraph at top
+- OOD track explicitly framed as strongest generalization result
+- Metric framing: ~80% at 25k labels-only; 82.88% with top-3 softmax (both honest, sourced from Table 1b)
+- GitHub: `95-ag/dl-model-extraction` | Paper: `/projects/model-extraction-attacks/DL_Project.pdf`
+- Credits: KTH logo only (no co-author avatars)
+- `attack-transfer-summary.svg` removed from MDX — table covers it
 
-- **Background layer:** `src/components/bg/` — `AsciiField` (ambient structural texture, always-on), `MeteorShower` (WebGL shader via Three.js, capability-gated), `BackgroundLayer` orchestrator. Fixed z-index 0, `isolation: isolate`. Meteor excluded on reduced-motion, touch-only devices, low CPU, and `/work/[slug]` routes. Theme-aware palette: light uses muted sage alt color, dark uses steel blue. CSS palette tokens added to `globals.css`.
-- **Hero portrait:** `hero.png` wired into home page. Content column fixed-width (`shrink-0 lg:w-[480px] xl:w-[560px]`), portrait column `flex-1 height:600px`, `object-cover object-left-top`, left-edge linear mask fade, section `overflow-hidden`.
+### Assets — PENDING
 
-**Process note:** always propose commit clusters and await approval before any `git` operation.
+**Build from source (Mermaid):**
+- `extraction-pipeline.svg` — 3-stage flow: query gen → surrogate training → downstream eval
+- `coreset-selection.svg` — proxy → entropy rank → top-k → victim API
+- `ood-pipeline.svg` — ImageNet + web-scrape → resize → label verify → query pool
 
-**Known deviations from PRODUCT.md:**
-- **Hero CTAs (§7.1):** PRODUCT.md specifies no CTAs in the hero. Current implementation moves CTAs into the hero; the separate bottom CTA section was removed. Intentional — supersedes §7.1 item 3.
-- **Sidebar (§7.3):** Original spec described a sticky sidebar + main column. Replaced with single-column editorial layout.
+**Build from source (matplotlib):**
+- `query-budget-results.png` — Fig 1: random vs. coreset accuracy vs. budget, CIFAR-10/100
+- `architecture-transfer-heatmap.svg` — Table 1a: ResNet-34/50 × ResNet-34/50/VGG19-BN
+- `output-access-bar-chart.svg` — Table 1b: 79.8 / 82.88 / 82.15
 
-**Missing production assets (needed before launch):**
+**Legacy crop from PDF:**
+- `adversarial-example-panel.png` — Fig 2
+- `membership-inference-roc.png` — Fig 3b
+- `membership-inference-roc-test.png` — Fig 4b
+
+**Shared tooling to create first (reused across all Phase-6 projects):**
+- `assets-source/mermaid/_theme.*` — Mermaid theme with site tokens
+- `assets-source/matplotlib/_portfolio.mplstyle` — shared matplotlib style
+
+**Delete before committing assets:**
+- `hero-model-extraction.svg` — placeholder
+- `attacker-victim-comparison.svg` — placeholder, redundant
+- `attack-transfer-summary.svg` — removed from MDX
+
+### Hero Cover — PENDING
+
+Output: `hero-cover.webp`. KTH logo in metadata layer. Start typography-first. Update `heroImage` + `heroAlt` last.
+
+---
+
+## Uncommitted Changes (as of this session)
+
+Four files, proposed as two clusters — **do not commit until approved:**
+
+**Cluster A — `feat: complete model-extraction-attacks content and prose list styling`**
+- `content/projects/model-extraction-attacks.mdx` — full MDX rewrite
+- `public/projects/model-extraction-attacks/kth-logo.svg` — new KTH logo asset
+- `src/app/globals.css` — prose list styling (`ul` disc + `::marker` color; `ol` decimal; `li` spacing)
+
+**Cluster B — `docs: add project extraction workflow and update primer`**
+- `.claude/docs/portfolio/project-extraction-workflow.md` — new operational workflow doc
+- `PRIMER.md` — this update
+
+---
+
+## Next Task
+
+**Start:** Phase 6 asset phase for `model-extraction-attacks`
+
+1. Install `@mermaid-js/mermaid-cli`
+2. Create `assets-source/` directory structure
+3. Author `assets-source/mermaid/_theme.*` (site token colors, Inter sans, hairline strokes)
+4. Author and export 3 Mermaid diagrams: `extraction-pipeline`, `coreset-selection`, `ood-pipeline`
+5. Author `assets-source/matplotlib/_portfolio.mplstyle`
+6. Digitize PDF Fig 1 / Table 1a / Table 1b values → matplotlib scripts → export charts
+7. Crop PDF Figs 2, 3b, 4b → PNG
+8. Delete 3 placeholder assets
+9. Build verification
+
+Read `.claude/docs/portfolio/project-extraction-workflow.md` and `asset-guide.md` before starting.
+
+---
+
+## Next Projects (after model-extraction-attacks is complete)
+
+**2. lane-refinement-rl** — same workflow: MDX → assets → hero cover
+**3. masked-autoencoders** — same workflow
+
+Then: remove 3 placeholder MDX files, add freelance project, finalize featured set.
+
+**Featured projects (final state):** `lane-refinement-rl`, `model-extraction-attacks`, freelance project
+
+---
+
+## Phase Roadmap
+
+| Phase | Status |
+|---|---|
+| 1–5 | Complete |
+| 6 — Project Content | In progress — model-extraction-attacks content done, assets pending |
+| 7 — SEO + AI Readability | Pending |
+| 8 — Audits | Pending |
+| 9 — Refactor / Clean | Pending |
+| 10 — Deploy | Pending |
+
+---
+
+## Process Rules
+
+- Always propose commit clusters and await approval before any `git` operation
+- Complete one project fully before moving to the next
+- Execution order per project: MDX → [approval] → assets → [approval] → hero cover
+- Read `project-extraction-workflow.md` at the start of each new Phase-6 project
+
+---
+
+## Known Deviations from PRODUCT.md
+
+- **Hero CTAs (§7.1):** CTAs moved into the hero; separate bottom CTA section removed. Intentional.
+- **Sidebar (§7.3):** Replaced with single-column editorial layout.
+
+## Missing Production Assets
+
 - `/public/resume.pdf` — About page "Download Resume" button targets this
-
----
-
-## Phase 5 — COMPLETE ✓
-
-All items verified. Branch: `phase-5-home-polish`.
-
-1. ~~Background treatment~~ — ASCII field + meteor shower layer live.
-2. ~~Hero image~~ — `hero.png` wired with mask-fade, light + dark verified.
-3. ~~Page transitions~~ — skipped for v1.
-4. ~~Reduced-motion verification~~ — complete.
-5. ~~Keyboard/focus accessibility audit~~ — complete.
-6. ~~Progressive-rendering / no-JS sanity check~~ — complete.
-7. ~~Hover/interaction audit~~ — complete. Missing states fixed; nav logo + primary button hover language refined.
-8. ~~DESIGN.md interaction rules alignment~~ — Hover/Focus/Disabled/Loading sections added; stale specs fixed.
-9. ~~Full page-layout review~~ — all routes pass at 375/768/1280. Dark theme clean. Image failure degrades gracefully. No layout shift on theme toggle.
-
-Typography, spacing, and visual consistency audits postponed to after SEO phase.
-
----
-
-## Next Tasks (in order)
-
-> **Process rules for Phase 6:**
-> - Complete one project fully before moving to the next — avoids asset/content drift.
-> - No polish passes until all real project content exists.
-> - Execution order per project: MDX content/structure → assets → hero cover.
-
-### Current — Phase 6 — Project Content
-
-**1. model-extraction-attacks**
-- Keep generated visual assets in `/public/projects/model-extraction-attacks/` until project stabilizes.
-- Follow `project-guide.md` for MDX writing and asset planning.
-- Complete MDX structure and content first.
-- Then generate/refine assets per `asset-guide.md`.
-- Delete obsolete/replaced assets as iterations stabilize.
-- Finally generate hero cover via `cover-system-guide.md`.
-
-**2. lane-refinement-rl**
-- Same execution order: MDX → assets → hero cover.
-
-**3. masked-autoencoders**
-- Same execution order: MDX → assets → hero cover.
-
-**4. Remove placeholder/demo projects**
-- Delete the 3 placeholder MDX files and their assets once real projects are stable.
-
-**5. Add freelance project**
-- After the 3 academic/personal projects are stabilized.
-
-**6. Featured projects (final state)**
-- `lane-refinement-rl` — featured
-- `model-extraction-attacks` — featured
-- freelance project — featured
-
-### Phase 7 — SEO + AI Readability
-- Per-page `<title>` and `<meta description>` on all routes.
-- OG image + Twitter cards across all routes.
-- JSON-LD: `Person` schema on Home + About; `CreativeWork` on project pages.
-- `sitemap.xml`, `robots.txt`, `llms.txt`.
-
-### Phase 8 — Audits
-- Typography, spacing, hierarchy, consistency, responsiveness sweeps.
-- WCAG AA contrast, keyboard nav, semantic HTML, focus rings.
-
-### Phase 9 — Refactor / Clean / Align
-- Dead code removal, token compliance, doc–implementation alignment.
-
-### Phase 10 — Deploy
-- LCP < 2.0s on 4G mobile, JS < 150KB gzipped on homepage.
-- Vercel deployment, custom domain, production validation.
-
----
-
-## Blockers
-None
