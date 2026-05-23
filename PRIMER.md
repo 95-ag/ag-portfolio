@@ -169,39 +169,40 @@ MDX fully rewritten from source (PDF + repo). All metrics traceable to PDF table
 
 **Finalized decisions:**
 - Title: "Stealing Black-Box ML Models"
-- Section order: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps (Architecture before Data — improves comprehension)
-- Results subsections numbered 1–6 with summary paragraph at top
-- OOD track explicitly framed as strongest generalization result
-- Metric framing: ~80% at 25k labels-only; 82.88% with top-3 softmax (both honest, sourced from Table 1b)
+- Section order: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps
+- Results subsections with summary paragraph at top; OOD track framed as strongest generalization result
+- Metric framing: ~80% at 25k labels-only; 82.88% with top-3 softmax (both sourced from Table 1b)
 - GitHub: `95-ag/dl-model-extraction` | Paper: `/projects/model-extraction-attacks/DL_Project.pdf`
 - Credits: KTH logo only (no co-author avatars)
-- `attack-transfer-summary.svg` removed from MDX — table covers it
 
-### Assets — PENDING
+### Assets — COMPLETE ✓
 
-**Build from source (Mermaid):**
-- `extraction-pipeline.svg` — 3-stage flow: query gen → surrogate training → downstream eval
-- `coreset-selection.svg` — proxy → entropy rank → top-k → victim API
-- `ood-pipeline.svg` — ImageNet + web-scrape → resize → label verify → query pool
+All production assets in place. Placeholder assets deleted. Source scripts committed in `assets-source/`.
 
-**Build from source (matplotlib):**
-- `query-budget-results.png` — Fig 1: random vs. coreset accuracy vs. budget, CIFAR-10/100
-- `architecture-transfer-heatmap.svg` — Table 1a: ResNet-34/50 × ResNet-34/50/VGG19-BN
-- `output-access-bar-chart.svg` — Table 1b: 79.8 / 82.88 / 82.15
+**Mermaid (hand-crafted SVG):**
+- `extraction-pipeline.svg` — 6-node 2-row pipeline; full prose width
+- `coreset-selection.svg` — 6-node 2-row; rewritten hand-crafted SVG matching extraction-pipeline visual language exactly (same CSS classes, node dimensions, dark-mode handling)
+- `ood-pipeline.svg` — OOD dataset construction flow
 
-**Legacy crop from PDF:**
-- `adversarial-example-panel.png` — Fig 2
-- `membership-inference-roc.png` — Fig 3b
-- `membership-inference-roc-test.png` — Fig 4b
+**matplotlib:**
+- `query-budget-results.png` — combined 2-subplot figure (CIFAR-10 + CIFAR-100); displayed as single `<Diagram>`; `max-w-[720px]`
+- `architecture-transfer-heatmap.png` — Table 1a heatmap; `max-w-[520px]`
+- `output-access-bar-chart.png` — Table 1b bar chart; `max-w-[420px]`
 
-**Shared tooling to create first (reused across all Phase-6 projects):**
-- `assets-source/mermaid/_theme.*` — Mermaid theme with site tokens
-- `assets-source/matplotlib/_portfolio.mplstyle` — shared matplotlib style
+**Legacy crops from PDF:**
+- `adversarial-example-panel.png` — combined 2-subplot figure (original + FGSM); displayed as single `<Diagram>`; `max-w-[560px]`
+- `membership-inference-roc.png` — OOD ROC curves; `max-w-[700px]`
+- `membership-inference-roc-test.png` — test-set ROC curves; `max-w-[700px]`
 
-**Delete before committing assets:**
-- `hero-model-extraction.svg` — placeholder
-- `attacker-victim-comparison.svg` — placeholder, redundant
-- `attack-transfer-summary.svg` — removed from MDX
+**Figure presentation decisions:**
+- Multi-subplot matplotlib figures displayed as single `<Diagram>` (not split panels) — preserves embedded labels, eliminates asymmetric margin problems
+- Full width reserved for extraction-pipeline only; all others constrained via `className="max-w-[Npx]"`
+- Decorative figure numbering removed — captions are purely descriptive (numbers were never referenced in prose)
+- `DiagramRow` / `DiagramPanel` components created and registered but not used in this project — available for future projects where independently-composed side-by-side figures are needed
+
+**Shared tooling (reusable across all Phase-6 projects):**
+- `assets-source/matplotlib/_portfolio.mplstyle`
+- `assets-source/mermaid/` — per-project `.mmd` source files
 
 ### Hero Cover — PENDING
 
@@ -211,34 +212,35 @@ Output: `hero-cover.webp`. KTH logo in metadata layer. Start typography-first. U
 
 ## Uncommitted Changes (as of this session)
 
-Four files, proposed as two clusters — **do not commit until approved:**
+Pending commit approval — **four clusters proposed below. Do not commit until approved.**
 
-**Cluster A — `feat: complete model-extraction-attacks content and prose list styling`**
-- `content/projects/model-extraction-attacks.mdx` — full MDX rewrite
-- `public/projects/model-extraction-attacks/kth-logo.svg` — new KTH logo asset
-- `src/app/globals.css` — prose list styling (`ul` disc + `::marker` color; `ol` decimal; `li` spacing)
+**Cluster 1 — `feat: add DiagramRow and DiagramPanel MDX layout components`**
+- `src/components/mdx/diagram-row.tsx` — new component
+- `src/components/mdx/mdx-components.tsx` — register DiagramRow/DiagramPanel; add centered table override
 
-**Cluster B — `docs: add project extraction workflow and update primer`**
-- `.claude/docs/portfolio/project-extraction-workflow.md` — new operational workflow doc
+**Cluster 2 — `feat: generate and normalize production assets for model-extraction-attacks`**
+- `public/projects/model-extraction-attacks/` — all finalized PNGs and SVGs
+- `assets-source/` — matplotlib scripts, mplstyle, mermaid source files
+- Deleted: placeholder SVGs (`hero-model-extraction.svg`, `attacker-victim-comparison.svg`, `attack-transfer-summary.svg`), split intermediates
+
+**Cluster 3 — `refactor: normalize figure presentation in model-extraction-attacks MDX`**
+- `content/projects/model-extraction-attacks.mdx` — figure blocks updated (single-figure approach, `max-w-[Npx]` constraints, descriptive captions, decorative numbering removed)
+
+**Cluster 4 — `docs: update asset workflow with figure composition principles and update PRIMER`**
+- `.claude/docs/portfolio/project-extraction-workflow.md` — Step 5b added (figure composition and framing)
 - `PRIMER.md` — this update
 
 ---
 
 ## Next Task
 
-**Start:** Phase 6 asset phase for `model-extraction-attacks`
+**Start:** Hero cover for `model-extraction-attacks`
 
-1. Install `@mermaid-js/mermaid-cli`
-2. Create `assets-source/` directory structure
-3. Author `assets-source/mermaid/_theme.*` (site token colors, Inter sans, hairline strokes)
-4. Author and export 3 Mermaid diagrams: `extraction-pipeline`, `coreset-selection`, `ood-pipeline`
-5. Author `assets-source/matplotlib/_portfolio.mplstyle`
-6. Digitize PDF Fig 1 / Table 1a / Table 1b values → matplotlib scripts → export charts
-7. Crop PDF Figs 2, 3b, 4b → PNG
-8. Delete 3 placeholder assets
-9. Build verification
-
-Read `.claude/docs/portfolio/project-extraction-workflow.md` and `asset-guide.md` before starting.
+1. Read `.claude/docs/portfolio/cover-system-guide.md` before starting
+2. Typography-first — produce fallback composition before any stylized direction
+3. Cover must encode the core technical idea (not just domain name)
+4. Verify thumbnail readability before finalizing
+5. Update `heroImage` and `heroAlt` in frontmatter last
 
 ---
 
@@ -258,7 +260,7 @@ Then: remove 3 placeholder MDX files, add freelance project, finalize featured s
 | Phase | Status |
 |---|---|
 | 1–5 | Complete |
-| 6 — Project Content | In progress — model-extraction-attacks content done, assets pending |
+| 6 — Project Content | In progress — model-extraction-attacks content ✓, assets ✓, hero cover pending |
 | 7 — SEO + AI Readability | Pending |
 | 8 — Audits | Pending |
 | 9 — Refactor / Clean | Pending |

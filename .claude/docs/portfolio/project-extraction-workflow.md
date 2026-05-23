@@ -156,6 +156,61 @@ Before generating any asset, categorize every visual the MDX references:
 
 ---
 
+## Step 5b — Figure Composition and Framing
+
+Operational principles from the `model-extraction-attacks` asset pass. Apply before generating or cropping any figure.
+
+### Audit before generating
+
+Measure content bounds of every existing asset before deciding to regenerate. Use PIL or equivalent to detect non-white pixel extents. Know exactly what whitespace is present and whether it is symmetric, intentional, or a matplotlib margin artifact. Do not re-export or regenerate without this baseline — it is easy to make framing worse under the assumption you are making it better.
+
+### Treat multi-subplot figures as single figures
+
+If a matplotlib figure was designed with multiple subplots (e.g., CIFAR-10 / CIFAR-100 side by side, or (a)/(b) comparison panels), display it as one composed figure — not split into separate panels. Splitting forces you to fight asymmetric y-axis margins, unequal content heights, and differing internal padding. The original composition already encodes subplot semantics and labels. Respect it.
+
+Split-panel display (DiagramRow + DiagramPanel) is appropriate for: figures that were independently composed and need side-by-side presentation for a specific comparison reason. It is not appropriate as a default layout tool for anything wide.
+
+### Full width is the exception
+
+Establish a width hierarchy before placing any figure. Default is constrained/centered. Full-width is reserved for the most complex, information-dense assets where the detail requires it (e.g., a pipeline diagram that genuinely needs the horizontal span). Apply `max-w-[Npx]` based on figure density — denser figures can be wider. The hierarchy for this project was:
+
+- Extraction pipeline SVG: full prose width (high complexity, 6-node 2-row layout)
+- Coreset SVG, ROC curves: max-w-[700px]
+- Query budget chart, adversarial panel: max-w-[560–720px]
+- Architecture heatmap: max-w-[520px]
+- Output access bar chart: max-w-[420px]
+
+### Technical inset vs editorial visual
+
+CIFAR example images, training screenshots, and other small raster crops are technical insets — not editorial visuals. They should not be stretched into hero-like panels. Keep them compact and proportionate. The informational density does not warrant large presentation.
+
+Matplotlib charts on white backgrounds read as embedded research figures. This is acceptable and expected in both themes. The white background is part of the figure's content (axes, grid, labels). It does not need to be eliminated — only the excess outer margins need cropping.
+
+### Crop normalization
+
+When cropping figures for publication:
+- Always start from content bounds (measured, not estimated)
+- Apply consistent padding on all sides: typically 15–28px depending on the figure type
+- For multi-subplot figures: use unified y-bounds across both halves so both subplots share the same top/bottom crop
+- Symmetric padding is the goal; when the source prevents symmetry (e.g., y-axis labels on one side only), prefer a single-figure crop over splitting
+- Verify the final crop at 100% zoom before committing — aspect ratios in MDX must match actual pixel dimensions
+
+### Diagram system consistency
+
+Hand-crafted SVG diagrams for the same project must share: node dimensions, CSS class vocabulary (`.n`, `.na`, `.lbl`, `.sub`, `.conn`, `.af`), dark-mode media query structure, marker definitions, and arrowhead style. Do not mix hand-crafted SVG with Mermaid output in the same visual system — they produce incompatible node sizing, font rendering, and edge treatment.
+
+When using Mermaid output is unavoidable, compare node dimensions and font sizes explicitly against the hand-crafted system and adjust the export configuration until they match.
+
+### Figure numbering
+
+Only number figures if the prose cites them by number ("see Figure 1"). Decorative numbering — numbers in captions that are never referenced from the body text — adds visual noise without navigation value. Use descriptive captions instead.
+
+### Component abstractions
+
+Fix composition and framing first. Add layout abstractions (e.g., DiagramRow/DiagramPanel) only after the underlying figure is correctly framed as a standalone. If the figure requires a wrapper to look acceptable, the crop is wrong. Wrappers cannot correct asymmetric margins, mismatched heights, or wrong scale choices.
+
+---
+
 ## Step 6 — Hero Cover (last step)
 
 Start with typography-first. Produce a typography-only fallback composition before any stylized direction. This is the safe baseline.
