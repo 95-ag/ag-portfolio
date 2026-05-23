@@ -78,7 +78,7 @@ The extraction pipeline separates into three stages: query generation, surrogate
   src="/projects/model-extraction-attacks/extraction-pipeline.svg"
   alt="Three-stage pipeline: query generation feeds inputs into a black-box victim model, whose predictions are used to train a surrogate, which is then evaluated for adversarial transferability and membership inference vulnerability."
   caption="Full extraction pipeline. Stage 1 selects and submits queries to the victim API. Stage 2 trains the surrogate on the resulting pseudo-labeled dataset. Stage 3 evaluates what the surrogate inherits from the victim."
-  width="wide"
+  aspect="800/196"
 />
 
 **Stage 1 — Query generation:** inputs are selected from a candidate pool (in-distribution CIFAR training data or the custom OOD dataset described in [Data](#data)) and submitted to the victim API. The key design variable is *which* inputs to query — random sampling or entropy-based coreset selection, detailed in [Algorithm & Training Design](#algorithm-training-design).
@@ -155,8 +155,9 @@ The selection process:
 
 <Diagram
   src="/projects/model-extraction-attacks/coreset-selection.svg"
-  alt="ResNet-18 proxy model scores candidate inputs by entropy; high-entropy candidates are ranked and sliced to form the query pool submitted to the victim API."
-  caption="Entropy-based coreset selection. The proxy runs locally with no API calls. The resulting query pool concentrates budget near decision boundaries."
+  alt="Branching flowchart: candidate pool feeds a local ResNet-18 proxy, which sorts inputs by entropy. High-uncertainty inputs form the coreset query pool sent to the victim API; low-uncertainty inputs are discarded."
+  caption="Entropy-based coreset selection. High-uncertainty inputs concentrate the query budget on decision boundaries; low-confidence regions are discarded. The proxy runs locally with no API calls."
+  aspect="800/196"
 />
 
 <Highlight heading="Why entropy ranking targets decision boundaries">
@@ -177,32 +178,36 @@ Six experiments span the key threat model variables: query budget versus accurac
 
 ### 1. Query Budget & Coreset Efficiency
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/query-budget-results.png"
-  alt="Line charts comparing extraction accuracy versus query budget for random sampling versus entropy-based coreset selection on CIFAR-10 (left) and CIFAR-100 (right)."
-  caption="Figure 1. Extraction accuracy vs. query budget. Coreset consistently outperforms random, with a larger gap on CIFAR-100 where representative sampling matters more."
-  width="wide"
+  alt="Two line charts showing extraction accuracy vs. query budget for CIFAR-10 (a) and CIFAR-100 (b), comparing coreset selection against random sampling at budgets from 7k to 50k queries."
+  caption="Extraction accuracy vs. query budget. Coreset consistently outperforms random, with a larger gap on CIFAR-100 where representative sampling matters more."
+  aspect="820/314"
+  className="max-w-[720px]"
 />
 
 On CIFAR-10 with label-only access, the surrogate reaches approximately 80% extraction accuracy at 25k queries using coreset selection. The coreset advantage is most pronounced in the low-budget regime, where sparse random coverage of the input space leaves decision boundaries poorly mapped. Above 25k queries, both strategies converge toward the same accuracy ceiling — the structural advantage of boundary-focused sampling diminishes once overall input coverage saturates. With top-3 softmax access at 25k queries, accuracy rises to 82.88%; full softmax adds no further gain (82.15%), confirming that the marginal logits provide negligible information after softmax compression.
 
 ### 2. Architecture Transfer
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/architecture-transfer-heatmap.svg"
   alt="Heatmap showing extraction accuracy (percentage) for attacker-victim architecture combinations: ResNet-34 and ResNet-50 attackers against ResNet-34, ResNet-50, and VGG19-BN victims. Values range from 77% to 81.34%."
-  caption="Table 1a. Architecture transfer: extraction accuracy across attacker-victim model pairs at 25k queries. Accuracy holds within a ~4pp range regardless of architecture mismatch."
-  width="wide"
+  caption="Architecture transfer: extraction accuracy across attacker-victim model pairs at 25k queries. Accuracy holds within a ~4pp range regardless of architecture mismatch."
+  aspect="480/216"
+  className="max-w-[520px]"
 />
 
 ResNet-34 extracted all three victim architectures within a 80.27–81.34% range. ResNet-50 as attacker showed no consistent advantage, and in one configuration performed slightly worse (77% against a ResNet-50 victim). The most likely explanation: a larger surrogate overfits the 25k pseudo-labeled training set more severely than ResNet-34 does, and the cyclic LR configuration was not re-tuned per attacker architecture. The practical implication stands regardless: an adversary doesn't need to know or match the victim's architecture to mount an effective extraction attack.
 
 ### 3. Output Access Modality
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/output-access-bar-chart.svg"
   alt="Bar chart showing extraction accuracy at 25k queries under three output access modes: hard labels at 79.8%, top-3 softmax at 82.88%, full softmax at 82.15%."
-  caption="Table 1b. Output access versus extraction accuracy. The jump from labels to top-3 softmax reflects the additional boundary information in probability distributions; full softmax offers no further benefit."
+  caption="Output access versus extraction accuracy. The jump from labels to top-3 softmax reflects the additional boundary information in probability distributions; full softmax offers no further benefit."
+  aspect="382/245"
+  className="max-w-[420px]"
 />
 
 The ~3pp gap between label-only (79.8%) and top-3 softmax (82.88%) validates the information argument: confidence scores over the top-3 classes substantially improve surrogate quality, even though only a fraction of the softmax vector is exposed. Beyond top-3, diminishing returns set in quickly.
@@ -229,10 +234,12 @@ FGSM adversarial examples (ε = 0.01) were crafted against the surrogate and eva
 | Adversarial for victim | 3.47% |
 | Same adversarial label | 1.94% |
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/adversarial-example-panel.png"
-  alt="Side-by-side panel showing original CIFAR-10 images alongside their FGSM adversarial counterparts, with both the surrogate's and victim's predicted labels shown."
-  caption="Figure 2. FGSM adversarial examples generated from the surrogate at ε = 0.01. Cases where both models predict the same incorrect label (1.94%) indicate successful gradient transfer."
+  alt="Side-by-side comparison: (a) original CIFAR-10 cat image correctly classified as Cat, and (b) the same image after FGSM perturbation at epsilon 0.01, misclassified as Dog by both surrogate and victim."
+  caption="FGSM adversarial example at ε = 0.01. Left: original cat, correctly classified. Right: perturbed image — predicted as Dog by both the surrogate and victim despite being visually identical."
+  aspect="637/225"
+  className="max-w-[560px]"
 />
 
 Transfer rate is low: 47.84% of test images could be turned adversarial against the surrogate, but only 3.47% transferred to the victim, and only 1.94% with matching adversarial labels. This is a relatively positive outcome for the victim — the extracted surrogate does not yet provide a reliable tool for crafting transferable attacks on the original. The result is likely tied to CIFAR's low dimensionality and FGSM's coarse single-step perturbation; higher-dimensional models and stronger iterative attacks (PGD, C&W, AutoAttack) would likely exhibit meaningfully higher transfer rates.
@@ -241,18 +248,22 @@ Transfer rate is low: 47.84% of test images could be turned adversarial against 
 
 A threshold-based classifier was built on the surrogate's output entropy distribution, using 2,500 training set members (seen by the victim during training) and 2,500 unseen images as the two populations.
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/membership-inference-roc.png"
   alt="ROC curve for membership inference when the unseen set consists of out-of-distribution images, showing AUC substantially above the diagonal."
-  caption="Figure 3b. Membership inference with OOD unseen images. Entropy gap between training members and OOD inputs is detectable — AUC substantially above random."
+  caption="Membership inference (OOD unseen images): entropy distributions and ROC-AUC. AUC substantially above random — OOD vs. in-distribution is a detectable membership proxy."
+  aspect="835/340"
+  className="max-w-[700px]"
 />
 
 When the unseen population was drawn from the OOD dataset, the classifier performed well above chance. In plain terms: the surrogate could reliably distinguish training examples from out-of-distribution images, because the victim assigns systematically higher confidence to in-distribution inputs. This is easier than true membership inference — detecting in-distribution versus OOD is a sufficient proxy for membership when the victim trained only on in-distribution data.
 
-<Figure
+<Diagram
   src="/projects/model-extraction-attacks/membership-inference-roc-test.png"
   alt="ROC curve for membership inference when the unseen set consists of in-distribution CIFAR-10 test images, showing AUC near random."
-  caption="Figure 4b. Membership inference with in-distribution unseen images (CIFAR-10 test set). The classifier approaches random — the victim doesn't leak clear membership signal when seen and unseen images are from the same distribution."
+  caption="Membership inference (in-distribution test images): entropy distributions and ROC-AUC. The classifier is near random — no detectable membership signal when seen and unseen images share the same distribution."
+  aspect="835/334"
+  className="max-w-[700px]"
 />
 
 When the unseen population was instead drawn from the CIFAR-10 test set (same distribution, but not part of training), the classifier was nearly random. In plain terms: when a model is accurate and well-calibrated on a clean dataset, it assigns similar confidence to both its training images and unseen test images — there is no detectable entropy gap to exploit. This is consistent with CIFAR-10's relative simplicity; on noisier or higher-dimensional data, overfitting creates a detectable confidence gap even within the training distribution.
