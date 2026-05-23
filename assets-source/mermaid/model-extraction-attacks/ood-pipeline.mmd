@@ -1,0 +1,6 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#e6f4ec', 'primaryBorderColor': '#bbcabf', 'primaryTextColor': '#2c2c2a', 'lineColor': '#6c7a71', 'fontFamily': 'Inter, system-ui, sans-serif', 'fontSize': '13px'}}}%%
+flowchart LR
+    A["ImageNet\nsubset"] --> C["Join &\nlabel verify"]
+    B["Web-scraped\nimages"] --> C
+    C --> D["Resize\n32×32 px"]
+    D --> E["OOD query\npool"]

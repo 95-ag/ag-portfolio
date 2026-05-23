@@ -1,0 +1,46 @@
+# Portfolio shared matplotlib style
+# Colors use 6-digit hex without # (matplotlib mplstyle format)
+# Matches portfolio design tokens: light mode, #006e37 accent, system sans
+
+font.family:         sans-serif
+font.size:           12
+
+figure.facecolor:    f8f8f7
+figure.edgecolor:    none
+figure.dpi:          150
+
+axes.facecolor:      f8f8f7
+axes.edgecolor:      d4d8d5
+axes.linewidth:      0.75
+axes.spines.top:     False
+axes.spines.right:   False
+axes.grid:           True
+axes.grid.axis:      y
+axes.labelsize:      11
+axes.labelcolor:     2c2c2a
+axes.titlesize:      12
+axes.titleweight:    500
+axes.titlecolor:     2c2c2a
+
+grid.color:          e8eae8
+grid.linewidth:      0.5
+grid.linestyle:      -
+
+lines.linewidth:     1.5
+lines.color:         006e37
+
+text.color:          2c2c2a
+
+xtick.color:         6c7a71
+xtick.labelsize:     10
+xtick.major.size:    3
+xtick.major.width:   0.5
+ytick.color:         6c7a71
+ytick.labelsize:     10
+ytick.major.size:    3
+ytick.major.width:   0.5
+
+legend.frameon:      False
+legend.fontsize:     10
+
+svg.fonttype:        none
