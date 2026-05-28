@@ -17,7 +17,7 @@ Read these project documents in order:
 1. `.claude/docs/PRODUCT.md` — intended UX, product direction, implementation constraints
 2. `.claude/docs/DESIGN.md` — visual system, tokens, spacing, typography, color, motion rules
 3. `.claude/docs/CONTENT-SCHEMA.md` — MDX structure, frontmatter schema, validation rules
-4. `.claude/docs/build-flow.md` — phase gates, verification requirements, build order
+4. `.claude/docs/IMPLEMENTATION-PHASES.md` — phase gates, verification requirements, build order
 
 Also read the relevant rule files in `.claude/rules/` for the areas being reviewed.
 

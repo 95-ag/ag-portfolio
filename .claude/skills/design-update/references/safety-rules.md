@@ -56,7 +56,7 @@ The maintainer cannot:
 
 When renaming a token, term, or heading:
 - Find every reference in the document and update it.
-- If the user names sibling docs (CLAUDE.md, PRIMER.md, rules files), update those too.
+- If the user names sibling docs (CLAUDE.md, `.claude/work/session.md`, rules files), update those too.
 - Enumerate every updated location in the diff summary — no vague "updated references."
 
 See `references/cross-reference-rules.md` for the full process.

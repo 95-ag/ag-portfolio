@@ -11,9 +11,9 @@ Personal portfolio for an AI/ML engineer. Content-led, editorial, minimal, techn
 | `.claude/docs/PRODUCT.md` | What to build and why |
 | `.claude/docs/DESIGN.md` | All visual decisions — wins over PRODUCT.md on visuals |
 | `.claude/docs/CONTENT-SCHEMA.md` | MDX and frontmatter structure — wins over PRODUCT.md on content fields |
-| `.claude/docs/build-flow.md` | Phase-by-phase build order and verification gates |
+| `.claude/docs/IMPLEMENTATION-PHASES.md` | Phase-by-phase build order and verification gates |
 
-Current session state → `PRIMER.md` at project root.
+Current session state → `.claude/work/session.md`.
 
 ## Stack
 
@@ -42,7 +42,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 
 ## Key Constraints
 
-- Do not skip build phases — see `build-flow.md` for phase gates
+- Do not skip build phases — see `IMPLEMENTATION-PHASES.md` for phase gates
 - No client-side syntax highlighting — build-time only via Shiki
 - No animation libraries beyond Framer Motion
 - No shadows — elevation via tonal borders and surface fills only (Highlight shadow carve-out removed)
@@ -51,3 +51,11 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 - Missing optional frontmatter fields render nothing — never placeholders or "TBD"
 - `projectType` is internal metadata — never displayed as a badge or label on the site
 - No raw HTML in MDX body — use components (`<Figure>`, `<Diagram>`, `<Callout>`, `<Stack>`)
+
+## Process Rules
+
+- Propose commit clusters and await approval before any `git` operation
+- Complete one project fully before moving to the next
+- Execution order per project: MDX → [user approval] → assets → [user approval] → hero cover → [user approval]
+- Read `project-extraction-workflow.md` at the start of each new Phase 6 project
+- Never update `session.md` to mark a task complete without user approval recorded in chat

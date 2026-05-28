@@ -1,6 +1,6 @@
 # Build Verification Rules
 
-Phase gates and verification checklists are defined in `.claude/docs/build-flow.md`.
+Phase gates and verification checklists are defined in `.claude/docs/IMPLEMENTATION-PHASES.md`.
 Read that document before marking any phase complete.
 
 ## Always Required (Every Task)
