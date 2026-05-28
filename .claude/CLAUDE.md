@@ -54,7 +54,6 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 
 ## Process Rules
 
-- Propose commit clusters and await approval before any `git` operation
 - Complete one project fully before moving to the next
 - Execution order per project: MDX → [user approval] → assets → [user approval] → hero cover → [user approval]
 - Read `project-extraction-workflow.md` at the start of each new Phase 6 project

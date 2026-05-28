@@ -19,28 +19,46 @@ Every commit must:
 - Pass lint and typecheck
 - Represent one logical change
 - Not mix unrelated changes
+- Never use `git add --all`, `git add -A`, or `git add .` — always stage by explicit file path. Bulk-add picks up secrets, build artifacts, and unrelated changes.
 
 Prefer small, meaningful clustered commits over phase-sized commits. Separate infrastructure, routing, schemas, content pipeline, and UI shells into distinct commits when practical. Avoid giant "implement entire phase" commits — commits should be understandable from the diff without needing the full project context.
-
-Before committing, propose the planned commit clusters to the user for approval.
 
 Refactors stay behavior-safe unless intentionally changing behavior.
 Prefer incremental architectural progress over large rewrites.
 
+## Approval gate (mandatory before any staging)
+
+Before running `git add`, `git rm`, `git commit`, `git restore --staged`, or any operation that changes the index:
+
+1. Propose the full commit plan in chat. Each cluster must include:
+   - Cluster name and purpose (one phrase)
+   - Exact file list to be staged
+   - Exact single-line commit message
+2. Wait for explicit approval before touching the index.
+3. **Inside a plan**: commit clusters and messages are part of the plan. Plan approval covers them; do not re-ask. If the work diverges from the planned clusters, stop and re-propose.
+4. **Outside a plan**: explicit propose-and-wait every time. Approval for one cluster never carries to the next.
+5. If the user says "don't commit cluster N", drop it entirely — do not stage its files.
+
+Skipping this gate is a process violation, not a shortcut. Recovery (`git reset --soft`) costs more than the proposal.
+
 ## Commit message format
 
-Use `type: short description`. Keep messages concise and readable.
+**Single line only — no body, no trailing description, no bullet list.** Everything fits in the subject.
 
+- Format: `type: short description`
 - Imperative mood — `add`, `fix`, `refactor`, not `added` or `adds`
 - Lowercase after the colon, no trailing period
+- The message explains the WHY at a glance — not a recap of the diff
+- Always pass via `-m "…"` — never via HEREDOC, never via `-F`, never via editor
+- Never include `Co-Authored-By` trailers, generator credits, or signatures beyond the commit signing key
 
 **Prefixes:**
 - `feat:` — new feature
 - `fix:` — bug fix
 - `refactor:` — code change that neither fixes a bug nor adds a feature
 - `style:` — formatting, whitespace, no code change
-- `docs:` — documentation only
-- `chore:` — tooling, maintenance
+- `docs:` — user-facing or product documentation (MDX content, PRODUCT.md, README, DESIGN.md, CONTENT-SCHEMA.md)
+- `chore:` — tooling, process config, maintenance — use for `.claude/`, CI config, build scripts, rule files
 - `test:` — tests
 - `perf:` — performance
 - `build:` — build system, deps, config
@@ -59,14 +77,25 @@ Use `type: short description`. Keep messages concise and readable.
 - Build artifacts (`.next/`, `dist/`)
 - OS/editor cruft (`.DS_Store`, `.vscode/` unless intentionally shared)
 
-## Before merging into main
+## PR and merge policy
 
-Verify:
-- `npm run build` succeeds
-- Lint passes
-- Typecheck passes
-- No hydration issues
-- Responsive sanity check at 375px / 768px / 1280px
+- Working branches merge into `main` via **squash merge** — keeps `main` history one-commit-per-feature
+- The squash commit message is the PR title (single line, same `type: short description` format)
+- Working branch is deleted after squash merge — expected, not a loss
+- Verify before opening the PR: `npm run build` succeeds, lint passes, typecheck passes, no hydration errors, responsive sanity check at 375px / 768px / 1280px
+
+## PR closure — Claude does not execute
+
+Claude never runs `gh pr create`, `gh pr merge`, `git merge`, or `git branch -d` for the working branch. Closure is the user's action.
+
+When the working branch is ready to PR, Claude provides:
+
+1. **PR title** — single line, copy-paste ready
+2. **PR body** — markdown, copy-paste ready, structured as: Summary · Changes · Verification · Notes
+3. **Next-branch instructions** — exact commands for the user to run after merge:
+   ```
+   git checkout main && git pull && git checkout -b <next-branch-name>
+   ```
 
 ## Public repo hygiene
 
