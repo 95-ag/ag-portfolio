@@ -1,4 +1,4 @@
-# BUILD-FLOW.md
+# IMPLEMENTATION-PHASES.md
 
 # Implementation Rules
 
@@ -420,35 +420,32 @@ Do not begin Phase 4 until page structure is stable.
 
 ---
 
-# Phase 4 — Create Real Project Content
+# Phase 4 — Initial Content Scaffold
 
 ## Goals
 
-Replace placeholder/demo content with real projects before polishing visuals.
+Add placeholder project content to validate the content pipeline and layout system before visual polish.
 
 This phase validates:
 
-* content density
-* project storytelling
-* layout scalability
-* diagram/image handling
-* recruiter scanning quality
+* project-card generation and routing
+* MDX rendering and component behavior
+* content hierarchy and layout scalability
+* frontmatter schema and Zod validation
+
+Real authoring happens in Phase 6. Placeholder content here is intentional.
 
 ---
 
-## Add Real Projects
+## Add Placeholder Projects
 
-Add 2–3 fully real projects including:
+Add 2–3 placeholder projects covering the intended project types (academic, freelance, personal) with:
 
-* actual screenshots
-* diagrams
-* metrics
-* technical explanations
-* implementation details
-* tradeoffs
-* outcomes
+* representative frontmatter fields
+* minimal but structurally correct MDX body
+* placeholder hero images
 
-Avoid placeholder/generated filler content.
+Avoid investing in real writing or assets at this stage.
 
 ---
 
@@ -695,6 +692,7 @@ Do not begin Phase 9 until all audit findings are resolved.
 
 # Phase 9 — Refactor / Clean / Align
 
+
 ## Goals
 
 Code quality, documentation, and doc–implementation alignment pass before deploy.
@@ -714,7 +712,7 @@ Code quality, documentation, and doc–implementation alignment pass before depl
 
 * verify DESIGN.md reflects current implementation
 * verify CONTENT-SCHEMA.md Zod schemas match current field usage
-* verify PRIMER.md is current
+* verify `.claude/work/session.md` is current
 * resolve any known gaps flagged during earlier phases
 
 ---
