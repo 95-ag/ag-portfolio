@@ -85,23 +85,16 @@ Project-specific content lives at H3/H4 under these H2s. H4 is used intentionall
 
 Run two separate reviewer passes — do not blend them. Each reviewer should be cold (no shared context with the other).
 
-**Reviewer 1: Non-technical / HR recruiter**
+**Prompt templates:** `.claude/docs/portfolio/reviewer-prompts.md` — use verbatim as cold subagent initial messages.
 
-Check for:
-- Is the business/threat framing legible without ML background? (add one plain-language sentence if not)
-- Is the timeline/scope signal present? (lightweight — don't surface it prominently above the hero)
-- Does the OOD or hardest experimental track have enough surface area?
-- Are null results explained in plain language, not just reported?
-- Does the Results section have a summary paragraph before the subsections?
+**Reviewer 1: Technical recruiter (30-second scan)**  
+Checks business framing, headline outcome, scope signal, plain-language null results, Results summary paragraph, forward verdict.
 
-**Reviewer 2: Technical hiring manager**
+**Reviewer 2: Technical hiring manager**  
+Checks metric traceability to PDF source, anomaly explanation, evaluation environment clarity, trend descriptions, built-vs-reused separation, no fabricated claims, no overstated weak results.
 
-Check for:
-- Are all metrics traceable to a source? (PDF table/figure cell, not prose interpretation)
-- Are anomalies in results explained or explicitly flagged as unexplained?
-- Is the victim/attacker interface clarified (simulated vs. real API)?
-- Does the curve/trend description accompany chart references (not just endpoint values)?
-- Is the strongest/most distinctive result identifiable at a glance?
+**Conflict surfacing (after both return):**  
+Present both finding sets together. Flag any item where Reviewer 1 wants plainer language but Reviewer 2 passed as technically precise — do not auto-resolve. Both-flagged items are high priority.
 
 **Common drift patterns to catch in review:**
 - Fabricated speedup claims (e.g., "3× improvement") not in the source
@@ -257,7 +250,46 @@ Don't spawn subagents for linear tasks. Reserve them for: parallel audience revi
 
 ## Source-of-Truth Hierarchy (for any disputed claim)
 
-1. PDF table cell or figure — authoritative
-2. Repository file (README, training script) — authoritative for implementation details
-3. User clarification — authoritative for ownership, links, framing choices
-4. Prior draft MDX — reference only, never authoritative
+Higher tier wins on conflict. Exception: ownership, links, permissions, and framing always defer to user clarification regardless of tier — these are not derivable from artifacts.
+
+1. **Report / documentation** — authoritative for metrics, results, structure, author/institution facts
+2. **Source code** (training scripts, eval scripts, configs) — authoritative for implementation, frameworks, dataset names, hyperparameters
+3. **Commit history / issues** — authoritative for timeline, evolution, known limitations, design decisions
+4. **Demos / screenshots** — authoritative for UI/output behavior, qualitative results, visual appearance
+5. **User clarification** — authoritative for ownership, links, logo permissions, title framing, metric framing choices
+
+Prior draft MDX is reference only — never authoritative for any claim.
+
+---
+
+## Source Modes
+
+The workflow assumes report + repo by default. When one source is missing, degrade gracefully — skip missing tiers and escalate gaps to user clarification.
+
+### Report + repo (full)
+Primary path. All tiers 1–3 available. Metrics from PDF tables; implementation from code. No extra constraints.
+
+### Repo only
+Tiers 1 and part of 3 are unavailable. Apply these constraints:
+
+- Metrics sourced from README, eval scripts, output artifacts, or commit history — tag each as `[verified]`, `[inferred]`, or `[user-confirmed]` in your working notes before writing prose
+- Architecture and data facts from code; tech stack from imports and configs
+- Heavier user clarification required for results framing and any headline metric
+- Never write paper-style metrics ("achieved X% on benchmark Y") without a traceable source; if no source exists, ask or omit
+- Summary field must not claim precision beyond what the repo supports
+
+**Confidence tagging (repo-only mode):**  
+Before writing any factual claim, assign it a tag in your working notes:
+- `[verified]` — directly readable from a file in the repo (README line, script output, eval log)
+- `[inferred]` — reasonably derivable from code structure, commit messages, or naming conventions; state the inference explicitly in prose if it affects a claim
+- `[user-confirmed]` — provided directly by the user in this session
+
+Do not surface confidence tags in the final MDX prose. They govern what you write, not what the reader sees. Any unresolved `[inferred]` claim on a metric should become a clarification question before finalizing.
+
+### Report only
+Tiers 2 and 3 are unavailable. Apply these constraints:
+
+- Framework, dataset, and structure facts from paper prose only — cannot be cross-checked against code
+- Tech stack inferred from paper and flagged for user confirmation before publishing
+- Typically no GitHub link; do not fabricate or guess a repo URL
+- No commit history tier — timeline and evolution are unknown unless stated in the paper
