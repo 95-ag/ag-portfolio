@@ -13,8 +13,10 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from pathlib import Path
 
-style_path = Path(__file__).parent.parent / "_portfolio.mplstyle"
-plt.style.use(str(style_path))
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from _portfolio import use_portfolio_style, BACKGROUND, ACCENT, ACCENT_MUTED, TEXT, MUTED
+
+use_portfolio_style()
 
 # Table 1a data — source: PDF Table 1 (a)
 # Rows = attackers, Cols = victims
@@ -28,13 +30,13 @@ data = np.array([
 
 # Wider figure so y-axis labels have room at small display sizes
 fig, ax = plt.subplots(figsize=(7.0, 3.2))
-fig.patch.set_facecolor("#f8f8f7")
-ax.set_facecolor("#f8f8f7")
+fig.patch.set_facecolor(BACKGROUND)
+ax.set_facecolor(BACKGROUND)
 
 # Custom green colormap: light cream → accent green
 cmap = mcolors.LinearSegmentedColormap.from_list(
     "portfolio_green",
-    ["#e6f4ec", "#006e37"],
+    [ACCENT_MUTED, ACCENT],
     N=256,
 )
 
@@ -47,7 +49,7 @@ for r in range(data.shape[0]):
         val = data[r, c]
         # use white text on darker cells
         brightness = (val - vmin) / (vmax - vmin)
-        text_color = "#ffffff" if brightness > 0.5 else "#2c2c2a"
+        text_color = "#ffffff" if brightness > 0.5 else TEXT
         ax.text(
             c, r, f"{val:.2f}%",
             ha="center", va="center",
@@ -60,8 +62,8 @@ ax.set_xticklabels(victims, fontsize=10.5)
 ax.set_yticks(range(len(attackers)))
 ax.set_yticklabels(attackers, fontsize=10.5)
 
-ax.set_xlabel("Victim model", fontsize=10.5, labelpad=8, color="#6c7a71")
-ax.set_ylabel("Attacker model", fontsize=10.5, labelpad=8, color="#6c7a71")
+ax.set_xlabel("Victim model", fontsize=10.5, labelpad=8, color=MUTED)
+ax.set_ylabel("Attacker model", fontsize=10.5, labelpad=8, color=MUTED)
 
 # Remove grid (irrelevant for heatmap)
 ax.grid(False)
@@ -74,9 +76,9 @@ ax.tick_params(axis="y", colors="#6c7a71")
 
 # Colorbar
 cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.03)
-cbar.ax.tick_params(labelsize=9, colors="#6c7a71", length=0)
+cbar.ax.tick_params(labelsize=9, colors=MUTED, length=0)
 cbar.outline.set_visible(False)
-cbar.set_label("Accuracy (%)", fontsize=9, color="#6c7a71", labelpad=6)
+cbar.set_label("Accuracy (%)", fontsize=9, color=MUTED, labelpad=6)
 
 fig.tight_layout(pad=1.2)
 # Ensure left margin is wide enough for y-axis labels on small displays
