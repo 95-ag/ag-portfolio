@@ -17,18 +17,22 @@
 - Phases 1–5 complete (foundation, design system, skeleton pages, content scaffold, UI polish)
 - `model-extraction-attacks` — MDX content complete
 - `model-extraction-attacks` — assets complete
-- `model-extraction-attacks` — hero cover infrastructure complete and committed:
+- `model-extraction-attacks` — hero cover complete and committed (Phase A done):
   - Caveat font loaded (`feat: load Caveat font for cover annotations`)
   - Cover registry + hero-media slug prop (`feat: add slug-based cover component registry to hero media`)
   - HeroMetaOverlay component + page wire-in (`feat: render hero logos and contributors overlay on project detail`)
   - KTH logo transparent bg fix (`fix: remove hardcoded white background from KTH logo SVG`)
+  - Cover component: v1 flow strip + Direction D annotations (`feat: add engineering annotations to model-extraction-attacks cover`)
 - Workflow/task management system re-aligned
 
 ## Active Task
 
-`model-extraction-attacks` hero cover — plan: `~/.claude/plans/cuddly-kindling-hickey.md`
+`model-extraction-attacks` fully complete (Phase A cover + Phase B docs). Cluster 6 (session + tasks) pending commit.
 
-Cover component reverted to v1 composition (QUERIES → VICTIM → PSEUDO LABELS → SURROGATE) after v3/v4/v5 redesign attempts were rejected. User approved v1 visual. Cover component file uncommitted (Cluster 5). Phase B doc updates pending user approval of cover.
+Next steps in order:
+1. Extract the full project detail page creation process (MDX from report, assets, cover) into reusable skills — covering all stages in `project-extraction-workflow.md`
+2. Delete placeholder MDX samples
+3. Start `lane-refinement-rl` (read `project-extraction-workflow.md` first)
 
 ## Blockers
 

@@ -30,12 +30,12 @@
 - [x] Cluster 3 committed: HeroMetaOverlay + project detail wire-in
 - [x] Cluster 4 committed: KTH logo transparent bg fix
 - [x] User approved cover visual (v1 composition)
-- [ ] Cluster 5: commit `src/components/project/covers/model-extraction-attacks.tsx`
+- [x] Cluster 5: commit cover component (v1 + annotations)
 - [ ] Cluster 6: commit `.claude/work/session.md` + `tasks.md`
 **Phase B (after Cluster 5/6 committed)**
-- [ ] DESIGN.md update via `design-update` skill (Caveat + cover section + hero cover usage)
-- [ ] `project-extraction-workflow.md` — add "Cover Creation" workflow section (skill seed)
-- [ ] Review `cover-system-guide.md` — update for live-component pattern, metadata overlay, accent rules
+- [x] DESIGN.md update: Caveat font + Hero Cover component section
+- [x] `cover-system-guide.md` — live-component pattern, metadata overlay, annotation rules, focal structure, anti-patterns
+- [x] `project-extraction-workflow.md` — Step 6 cover creation workflow with direction proposals, base gate, annotation step
 
 ---
 
