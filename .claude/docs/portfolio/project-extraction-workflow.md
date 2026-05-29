@@ -213,11 +213,27 @@ Fix composition and framing first. Add layout abstractions (e.g., DiagramRow/Dia
 
 ## Step 6 — Hero Cover (last step)
 
-Start with typography-first. Produce a typography-only fallback composition before any stylized direction. This is the safe baseline.
-
 Cover must encode the project's core technical idea — not the domain name, not a decorative aesthetic. Test: can someone identify the project's central tension from the cover alone?
 
-Verify thumbnail readability before finalizing. Update `heroImage` and `heroAlt` last.
+**6a — Direction proposals (before building anything)**
+
+Propose 3–4 distinct visual directions. For each, describe: the composition concept, the key visual elements and where they appear, and what the cover encodes. Include rough placement notes so the user can evaluate without seeing a render. Get approval on a direction before touching any code or asset.
+
+Start with a typography-only fallback direction as the safe baseline. Escalate to diagram-based directions where the project has strong technical structure worth visualizing.
+
+**6b — Base composition (approval gate)**
+
+Build and approve the base composition before touching annotations. The base should work as a standalone diagram — clean, readable at thumbnail scale. Accent is permitted on a single focal highlight element in the base (one standout node or data point); not on multiple structural elements.
+
+Use a live React SVG component when the composition requires theme-adaptive colors or will include Caveat annotations. Register by slug in `src/components/project/covers/index.ts`. Use a static asset otherwise.
+
+**6c — Annotations (separate approval step, optional)**
+
+Read the MDX to identify what is genuinely project-specific: algorithmic contributions, real budget or query numbers, headline metrics, distinctive design decisions. Propose 2–4 annotation directions with specific content options. Build only after the user selects a direction.
+
+Keep to 2–3 annotations targeting distinct diagram elements. Cut anything that could belong to any project in the same domain. See `cover-system-guide.md` → Engineering Annotations for construction rules.
+
+Verify thumbnail readability at card scale. Update `heroImage` / `heroAlt` last (omit `heroImage` if using a live component).
 
 ---
 

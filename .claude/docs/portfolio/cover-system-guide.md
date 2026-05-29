@@ -27,7 +27,7 @@ Project covers are built from layered components:
 2. Surface/background layer
 3. Metadata Layers
 
-Cover generation and composition rendering are separate systems.
+Cover generation and composition rendering are separate systems for static assets. For live SVG components, all layers are unified in a single React component — no pre-rendered asset exists.
 
 Covers should remain identifiable even when heavily cropped in card layouts.
 
@@ -61,6 +61,8 @@ Not literal documentation screenshots.
 - minimal decorative noise
 - diagram-informed compositions
 - clean spatial hierarchy
+- structural elements in `on-surface`; accent used sparingly for a single focal highlight in the base diagram (one standout element) and for annotation text and arrow strokes
+- handwritten-style annotations when they encode specific project insights
 
 Avoid:
 
@@ -70,6 +72,8 @@ Avoid:
 - meaningless particles
 - over-detailed flowcharts
 - dense unreadable labels
+- annotations that could belong to any project
+- accent color on more than one structural diagram element
 
 ---
 
@@ -129,6 +133,15 @@ Prefer:
 - asymmetric balance
 - preserved whitespace
 - readable thumbnail silhouette
+- left-to-right narrative flow for pipeline and process diagrams — elements read as a sequence with consistent sizing and clean connectors
+- terminal element at the far right holding the key result or output
+
+Avoid:
+
+- split compositions with disconnected upper and lower halves
+- dead horizontal space that breaks the reading flow
+- mixed element sizes and label styles within the same diagram
+- compositions where no narrative direction is legible
 
 ---
 
@@ -159,7 +172,7 @@ Used for:
 - institutions
 - companies
 
-May also render in project cards.
+Rendered on project detail pages. Each logo: 40×40px circle, white background, `outline-variant` border, `object-contain` with 4px inner padding.
 
 ---
 
@@ -172,7 +185,7 @@ Used for:
 - contributors
 - project contacts
 
-Should remain visually secondary to project identity.
+Rendered on project detail pages. 24×24px circular avatars, −6px overlap stack, `outline-variant` border. Links active on detail page when `url` present. Should remain visually secondary to project identity.
 
 ---
 
@@ -195,27 +208,46 @@ Metadata interaction rules:
 # Generation Workflow
 
 1. Extract technical concepts from project sources
-2. Suggest visual directions/composition ideas
-3. Refine with user alignment and feedback
-4. Generate cover background
-5. Compose using reusable HTML/CSS system
-6. Export responsive variants
+2. Propose 3–4 distinct visual directions — for each, describe the composition concept and the key visual elements (what appears, where, what it encodes). Include rough placement notes so the user can evaluate without seeing a render. Get approval before building.
+3. Build base composition — static asset or live React SVG component
+4. Get base composition approved as a standalone diagram before touching annotations
+5. If annotations are appropriate, propose 2–4 annotation directions with content options sourced from the project's specific technical contributions; build only after user selects
+6. Verify thumbnail readability at card scale before finalizing
 
 ---
 
 # Rendering System
 
-Composition rendering should be reusable and component-driven.
+Covers render in two modes.
 
-HTML/CSS layer handles:
+**Static asset** — `next/image` or `<video>` via frontmatter. Use for pre-rendered diagrams, charts, and screenshot crops.
 
-- responsive layout
-- metadata rendering
-- avatar rendering
-- theme adaptation
-- crop behavior
+**Live React SVG component** — registered in the cover component registry keyed by project slug. Renders in the same 16:9 wrapper as static covers. Use when the composition requires theme-adaptive colors or handwritten annotations that must change between light and dark surfaces.
 
-Cover background asset remains independent from composition logic.
+Live component rules:
+
+- all colors via CSS custom properties only — no hardcoded values
+- fixed viewBox `0 0 1200 675`
+- `aria-hidden` on both the wrapper and the SVG — covers are decorative
+
+---
+
+# Engineering Annotations
+
+Annotations add handwritten-style callouts to live SVG covers. Use only when the annotation encodes a real project-specific insight — not decoration.
+
+The base composition must work as a standalone diagram before annotations are added. Annotations are a second-pass enhancement approved separately from the base.
+
+Keep to 2–3 annotations maximum. Each must target a distinct diagram element — do not cluster multiple annotations at the same region. If an annotation could belong to any project in the same domain, cut it.
+
+Good annotation sources: algorithm names and techniques, real budget or query numbers, headline accuracy or fidelity metrics, distinctive architectural decisions.
+
+Construction rules:
+
+- font: Caveat (`var(--font-caveat)`) only — no UI font tokens in SVG
+- color: accent (`var(--accent)`) for both text and arrow strokes — no other color in annotations
+- arrows: bezier path ends 7–9px before the tip; arrowhead is two independent `<line>` elements — path endpoint and arrowhead coordinates must not share a point
+- path starts from the edge of the label text nearest the target, not from the far edge
 
 ---
 
@@ -225,10 +257,10 @@ Cover background asset remains independent from composition logic.
 - optimize for card + detail layouts
 - avoid excessive embedded text
 - support dark/light themes
-- prefer WebP/PNG exports
-- avoid oversized assets
+- static assets: prefer WebP/PNG, avoid oversized files
+- live SVG components: no asset export needed — theme adaptation is built in
 
-Covers should degrade gracefully across static, animated, and video-based hero media.
+Covers should degrade gracefully across static, animated, video-based, and live SVG hero media.
 
 ---
 
@@ -245,6 +277,11 @@ Avoid:
 - dense UML-style diagrams
 - overly symmetrical compositions
 - decorative visuals without technical meaning
+- exporting a theme-adaptive diagram as a static PNG — use a live SVG component instead
+- annotations that don't encode project-specific content
+- split compositions with disconnected regions and no reading direction
+- accent color spread across multiple structural elements — one focal highlight maximum in the base diagram
+- building annotations before the base composition is approved
 
 Cover visuals should encode real project structure.
 
