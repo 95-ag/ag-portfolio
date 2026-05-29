@@ -39,6 +39,37 @@
 
 ---
 
+## Active: Skill prerequisites (plan: `~/.claude/plans/no-resolve-the-golden-koala.md`)
+
+### Cluster 1 — Shared Mermaid tooling
+- [x] Create `assets-source/mermaid/_theme.json`
+- [x] Remove inline `%%{init}%%` from all 3 `.mmd` files
+- [x] Committed: `98b533a`
+- Note: committed SVGs are hand-crafted (not mmdc output) — no SVG regeneration needed
+
+### Cluster 2 — Shared matplotlib tooling
+- [x] Create `assets-source/matplotlib/_portfolio.py`
+- [x] Refactor both `.py` scripts to use shared module
+- [x] Verified: regenerated SVGs match baseline (metadata-only diffs); committed SVGs restored
+- [x] Committed: `27bf695`
+
+### Cluster 4 — Reviewer prompts + workflow doc
+- [x] Create `.claude/docs/portfolio/reviewer-prompts.md`
+- [x] Update extraction-workflow Step 3 with reviewer-prompts.md reference
+- [x] 5-tier evidence hierarchy + Source Modes + confidence tagging also landed here
+- [x] Committed: `3e76888`
+
+### Cluster 5 — asset-guide doc update
+- [x] Fix stale cover output row (live React SVG path)
+- [x] Add mmdc generation note to Mermaid section
+- [x] Committed: `047b2ed`
+
+### Cluster 6 — Session + task tracking
+- [ ] Update `session.md` and `tasks.md`
+- [ ] Commit cluster 6
+
+---
+
 ## Queued: lane-refinement-rl
 > Awaiting assignment — read `project-extraction-workflow.md` first
 

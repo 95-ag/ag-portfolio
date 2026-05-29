@@ -27,10 +27,10 @@
 
 ## Active Task
 
-`model-extraction-attacks` fully complete (Phase A cover + Phase B docs). Cluster 6 (session + tasks) pending commit.
+Skill prerequisites complete. All 5 clusters committed (`98b533a`, `27bf695`, `3e76888`, `047b2ed`, + cluster 6).
 
 Next steps in order:
-1. Extract the full project detail page creation process (MDX from report, assets, cover) into reusable skills — covering all stages in `project-extraction-workflow.md`
+1. Invoke `skill-creator` for all 4 skills: `project-content-extraction`, `project-assets-generation`, `project-cover-generation`, `project-review`
 2. Delete placeholder MDX samples
 3. Start `lane-refinement-rl` (read `project-extraction-workflow.md` first)
 
