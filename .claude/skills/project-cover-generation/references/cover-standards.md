@@ -161,6 +161,39 @@ Count:  2–3 annotations maximum; each targets a distinct diagram element
 
 ---
 
+## Metadata Overlays
+
+Optional presentational layers rendered on the cover. Both are driven by frontmatter
+fields — omit the overlay entirely when the field is absent or empty.
+
+### Organization / Logo Group
+
+- **Frontmatter field:** `logos[]` — each entry `{src, alt}`
+- **Placement:** bottom-left
+- **Render when:** `logos` array is non-empty in frontmatter; omit otherwise
+- **Spec:** 40×40px circle, white background, `outline-variant` border, `object-contain`
+  with 4px inner padding
+- **Purpose:** organizations, clients, institutions, companies
+
+### Contributor Avatar Group
+
+- **Frontmatter field:** `contributors[]` — each entry `{name, avatar, url?}`
+- **Placement:** bottom-right
+- **Render when:** `contributors` array is non-empty in frontmatter; omit otherwise
+- **Spec:** 24×24px circular avatars, −6px overlap stack, `outline-variant` border
+- **Links:** active on detail page when `url` is present; presentational only in cards
+- **Purpose:** contributors, project contacts
+
+### Metadata Density Rules
+
+- Keep metadata visually secondary to project identity — never let it compete with the cover concept
+- Maintain safe spacing from the image edges
+- Limit logo and avatar counts — a long stack obscures the composition
+- Do not place metadata where it will obscure the focal diagram element
+- Interactions (links) apply only on the project detail page, not in card thumbnails
+
+---
+
 ## Anti-Patterns
 
 **Composition:**

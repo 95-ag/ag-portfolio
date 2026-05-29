@@ -36,6 +36,11 @@ or cover work begins.
 3. **`references/extraction-procedure.md`** — the full intake → build → density
    reduction procedure. Use it as the step-by-step operating guide.
 
+4. **`references/narrative-structure.md`** — the target narrative shape: H2 spine,
+   credibility rules, audience framing (recruiter vs. technical reader), executive
+   overview vs. deep-dive distinction, standalone readability requirements, and writing
+   rules. Read before writing any MDX body content.
+
 ## High-level procedure
 
 ### Step 1 — Source Intake

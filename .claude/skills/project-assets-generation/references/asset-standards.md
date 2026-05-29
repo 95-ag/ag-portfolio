@@ -140,6 +140,41 @@ Before committing any asset:
 
 ---
 
+## Accessibility
+
+Every asset must be usable without relying on color alone to convey meaning:
+
+- **Contrast** — maintain sufficient contrast between data series, labels, and backgrounds.
+  Charts must be legible on both the light and dark site theme.
+- **Color-only meaning** — never use color as the only way to distinguish data categories.
+  Add labels, patterns, or marker shapes so colorblind readers can differentiate series.
+- **Label readability** — text labels must remain legible at mobile viewport widths (≥375px).
+  If a label becomes unreadable at small sizes, simplify the diagram or increase font size.
+- **Vector text** — prefer SVG text elements over rasterized text. Rasterized text blurs on
+  high-DPI displays and is not accessible to screen readers in SVG.
+- **Alt text** — every asset referenced in MDX via `<Diagram>`, `<Figure>`, or `<Stack>` must
+  have a meaningful `alt` prop. Describe what the asset shows, not what it is called.
+  Decorative assets use `alt=""`.
+
+---
+
+## Visual System Philosophy
+
+Assets across all projects should feel visually cohesive — part of the same editorial system,
+not a collection of independently styled one-offs.
+
+**Shared conventions to maintain across every project:**
+- Typography scale — use the shared matplotlib style and Mermaid theme; never override fonts locally
+- Stroke widths — hairline strokes as defined in `_portfolio.mplstyle`; do not introduce heavier strokes
+- Color palette — `_portfolio.py` accent and neutral colors; do not add project-specific accent colors
+- Dark/light compatibility — assets must remain legible on both the light and dark site surface
+- Spacing and padding — consistent inner padding (`bbox_inches='tight'`; transparent SVG backgrounds)
+
+Prefer systems (shared theme files, shared scripts) over one-off manual design work. A new project
+should plug into the existing visual system, not create a new one.
+
+---
+
 ## Anti-Patterns
 
 - Screenshots instead of vector exports
