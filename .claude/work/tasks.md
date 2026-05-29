@@ -16,22 +16,26 @@
 - [x] Delete `PRIMER.md`
 - [x] Verify: grep for stale references — zero found
 - [x] Verify: `npm run build` passes — 10 static pages
-- [ ] User approval → session.md updated
+- [x] User approval → session.md updated
 
 ---
 
-## Queued: model-extraction-attacks hero cover
-> Awaiting user assignment
+## Active: model-extraction-attacks hero cover
+> Plan: `~/.claude/plans/cuddly-kindling-hickey.md`
 
-- [ ] User approves visual direction (decision boundary — already chosen)
-- [ ] Re-generate cover following cover-system-guide.md workflow correctly:
-  - [ ] Separate background asset from metadata layer
-  - [ ] Refine composition with user before generating final
-  - [ ] KTH logo via `logos[]` frontmatter (already set), not baked into image
-- [ ] Verify thumbnail at card size
-- [ ] User approves cover
-- [ ] Update `heroImage` frontmatter if path changed
-- [ ] Update `session.md`
+- [x] Delete old cover.py and hero-cover.webp
+- [x] Cover design plan approved — component-based, v1 flow strip (QUERIES → VICTIM → PSEUDO LABELS → SURROGATE)
+- [x] Cluster 1 committed: Caveat font load (`src/app/fonts.ts`, `src/app/layout.tsx`)
+- [x] Cluster 2 committed: cover registry + hero-media slug prop
+- [x] Cluster 3 committed: HeroMetaOverlay + project detail wire-in
+- [x] Cluster 4 committed: KTH logo transparent bg fix
+- [x] User approved cover visual (v1 composition)
+- [ ] Cluster 5: commit `src/components/project/covers/model-extraction-attacks.tsx`
+- [ ] Cluster 6: commit `.claude/work/session.md` + `tasks.md`
+**Phase B (after Cluster 5/6 committed)**
+- [ ] DESIGN.md update via `design-update` skill (Caveat + cover section + hero cover usage)
+- [ ] `project-extraction-workflow.md` — add "Cover Creation" workflow section (skill seed)
+- [ ] Review `cover-system-guide.md` — update for live-component pattern, metadata overlay, accent rules
 
 ---
 
