@@ -69,6 +69,7 @@ export function ProjectCard({
                   alt={fm.heroAlt}
                   poster={fm.heroPoster}
                   loop={fm.heroVideoLoop}
+                  slug={slug}
                 />
               </div>
             </div>

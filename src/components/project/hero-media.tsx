@@ -1,10 +1,12 @@
 import Image from "next/image";
+import { coverComponents } from "./covers";
 
 interface HeroMediaProps {
   src: string;
   alt: string;
   poster?: string;
   loop?: boolean;
+  slug?: string;
 }
 
 function isVideo(src: string) {
@@ -15,7 +17,18 @@ function isSvg(src: string) {
   return /\.svg$/i.test(src);
 }
 
-export function HeroMedia({ src, alt, poster, loop = true }: HeroMediaProps) {
+export function HeroMedia({
+  src,
+  alt,
+  poster,
+  loop = true,
+  slug,
+}: HeroMediaProps) {
+  if (slug && coverComponents[slug]) {
+    const CoverComponent = coverComponents[slug];
+    return <CoverComponent />;
+  }
+
   if (isVideo(src)) {
     return (
       <>
