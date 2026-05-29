@@ -1,9 +1,8 @@
 # Portfolio System Rules
 
 Portfolio project generation is driven by four pipeline skills. Each skill is
-self-contained — SKILL.md + references + evals. Do not read the old source docs
-in `.claude/docs/portfolio/`; they have been removed. The skills are the
-operational source of truth.
+self-contained — SKILL.md + references + evals. The skills are the operational
+source of truth for all portfolio work.
 
 ## Pipeline — mandatory order for every project
 
