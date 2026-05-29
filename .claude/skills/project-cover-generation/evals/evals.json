@@ -1,0 +1,60 @@
+{
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "direction-proposals",
+      "prompt": "Build the hero cover for model-extraction-attacks. The MDX is at content/projects/model-extraction-attacks.mdx. The slug is model-extraction-attacks.",
+      "notes": "Golden reference — the committed cover is a live React SVG component at src/components/project/covers/model-extraction-attacks.tsx. This eval checks whether the skill follows the three-gate procedure: first proposing directions (Gate 1) before building anything. The eval run should stop after direction proposals are written — do not proceed to Gate 2 unless simulating. Check: were 3-4 directions proposed with composition details? Was a typography fallback included? Did the model NOT start writing code before proposing directions?",
+      "assertions": [
+        {
+          "name": "proposes_directions_before_code",
+          "description": "Model proposes 3-4 visual directions in prose before writing any React/SVG code or component — output includes direction descriptions with composition concepts, key elements, and placement notes"
+        },
+        {
+          "name": "typography_fallback_included",
+          "description": "At least one of the proposed directions is a typography-only fallback that does not require a diagram"
+        },
+        {
+          "name": "directions_are_project_specific",
+          "description": "Proposed directions reference specific technical content from model-extraction-attacks (e.g., attacker-victim pipeline, query budget, coreset selection, extraction accuracy) — not generic ML concepts"
+        },
+        {
+          "name": "rendering_mode_identified",
+          "description": "At least one direction proposal explicitly identifies whether it calls for a live SVG component or a static asset, and explains why"
+        },
+        {
+          "name": "no_code_before_direction_selected",
+          "description": "No React component code or SVG markup is written in the output before the user would have selected a direction — direction proposals are prose descriptions only"
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "live-component-spec",
+      "prompt": "Build the hero cover for model-extraction-attacks using a live React SVG component. The direction is an attacker-victim pipeline diagram showing query flow: coreset selection → victim API → surrogate training. The slug is model-extraction-attacks. Write the component and register it in the cover index.",
+      "notes": "Focused test on live component correctness — direction is pre-selected so the model goes straight to Gate 2. Checks CSS custom properties, viewBox, aria-hidden, and registry registration.",
+      "assertions": [
+        {
+          "name": "no_hardcoded_colors",
+          "description": "SVG component contains no hardcoded hex (#xxxxxx), rgb(), or rgba() color values — all colors use CSS custom properties (var(--...))"
+        },
+        {
+          "name": "correct_viewbox",
+          "description": "SVG element has viewBox=\"0 0 1200 675\" — exactly this value"
+        },
+        {
+          "name": "aria_hidden_present",
+          "description": "Both the wrapper element and the <svg> element have aria-hidden=\"true\""
+        },
+        {
+          "name": "registered_in_index",
+          "description": "Component is registered in src/components/project/covers/index.ts with the slug 'model-extraction-attacks' as the key"
+        },
+        {
+          "name": "single_accent_element",
+          "description": "Accent color (var(--accent)) is used on at most one structural element in the base diagram — not spread across multiple nodes or connectors"
+        }
+      ]
+    }
+  ]
+}
