@@ -1,0 +1,76 @@
+{
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "golden-reference",
+      "prompt": "Generate the diagrams and charts for model-extraction-attacks. The MDX is at content/projects/model-extraction-attacks.mdx. The PDF is at public/projects/model-extraction-attacks/DL_Project.pdf. The slug is model-extraction-attacks. Produce all assets referenced in the MDX.",
+      "notes": "Golden reference — committed assets already exist in public/projects/model-extraction-attacks/. The eval checks whether the skill produces correctly categorized source files and follows the procedure. Do not overwrite committed assets; write outputs to the eval workspace.",
+      "assertions": [
+        {
+          "name": "reads_mdx_first",
+          "description": "Model reads the MDX file before generating any asset (evidenced by citing specific <Diagram> src= paths from the file)"
+        },
+        {
+          "name": "no_inline_init_blocks",
+          "description": "No .mmd source file contains %%{init}%% blocks — shared _theme.json used instead"
+        },
+        {
+          "name": "mermaid_uses_theme_flag",
+          "description": "All mmdc commands include -c assets-source/mermaid/_theme.json"
+        },
+        {
+          "name": "source_files_written",
+          "description": "At least one .mmd source file written to assets-source/mermaid/model-extraction-attacks/ OR one .py script written to assets-source/matplotlib/model-extraction-attacks/"
+        },
+        {
+          "name": "production_path_correct",
+          "description": "Production asset paths are under public/projects/model-extraction-attacks/ — not in assets-source/ or any other location"
+        },
+        {
+          "name": "svg_for_mermaid_diagrams",
+          "description": "Mermaid-generated diagrams are output as SVG, not PNG"
+        },
+        {
+          "name": "descriptive_filenames",
+          "description": "No generic filenames used (not chart.svg, diagram.svg, output.svg, fig1.png)"
+        },
+        {
+          "name": "matplotlib_imports_shared_style",
+          "description": "Any matplotlib script uses plt.style.use with _portfolio.mplstyle and imports _portfolio palette helper"
+        },
+        {
+          "name": "no_fabricated_data_for_legacy_crops",
+          "description": "Assets that exist only as figures in the PDF (no source data available) are categorized as legacy crops and handled via a documented crop procedure — not reconstructed as matplotlib charts with invented or estimated values. Failure: writing a .py script that reconstructs chart data from verbal descriptions, estimates AUC values, or uses synthetic image stand-ins for figures that should be cropped from the PDF."
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "mermaid-only",
+      "prompt": "Generate the pipeline diagram for model-extraction-attacks. The diagram shows a three-stage pipeline: query generation → black-box victim model → surrogate training → downstream evaluation. Write the Mermaid source and provide the generation command. The slug is model-extraction-attacks.",
+      "notes": "Focused test on Mermaid-only workflow. Checks that the model writes a .mmd source, uses the shared theme flag, avoids %%{init}%%, and outputs SVG to the correct public path.",
+      "assertions": [
+        {
+          "name": "mmd_source_written",
+          "description": "A .mmd source file is written (not just inline Mermaid in a code block)"
+        },
+        {
+          "name": "no_inline_init_blocks",
+          "description": "The .mmd file contains no %%{init}%% blocks"
+        },
+        {
+          "name": "mmdc_command_correct",
+          "description": "The mmdc command includes -c assets-source/mermaid/_theme.json and outputs to public/projects/model-extraction-attacks/*.svg"
+        },
+        {
+          "name": "svg_output",
+          "description": "Output file extension is .svg"
+        },
+        {
+          "name": "source_in_correct_dir",
+          "description": "Source .mmd file path is assets-source/mermaid/model-extraction-attacks/<name>.mmd"
+        }
+      ]
+    }
+  ]
+}
