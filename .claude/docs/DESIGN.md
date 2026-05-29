@@ -136,11 +136,12 @@ Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-sur
 
 ### Typography
 
-Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
+Four families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
 
 - **Manrope** — display and headline.
 - **Inter** — body, UI, prose.
 - **JetBrains Mono** — structural metadata texture, not expressive typography.
+- **Caveat** — handwritten annotation style; cover SVG annotations only. CSS variable `--font-caveat`. Not permitted in UI, prose, or structural elements.
 
 #### Semantic Token Table
 
@@ -903,6 +904,26 @@ project-header:
         external-icon: translate-x 2px
       active: opacity 0.70
 ```
+
+#### Hero Cover
+
+16:9 hero area below the project header. Renders either a static image/video or a live React SVG cover component when one is registered for the project slug.
+
+- Default: `next/image` or `<video>` (muted, autoPlay, playsInline, poster required). Same `surface-sunken` 16:9 wrapper in both cases.
+- Live cover: a React SVG component registered in `coverComponents` keyed by slug. Takes precedence over the image path when present.
+- `aria-hidden="true"` on both the wrapper `<div>` and the `<svg>` element — covers are decorative, not content.
+
+**HeroMetaOverlay** — `absolute inset-0 pointer-events-none` layer over the hero; rendered on the project detail page only, never on cards.
+
+- Bottom-left: `logos[]` — 40×40px circles (`rounded-full`, `bg-white`, `border: 1px solid {outline-variant}`), `object-contain p-1`.
+- Bottom-right: `contributors[]` — 24×24px circular avatars stacked with −6px overlap, same border treatment.
+- Overlay padding: `{spacing.md}` (16px) on all sides. Interactive affordances (links) enabled on detail page only.
+
+**Live SVG cover rules**
+
+- viewBox `0 0 1200 675` (16:9). All colors via CSS custom properties — no hardcoded hex values.
+- Structural diagram elements: `var(--on-surface)`, `var(--background)`, `var(--on-surface-muted)`.
+- Engineering annotations: `var(--font-caveat)` text and `var(--accent)` stroke only. No other font or color in annotations.
 
 #### Section Progress Nav
 
