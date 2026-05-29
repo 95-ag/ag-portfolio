@@ -55,6 +55,10 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 ## Process Rules
 
 - Complete one project fully before moving to the next
-- Execution order per project: MDX → [user approval] → assets → [user approval] → hero cover → [user approval]
-- Read `project-extraction-workflow.md` at the start of each new Phase 6 project
+- Execution order per project: MDX → [user approval] → assets → [user approval] → hero cover → [user approval] → review → [user approval]
+- Portfolio project work is driven by the four pipeline skills — they are the operational source of truth:
+  1. `project-content-extraction` — MDX content from report + repo
+  2. `project-assets-generation` — diagrams, charts, legacy crops
+  3. `project-cover-generation` — hero cover (3-gate: directions → base → annotations)
+  4. `project-review` — two-pass QA (recruiter + technical hiring manager)
 - Never update `session.md` to mark a task complete without user approval recorded in chat
