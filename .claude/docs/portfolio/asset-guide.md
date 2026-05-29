@@ -97,7 +97,7 @@ Contains optimized final exports only.
 | Legacy charts (no source data) | Manual crop/edit | PNG | Preserve data integrity; avoid visual distortion during cleanup |
 | Annotated comparisons / image layouts | MDX components + real assets | WebP/PNG | Layout handled in component layer |
 | Complex/custom architecture diagrams | tldraw (fallback only) | SVG | Use only when Mermaid is insufficient |
-| Hero covers / cover visuals | HTML/CSS composition or design tool | WebP/PNG | Editorial branding asset, not infographic |
+| Hero covers / cover visuals | Live React SVG component (preferred) or static export | none / WebP/PNG | Theme-adaptive covers: live component registered by slug in `src/components/project/covers/index.ts`. Static export only when theme adaptation is not needed. See `cover-system-guide.md`. |
 
 ---
 
@@ -118,6 +118,9 @@ Avoid for:
 
 - highly custom spatial layouts
 - artistic/manual compositions
+
+**Generation:** `mmdc -i <file>.mmd -o <out>.svg -c assets-source/mermaid/_theme.json`  
+The shared theme config lives at `assets-source/mermaid/_theme.json` — never inline `%%{init}%%` blocks in `.mmd` files.
 
 ---
 
