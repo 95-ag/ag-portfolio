@@ -14,12 +14,16 @@ The reviewers simulate distinct audiences:
 
 - **Reviewer 1 (technical recruiter):** 30-second scan, business framing, no ML background.
   Checks problem clarity, headline outcome, scope signal, plain-language null results,
-  Results summary paragraph, forward verdict.
+  Results summary paragraph, forward verdict. Also evaluates first visual impression:
+  hero professionalism, page polish, diagram credibility at a glance, mobile layout,
+  and theme consistency.
 
 - **Reviewer 2 (technical hiring manager):** Deep technical screen with access to PDF source.
   Checks metric traceability to PDF table/figure, anomaly explanation, evaluation environment
   clarity, trend descriptions (not just endpoints), built-vs-reused distinction, fabricated
-  claims, weak result overstatement, inline code noise, anchor link slugs.
+  claims, weak result overstatement, inline code noise, anchor link slugs. Also evaluates
+  diagram legibility and technical accuracy: label clarity, visual/prose alignment, chart
+  honesty, dark-theme visibility of diagram elements, and hero relevance.
 
 Spawn both as subagents in the same turn. Do not run them sequentially.
 
@@ -69,12 +73,24 @@ These patterns appear repeatedly in ML portfolio content. Flag any that appear:
 
 ## Scope of the review gate
 
-The review gate covers content only — prose quality, factual accuracy, metric traceability,
-and narrative structure. It does not cover:
+The review gate covers content and visual presentation of the rendered page — prose quality,
+factual accuracy, metric traceability, narrative structure, and how the page looks and
+reads when rendered in a browser.
 
-- Asset quality (handled by `project-assets-generation`)
-- Hero cover (handled by `project-cover-generation`)
-- Page layout, component rendering, or build output (use playwright-cli)
+Visual inspection in scope:
+- Hero first impression and relevance
+- Diagram legibility, label clarity, chart honesty
+- Page polish and layout coherence at desktop and mobile
+- Theme parity — both light and dark themes render correctly
+
+Not in scope (owned by other pipeline steps):
+- Asset *generation* quality (handled by `project-assets-generation`)
+- Hero cover *generation* (handled by `project-cover-generation`)
+- Build output, component bugs, or TypeScript errors (use build verification checks)
+
+Note: the review gate may flag a visual defect it can observe in screenshots (e.g. a
+diagram with invisible strokes in dark theme) even if fixing it falls to the assets
+pipeline — the finding still surfaces here.
 
 After findings are presented, stop. Do not begin editing the MDX. The user decides which
 fixes to apply.

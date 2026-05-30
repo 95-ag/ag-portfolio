@@ -12,6 +12,16 @@ Read the MDX file at the path provided. Evaluate it from your perspective only �
 6. Does the Results section open with a summary paragraph before diving into subsections?
 7. Would you forward this CV to a hiring manager based on this page alone?
 
+If screenshots were provided, also evaluate the following. If no screenshots were provided, mark all VISUAL items N/A.
+
+**VISUAL — First impression and polish (no ML knowledge required)**
+
+8. Does the hero image look professional and intentional within 5 seconds — not generic AI art, stock imagery, or student-grade?
+9. Does the page as a whole look like a serious, polished portfolio — consistent spacing, deliberate layout — not a cheap template?
+10. Do the diagrams look credible and purposeful at a glance — not decorative filler or confusing noise?
+11. Does the layout hold up on mobile (375px) — nothing broken, cramped, or unreadable?
+12. Does the page look equally intentional in both light and dark themes?
+
 **Output format:**
 
 ```
@@ -25,6 +35,16 @@ RECRUITER REVIEW
 6. [PASS/FLAG/N/A] — <one sentence>
 7. [YES/BORDERLINE/NO] — <one sentence explaining why>
 
+VISUAL REVIEW
+-------------
+8.  [PASS/FLAG/N/A] — <one sentence>
+9.  [PASS/FLAG/N/A] — <one sentence>
+10. [PASS/FLAG/N/A] — <one sentence>
+11. [PASS/FLAG/N/A] — <one sentence>
+12. [PASS/FLAG/N/A] — <one sentence>
+
+VISUAL IMPRESSION: [STRONG / ACCEPTABLE / WEAK] — <one sentence overall verdict>
+
 FORWARD VERDICT: [YES / BORDERLINE / NO]
-HIGHEST-LEVERAGE FIX: <one sentence — the single change that would most improve the 30-second read>
+HIGHEST-LEVERAGE FIX: <one sentence — the single change that would most improve the 30-second read, whether text or visual>
 ```

@@ -15,6 +15,16 @@ You have access to: (1) the MDX file path, and (2) the PDF report path if provid
 9. Is there any inline code noise in prose where a table or plain language would be cleaner?
 10. Do all anchor links in the MDX use slugs that match the actual section headings?
 
+If screenshots were provided, also evaluate the following. If no screenshots were provided, mark all VISUAL items N/A.
+
+**VISUAL — Diagram legibility and technical accuracy**
+
+11. Are diagram labels, axes, and annotations legible — not clipped, overlapping, or pixelated?
+12. Do the diagrams depict what the prose claims — architecture, flow, and numbers consistent with the text?
+13. Are charts honest — axes labeled, scales not misleading, trends matching the results described in prose?
+14. Are diagrams and figures legible in both light and dark themes — no invisible strokes, fills, or text?
+15. Does the hero communicate the actual project clearly — not generic sci-fi or unrelated imagery?
+
 **Output format:**
 
 ```
@@ -31,7 +41,15 @@ TECHNICAL REVIEW
 9.  [PASS/FLAG/N/A] — <one sentence>
 10. [PASS/FLAG/N/A] — <one sentence>
 
+VISUAL REVIEW
+-------------
+11. [PASS/FLAG/N/A] — <one sentence>
+12. [PASS/FLAG/N/A] — <one sentence>
+13. [PASS/FLAG/N/A] — <one sentence>
+14. [PASS/FLAG/N/A] — <one sentence>
+15. [PASS/FLAG/N/A] — <one sentence>
+
 UNVERIFIABLE CLAIMS: <bulleted list of any metric or claim that could not be traced to a source, or "none">
-CREDIBILITY VERDICT: [STRONG / ACCEPTABLE / NEEDS REVISION]
-HIGHEST-LEVERAGE FIX: <one sentence — the single change that would most improve technical credibility>
+CREDIBILITY VERDICT: [STRONG / ACCEPTABLE / NEEDS REVISION] — factor in visual credibility alongside text
+HIGHEST-LEVERAGE FIX: <one sentence — the single change that would most improve technical credibility, whether text or visual>
 ```
