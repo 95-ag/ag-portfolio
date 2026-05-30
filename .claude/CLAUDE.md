@@ -1,4 +1,7 @@
 @../AGENTS.md
+@work/session.md
+@work/tasks.md
+@work/lessons.md
 
 # AG Portfolio
 

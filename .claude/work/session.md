@@ -14,6 +14,12 @@
 
 ## What's Done
 
+- `project-review` skill updated with visual inspection pass (`3aaf9b6`): playwright-cli
+  screenshots (desktop+mobile, light+dark) captured before reviewers spawn; both reviewer
+  prompts extended with VISUAL items; review-protocol scope updated to include visual QA
+
+
+
 - Phases 1–5 complete (foundation, design system, skeleton pages, content scaffold, UI polish)
 - `model-extraction-attacks` — MDX content, assets, hero cover complete and committed
 - All 4 pipeline skills complete, audited, and frozen:
