@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#f3f4f5"/>
+  <!-- Road surface -->
+  <rect x="0" y="180" width="800" height="270" fill="#e8eaea"/>
+  <!-- Horizon line -->
+  <line x1="0" y1="180" x2="800" y2="180" stroke="#bbcabf" stroke-width="1"/>
+  <!-- Lane markers — muted dashed (baseline) -->
+  <path d="M 60,450 Q 300,300 420,180" stroke="#bbcabf" stroke-width="2" fill="none" stroke-dasharray="22 12" opacity="0.7"/>
+  <path d="M 200,450 Q 380,300 460,180" stroke="#bbcabf" stroke-width="2" fill="none" stroke-dasharray="22 12" opacity="0.7"/>
+  <path d="M 600,450 Q 500,300 540,180" stroke="#bbcabf" stroke-width="2" fill="none" stroke-dasharray="22 12" opacity="0.7"/>
+  <path d="M 740,450 Q 580,300 580,180" stroke="#bbcabf" stroke-width="2" fill="none" stroke-dasharray="22 12" opacity="0.7"/>
+  <!-- Refined lane — accent solid (DQN corrected output) -->
+  <path d="M 390,450 Q 440,300 495,180" stroke="#006c49" stroke-width="3" fill="none"/>
+  <!-- Sky gradient suggestion -->
+  <rect x="0" y="0" width="800" height="180" fill="#f8f9fa"/>
+  <!-- Vanishing point dot -->
+  <circle cx="500" cy="178" r="4" fill="#006c49" opacity="0.6"/>
+</svg>
