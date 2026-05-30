@@ -80,8 +80,11 @@ projectType: academic                   # academic | freelance | personal
 publishedAt: "2024-09-15"               # ISO 8601 string
 order: 10                               # lower = earlier in lists; ties broken by publishedAt desc
 
-# === Required: hero ===
-heroImage: "/projects/lane-rl/hero.jpg"     # image, video, or animated SVG (see §3.6)
+# === Required: hero (live cover OR heroImage) ===
+# Preferred: register a live React SVG cover by slug in
+# src/components/project/covers/index.ts — then heroImage may be omitted.
+# Otherwise heroImage is required. The build fails if a project has neither.
+heroImage: "/projects/lane-rl/hero.jpg"     # optional; image, video, or animated SVG (see §3.6)
 heroAlt: "Side-by-side comparison of baseline vs RL-refined lane detection on an occluded curve."
 heroPoster: "/projects/lane-rl/hero-poster.jpg"   # required if heroImage is a video
 heroVideoLoop: true                                # optional, defaults true for videos
@@ -169,7 +172,7 @@ relatedProjects:
 | `projectType` | enum | yes | `academic` \| `freelance` \| `personal` |
 | `publishedAt` | ISO date string | yes | Drives sort order tiebreak |
 | `order` | number | yes | Primary sort key. Lower = earlier |
-| `heroImage` | string | yes | Web path under `/public`. Accepts image (`.jpg`/`.png`/`.svg`), video (`.mp4`/`.webm`), or animated SVG. See §3.6 |
+| `heroImage` | string | conditional | Web path under `/public`. Accepts image (`.jpg`/`.png`/`.svg`), video (`.mp4`/`.webm`), or animated SVG. See §3.6. Optional when a live cover is registered for the slug; otherwise required |
 | `heroAlt` | string | yes | Alt text for accessibility. Required for all hero types including video |
 | `heroPoster` | string | conditional | Required if `heroImage` is a video. Web path to a still image used as the video poster |
 | `heroVideoLoop` | boolean | no | Default `true`. Only applies when `heroImage` is a video |
@@ -235,6 +238,7 @@ Build fails on:
 - `relatedProjects` references that don't resolve to existing slugs.
 - Image paths that don't start with `/`.
 - `heroImage` is a video (`.mp4`/`.webm`) but `heroPoster` is missing.
+- A project has neither a registered live cover nor a `heroImage` (every project must have a hero).
 
 Build warns (does not fail) on:
 
@@ -245,7 +249,17 @@ Build warns (does not fail) on:
 
 ### 3.6 Hero media
 
-The `heroImage` field accepts three formats. The renderer detects the type from the file extension and behaves accordingly.
+Every project's hero is satisfied by **one of two** sources, checked by the content loader:
+
+1. **Live cover (preferred)** — a React SVG component registered by slug in
+   `src/components/project/covers/index.ts`. Takes precedence over `heroImage` when
+   present, and renders on both the project page hero and the project card. When a live
+   cover is registered, `heroImage` may be omitted.
+2. **`heroImage`** — a static asset (image, video, or animated SVG), described below.
+
+The build fails if a project has neither.
+
+When present, the `heroImage` field accepts three formats. The renderer detects the type from the file extension and behaves accordingly.
 
 **Image** (`.jpg`, `.png`, `.webp`):
 - Renders as a static image via `next/image`.

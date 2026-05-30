@@ -691,8 +691,8 @@ icon-pulse:
 
 Entry point to a project; communicates type, media, and scope at a glance and links to the detail page.
 
-- Three layout variants: `compact` (1:1 hero), `featured` (4:3 hero), `text` (no hero, category icon). The `text` variant is an intentional editorial choice, not a fallback for a missing hero image.
-- Hero image is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
+- Two layout variants: `compact` (1:1 hero) and `featured` (4:3 hero). Every card renders a hero — a live cover when registered, otherwise the `heroImage`; there is no hero-less variant.
+- Hero is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
 - Hover: title underlines with `accent` decoration; border shifts from `outline-variant` to `outline`.
 - Cover metadata overlays (`logos[]`, `contributors[]`) are presentational only in cards — no interactive affordances.
 
@@ -711,7 +711,6 @@ project-card:
   variants:
     compact:   heroAspect 1/1
     featured:  heroAspect 4/3
-    text:      no hero, categoryIcon visible
 
 project-card-hero:
   wrapperPadding: spacing-md
@@ -728,13 +727,6 @@ project-card-body:
               no flex-1 or reserved spacer — tags follow immediately after visible text
   - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
   card-height: equal within grid row via CSS grid row-stretch; content top-anchored, whitespace falls to bottom
-
-project-card-text-variant:
-  # No hero. Category icon mapped from projectType (academic|freelance|personal):
-  #   academic → ScienceIcon, freelance → WorkIcon, personal → CodeIcon
-  iconSize: 18px
-  iconColor: on-surface-muted at opacity 60
-  layout: icon → title (headline-sm) → summary → tags
 ```
 
 #### Highlight
@@ -907,17 +899,17 @@ project-header:
 
 #### Hero Cover
 
-16:9 hero area below the project header. Renders either a static image/video or a live React SVG cover component when one is registered for the project slug.
+16:9 hero area below the project header. Every project has a hero from one of two sources — the build fails if neither is present.
 
-- Default: `next/image` or `<video>` (muted, autoPlay, playsInline, poster required). Same `surface-sunken` 16:9 wrapper in both cases.
-- Live cover: a React SVG component registered in `coverComponents` keyed by slug. Takes precedence over the image path when present.
+- Live cover (preferred default): a React SVG component registered in `coverComponents` keyed by slug. Takes precedence over the image path when present.
+- Static fallback: `next/image` or `<video>` (muted, autoPlay, playsInline, poster required). Same `surface-sunken` 16:9 wrapper in both cases.
 - `aria-hidden="true"` on both the wrapper `<div>` and the `<svg>` element — covers are decorative, not content.
 
 **HeroMetaOverlay** — `absolute inset-0 pointer-events-none` layer over the hero; rendered on the project detail page only, never on cards.
 
-- Bottom-left: `logos[]` — 40×40px circles (`rounded-full`, `bg-white`, `border: 1px solid {outline-variant}`), `object-contain p-1`.
-- Bottom-right: `contributors[]` — 24×24px circular avatars stacked with −6px overlap, same border treatment.
-- Overlay padding: `{spacing.md}` (16px) on all sides. Interactive affordances (links) enabled on detail page only.
+- Bottom-left: `logos[]` — circles (`rounded-full`, `bg-white`, `border: 1px solid {outline-variant}`), `object-contain p-1`; 32×32px on mobile, 40×40px at `md+`.
+- Bottom-right: `contributors[]` — circular avatars stacked with −6px overlap, same border treatment; 20×20px on mobile, 24×24px at `md+`.
+- Overlay padding: `{spacing.sm}` (8px) on mobile, `{spacing.md}` (16px) at `md+`, on all sides. Interactive affordances (links) enabled on detail page only.
 
 **Live SVG cover rules**
 
