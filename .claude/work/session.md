@@ -20,8 +20,8 @@ All 4 pipeline skills are frozen and audited.
 **`dqn-lane-localization`** — master's thesis *"Deep Q-Learning for Lane Localization"*
 (KTH / Scania, 2024). Rigorous **negative-result** project.
 
-**Current stage: Stage 3 (`project-cover-generation`) — ready to begin.**
-Stage 2 fully closed: assets gate approved + skill alignment + skill overhaul committed (2026-05-30).
+**Current stage: Skill update (`project-cover-generation`) — then Stage 4 (`project-review`).**
+Stage 3 fully closed: all 3 sub-gates approved + build passing + schema/docs/card updated (2026-05-31).
 
 ---
 
@@ -72,8 +72,8 @@ repo/config = authoritative for frameworks, hyperparameters, file structure.
 |---|---|---|---|---|---|
 | 1 | `project-content-extraction` | **complete** ✓ | `content/projects/dqn-lane-localization.mdx` + prereq build assets | approved 2026-05-30 | — |
 | 2 | `project-assets-generation` | **complete** ✓ | diagrams/charts in `public/projects/…` + `assets-source/…` | approved 2026-05-30 | 1 |
-| 3 | `project-cover-generation` | **ready** | hero cover (3-gate) + updated `heroImage` | user approves cover | 2 |
-| 4 | `project-review` | blocked | QA findings + fixes, final sign-off | user approves | 3 |
+| 3 | `project-cover-generation` | **complete** ✓ | live cover component + heroImage optional schema | approved 2026-05-31 | 2 |
+| 4 | `project-review` | blocked on skill update | QA findings + fixes, final sign-off | user approves | skill update |
 
 Each stage is gated: do not advance until the prior gate has explicit user approval in chat.
 Stages 2–4 generate their own execution plans when their skill is invoked — not pre-planned here.
@@ -93,7 +93,7 @@ Stages 2–4 generate their own execution plans when their skill is invoked — 
 
 ## Blockers
 
-None. Stage 3 (`project-cover-generation`) is ready to begin — invoke the skill to start.
+None. Skill update (`project-cover-generation`) is next — align `cover-notes.md` candidates into skill references, then Stage 4 (`project-review`) unblocks.
 
 ## Standing Deviations from PRODUCT.md
 

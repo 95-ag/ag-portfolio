@@ -34,17 +34,26 @@
 - [x] **Capture skill extraction notes** — asset-notes cleaned; align into skill references ← DONE 2026-05-30
 - [x] **Gate: user approves assets** ← approved 2026-05-30
 
-### Stage 3 — `project-cover-generation` ← NEXT
+### Stage 3 — `project-cover-generation` ✓ COMPLETE (approved 2026-05-31)
 
-- [ ] Invoke `project-cover-generation` skill; read its SKILL.md + references first
-- [ ] **Sub-gate 3a: directions approved**
-- [ ] **Sub-gate 3b: base cover approved**
-- [ ] **Sub-gate 3c: annotations approved**
-- [ ] Replace `hero.svg` placeholder with final cover; update `heroImage` in frontmatter
-- [ ] `npm run build` passes
-- [ ] **Gate: user approves final cover** ← do not advance until approved
+- [x] Invoke `project-cover-generation` skill; read its SKILL.md + references first
+- [x] **Sub-gate 3a: directions approved** ← Direction A (localization game) approved 2026-05-30
+- [x] **Sub-gate 3b: base cover approved** ← curving-road composition approved 2026-05-31
+- [x] **Sub-gate 3c: annotations approved** ← single Caveat callout approved 2026-05-31
+- [x] Live cover component registered; `heroImage` kept as fallback (schema optional now; registry takes precedence)
+- [x] `npm run build` passes ← all static pages, no errors (2026-05-31)
+- [x] Schema: heroImage now optional; loader cross-checks live cover OR heroImage
+- [x] Metalayer responsive sizing; text card variant removed; docs updated via design-update skill
+- [x] cover-notes.md skill-update candidates captured (7 base + 5 annotation learnings)
+- [x] **Gate: user approves final cover** ← approved 2026-05-31
 
-### Stage 4 — `project-review` (blocked on Stage 3 gate)
+### Skill update — `project-cover-generation` ← NEXT
+
+- [ ] Align skill-update candidates from `cover-notes.md` into skill references (`cover-standards.md`, `cover-procedure.md`)
+- [ ] Verify no frozen-skill rules are violated
+- [ ] **Gate: skill update committed**
+
+### Stage 4 — `project-review` (blocked on skill update)
 
 - [ ] Invoke `project-review` skill; read its SKILL.md + references first
 - [ ] Capture playwright screenshots (desktop + mobile, light + dark)
