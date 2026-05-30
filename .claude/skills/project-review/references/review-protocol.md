@@ -1,7 +1,6 @@
 # Review Protocol
 
-Extracted from `project-extraction-workflow.md` Step 3. This is the authoritative reference
-for running the two-pass content review.
+Authoritative reference for running the two-pass content review.
 
 ---
 

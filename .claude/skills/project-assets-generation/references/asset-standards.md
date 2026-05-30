@@ -1,7 +1,7 @@
 # Asset Standards
 
 Format table, directory layout, naming, tooling commands, reproducibility rules,
-and anti-patterns. Extracted from asset-guide.md.
+and anti-patterns. Authoritative reference for the project-assets-generation skill.
 
 ---
 

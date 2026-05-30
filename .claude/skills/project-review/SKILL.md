@@ -23,7 +23,7 @@ and themes before reading a word, so the review must capture that same first imp
 
 ## Before running — read this reference
 
-**`references/review-protocol.md`** — the full Step 3 review protocol: reviewer separation
+**`references/review-protocol.md`** — the full review protocol: reviewer separation
 rules, conflict-surfacing logic, common drift patterns, and what to do with the findings.
 Read this before spawning any subagents.
 

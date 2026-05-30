@@ -1,11 +1,11 @@
 # Asset Procedure
 
 Step-by-step operating guide for categorizing, generating, framing, and placing
-portfolio assets. Extracted from project-extraction-workflow.md Steps 5 and 5b.
+portfolio assets. Authoritative reference for the project-assets-generation skill.
 
 ---
 
-## Step 5 — Asset Categorization
+## Asset Categorization
 
 Before generating any asset, categorize every visual the MDX references:
 
@@ -30,7 +30,7 @@ Never modify them during a project asset pass.
 
 ---
 
-## Step 5b — Figure Composition and Framing
+## Figure Composition and Framing
 
 Apply these principles before generating or cropping any figure.
 

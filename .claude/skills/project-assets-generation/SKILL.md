@@ -2,8 +2,8 @@
 name: project-assets-generation
 description: >
   From an approved portfolio MDX, categorizes every referenced visual, generates it
-  from a tracked source file using shared tooling, frames and crops per Step 5b
-  principles, and places optimized exports in /public/projects/<slug>/ with editable
+  from a tracked source file using shared tooling, frames and crops per the framing
+  and crop normalization principles, and places optimized exports in /public/projects/<slug>/ with editable
   sources retained in assets-source/. Always generates from source — never hand-edits
   production files directly.
 
@@ -23,7 +23,7 @@ in `assets-source/` — handed to the user for approval before cover generation 
 ## Before generating anything — read these references
 
 1. **`references/asset-procedure.md`** — categorization decision table, audit-before-generate
-   rule, Step 5b framing and crop normalization principles. Read before touching any source
+   rule, Figure Composition and Framing principles. Read before touching any source
    material or generating any file.
 
 2. **`references/asset-standards.md`** — format table, directory layout, naming convention,
@@ -57,7 +57,7 @@ document the crop procedure in a comment or notes file.
 ### Step 3 — Audit existing assets (before generating)
 
 Before writing or exporting anything, measure the content bounds of every asset you plan
-to produce or crop. See `references/asset-procedure.md` Step 5b — audit rule. Know exactly
+to produce or crop. See the audit rule in `references/asset-procedure.md` — Figure Composition and Framing section. Know exactly
 what whitespace is present before you export. It is easy to make framing worse under the
 assumption you are making it better.
 
@@ -79,7 +79,7 @@ assumption you are making it better.
 
 ### Step 5 — Frame and place
 
-Apply Step 5b framing rules from `references/asset-procedure.md` before finalizing exports:
+Apply framing rules from `references/asset-procedure.md` — Figure Composition and Framing section — before finalizing exports:
 - Width hierarchy (full prose width only for complex information-dense diagrams)
 - Multi-subplot figures displayed as single composed figures — not split
 - Crop normalization: symmetric padding, unified y-bounds across subplots

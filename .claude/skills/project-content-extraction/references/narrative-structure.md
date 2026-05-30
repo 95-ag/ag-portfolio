@@ -1,7 +1,7 @@
 # Narrative Structure
 
 What a well-structured portfolio project looks like from a narrative standpoint —
-the target the extraction skill is building toward. Extracted from project-guide.md.
+the target the extraction skill is building toward. Authoritative reference for the project-content-extraction skill.
 
 ---
 

@@ -1,7 +1,7 @@
 # Cover Standards
 
 Rendering modes, CSS conventions, annotation construction rules, composition
-principles, and anti-patterns. Extracted from cover-system-guide.md.
+principles, and anti-patterns. Authoritative reference for the project-cover-generation skill.
 
 ---
 

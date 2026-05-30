@@ -1,11 +1,10 @@
 # Cover Procedure
 
-Three-gate operating guide for building a portfolio project hero cover. Extracted
-from project-extraction-workflow.md Step 6 and cover-system-guide.md.
+Three-gate operating guide for building a portfolio project hero cover. Authoritative reference for the project-cover-generation skill.
 
 ---
 
-## Step 6a — Direction Proposals
+## Gate 1 — Direction Proposals
 
 Generate cover directions from the project's technical content before building anything.
 
@@ -43,7 +42,7 @@ modifications — before proceeding to Gate 2.
 
 ---
 
-## Step 6b — Base Composition
+## Gate 2 — Base Composition
 
 Build and get the base approved as a standalone diagram before touching annotations.
 
@@ -92,7 +91,7 @@ before writing any annotation code.
 
 ---
 
-## Step 6c — Annotations (optional, separate approval)
+## Gate 3 — Annotations (optional, separate approval)
 
 Only start after the base is explicitly approved.
 
