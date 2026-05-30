@@ -90,12 +90,16 @@ when a nested concept genuinely improves flow and cannot be absorbed into prose.
 
 ### Narrative arc — verify before finalizing
 
-- **Detailed Problem** → why this matters and what makes it hard (failure modes,
-  edge cases, why naive approaches fall short, engineering constraints)
+- **Detailed Problem** → opens with the research question or engineering hypothesis,
+  rather than repeating the high-level motivation already in `overview.problem`. After
+  establishing the question: failure modes, constraints, edge cases, why naive approaches
+  fall short. Both the question and the technical challenge belong here — the question
+  sets direction; the challenge establishes why it's non-trivial.
 - **Architecture / Data** → what was actually built and what fed into it (not just
   what was tried — what was decided and why)
-- **Results** → what the experiments showed; headline finding first; each experiment
-  explained with the trend or curve, not just endpoint values
+- **Results** → primary conclusion in the first sentence, stated explicitly before any table,
+  diagram, or metric. Supporting data follows. For negative results: state the non-finding
+  directly; do not make the reader infer it from the numbers.
 - **Constraints** → honest scope caveats, not defensive hedging
 - **Next Steps** → where the work goes, not filler bullets
 
@@ -107,10 +111,10 @@ alone.
 
 ---
 
-## Step 4 — Density Reduction Checklist
+## Step 3 — Density Reduction
 
-Run this pass before handing off. Density problems accumulate during drafting and
-slow reading momentum without adding analytical value.
+Run this pass before Reader Review. The reviewer should evaluate the version closest
+to what the user will actually see.
 
 ### Tables that earn their place
 
@@ -138,3 +142,40 @@ Prose lists should behave like prose — normal document flow, readable indent, 
 wraps naturally. Do not force prose lists into metadata-row flex layouts (those are
 for the overview component bullets, which is a separate rendering context). Ordered
 lists stay native and clearly ordered.
+
+---
+
+## Step 4 — Reader Review (required pre-approval gate)
+
+Run after density reduction. Run it as a subagent to keep the main context clean.
+The reviewer evaluates readability independently from technical correctness. Apply
+all FLAG findings before presenting to the user.
+
+### Checks — PASS or FLAG each
+
+**Redundancy**
+- Same information stated in multiple sections without adding depth
+- Same metric or finding stated more than once within a few lines
+- Overview fields that restate body content verbatim rather than summarizing it
+- Constraints & Limitations re-explaining mechanisms already covered in Results
+  (Constraints = scope caveats; Results = mechanisms)
+
+**Narrative flow**
+- Abrupt section transitions with no bridging sentence
+- Sections that open with a definition rather than a statement of purpose
+- Structurally unusual sections (e.g. bug audits) that don't explain why they exist in the narrative
+
+**Section boundaries**
+- Detailed Problem restating `overview.problem` instead of opening with the research question
+- Body sections repeating the overview rather than deepening it
+- Concepts introduced too late for the reader to follow the section that uses them
+
+**Progressive disclosure**
+- Key metrics used in diagrams or prose before being defined
+- Conceptual explanations deferred past where the reader needs them
+- Secondary experiments receiving equal narrative space to the core finding
+
+### Output
+
+PASS / FLAG per check, top 5 readability issues with line references, section-level
+fixes only (no rewrites). Apply all flagged fixes before presenting to the user.

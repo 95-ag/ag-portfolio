@@ -83,6 +83,21 @@ Tiers 2 and 3 are unavailable. Apply these constraints:
 
 ---
 
+## Numeric claims require visible support
+
+When a specific count is stated (e.g. "14 implementation bugs", "3 datasets", "5 ablation
+runs"), the body must provide traceable support:
+
+- Number or categorize the listed items so the count is verifiable
+- If not all items are enumerated, explicitly acknowledge the gap ("The five most
+  significant — the remaining nine covered…")
+
+Never state a count and then explain fewer items without acknowledging the discrepancy.
+The count itself carries credibility when it reflects rigorous work — do not remove it.
+Do not let it become ungrounded.
+
+---
+
 ## Common drift patterns to avoid
 
 These are the most common credibility failures in portfolio content:

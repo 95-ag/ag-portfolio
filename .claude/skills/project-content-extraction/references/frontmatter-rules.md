@@ -12,7 +12,7 @@ Build fails if any of these are missing or invalid.
 | Field | Type | Constraint | Notes |
 |---|---|---|---|
 | `title` | string | non-empty | Prefer recruiter-readable, action-led; use paper title only if it's already compelling |
-| `summary` | string | max 200 chars | One sentence, specific metric, honest framing |
+| `summary` | string | max 200 chars | One sentence, specific metric, honest framing. **Primary text on project cards — write for scannability, not long-form readability. Include the headline metric.** |
 | `projectType` | enum | `academic` \| `freelance` \| `personal` | Drives sort and display; never shown as a badge |
 | `publishedAt` | string | `YYYY-MM-DD` format | ISO 8601 date |
 | `order` | number | any number | Lower = earlier in lists; ties broken by publishedAt desc |
@@ -35,17 +35,19 @@ Missing optional fields render nothing — never use placeholders or "TBD".
 
 | Field | Notes |
 |---|---|
-| `subtitle` | Long descriptive title; renders below `title` in the page header |
-| `links.github` | Full URL; confirm with user before publishing |
-| `links.paper` | Can be a relative path (e.g., `/projects/<slug>/paper.pdf`) |
-| `links.demo` | Full URL |
-| `links.presentation` | Full URL or relative path |
+| `subtitle` | Long descriptive title; renders below `title` in the project page header only — not on cards. Write for long-form readability, not scannability. |
+| `links.github` | Full URL; confirm with user before publishing. Renders as "Code" + GitHubIcon |
+| `links.paper` | External URL to a published academic work. Renders as "Paper" + ArticleIcon |
+| `links.report` | Relative path to a self-hosted PDF (e.g. `/projects/<slug>/report.pdf`). Renders as "Report" + DescriptionIcon |
+| `links.presentation` | Full URL or relative path to slides. Renders as "Slides" + SlideshowIcon |
+| `links.demo` | Full URL. Renders as "Demo" + DeployedCodeIcon |
 | `featured` | `true` / `false`; default false; max 3 featured projects site-wide |
 | `logos` | Array of `{src, alt}`; `src` must start with `/`; only with confirmed brand permission |
 | `contributors` | Array of `{name, avatar, url?}`; `avatar` must start with `/` |
 | `ogImage` | Falls back to `heroImage` if omitted |
 | `metaDescription` | Max 160 chars; falls back to `summary` if omitted |
-| `relatedProjects` | Array of slugs; validated at build — slugs must exist |
+| `relatedProjects` | Array of slugs; validated at build — slugs must exist. **Not rendered by any component as of Phase 6 — omit unless the component is built.** |
+| `publishedAt` | **Not rendered in any visible UI component as of Phase 6.** Metadata only — do not optimize for display. |
 
 ---
 
