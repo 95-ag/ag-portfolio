@@ -22,28 +22,24 @@ stack:
   tools: [Git, Linux, Anaconda, TensorBoard]
 overview:
   problem: |
-    Lane localization — refining detected lane positions toward ground truth —
-    is critical for Lane Keep Assist in autonomous vehicles. CV-based detection
-    is fast but imprecise under occlusion, variable lighting, and curved roads.
-    The project investigated whether a Deep Q-Learning agent could correct
-    detected positions post-hoc, adjusting each lane point iteratively without
+    Lane Keep Assist systems need precise lane positions in real time. CV-based
+    detection is fast but imprecise. This project tested whether a reinforcement
+    learning agent could refine detected lane positions post-hoc — without
     retraining the detector.
   built: |
-    A two-stage pipeline: a CV detector feeds detected positions to a D-DQN
-    agent that refines them point by point. A parallel experiment extended the
-    agent to manipulate Bézier curve control points as an alternative
-    representation. The reference implementation was reproduced from scratch,
-    audited against the paper, and 14 implementation errors corrected before
-    experiments began.
+    Reproduced a published DQL lane localization pipeline from scratch, audited
+    14 implementation errors, repaired the codebase, and ran a multi-configuration
+    experiment. A parallel experiment tested Bézier curve control points as an
+    alternative lane representation.
   results:
-    - "Best DQL localizer (ResNet-50 extractor, no history): acc 0.892 — below the CV detector baseline of 0.900"
-    - "Bézier curve localizer: acc 0.783, FPR 0.452 — worst performer across all configurations"
-    - "DQL localization consistently degraded accuracy vs initial CV detection; the hypothesis was not supported"
+    - "Best DQL localizer: acc 0.892 — below the CV detector baseline of 0.900"
+    - "Bézier curve localizer: acc 0.783 — worst performer across all configurations"
+    - "DQL localization degraded accuracy in every configuration; the hypothesis was not supported"
   transferableSkills:
-    - Systematic reproduction and audit of published research implementations at the code level
-    - End-to-end ML training pipeline design — reward engineering, architecture selection, training loop
-    - Multi-configuration experimental design and honest negative-result analysis
-    - Extending a research baseline with a novel representation and evaluating it against a shared benchmark
+    - Reproducing and auditing published research implementations at the code level
+    - Designing controlled multi-configuration experiments and interpreting results honestly
+    - Communicating rigorous negative results with clear scope and actionable next steps
+    - Evaluating a system against a published baseline and drawing defensible conclusions from ambiguous evidence
 links:
   paper: "https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-346213"
   presentation: "/projects/dqn-lane-localization/defense.pdf"
@@ -56,21 +52,17 @@ logos:
 
 ## Detailed Problem
 
-Lane Keep Assist (LKA) systems rely on accurate lane position estimates delivered in real time. The detection step — identifying where lanes are in an image — has improved significantly with deep learning, but detection alone is not sufficient: detected positions still contain noise, and small errors in lane localization translate directly into incorrect steering control.
-
-Post-processing the detected lanes through a localization step is the natural solution. A prior two-stage approach frames this as a sequential decision problem: a Deep Q-Learning (DQL) agent takes the initially detected lane position and a local image crop, then moves the detection iteratively until it reaches a termination point near the ground truth. This is an attractive hypothesis because it decouples refinement from detection, and DQL's iterative nature should allow the agent to handle cases where one-shot detection fails — occlusions, ambiguous markings, curved lanes.
-
-The study's central question was whether this hypothesis holds in practice, and specifically whether operating on Bézier curve parameters rather than individual points would improve localization by providing a more compact, noise-robust representation for the agent.
+The study's central question: does a DQL agent applied post-detection improve localization accuracy in practice? And does a Bézier curve representation — replacing 50 sequential point decisions with 3 control points — outperform the point-by-point approach?
 
 The operational environment adds constraints: experiments ran on a single NVIDIA Quadro RTX 4000 (8 GB VRAM), time for hyperparameter tuning was limited, and the reference implementation contained undocumented bugs that had to be diagnosed before any results were interpretable.
 
 ## Background
 
-The two-stage detection-and-localization framing separates a hard problem into two tractable ones. The detection stage outputs approximate bounding boxes around each lane. The localization stage refines those detections to precise landmark positions.
+A two-stage detection-and-localization pipeline separates a hard problem into two tractable ones: a detector finds approximate lane positions; a localizer refines those positions toward ground truth. The localizer operates independently of the detector — it takes detected positions as input and adjusts them without retraining the upstream model.
 
-The localization stage is formulated as a game: the agent controls a single landmark point, selects from four actions (move left, move right, delete, terminate), and receives a reward based on whether the move brought the point closer to or further from the ground truth. The agent's state is the current landmark position concatenated with features extracted from a local image crop around the current position.
+The localization stage is formulated as a sequential decision problem. The agent controls one detected point at a time, choosing from four discrete moves, and receives rewards based on whether each move brings the point closer to or further from the ground truth position. The agent must learn when to stop — terminating too early or too late both degrade accuracy.
 
-The hypothesis motivating curve extension: operating on individual points makes the problem unnecessarily high-dimensional. A lane with 50 detected points requires the agent to iterate over all 50 sequentially; replacing them with 3 Bézier control points reduces the representation to 3 positions while preserving the lane's geometric shape. This should reduce the agent's action space and focus learning on the curve's curvature parameters rather than individual noisy point adjustments.
+The Bézier extension targets the core scaling problem: a lane with 50 detected points requires 50 sequential agent decisions. Replacing those with 3 Bézier curve control points reduces the representation while preserving lane geometry, collapsing decision count and potentially improving noise robustness. This is the experimental hypothesis for the curve variant.
 
 ## Architecture
 
@@ -83,14 +75,9 @@ The pipeline has three software modules operating in sequence.
   aspect="800/220"
 />
 
-**Lane Detector** — CV-based using OpenCV's `findContours` with Hough Transform. The detector outputs a bounding box around each lane, which is cropped and passed to the localizer. The slope of the predicted lane serves as the initialization for localization. (An alternative DL-based detection path exists in the code but was not the focus of this study.)
+**Lane Detector** — CV-based using OpenCV's `findContours` with Hough Transform. Outputs a bounding box per lane; the crop and initial slope serve as the localizer's starting state.
 
-**Lane Localizer** — The core DQL module. Two agent classes implement the localization game:
-
-- `PointAgent`: controls a single landmark point; 4 actions; operates across all lane points sequentially
-- `CurveAgent`: controls the curvature control points of a 3-point Bézier curve; 9 actions (2D directional moves + terminate)
-
-Both agents share the same underlying DQN architecture: a pretrained ResNet-50 feature extractor (frozen) followed by two FC layers, with a final output layer matching the action count. The image input is resized to 224×224 to satisfy ResNet-50's minimum input size.
+**Lane Localizer** — The core DQL module. Two agent classes implement the localization game: `PointAgent` (operates on individual detected points) and `CurveAgent` (operates on Bézier curve control points). Both share the same DQN architecture: a pretrained ResNet-50 feature extractor (frozen) followed by two FC layers. The image input is resized to 224×224.
 
 <Diagram
   src="/projects/dqn-lane-localization/dqn-architecture.svg"
@@ -103,29 +90,29 @@ Both agents share the same underlying DQN architecture: a pretrained ResNet-50 f
 
 ## Data
 
-TuSimple is a highway driving dataset of 6,408 images at 1280×720 resolution, split into 3,626 training, 358 validation, and 2,782 test images. Lanes are annotated as sequences of x-coordinate positions at fixed y intervals. The dataset is predominantly straight highway lanes — a property that turned out to matter for the curve localizer results, discussed in [Results](#results).
+TuSimple is a highway driving dataset of 6,408 images at 1280×720 resolution, split into 3,626 training, 358 validation, and 2,782 test images. Lanes are annotated as sequences of x-coordinate positions at fixed y intervals. The dataset is predominantly straight highway lanes — a characteristic that becomes relevant when evaluating the curve localizer in Results.
 
 For DQL training, each lane in the dataset is processed into a labeled crop: the detector identifies the lane region, the crop is resized to 224×224, and the localization game is run on the resulting image with the detected point positions as the initial state. Batch size is 1 (one lane crop per training step), consistent with the online nature of RL training.
+
+Before experiments could run, the reference implementation required systematic audit. The decisions below cover what was corrected, what was upgraded, and why.
 
 ## Engineering Decisions
 
 ### Diagnosing 14 implementation bugs in the reference code
 
-Before any experiments could be trusted, the reference implementation had to be audited. Examining the codebase against the paper description revealed 14 discrepancies. The five most structurally significant — numbered here because three of them were present only in the code, not described in the paper:
+A line-by-line audit of the codebase against the paper description found 14 discrepancies. The five most structurally significant — three of which appear only in the code, not the paper:
 
-1. **Incorrect Bellman's equation** — Q-values were updated using the best *action* rather than the Q-value *corresponding to* the best action. The network was trained toward incorrect targets throughout.
-2. **MSE loss applied to the wrong quantity** — Loss was computed as the difference between Q-values rather than between predicted and target Q-values. The paper describes standard MSE; the code implements something different.
-3. **No exploration** — Epsilon-greedy was not implemented. The agent always exploited its current (untrained) estimates, preventing it from learning from diverse states during warm-up.
-4. **Manual termination** — Terminal actions were forced externally rather than learned, preventing the agent from discovering optimal stopping points.
-5. **Replay memory pre-filled at ε=1.0** — Pre-filling entirely with maximum-exploration actions populates the buffer with outdated, suboptimal experiences that persist through training.
+1. **Incorrect Bellman target** — Q-values updated using the best action index rather than the corresponding Q-value; the network trained toward wrong targets throughout.
+2. **MSE on the wrong quantity** — loss computed as Q-value difference rather than predicted-vs-target; not the MSE described in the paper.
+3. **No exploration** — epsilon-greedy absent; the agent always exploited untrained estimates during warm-up.
+4. **Manual termination** — terminal actions forced externally rather than learned; optimal stopping was never discovered.
+5. **Replay buffer pre-filled at ε=1.0** — maximum-exploration actions dominate the buffer from the start, injecting outdated experiences that persist through training.
 
-Issues 1, 2, and 5 were not described in the paper — they appear only in the code. The remaining nine issues covered data preprocessing errors and additional Q-value calculation problems. The corrected implementation diverges substantially from the published methodology while preserving the core DQL localization framing.
+The remaining nine issues covered data preprocessing errors and additional Q-value calculation problems. Together, the 14 discrepancies meant no results from the original codebase were interpretable — the corrected implementation diverges substantially from the published methodology while preserving the core framing.
 
 ### Switching to D-DQN with prioritized experience replay
 
-After fixing the base bugs, the single-network variant was replaced with Double Deep Q-Network (D-DQN). D-DQN separates the action-selection network (policy network, updated every step) from the value-estimation network (target network, updated with soft updates at τ=0.005). This reduces Q-value overestimation, which is especially important in dense lane prediction tasks where the reward signal is noisy and correlated.
-
-Prioritized experience replay was added to weight high-TD-error transitions more heavily during sampling, ensuring the agent revisits transitions where it made the most incorrect predictions. Combined with D-DQN, this brought the validation Hit-Rate from 0.298 (D-DQN with MSE) to 0.614 (D-DQN + SmoothL1 + prioritized replay + soft updates) — the best the modified point localizer achieved before switching to the full ResNet-50 extractor.
+After fixing the base bugs, the single-network DQN was replaced with Double Deep Q-Network (D-DQN) and prioritized experience replay. D-DQN reduces Q-value overestimation by separating action selection from value estimation; prioritized replay ensures the agent revisits its highest-error transitions. Together, these brought validation Hit-Rate from 0.298 to 0.614 — the best the corrected point localizer reached before the ResNet-50 extractor was introduced.
 
 ### Replacing the inbuilt feature extractor with ResNet-50
 
@@ -150,6 +137,8 @@ Rewards are distance-based: a regular move earns +1 if it reduced pixel distance
 The `CurveAgent` replaces individual points with a 3-control-point Bézier curve. Lane points are converted to Bézier control points before the game; after each move, the control points are rendered back to lane points for distance computation against the ground truth (which remains in point format). The start and end control points are fixed; only the curvature control point is moved.
 
 The 9-action space covers 2D directional moves (diagonal and cardinal directions at 20-pixel steps) plus terminate. The goal distance threshold is relaxed to 25 pixels to account for the coarser representation.
+
+Hit-Rate — the fraction of detected points already within the goal threshold before any agent action — is the primary training metric. It measures how many points the agent successfully localizes without degrading the initial detection.
 
 <Diagram
   src="/projects/dqn-lane-localization/training-curves.svg"
@@ -176,7 +165,7 @@ All experiments used Adam (lr=1e-4, weight_decay=5e-4), discount factor γ=0.9, 
 | Point Localizer (ResNet-50, 8-frame history) | 0.612 | 0.888 | 0.245 | 0.233 |
 | Bézier Curve Localizer | 0.590 | 0.783 | 0.452 | 0.446 |
 
-The best configuration — ResNet-50 extractor without history — reached acc 0.892. The CV detector baseline is 0.900. The localization step degraded accuracy by approximately 1pp on this metric, while FPR and FNR remained similar to the baseline. Every other configuration degraded accuracy more severely.
+The localization step degraded accuracy by approximately 1pp in the best case, while FPR and FNR remained similar to the baseline. Every other configuration degraded accuracy more severely.
 
 ### Why the point localizer underperformed
 
@@ -186,9 +175,9 @@ One structural reason: the DQL agent operates on one point at a time, without a 
 
 ### Why the curve localizer underperformed further
 
-The Bézier curve localizer stagnated in training — the validation Hit-Rate showed no improvement after the initial steps. The most likely cause: lanes in TuSimple are predominantly straight, so the initialization curve (a straight line connecting the detected endpoint positions) is already a close approximation of the ground truth. The agent learned to terminate quickly without adjusting curvature. In effect, the curve representation provided no advantage on a dataset where straight-line initialization is already near-optimal, while the expanded 9-action space made exploration harder.
+The Bézier curve localizer stagnated in training — the validation Hit-Rate showed no improvement after the initial steps. The most likely cause: lanes in TuSimple are predominantly straight, so the initialization curve (a straight line connecting the detected endpoint positions) is already a close approximation of the ground truth. The agent appears to have learned to terminate quickly without adjusting curvature — in effect providing no advantage on a dataset where straight-line initialization is already near-optimal, while the expanded 9-action space made exploration harder.
 
-Visualizations confirmed this: predicted curves appeared as straight lines across nearly all test cases, regardless of ground truth curvature.
+Visualizations are consistent with this interpretation: predicted curves appeared as straight lines across nearly all test cases, regardless of ground truth curvature.
 
 <Diagram
   src="/projects/dqn-lane-localization/lane-visualization.svg"
@@ -203,13 +192,9 @@ Visualizations confirmed this: predicted curves appeared as straight lines acros
   100,000 training steps on a single RTX 4000 with image processing at 224×224 limited the number of configurations tested. Extensive hyperparameter tuning was not feasible. The results establish whether the approach works under standard settings, not whether it could work with significant tuning.
 </Callout>
 
-**TuSimple's lane distribution limits curve evaluation.** TuSimple is a highway dataset with predominantly straight lanes. The curve localizer was designed to handle curved lanes; testing it primarily on straight lanes means the hypothesis (curves help with curvature) was not fully tested. CULane, which includes urban and curved scenarios, would be a more appropriate evaluation dataset.
+**The curve hypothesis was not tested on representative data.** TuSimple's straight-lane dominance means the Bézier experiment cannot confirm or refute whether curve-based localization helps on curved lanes — only that it doesn't help where straight-line initialization is already near-optimal. CULane, which includes urban and curved scenarios, would be a more appropriate dataset.
 
-**The action granularity was not tuned per dataset.** Both the 5-pixel point step and the 20-pixel curve step were adapted from the reference paper or set by heuristic. The optimal step size depends on image resolution and lane geometry — neither was systematically investigated.
-
-**History frames did not help; normalization was not applied.** The standard practice in DQL implementations is to normalize Q-values and action values before feeding them into the history vector. This was not done here. The marginally worse performance of the 8-frame history configuration (acc 0.888 vs 0.892) likely reflects training instability from unnormalized inputs, not a fundamental problem with temporal history.
-
-**DQL may not suit dense sequential localization.** The core structural challenge is that DQL was designed for sparse decision problems (one action per global state) and is being applied here to dense sequential prediction (one action per lane point, repeated 50 times per lane). This mismatch may be more fundamental than any implementation detail.
+**DQL may not suit dense sequential localization.** DQL was designed for sparse decision problems — one action per global state. Applying it to dense sequential prediction — one action per lane point, repeated up to 50 times per lane — creates a structural mismatch that no hyperparameter choice fully resolves. Whether this is addressable within the DQL framing or requires a different algorithm class is an open question.
 
 ## Next Steps
 
@@ -218,7 +203,7 @@ The results suggest the framing matters as much as the algorithm. Several concre
 - **Evaluate on CULane or custom curved-lane datasets.** TuSimple's straight-lane dominance makes curve localization hard to evaluate fairly. A dataset with more curved lanes would test whether the Bézier hypothesis holds where it was intended to.
 - **Global lane action space.** Rather than one decision per point, train an agent to output adjustments for all lane points in a single step. This removes the compounding error from sequential per-point decisions and gives the agent a holistic view of the lane.
 - **Reduce the point-per-lane count before training.** Thinning from 50 points to 6–8 representative positions would reduce sequential decisions per lane, allowing the agent to process more lanes within the same step budget.
-- **Normalize action history inputs.** Standard DQL practice; likely to stabilize the history-enabled configuration and allow a fairer test of temporal context.
+- **Normalize action history inputs and re-test temporal context.** The 8-frame history variant was not trained with normalized inputs — a standard requirement. A fairer test may show temporal context helps.
 - **Explore policy gradient methods.** Algorithms like PPO handle continuous action spaces and can optimize over a sequence of moves jointly, which may better match the lane localization problem structure than per-point DQL.
 
 The fundamental question — whether a learned post-processing agent can improve on one-shot lane detection without retraining the detector — remains open. This study establishes what doesn't work with point-by-point DQL on TuSimple; it doesn't rule out the broader approach.
