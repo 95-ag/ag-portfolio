@@ -32,6 +32,8 @@ Append-only. Each entry: the rule, why it exists, how to apply it.
 
 **`tasks.md` must exist before the first file write.** Plan approved → write `tasks.md` → mark first task in_progress → then edit files. This rule has been violated four times.
 
+**Propose commit clusters in chat and wait for approval before touching the index.** Staging or committing without a proposal is a process violation. This rule has been violated two times.
+
 ---
 
 ## Task and session discipline
