@@ -58,7 +58,7 @@ Match the `src=` path in the MDX component exactly — filenames drive the MDX r
 
 **Generation command (exact):**
 ```
-mmdc -i assets-source/mermaid/<slug>/<name>.mmd -o public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json
+npx mmdc -i assets-source/mermaid/<slug>/<name>.mmd -o public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json
 ```
 
 **Rules:**

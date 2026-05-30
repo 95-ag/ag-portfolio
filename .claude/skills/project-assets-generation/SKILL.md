@@ -137,7 +137,7 @@ framing worse under the assumption you are making it better.
 
 **Mermaid diagrams:**
 1. Write `.mmd` source to `assets-source/mermaid/<slug>/<name>.mmd` — no `%%{init}%%` blocks
-2. Run: `mmdc -i <source>.mmd -o /public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json`
+2. Run: `npx mmdc -i <source>.mmd -o /public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json`
 
 **matplotlib charts:**
 1. Write Python script to `assets-source/matplotlib/<slug>/<name>.py`
