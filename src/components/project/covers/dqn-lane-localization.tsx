@@ -119,13 +119,15 @@ export function DqnLaneLocalizationCover() {
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* ── Scene bands (neutral surface tokens) ── */}
-        {/* Sky */}
+        {/* Sky — tag tone nudged toward --on-surface (near-neutral, theme-flipping):
+            darker than the card (--surface-raised) in light, lighter than it in dark,
+            and distinct from the --surface-tag ground band — without a green cast. */}
         <rect
           x="0"
           y="0"
           width="1200"
           height={VP_Y}
-          fill="var(--surface-raised)"
+          fill="color-mix(in srgb, var(--surface-tag) 90%, var(--on-surface))"
         />
         {/* Roadside ground */}
         <rect
@@ -193,6 +195,58 @@ export function DqnLaneLocalizationCover() {
             fill="var(--accent)"
           />
         ))}
+
+        {/* ── ANNOTATION (Caveat, accent) — the headline negative result. Text sits in
+              the open ground on the LEFT (vertical middle); a curved arrow sweeps to the
+              gap between the truth lane and the predicted dots near the mid-bottom. ── */}
+        <text
+          x={256}
+          y={330}
+          textAnchor="middle"
+          style={{ fontFamily: "var(--font-caveat)" }}
+          fontSize={28}
+          fill="var(--accent)"
+        >
+          localized acc 0.892
+        </text>
+        <text
+          x={256}
+          y={360}
+          textAnchor="middle"
+          style={{ fontFamily: "var(--font-caveat)" }}
+          fontSize={28}
+          fill="var(--accent)"
+        >
+          worse than baseline 0.900
+        </text>
+        {/* Arrow: from the text's CENTER-bottom, a pronounced curve down to a point
+            just OUTSIDE (left of) the truth lane at ~(472,556); the truth circle there
+            is at x≈495. Path stops 8px before the arrowhead tip. */}
+        <path
+          d="M 256,376 C 300,460 380,540 464,555"
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <line
+          x1="472"
+          y1="556"
+          x2="462"
+          y2="550"
+          stroke="var(--accent)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <line
+          x1="472"
+          y1="556"
+          x2="461"
+          y2="561"
+          stroke="var(--accent)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
       </svg>
     </div>
   );
