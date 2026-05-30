@@ -48,7 +48,10 @@ export const ProjectFrontmatterSchema = z
     projectType: z.enum(["academic", "freelance", "personal"]),
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     order: z.number(),
-    heroImage: z.string().startsWith("/"),
+    // Hero is satisfied by EITHER a registered live cover component (preferred) OR a
+    // static heroImage (image or video). heroImage is optional here; the content loader
+    // fails the build if a project has neither a live cover nor a heroImage.
+    heroImage: z.string().startsWith("/").optional(),
     heroAlt: z.string().min(1),
     heroPoster: z.string().startsWith("/").optional(),
     heroVideoLoop: z.boolean().optional().default(true),
@@ -63,9 +66,12 @@ export const ProjectFrontmatterSchema = z
     metaDescription: z.string().max(160).optional(),
     relatedProjects: z.array(z.string()).optional(),
   })
-  .refine((data) => !isVideo(data.heroImage) || !!data.heroPoster, {
-    message: "heroPoster is required when heroImage is a video",
-    path: ["heroPoster"],
-  });
+  .refine(
+    (data) => !data.heroImage || !isVideo(data.heroImage) || !!data.heroPoster,
+    {
+      message: "heroPoster is required when heroImage is a video",
+      path: ["heroPoster"],
+    },
+  );
 
 export type ProjectFrontmatter = z.infer<typeof ProjectFrontmatterSchema>;

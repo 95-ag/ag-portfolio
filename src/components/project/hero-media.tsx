@@ -2,7 +2,7 @@ import Image from "next/image";
 import { coverComponents } from "./covers";
 
 interface HeroMediaProps {
-  src: string;
+  src?: string;
   alt: string;
   poster?: string;
   loop?: boolean;
@@ -28,6 +28,9 @@ export function HeroMedia({
     const CoverComponent = coverComponents[slug];
     return <CoverComponent />;
   }
+
+  // No live cover → a heroImage is guaranteed by the content loader's hero check.
+  if (!src) return null;
 
   if (isVideo(src)) {
     return (

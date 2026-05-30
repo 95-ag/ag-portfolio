@@ -27,14 +27,14 @@ export function HeroMetaOverlay({
   if (!hasLogos && !hasContributors) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--spacing-md)]">
+    <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--spacing-sm)] md:p-[var(--spacing-md)]">
       {/* Bottom-left: logos */}
       {hasLogos ? (
-        <div className="pointer-events-auto flex items-center gap-[var(--spacing-sm)]">
+        <div className="pointer-events-auto flex items-center gap-[var(--spacing-xs)] md:gap-[var(--spacing-sm)]">
           {logos.map((logo) => (
             <div
               key={logo.src}
-              className="relative h-10 w-10 overflow-hidden rounded-full border border-[var(--outline-variant)] bg-white"
+              className="relative h-8 w-8 overflow-hidden rounded-full border border-[var(--outline-variant)] bg-white md:h-10 md:w-10"
             >
               <Image
                 src={logo.src}
@@ -61,7 +61,7 @@ export function HeroMetaOverlay({
                 alt={c.name}
                 width={24}
                 height={24}
-                className="h-6 w-6 rounded-full border border-[var(--outline-variant)] object-cover"
+                className="h-5 w-5 rounded-full border border-[var(--outline-variant)] object-cover md:h-6 md:w-6"
                 style={{ marginLeft: i > 0 ? "-6px" : undefined }}
                 unoptimized={c.avatar.endsWith(".svg")}
               />
