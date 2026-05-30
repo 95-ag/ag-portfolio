@@ -1,6 +1,8 @@
 import { GitHubIcon } from "@/components/icons/brands/github";
+import { ArticleIcon } from "@/components/icons/material/article";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
+import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Tag } from "@/components/ui/tag";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
@@ -14,7 +16,7 @@ const LINK_META: Record<
   { label: string; Icon: () => React.ReactElement }
 > = {
   github: {
-    label: "GitHub",
+    label: "Code",
     Icon: () => <GitHubIcon size={16} />,
   },
   demo: {
@@ -23,7 +25,15 @@ const LINK_META: Record<
   },
   paper: {
     label: "Paper",
+    Icon: () => <ArticleIcon size={16} />,
+  },
+  report: {
+    label: "Report",
     Icon: () => <DescriptionIcon size={16} />,
+  },
+  presentation: {
+    label: "Slides",
+    Icon: () => <SlideshowIcon size={16} />,
   },
 };
 

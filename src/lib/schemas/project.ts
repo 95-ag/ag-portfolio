@@ -20,6 +20,7 @@ const LinksSchema = z
     github: z.string().url().optional(),
     demo: z.string().url().optional(),
     paper: z.string().optional(),
+    report: z.string().optional(),
     presentation: z.string().optional(),
   })
   .optional();
