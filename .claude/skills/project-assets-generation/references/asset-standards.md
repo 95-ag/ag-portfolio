@@ -137,6 +137,9 @@ Before committing any asset:
 - [ ] Source file retained in `assets-source/`
 - [ ] No embedded raster graphics inside SVGs where vector would work
 - [ ] Aspect ratio in MDX `aspect` prop matches actual pixel dimensions
+- [ ] **Resampling filter correct** — LANCZOS for charts/plots (smooth lines); NEAREST for
+  pixel-level overlays (hard edges). Do not upscale small rasters past readability.
+  For full legacy-crop guidance see `references/asset-procedure.md` — Legacy Crop Craft.
 
 ---
 
