@@ -3,23 +3,27 @@
 > Plan: `.claude/plans/transient-doodling-forest.md`
 > Pipeline state, locked decisions, sources, resume steps → `session.md`
 > Tick each subtask when done. Stage gate = approval in chat before advancing.
+>
+> **To resume after context reset:** say "continue the pipeline" — session.md + tasks.md
+> are auto-loaded; Claude finds the first unchecked subtask and continues from there.
 
 ## Active project: `dqn-lane-localization`
 
-### Stage 1 — `project-content-extraction`
+### Stage 1 — `project-content-extraction` ✓ COMPLETE (approved 2026-05-30)
 
-- [ ] Place hero.svg placeholder in `public/projects/dqn-lane-localization/`
-- [ ] Copy `kth-logo.svg` from `model-extraction-attacks/`
-- [ ] Source Scania logo SVG and place, or confirm omit
-- [ ] Copy defense PDF to `public/projects/dqn-lane-localization/defense.pdf`
-- [ ] Write frontmatter (all required fields; build-fail conditions checked)
-- [ ] Write body (H2 spine: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps)
-- [ ] Density reduction pass (prose tables, redundant figures, list cleanup)
-- [ ] `biome check` passes
-- [ ] `npm run build` passes; page renders at `/work/dqn-lane-localization`
-- [ ] **Gate: user approves MDX** ← do not advance until approved
+- [x] Place hero.svg placeholder in `public/projects/dqn-lane-localization/`
+- [x] Copy `kth-logo.svg` from `model-extraction-attacks/`
+- [x] Source Scania logo SVG and place, or confirm omit
+- [x] Copy defense PDF to `public/projects/dqn-lane-localization/defense.pdf`
+- [x] Write frontmatter (all required fields; build-fail conditions checked)
+- [x] Write body (H2 spine: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps)
+- [x] Density reduction pass (prose tables, redundant figures, list cleanup)
+- [x] Reader Review pass (subagent) — all findings resolved
+- [x] `npm run build` passes; page renders at `/work/dqn-lane-localization`
+- [x] Extraction skill updated with Stage 1 learnings; extraction-notes merged and deleted
+- [x] **Gate: user approved MDX** ← 2026-05-30
 
-### Stage 2 — `project-assets-generation` (blocked on Stage 1 gate)
+### Stage 2 — `project-assets-generation` (awaiting signal to start)
 
 - [ ] Invoke `project-assets-generation` skill; read its SKILL.md + references first
 - [ ] Generate each required diagram/chart (one tick per asset)

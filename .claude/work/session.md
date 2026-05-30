@@ -20,7 +20,7 @@ All 4 pipeline skills are frozen and audited.
 **`dqn-lane-localization`** — master's thesis *"Deep Q-Learning for Lane Localization"*
 (KTH / Scania, 2024). Rigorous **negative-result** project.
 
-**Current stage: Stage 1 (`project-content-extraction`) — planning, awaiting approval.**
+**Current stage: Stage 2 (`project-assets-generation`) — NOT STARTED. Awaiting signal to begin.**
 
 ---
 
@@ -69,8 +69,8 @@ repo/config = authoritative for frameworks, hyperparameters, file structure.
 
 | # | Stage (skill) | Status | Output artifact | Gate | Depends on |
 |---|---|---|---|---|---|
-| 1 | `project-content-extraction` | **in progress** | `content/projects/dqn-lane-localization.mdx` + prereq build assets | user approves MDX | — |
-| 2 | `project-assets-generation` | blocked | diagrams/charts in `public/projects/…` + `assets-source/…` | user approves assets | 1 |
+| 1 | `project-content-extraction` | **complete** ✓ | `content/projects/dqn-lane-localization.mdx` + prereq build assets | approved 2026-05-30 | — |
+| 2 | `project-assets-generation` | **not started** | diagrams/charts in `public/projects/…` + `assets-source/…` | user approves assets | 1 |
 | 3 | `project-cover-generation` | blocked | hero cover (3-gate) + updated `heroImage` | user approves cover | 2 |
 | 4 | `project-review` | blocked | QA findings + fixes, final sign-off | user approves | 3 |
 
@@ -92,7 +92,7 @@ Stages 2–4 generate their own execution plans when their skill is invoked — 
 
 ## Blockers
 
-None.
+None. Stage 2 awaiting start signal.
 
 ## Standing Deviations from PRODUCT.md
 
