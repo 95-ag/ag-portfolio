@@ -68,22 +68,16 @@ The Bézier extension targets the core scaling problem: a lane with 50 detected 
 
 The pipeline has three software modules operating in sequence.
 
-<Diagram
-  src="/projects/dqn-lane-localization/system-architecture.svg"
-  alt="Three-module pipeline: Lane Detector feeds cropped lane images to the Lane Localizer, whose refined predictions are passed to the Lane Evaluator for TuSimple metric computation."
-  caption="System architecture. The detector produces initial lane crops; the localizer refines them via DQL; the evaluator scores against TuSimple ground truth."
-  aspect="800/220"
-/>
-
 **Lane Detector** — CV-based using OpenCV's `findContours` with Hough Transform. Outputs a bounding box per lane; the crop and initial slope serve as the localizer's starting state.
 
 **Lane Localizer** — The core DQL module. Two agent classes implement the localization game: `PointAgent` (operates on individual detected points) and `CurveAgent` (operates on Bézier curve control points). Both share the same DQN architecture: a pretrained ResNet-50 feature extractor (frozen) followed by two FC layers. The image input is resized to 224×224.
 
 <Diagram
-  src="/projects/dqn-lane-localization/dqn-architecture.svg"
-  alt="DQN model architecture: ResNet-50 feature extractor feeds into FC(encoder_out→512), then concatenation with location vector, FC(concat→256), FC(256→4 or 9) action outputs."
-  caption="DQN architecture for the best-performing point localizer. The pretrained ResNet-50 encoder is frozen; only the FC layers are trained on the DQL task."
-  aspect="800/280"
+  src="/projects/dqn-lane-localization/model-architecture.png"
+  alt="Modified point-based localizer architecture: an inbuilt 5-layer CNN encoder feeds into FC1, which is concatenated with a location and action-history vector, then through FC2 and FC3 to produce action outputs."
+  caption="Modified localizer architecture (Fig 4.1). The inbuilt CNN encoder (top) was later replaced with a frozen pretrained ResNet-50 in the best-performing configuration; the FC decision layer structure remained the same."
+  aspect="1151/778"
+  width="narrow"
 />
 
 **Lane Evaluator** — A TuSimple-compatible evaluation module adapted from the dataset's official evaluation code. Computes accuracy, FPR (false positive rate — detected lanes where there are none), and FNR (false negative rate — missed lanes) by comparing reconstructed full-image lane predictions against ground truth.
@@ -93,6 +87,14 @@ The pipeline has three software modules operating in sequence.
 TuSimple is a highway driving dataset of 6,408 images at 1280×720 resolution, split into 3,626 training, 358 validation, and 2,782 test images. Lanes are annotated as sequences of x-coordinate positions at fixed y intervals. The dataset is predominantly straight highway lanes — a characteristic that becomes relevant when evaluating the curve localizer in Results.
 
 For DQL training, each lane in the dataset is processed into a labeled crop: the detector identifies the lane region, the crop is resized to 224×224, and the localization game is run on the resulting image with the detected point positions as the initial state. Batch size is 1 (one lane crop per training step), consistent with the online nature of RL training.
+
+<Diagram
+  src="/projects/dqn-lane-localization/tusimple-sample.png"
+  alt="Four-panel TuSimple dataset figure: (a) raw driving photo with green annotation dots overlaid, (b) annotation dot sequences per lane on black background, (c) continuous colored lane lines on black, (d) white-on-black wireframe of lane geometry."
+  caption="TuSimple annotation format (Fig 5.1). (a) Raw image with ground-truth points overlaid. (b) Annotation dots on black — each color is a separate lane sampled at fixed y-intervals; this sequence format is what the evaluation metric scores against. (c) Continuous lines rendered from the points; (d) wireframe. The straight-highway structure visible in (c) and (d) becomes a limiting factor for the curve experiment."
+  aspect="850/172"
+  width="wide"
+/>
 
 Before experiments could run, the reference implementation required systematic audit. The decisions below cover what was corrected, what was upgraded, and why.
 
@@ -132,6 +134,14 @@ The agent controls one landmark point at a time, iterating through all detected 
 
 Rewards are distance-based: a regular move earns +1 if it reduced pixel distance to ground truth and −1 otherwise. Terminal actions earn +3 if the final distance is within 5 pixels of ground truth, and −3 otherwise. Invalid actions earn −5. The negative terminal reward for landing outside the goal threshold is the key learning signal — it teaches the agent to localize accurately rather than simply terminate early.
 
+<Diagram
+  src="/projects/dqn-lane-localization/movement-history.png"
+  alt="Two side-by-side lane crops showing DQL agent movement histories: yellow-green circles trace the sequence of positions the agent visited on each lane, with a green circle marking the goal threshold region."
+  caption="DQL localization game in practice (Fig 5.4). Each circle marks a position the agent occupied; yellow-green traces earlier moves, green marks the goal threshold. The trajectories show the agent making multiple adjustment steps per point — with up to 50 points per lane, each wrong move compounds across the full lane reconstruction."
+  aspect="818/400"
+  width="narrow"
+/>
+
 ### Curve localization game
 
 The `CurveAgent` replaces individual points with a 3-control-point Bézier curve. Lane points are converted to Bézier control points before the game; after each move, the control points are rendered back to lane points for distance computation against the ground truth (which remains in point format). The start and end control points are fixed; only the curvature control point is moved.
@@ -139,13 +149,6 @@ The `CurveAgent` replaces individual points with a 3-control-point Bézier curve
 The 9-action space covers 2D directional moves (diagonal and cardinal directions at 20-pixel steps) plus terminate. The goal distance threshold is relaxed to 25 pixels to account for the coarser representation.
 
 Hit-Rate — the fraction of detected points already within the goal threshold before any agent action — is the primary training metric. It measures how many points the agent successfully localizes without degrading the initial detection.
-
-<Diagram
-  src="/projects/dqn-lane-localization/training-curves.svg"
-  alt="Three plots showing validation set Hit-Rate over 100,000 training steps for: point localizer with inbuilt extractor (unstable, peaks ~0.61), point localizer with ResNet-50 (stable, reaches ~0.63), and curve localizer (stagnates near initial value after first checkpoint)."
-  caption="Validation Hit-Rate over 100,000 training steps. The ResNet-50 point localizer converges most stably. The curve localizer stagnates after the initial steps and shows no learning trend."
-  aspect="800/320"
-/>
 
 ### Training configuration
 
@@ -167,6 +170,27 @@ All experiments used Adam (lr=1e-4, weight_decay=5e-4), discount factor γ=0.9, 
 
 The localization step degraded accuracy by approximately 1pp in the best case, while FPR and FNR remained similar to the baseline. Every other configuration degraded accuracy more severely.
 
+<DiagramRow
+  layout="2+1"
+  caption="Validation Hit-Rate over 100,000 training steps across three configurations. Left: inbuilt CNN extractor — noisy learning signal, peaks near 0.61. Right: ResNet-50 extractor — the no-history variant (blue) converges stably near 0.63; the 8-frame history variant (orange) crashes mid-training. Below: Bézier curve localizer — immediately reaches ~0.59 and stays flat for all 100,000 steps. The ResNet-50 no-history variant is the only configuration that learns consistently."
+>
+  <DiagramPanel
+    src="/projects/dqn-lane-localization/training-curve-0.png"
+    alt="Training curve for point localizer with inbuilt CNN extractor: single noisy green line rising from 0 to approximately 0.61 Hit-Rate over 100,000 training steps with high variance throughout."
+    aspect="1154/562"
+  />
+  <DiagramPanel
+    src="/projects/dqn-lane-localization/training-curve-1.png"
+    alt="Training curve for point localizer with ResNet-50 extractor: two lines — stable blue no-history variant converging near 0.63, and orange 8-frame history variant that rises then crashes to near 0 mid-training."
+    aspect="1154/557"
+  />
+  <DiagramPanel
+    src="/projects/dqn-lane-localization/training-curve-2.png"
+    alt="Training curve for Bézier curve localizer: single pink line immediately reaching approximately 0.59 and remaining completely flat across all 100,000 training steps with no upward trend."
+    aspect="1154/495"
+  />
+</DiagramRow>
+
 ### Why the point localizer underperformed
 
 The detect Hit-Rate (fraction of points already within the 5-pixel goal threshold before any agent action) was 0.731 in early experiments. The replicated base DQL reached a peak Hit-Rate of only 0.65 at 100,000 steps — worse than leaving the initial detection untouched. After all fixes, the best Hit-Rate reached 0.626. The localization game is not producing net improvement: some points are moved closer to ground truth, but others are moved further away, and the net effect is degradation.
@@ -180,10 +204,11 @@ The Bézier curve localizer stagnated in training — the validation Hit-Rate sh
 Visualizations are consistent with this interpretation: predicted curves appeared as straight lines across nearly all test cases, regardless of ground truth curvature.
 
 <Diagram
-  src="/projects/dqn-lane-localization/lane-visualization.svg"
-  alt="Four-panel lane visualization showing detected lanes (blue), ground truth (green), and localized predictions (red) for lanes 0-3. The localized predictions closely follow detected lanes rather than ground truth."
-  caption="Best point localizer output (ResNet-50, no history). Red: localized prediction. Green: ground truth. Blue: initial CV detection. The localizer's output closely tracks the initial detection rather than moving toward ground truth."
-  aspect="800/360"
+  src="/projects/dqn-lane-localization/full-road-reconstruction.png"
+  alt="Full highway road image showing four reconstructed lane predictions in blue and ground truth lane positions in bright green. The blue predicted lanes closely follow the initial CV detections rather than converging toward the green ground truth."
+  caption="Full road reconstruction from the point localizer. Green: ground truth. Blue: detected and localized lanes. The localized output closely tracks the initial detection — the DQL refinement step produced no net improvement."
+  aspect="16/9"
+  width="wide"
 />
 
 ## Constraints & Limitations
