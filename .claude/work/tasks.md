@@ -23,16 +23,18 @@
 - [x] Extraction skill updated with Stage 1 learnings; extraction-notes merged and deleted
 - [x] **Gate: user approved MDX** ← 2026-05-30
 
-### Stage 2 — `project-assets-generation` (awaiting signal to start)
+### Stage 2 — `project-assets-generation` ✓ COMPLETE (approved 2026-05-30)
 
-- [ ] Invoke `project-assets-generation` skill; read its SKILL.md + references first
-- [ ] Generate each required diagram/chart (one tick per asset)
-- [ ] Assets placed in `public/projects/dqn-lane-localization/` and `assets-source/`
-- [ ] MDX `<Diagram>`/`<Figure>` references updated to real asset paths
-- [ ] `npm run build` passes
-- [ ] **Gate: user approves assets** ← do not advance until approved
+- [x] Invoke `project-assets-generation` skill; read its SKILL.md + references first
+- [x] **Visual audit complete** — iterative review + CSS gap fix; commit clusters 1–4 approved 2026-05-30
+- [x] **Asset plan approved by user** — asset set finalized through audit cycle; commits approved 2026-05-30
+- [x] Generate / replace each asset per approved plan — 7 production assets committed (cluster 3)
+- [x] MDX `<Diagram>`/`<Figure>` references verified (paths, aspect ratios, alt text) — cluster 2
+- [x] `npm run build` passes
+- [x] **Capture skill extraction notes** — asset-notes cleaned; align into skill references ← DONE 2026-05-30
+- [x] **Gate: user approves assets** ← approved 2026-05-30
 
-### Stage 3 — `project-cover-generation` (blocked on Stage 2 gate)
+### Stage 3 — `project-cover-generation` ← NEXT
 
 - [ ] Invoke `project-cover-generation` skill; read its SKILL.md + references first
 - [ ] **Sub-gate 3a: directions approved**
