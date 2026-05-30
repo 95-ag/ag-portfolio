@@ -46,18 +46,19 @@ export function DiagramRow({
     <figure className={cn("my-[var(--spacing-2xl)] mx-auto w-full", className)}>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
         {isTwoPlusOne
-          ? childArray.map((child, i) =>
-              i === 2 ? (
+          ? childArray.map((child, i) => {
+              const key = (child as React.ReactElement).key ?? i;
+              return i === 2 ? (
                 <div
-                  key={i}
+                  key={key}
                   className="col-span-1 flex justify-center md:col-span-2"
                 >
                   <div className="w-full md:w-1/2">{child}</div>
                 </div>
               ) : (
                 child
-              ),
-            )
+              );
+            })
           : children}
       </div>
       {caption && (

@@ -2,8 +2,8 @@ import { GitHubIcon } from "@/components/icons/brands/github";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
-import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
+import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { Tag } from "@/components/ui/tag";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
