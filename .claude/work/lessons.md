@@ -25,6 +25,17 @@ Writing a lesson after a correction does nothing if it's never consulted. When s
 
 ---
 
+## 2026-05-30 — Never override system protections without explicit user approval
+
+**Never use `--break-system-packages`, `--force`, or similar override flags without user permission.**
+Exhaust safe alternatives first. If none work, explain why in chat and ask explicitly. Only proceed if the user approves.
+
+Safe alternatives (in order): `strings` (no install), `pip install --user`, project venv, throwaway venv at `/tmp`.
+
+**Why:** These flags can corrupt OS-level Python and break system tools. The protection exists for good reason.
+
+---
+
 ## 2026-05-28 — Workflow failures from "whats next" incident
 
 **Status questions are not task assignments.**

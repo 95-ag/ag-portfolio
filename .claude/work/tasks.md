@@ -1,41 +1,60 @@
-# Phase 6 — Project Content
+# Tasks — Phase 6
 
-## Active: project-review visual inspection upgrade
-> Plan: `.claude/plans/humming-crafting-kahn.md`
+> Plan: `.claude/plans/transient-doodling-forest.md`
+> Pipeline state, locked decisions, sources, resume steps → `session.md`
+> Tick each subtask when done. Stage gate = approval in chat before advancing.
 
-- [x] `SKILL.md` — update intro + Step 1, add Step 1.5 screenshot capture, update Step 2 + Step 3 + validation checklist
-- [x] `assets/reviewer-recruiter.md` — add VISUAL items 8–12 and output sub-block
-- [x] `assets/reviewer-technical.md` — add VISUAL items 11–15 and output sub-block
-- [x] `references/review-protocol.md` — update reviewer separation + scope-of-gate section
-- [x] Commit: `chore: add visual inspection pass to project-review reviewers`
+## Active project: `dqn-lane-localization`
+
+### Stage 1 — `project-content-extraction`
+
+- [ ] Place hero.svg placeholder in `public/projects/dqn-lane-localization/`
+- [ ] Copy `kth-logo.svg` from `model-extraction-attacks/`
+- [ ] Source Scania logo SVG and place, or confirm omit
+- [ ] Copy defense PDF to `public/projects/dqn-lane-localization/defense.pdf`
+- [ ] Write frontmatter (all required fields; build-fail conditions checked)
+- [ ] Write body (H2 spine: Detailed Problem → Background → Architecture → Data → Engineering Decisions → Algorithm & Training Design → Results → Constraints & Limitations → Next Steps)
+- [ ] Density reduction pass (prose tables, redundant figures, list cleanup)
+- [ ] `biome check` passes
+- [ ] `npm run build` passes; page renders at `/work/dqn-lane-localization`
+- [ ] **Gate: user approves MDX** ← do not advance until approved
+
+### Stage 2 — `project-assets-generation` (blocked on Stage 1 gate)
+
+- [ ] Invoke `project-assets-generation` skill; read its SKILL.md + references first
+- [ ] Generate each required diagram/chart (one tick per asset)
+- [ ] Assets placed in `public/projects/dqn-lane-localization/` and `assets-source/`
+- [ ] MDX `<Diagram>`/`<Figure>` references updated to real asset paths
+- [ ] `npm run build` passes
+- [ ] **Gate: user approves assets** ← do not advance until approved
+
+### Stage 3 — `project-cover-generation` (blocked on Stage 2 gate)
+
+- [ ] Invoke `project-cover-generation` skill; read its SKILL.md + references first
+- [ ] **Sub-gate 3a: directions approved**
+- [ ] **Sub-gate 3b: base cover approved**
+- [ ] **Sub-gate 3c: annotations approved**
+- [ ] Replace `hero.svg` placeholder with final cover; update `heroImage` in frontmatter
+- [ ] `npm run build` passes
+- [ ] **Gate: user approves final cover** ← do not advance until approved
+
+### Stage 4 — `project-review` (blocked on Stage 3 gate)
+
+- [ ] Invoke `project-review` skill; read its SKILL.md + references first
+- [ ] Capture playwright screenshots (desktop + mobile, light + dark)
+- [ ] Recruiter reviewer pass complete; findings noted
+- [ ] Technical reviewer pass complete; findings noted
+- [ ] Fixes applied
+- [ ] `npm run build` passes after fixes
+- [ ] **Gate: user approves** → project complete
 
 ---
+
+## Queued
+- [ ] `masked-autoencoders` — same 4-stage pipeline
+- [ ] Phase 6 final: add freelance project; finalize featured set (≤3 site-wide)
 
 ## Complete
-
-- `model-extraction-attacks` (full) — committed
-- All 4 pipeline skills — committed, audited, gap-filled, frozen
-- Portfolio source docs removed — skills are operational source of truth
-- `rules/portfolio-system.md` + `CLAUDE.md` updated to reference skill pipeline
-- Placeholder MDX cleanup — 3 files removed
-- `.gitignore` updated for local Claude Code files
-
----
-
-## Active: lane-refinement-rl
-
-Pipeline is mandatory — run in order, user approval at each gate:
-
-- [ ] `project-content-extraction` → MDX content → user approval
-- [ ] `project-assets-generation` → assets → user approval
-- [ ] `project-cover-generation` → hero cover → user approval
-- [ ] `project-review` → QA → user approval
-
----
-
-## Queued: masked-autoencoders
-> Same pipeline — after lane-refinement-rl complete
-
-## Queued: Phase 6 final
-- [ ] Add freelance project
-- [ ] Finalize featured set
+- `model-extraction-attacks` — full pipeline (reference exemplar)
+- All 4 pipeline skills — audited, frozen
+- `project-review` visual-inspection upgrade
