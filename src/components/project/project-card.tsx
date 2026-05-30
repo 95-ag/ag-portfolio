@@ -28,7 +28,7 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const { slug, frontmatter: fm } = project;
   const CategoryIcon = categoryIcon[fm.projectType];
-  const displayText = fm.subtitle ?? fm.summary;
+  const displayText = fm.summary;
 
   return (
     <Link
