@@ -72,8 +72,8 @@ The build reimplemented the MAE model on top of the official training harness. T
   src="/projects/masked-autoencoders/mae-architecture.svg"
   alt="MAE architecture: an input image is split into patches, most are masked out, the visible patches pass through a ViT encoder, mask tokens are reinserted in their original positions, and a lightweight decoder reconstructs the full image."
   caption="The asymmetric encoder–decoder. The encoder processes only visible patches; mask tokens fill in before the decoder reconstructs missing pixels. The decoder is discarded after pretraining."
-  aspect="800/360"
-  className="max-w-[720px]"
+  aspect="540/184"
+  className="max-w-[640px]"
 />
 
 The encoder is a ViT-B/16 — base-size Vision Transformer with 16×16 patches. The decoder runs at 512-dimension width with a single Transformer block by default. The forward pass:
@@ -119,12 +119,23 @@ All absolute accuracy figures run roughly 20 points below the paper. The dataset
 
 ### Masking ratio
 
+<Stack gap="lg" className="my-[var(--spacing-2xl)] md:grid md:grid-cols-2 md:items-center md:gap-[var(--spacing-xl)]">
+  <Diagram
+    src="/projects/masked-autoencoders/masking-ratio.svg"
+    alt="Bar chart of Top-1 linear-probe accuracy across masking ratios: a low 32.7% no-masking baseline, then 64.28% at 50%, a peak of 66.85% at 75%, and 66.29% at 90%."
+    caption="Top-1 accuracy by masking ratio: masking lifts accuracy far above the no-masking baseline and peaks at 75% — the paper's inverted-U, reproduced at reduced scale."
+    aspect="382/245"
+    className="my-0 max-w-[380px]"
+  />
+
 | Masking ratio | Top-1 | Top-5 |
 |---|---|---|
 | Baseline (no masking) | 32.7% | — |
 | 50% | 64.28% | 94.75% |
 | 75% | **66.85%** | **95.49%** |
 | 90% | 66.29% | 95.00% |
+
+</Stack>
 
 Accuracy peaks at 75% and dips at 90%, reproducing the paper's inverted-U. The baseline without masking reaches only 32.7% — the self-supervised reconstruction task is responsible for most of the learned representation. Too little masking makes reconstruction trivially easy; too much removes the context needed. The 75% ratio holds at this scale.
 
@@ -149,7 +160,8 @@ MAE generates training variety through random masking — each forward pass sees
   src="/projects/masked-autoencoders/reconstructions.png"
   alt="Example MAE reconstructions: for each sample, the original image, the 75%-masked input, and the model's pixel reconstruction shown side by side."
   caption="Reconstructions from the default model. Overall layout recovers; fine detail is soft — consistent with the saturated reconstruction loss and small dataset."
-  width="wide"
+  aspect="1387/669"
+  width="default"
 />
 
 Reconstructions recover coarse structure but remain blurry — the visible signature of downscaling. The paper's larger encoder on full ImageNet produces sharper outputs.
@@ -158,12 +170,24 @@ Reconstructions recover coarse structure but remain blurry — the visible signa
 
 Grad-CAM (Gradient-weighted Class Activation Mapping) was implemented to check whether the encoder attends to semantically meaningful regions rather than surface texture. On a tench-fish example, the highest-activation regions correspond to the head, fins, and body edges — the features a human would use to identify the class — with expected leakage into surrounding areas at this scale.
 
-<Figure
-  src="/projects/masked-autoencoders/grad-cam.png"
-  alt="Grad-CAM visualization for an image of a tench fish: the original image beside a heatmap overlay concentrating on the fish's head, fins, and body edges."
-  caption="Grad-CAM on a tench-fish example. Attention concentrates on the head, fins, and body edges — consistent with semantically-driven feature learning rather than texture."
-  width="default"
-/>
+<DiagramRow
+  layout="2col"
+  caption="Grad-CAM on a tench-fish example: the original image beside the activation heatmap. Warm regions concentrate on the head, fins, and body edges — consistent with semantically-driven feature learning rather than texture."
+  className="mx-auto max-w-[620px]"
+>
+  <DiagramPanel
+    src="/projects/masked-autoencoders/grad-cam-original.png"
+    alt="Original image of a tench fish held in a blue net."
+    label="Original"
+    aspect="1/1"
+  />
+  <DiagramPanel
+    src="/projects/masked-autoencoders/grad-cam-heatmap.png"
+    alt="Grad-CAM heatmap over the tench fish, with warm activation concentrated on the head, fins, and body edges."
+    label="Grad-CAM"
+    aspect="1/1"
+  />
+</DiagramRow>
 
 The analysis covers one class as a qualitative sanity check. It confirms the representation direction; it does not quantify it across the dataset.
 
