@@ -982,6 +982,7 @@ Definition list grid for structured label/value content; used for the project Ov
 
 - Fixed 180px label column with a fluid content column on desktop; single column on mobile.
 - Not a general prose pattern — purpose-built for project metadata entries.
+- Tech Stack `dd` values render italic; Overview `dd` values render in body default (non-italic).
 
 ```yaml
 editorial-dl:

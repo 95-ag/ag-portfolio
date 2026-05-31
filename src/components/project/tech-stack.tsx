@@ -27,7 +27,9 @@ export function TechStack({ stack }: TechStackProps) {
           <React.Fragment key={category}>
             <dt>{CATEGORY_LABELS[category]}</dt>
             <dd>
-              <p>{items.join(" · ")}</p>
+              <p>
+                <em>{items.join(" · ")}</em>
+              </p>
             </dd>
           </React.Fragment>
         ))}
