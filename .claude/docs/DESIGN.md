@@ -481,30 +481,31 @@ mobile-slide-out-layout:
 Utility button fixed to the bottom-right corner; appears after scrolling one viewport height and provides a one-tap return to page top.
 
 - Bottom-right position does not collide with the pill nav (top-center).
-- Fades in on scroll threshold; hover shifts to `accent` border and color.
+- On `lg+` screens, right edge tracks the content column boundary instead of the viewport edge.
+- At `xl+`, size increases to 48×48px — icon only, no label.
+- Fades in on scroll threshold; hover shifts to `outline` border and `on-surface` color.
 - Hidden when the mobile slide-out menu is open.
 
 ```yaml
 scroll-to-top:
   position: fixed
-  bottom: 24px
-  right: 24px
-  size: 44px x 44px
+  bottom: 80px
+  right: 16px  # lg+: max(1rem, calc(50vw - 36rem))
+  size: 44px x 44px  # xl+: 48px x 48px
   borderRadius: pill
   background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
-  iconSize: 16px
-  color: on-surface
+  icon: arrow_upward (Material Symbols Outlined)
+  iconSize: 20px
+  color: on-surface-muted
   zIndex: 40
-  
-  appears-after: 1 viewport-height of scroll
-  enter: opacity 0 → 1, 200ms
-  
+
+  appears-after: 400px of scroll
+
   hover:
-    background: accent-muted
-    borderColor: accent
-    color: accent
+    borderColor: outline
+    color: on-surface
 ```
 
 ### Actions & Interactive
