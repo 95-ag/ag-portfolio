@@ -1,7 +1,0 @@
-flowchart LR
-    A["Query set\n(CIFAR / OOD)"] --> B["Black-box\nvictim API"]
-    B --> C["Soft labels\n(predictions)"]
-    C --> D["Surrogate\ntraining"]
-    D --> E["Extracted\nmodel"]
-    E --> F["FGSM adversarial\nexamples"]
-    E --> G["Membership\ninference"]

@@ -1,6 +1,0 @@
-flowchart LR
-    A["Candidate pool"] --> B["ResNet-18 proxy\n(local, no API)"]
-    B --> C["Sort by\nentropy"]
-    C -->|high uncertainty| D["Coreset\n(top-K)"]
-    C -->|low uncertainty| E["Discarded"]
-    D --> F["Victim API\nqueries"]
