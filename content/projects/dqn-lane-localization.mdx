@@ -54,6 +54,8 @@ logos:
 
 The study's central question: does a DQL agent applied post-detection improve localization accuracy in practice? And does a Bézier curve representation — replacing 50 sequential point decisions with 3 control points — outperform the point-by-point approach?
 
+Whichever way it lands, the answer is worth having: a working refinement step would sharpen a safety-critical lane detector, while a clear negative result steers the next team away from reinforcement-learning post-processing and toward improving the detector directly.
+
 The operational environment adds constraints: experiments ran on a single NVIDIA Quadro RTX 4000 (8 GB VRAM), time for hyperparameter tuning was limited, and the reference implementation contained undocumented bugs that had to be diagnosed before any results were interpretable.
 
 ## Background
@@ -70,7 +72,7 @@ The pipeline has three software modules operating in sequence.
 
 **Lane Detector** — CV-based using OpenCV's `findContours` with Hough Transform. Outputs a bounding box per lane; the crop and initial slope serve as the localizer's starting state.
 
-**Lane Localizer** — The core DQL module. Two agent classes implement the localization game: `PointAgent` (operates on individual detected points) and `CurveAgent` (operates on Bézier curve control points). Both share the same DQN architecture: a pretrained ResNet-50 feature extractor (frozen) followed by two FC layers. The image input is resized to 224×224.
+**Lane Localizer** — The core DQL module. Two agent classes implement the localization game: `PointAgent` (operates on individual detected points) and `CurveAgent` (operates on Bézier curve control points). Both share the same DQN architecture: a pretrained ResNet-50 feature extractor (frozen) followed by three FC layers (FC1 → FC2 → FC3), with the detected point's location and action history concatenated in after FC1. The image input is resized to 224×224.
 
 <Diagram
   src="/projects/dqn-lane-localization/model-architecture.png"
@@ -205,8 +207,8 @@ Visualizations are consistent with this interpretation: predicted curves appeare
 
 <Diagram
   src="/projects/dqn-lane-localization/full-road-reconstruction.png"
-  alt="Full highway road image showing four reconstructed lane predictions in blue and ground truth lane positions in bright green. The blue predicted lanes closely follow the initial CV detections rather than converging toward the green ground truth."
-  caption="Full road reconstruction from the point localizer. Green: ground truth. Blue: detected and localized lanes. The localized output closely tracks the initial detection — the DQL refinement step produced no net improvement."
+  alt="Full highway road image showing four reconstructed lane predictions in red and ground truth lane positions in bright green. The red predicted lanes closely follow the initial CV detections rather than converging toward the green ground truth."
+  caption="Full road reconstruction from the point localizer. Green: ground truth. Red: detected and localized lanes. The localized output closely tracks the initial detection — the DQL refinement step produced no net improvement."
   aspect="16/9"
   width="wide"
 />
