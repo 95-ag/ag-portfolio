@@ -569,7 +569,7 @@ This phase validates:
 Add 2–3 fully real projects including:
 
 * actual screenshots or demo recordings
-* diagrams (Mermaid SVG, matplotlib, or tldraw per asset-guide.md)
+* diagrams (hand-authored SVG via the shared theme, or matplotlib, per asset-guide.md)
 * metrics and outcomes
 * technical explanations, tradeoffs, implementation details
 

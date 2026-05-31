@@ -302,9 +302,9 @@ layout:
 
 **Diagrams**
 - Diagrams in project deep dives must be production-quality and visually consistent across projects.
-- **Mermaid → SVG** — primary tool for flows, pipelines, state, and sequence diagrams
+- **Hand-authored SVG (shared theme)** — primary tool for flows, pipelines, state, and architecture diagrams; generated from the shared `assets-source/svg/_theme.py` build
 - **matplotlib → SVG/PNG** — charts and metrics visualizations where source data exists; must be script-reproducible
-- **tldraw → SVG** — fallback only for spatial or custom layouts Mermaid cannot express
+- **tldraw → SVG** — fallback only for spatial or custom layouts the SVG theme cannot express
 - See `asset-guide.md` for full tooling rules, directory structure, and export standards
 
 ### Iconography
