@@ -46,11 +46,15 @@ logos:
 
 ## Detailed Problem
 
-The reproduction question was whether three specific ablation trends from the MAE paper survive downscaling. The paper reports: a 75% masking ratio is the optimal pretraining sweet spot; a deeper decoder improves the learned representation; and standard data augmentation helps. All three results came from a Vision Transformer — Large (ViT-L) encoder trained on 1.4M ImageNet images.
+Labeled data is the bottleneck in most computer vision applications. Annotation is slow and expensive; large labeled datasets exist for benchmark tasks but are unavailable or impractical for most applied problems. Self-supervised pretraining addresses this directly: a model learns useful visual representations from unlabeled images first, then transfers those representations to a downstream task with far fewer labels than training from scratch would require.
 
-Cutting to a ViT-B (base) encoder and 13K images changes the inductive conditions. Vision Transformers are data-hungry — they lack the locality priors of convolutional networks and must learn spatial structure from scratch. The trends being reproduced could shift, break, or reverse at reduced scale, and identifying which is the point of the experiment.
+The MAE paper established that this works at scale — a large Vision Transformer pretrained on 1.4M images. Most research teams and applied practitioners do not have that compute or data. Whether the approach holds at a realistic resource constraint determines how broadly the method applies.
 
-A secondary challenge was practical: the paper's augmentation protocol was underspecified, requiring reconstruction from secondary references. This is a representative gap in reproduction work — papers that are clear enough to understand but not quite clear enough to copy.
+MAE (Masked Autoencoder) is the method: hide 75% of an image's patches, train an encoder–decoder to reconstruct the missing pixels, discard the decoder, and use the encoder as a feature extractor. The paper reports three specific trends from its ablation studies: a 75% masking ratio is the optimal pretraining sweet spot, a deeper decoder improves the learned representation, and standard data augmentation helps. All three results came from a Vision Transformer — Large (ViT-L) encoder trained on 1.4M ImageNet images.
+
+The question: do those three trends hold at ViT-B scale with 13K images?
+
+Compute constraints limited the ablation scope. The augmentation protocol was not specified precisely enough in the paper to replicate directly — it required reconstruction from secondary references, which introduced uncertainty into the augmentation ablation.
 
 ## Background
 
@@ -79,7 +83,9 @@ The encoder is a ViT-B/16 — base-size Vision Transformer with 16×16 patches. 
 3. **Reassemble.** Encoded patches are projected to decoder width; mask tokens fill positions for removed patches; the full sequence is unshuffled to its original spatial order.
 4. **Reconstruct.** The decoder predicts pixel values for all patches; loss is MSE on the masked patches only.
 
-Computing loss only on masked patches is what makes the task self-supervisory — the model gets no credit for patches it was already shown.
+<Highlight heading="Why masked reconstruction teaches good representations">
+  Loss is computed only on the masked patches — the patches the encoder never saw. The only path to minimizing it is inferring missing content from visible context, which forces the encoder to learn structural relationships rather than copy what it was already shown.
+</Highlight>
 
 ## Data
 
@@ -148,20 +154,18 @@ MAE generates training variety through random masking — each forward pass sees
 
 Reconstructions recover coarse structure but remain blurry — the visible signature of downscaling. The paper's larger encoder on full ImageNet produces sharper outputs.
 
-## Representation Analysis
+### What the encoder learned
 
-To check whether the encoder learned semantically meaningful structure — not just surface statistics — Grad-CAM (Gradient-weighted Class Activation Mapping) was implemented for the decoder's final layer. The approach: compute the gradient of the predicted class score with respect to the layer's activations, take a weighted sum across channels, and overlay the result as a spatial heatmap on the input image.
+Grad-CAM (Gradient-weighted Class Activation Mapping) was implemented to check whether the encoder attends to semantically meaningful regions rather than surface texture. On a tench-fish example, the highest-activation regions correspond to the head, fins, and body edges — the features a human would use to identify the class — with expected leakage into surrounding areas at this scale.
 
 <Figure
   src="/projects/masked-autoencoders/grad-cam.png"
   alt="Grad-CAM visualization for an image of a tench fish: the original image beside a heatmap overlay concentrating on the fish's head, fins, and body edges."
-  caption="Grad-CAM on a tench-fish example. The encoder attends to the head, fins, and body edges — the features a human would use to identify this class — with some leakage into surrounding areas."
+  caption="Grad-CAM on a tench-fish example. Attention concentrates on the head, fins, and body edges — consistent with semantically-driven feature learning rather than texture."
   width="default"
 />
 
-On a tench-fish example, the highest-activation regions correspond to the head, fins, tail, and body edges. The leakage into surrounding areas is expected at this scale. Even at reduced scale, the encoder learned a holistic object representation rather than fixating on local texture. This is consistent with the paper's claim that masked reconstruction teaches structurally meaningful features.
-
-The analysis covers a single class as a qualitative sanity check. It confirms the representation direction; it does not quantify it across the dataset.
+The analysis covers one class as a qualitative sanity check. It confirms the representation direction; it does not quantify it across the dataset.
 
 ## Constraints & Limitations
 
