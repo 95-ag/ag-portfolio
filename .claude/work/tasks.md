@@ -47,13 +47,13 @@
 - [x] cover-notes.md skill-update candidates captured (7 base + 5 annotation learnings)
 - [x] **Gate: user approves final cover** ← approved 2026-05-31
 
-### Skill update — `project-cover-generation` ← NEXT
+### Skill update — `project-cover-generation` ✓ COMPLETE (approved 2026-05-31)
 
-- [ ] Align skill-update candidates from `cover-notes.md` into skill references (`cover-standards.md`, `cover-procedure.md`)
-- [ ] Verify no frozen-skill rules are violated
-- [ ] **Gate: skill update committed**
+- [x] Align skill-update candidates from `cover-notes.md` into skill references (`cover-standards.md`, `cover-procedure.md`, `SKILL.md`)
+- [x] Verify no frozen-skill rules are violated (disposition table + separate-agent fresh-eyes review; overfit fixes applied)
+- [x] **Gate: skill update committed**
 
-### Stage 4 — `project-review` (blocked on skill update)
+### Stage 4 — `project-review` ← NEXT
 
 - [ ] Invoke `project-review` skill; read its SKILL.md + references first
 - [ ] Capture playwright screenshots (desktop + mobile, light + dark)

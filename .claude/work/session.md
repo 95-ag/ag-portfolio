@@ -20,8 +20,11 @@ All 4 pipeline skills are frozen and audited.
 **`dqn-lane-localization`** — master's thesis *"Deep Q-Learning for Lane Localization"*
 (KTH / Scania, 2024). Rigorous **negative-result** project.
 
-**Current stage: Skill update (`project-cover-generation`) — then Stage 4 (`project-review`).**
-Stage 3 fully closed: all 3 sub-gates approved + build passing + schema/docs/card updated (2026-05-31).
+**Current stage: Stage 4 (`project-review`).**
+Stage 3 fully closed (2026-05-31). Skill update (`project-cover-generation`) complete and
+approved (2026-05-31): cover-notes learnings folded into `cover-standards.md` / `cover-procedure.md`
+/ `SKILL.md`, validated via disposition table + separate-agent fresh-eyes review, overfit fixes
+applied; `cover-notes.md` deleted.
 
 ---
 
@@ -73,7 +76,7 @@ repo/config = authoritative for frameworks, hyperparameters, file structure.
 | 1 | `project-content-extraction` | **complete** ✓ | `content/projects/dqn-lane-localization.mdx` + prereq build assets | approved 2026-05-30 | — |
 | 2 | `project-assets-generation` | **complete** ✓ | diagrams/charts in `public/projects/…` + `assets-source/…` | approved 2026-05-30 | 1 |
 | 3 | `project-cover-generation` | **complete** ✓ | live cover component + heroImage optional schema | approved 2026-05-31 | 2 |
-| 4 | `project-review` | blocked on skill update | QA findings + fixes, final sign-off | user approves | skill update |
+| 4 | `project-review` | **next** | QA findings + fixes, final sign-off | user approves | — |
 
 Each stage is gated: do not advance until the prior gate has explicit user approval in chat.
 Stages 2–4 generate their own execution plans when their skill is invoked — not pre-planned here.
@@ -93,7 +96,7 @@ Stages 2–4 generate their own execution plans when their skill is invoked — 
 
 ## Blockers
 
-None. Skill update (`project-cover-generation`) is next — align `cover-notes.md` candidates into skill references, then Stage 4 (`project-review`) unblocks.
+None. Stage 4 (`project-review`) is next — invoke the `project-review` skill.
 
 ## Standing Deviations from PRODUCT.md
 
