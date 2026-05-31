@@ -6,11 +6,18 @@ interface DiagramPanelProps {
   src: string;
   alt: string;
   aspect?: string;
+  /** Optional sub-figure caption rendered below the panel (e.g. "Original" / "Grad-CAM"). */
+  label?: string;
 }
 
-export function DiagramPanel({ src, alt, aspect = "4/3" }: DiagramPanelProps) {
-  return (
-    <div className="min-w-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]">
+export function DiagramPanel({
+  src,
+  alt,
+  aspect = "4/3",
+  label,
+}: DiagramPanelProps) {
+  const box = (
+    <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]">
       <div style={{ aspectRatio: aspect }} className="relative w-full">
         <Image
           src={src}
@@ -21,6 +28,17 @@ export function DiagramPanel({ src, alt, aspect = "4/3" }: DiagramPanelProps) {
         />
       </div>
     </div>
+  );
+
+  if (!label) return <div className="min-w-0">{box}</div>;
+
+  return (
+    <figure className="min-w-0">
+      {box}
+      <figcaption className="body-caption mt-[var(--spacing-xs)] text-center">
+        {label}
+      </figcaption>
+    </figure>
   );
 }
 
