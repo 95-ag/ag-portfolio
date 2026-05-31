@@ -52,11 +52,17 @@ logos:
 
 ## Detailed Problem
 
-The study's central question: does a DQL agent applied post-detection improve localization accuracy in practice? And does a Bézier curve representation — replacing 50 sequential point decisions with 3 control points — outperform the point-by-point approach?
+Lane Keep Assist systems need precise lateral positions — not approximate ones. CV-based detectors are fast and reliable at finding lanes but their positional accuracy is limited: the detected position is a starting estimate, not a ground-truth measurement. A post-detection refinement step that sharpens those positions without retraining the upstream detector would improve accuracy without replacing a working component.
 
-Whichever way it lands, the answer is worth having: a working refinement step would sharpen a safety-critical lane detector, while a clear negative result steers the next team away from reinforcement-learning post-processing and toward improving the detector directly.
+Deep Q-Learning (DQL) is the refinement mechanism under test: given an approximate lane position from a CV detector, a trained agent iteratively adjusts each point toward ground truth through discrete moves. A parallel experiment tests whether representing a lane as a Bézier curve — 3 control points instead of up to 50 individual point decisions — reduces the sequential decision burden and improves accuracy further.
 
-The operational environment adds constraints: experiments ran on a single NVIDIA Quadro RTX 4000 (8 GB VRAM), time for hyperparameter tuning was limited, and the reference implementation contained undocumented bugs that had to be diagnosed before any results were interpretable.
+Two specific questions: does a DQL agent applied post-detection improve localization accuracy in practice? Does the Bézier curve representation outperform point-by-point adjustment?
+
+The result matters either way: a positive confirms DQL as a viable post-detection refinement tool; a negative redirects effort toward improving detection directly rather than correcting its output.
+
+The experiment ran under operational constraints: a single NVIDIA Quadro RTX 4000 (8 GB VRAM), limited time for hyperparameter tuning, and a reference implementation containing undocumented bugs that required systematic diagnosis before any result was interpretable.
+
+DQL operates on one point at a time — up to 50 sequential decisions per lane — so each wrong move compounds across the full reconstruction. The algorithm is built for sparse decision problems; applying it to dense sequential prediction means the compounding error is a property of the approach, not a tuning problem.
 
 ## Background
 
