@@ -54,6 +54,14 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 - Missing optional frontmatter fields render nothing — never placeholders or "TBD"
 - `projectType` is internal metadata — never displayed as a badge or label on the site
 - No raw HTML in MDX body — use components (`<Figure>`, `<Diagram>`, `<Callout>`, `<Stack>`)
+- `tmp/` is read-only reference material (source PDFs, extracted text, slide/repo dumps) — never a deliverable or edit target. It is **not in git**: never assume its contents exist (a fresh clone won't have them). When scratch space is needed, prefer this project-local `tmp/` over global/system temp folders
+
+## Visual Verification
+
+- Browser rendering is required for any visual check — use the review tooling (playwright-cli, driven via the WSL build/run scripts), never HTML/curl/grep inspection
+- Do not infer the verification method from a tool's name — confirm what actually produced the render
+- Label conclusions by how they were reached: "inferred from markup" and "confirmed by browser render" are different confidence levels — state which
+- If browser rendering is unavailable, stop and say so — do not substitute pixel or HTML analysis for a rendered-page question
 
 ## Process Rules
 
