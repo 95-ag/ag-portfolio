@@ -1,9 +1,10 @@
-<svg viewBox="0 0 800 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Model extraction pipeline: query set and OOD data are sent to a black-box victim API which returns soft labels; these train a surrogate model producing an extracted model used for adversarial and membership inference attacks.">
+<svg viewBox="134 4 540 184" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Model extraction pipeline: query set and OOD data are sent to a black-box victim API which returns soft labels; these train a surrogate model producing an extracted model used for adversarial and membership inference attacks.">
   <title>Model extraction pipeline</title>
   <defs>
     <style>
       .n  { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
       .na { fill: #f3f4f5; stroke: #006c49; stroke-width: 1.5; }
+      .nt { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
       .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: #191c1d; }
       .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; }
       .conn { fill: none; stroke: #6c7a71; stroke-width: 1.5; }
@@ -11,6 +12,7 @@
       @media (prefers-color-scheme: dark) {
         .n  { fill: #1c1b1b; stroke: #3c4a42; }
         .na { fill: #1c1b1b; stroke: #4edea3; }
+        .nt { fill: #1c1b1b; stroke: #3c4a42; }
         .lbl { fill: #e5e2e1; }
         .sub { fill: #bbcabf; }
         .conn { stroke: #86948a; }
@@ -71,5 +73,4 @@
   <rect class="n" x="518" y="128" width="140" height="44" rx="4"/>
   <text class="lbl" x="588" y="145" text-anchor="middle">Downstream Attacks</text>
   <text class="sub" x="588" y="159" text-anchor="middle">adversarial · inference</text>
-
 </svg>

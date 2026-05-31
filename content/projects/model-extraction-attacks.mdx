@@ -78,7 +78,8 @@ The extraction pipeline separates into three stages: query generation, surrogate
   src="/projects/model-extraction-attacks/extraction-pipeline.svg"
   alt="Three-stage pipeline: query generation feeds inputs into a black-box victim model, whose predictions are used to train a surrogate, which is then evaluated for adversarial transferability and membership inference vulnerability."
   caption="Full extraction pipeline. Stage 1 selects and submits queries to the victim API. Stage 2 trains the surrogate on the resulting pseudo-labeled dataset. Stage 3 evaluates what the surrogate inherits from the victim."
-  aspect="800/196"
+  aspect="540/184"
+  className="max-w-[640px]"
 />
 
 **Stage 1 — Query generation:** inputs are selected from a candidate pool (in-distribution CIFAR training data or the custom OOD dataset described in [Data](#data)) and submitted to the victim API. The key design variable is *which* inputs to query — random sampling or entropy-based coreset selection, detailed in [Algorithm & Training Design](#algorithm-training-design).
@@ -157,7 +158,8 @@ The selection process:
   src="/projects/model-extraction-attacks/coreset-selection.svg"
   alt="Branching flowchart: candidate pool feeds a local ResNet-18 proxy, which sorts inputs by entropy. High-uncertainty inputs form the coreset query pool sent to the victim API; low-uncertainty inputs are discarded."
   caption="Entropy-based coreset selection. High-uncertainty inputs concentrate the query budget on decision boundaries; low-confidence regions are discarded. The proxy runs locally with no API calls."
-  aspect="800/196"
+  aspect="540/184"
+  className="max-w-[640px]"
 />
 
 <Highlight heading="Why entropy ranking targets decision boundaries">
