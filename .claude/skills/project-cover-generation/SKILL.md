@@ -26,8 +26,8 @@ never skip ahead.
 ## Before building anything — read these references
 
 1. **`references/cover-procedure.md`** — the three-gate procedure (directions → base →
-   annotations), what to propose at each gate, and the thumbnail check. Read before
-   touching any source material.
+   annotations), what to propose at each gate, visual verification, and the final visual
+   review. Read before touching any source material.
 
 2. **`references/cover-standards.md`** — rendering modes (live vs static), CSS custom
    property requirements, annotation construction rules, composition principles, and
@@ -103,11 +103,13 @@ Annotation construction rules in `references/cover-standards.md`.
 - **Live component:** `src/components/project/covers/<slug>.tsx` + registered in index
 - **Static asset:** `/public/projects/<slug>/hero-cover.webp` (or `.png`)
 
-After Gate 3 (or Gate 2 if no annotations): verify thumbnail readability at card scale.
-Update `heroImage` / `heroAlt` in the MDX last — omit `heroImage` if using a live component
-(the cover registry handles rendering).
+After Gate 3 (or Gate 2 if no annotations): run the final visual review — a separate-agent
+"fresh eyes" pass (see `references/cover-procedure.md` → Visual review). Update `heroImage` /
+`heroAlt` in the MDX last — omit `heroImage` if using a live component (the cover registry
+handles rendering).
 
-Stop here — hand off for user approval. Do not run reviewers or generate other assets.
+Stop here — hand off for user approval. Do not run the project-review reviewers (Stage 4) or
+generate other assets.
 
 ## Validation — check before handing off
 

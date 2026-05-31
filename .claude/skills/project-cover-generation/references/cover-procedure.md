@@ -28,6 +28,10 @@ For each of the 3–4 proposed directions, write:
 4. **Rendering mode** — whether this calls for a live SVG component or a static asset
 5. **What it encodes** — the test: can someone identify the project's central tension from
    this cover alone?
+6. **ASCII skeleton** — a rough text sketch of the layout (key structures, focal element,
+   reading direction). It surfaces placement problems cheaply,
+   before any code is written, where prose alone would hide them. Carry the same skeleton
+   forward into Gate 2 when building the base.
 
 ### Always include a typography-only fallback
 
@@ -124,15 +128,33 @@ rules (font, color, arrow geometry).
 
 ---
 
-## Thumbnail check (after final gate)
+## Visual verification
 
-Before handing off, verify the cover reads correctly at card scale:
-- Crop the composition to approximately 320×180px (the card viewport)
-- The focal element must be visible
-- No text smaller than ≈14px at card scale
-- The reading direction (if left-to-right flow) must be legible in the crop
+Use this throughout building and at each gate to confirm what the cover actually renders.
 
-If the crop is broken, fix the composition — do not add a workaround.
+**Playwright-CLI is the preferred path.** Navigate to the page, set `data-theme` to light and
+to dark, locate the cover by selector (`svg[viewBox="0 0 1200 675"]`), screenshot *that element*
+per theme, and inspect the PNGs. Capture the cover by selector, not the whole viewport.
+
+For annotation placement, verify the arrow tip lands on (or just outside) its target
+programmatically — e.g. `el.isPointInFill(point)` — recomputing target coordinates from the live
+DOM (`getBBox`, circle `cx`/`cy`) rather than eyeballing against procedurally-placed markers.
+
+**If Playwright-CLI or browser rendering is unavailable, stop and ask the user how to proceed
+before using any alternative.** Do not substitute pixel analysis or HTML inspection for a
+rendered-page check (see `lessons.md` → Visual verification).
+
+## Visual review (final gate, after the last gate)
+
+Before handing off, run a **separate-agent "fresh eyes" review** — not a self-check. Dispatch a
+review subagent that views the rendered cover cold and judges the *outcome*, not construction
+details. It assesses:
+- thumbnail readability at card scale (≈320×180px card crop);
+- immediate visual hierarchy — what the eye lands on first;
+- whether the core project idea is understandable when viewed cold;
+- overall compositional coherence in both light and dark themes.
+
+If readability or coherence is broken, fix the composition — do not add a workaround.
 
 ---
 
@@ -142,5 +164,5 @@ If the crop is broken, fix the composition — do not add a workaround.
 Read MDX/PDF → propose 3–4 directions (with typography fallback) → [gate: direction approval]
 → build base composition → [gate: base approval]
 → (optional) propose annotation directions → build annotations → [gate: annotation approval]
-→ thumbnail check → update MDX heroImage/heroAlt if static → hand off
+→ visual review (separate-agent fresh eyes) → update MDX heroImage/heroAlt if static → hand off
 ```

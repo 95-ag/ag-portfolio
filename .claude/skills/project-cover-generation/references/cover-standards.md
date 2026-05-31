@@ -74,6 +74,13 @@ Omit `heroImage` when using a live component — the cover registry handles rend
 `var(--accent)` as a focal highlight. All other structural elements use `--on-surface`
 or `--outline-variant`. Annotations may freely use `--accent` for text and arrows.
 
+**Graded neutrals (technique, not a mandate):** when a composition needs neutral shades
+that *recede* in both themes (lighter-in-light, darker-in-dark), deriving a step from a
+theme-flipping token with `color-mix` keeps every value theme-aware without hardcoding —
+e.g. `color-mix(in srgb, var(--outline-variant) 65%, var(--surface))`. This is the same
+approach `globals.css` already uses for `--outline-hair`, and it preserves the
+all-custom-properties rule. Reach for it only when a graded neutral is actually needed.
+
 ---
 
 ## Composition Principles
@@ -103,6 +110,34 @@ Not: generic neural network graphics, random particle systems, decorative circui
 **Test:** Can someone identify the project's central technical tension from the cover alone?
 If no, the concept is wrong.
 
+### Procedural and sampled marks
+
+General craft for any cover built from computed or sampled elements, scene or not.
+
+- **Discrete steps over a continuous ramp.** Encode gradation or motion as a few discrete
+  graded steps rather than an opacity ramp — discrete steps read more crisply, especially at
+  thumbnail scale. Where motion has a direction, place trailing echoes on the side the element
+  moved *from* so the direction is unambiguous.
+- **Uniform sampled marks read as a data sequence.** Points sampled along a path read as a
+  deliberate sequence when uniform in size and spacing; perspective-scaling them reads as scatter.
+- **Procedural placement must be deterministic.** Any computed placement or jitter must be
+  deterministic (e.g. `Math.sin(i * k)`) — `Math.random` is unavailable at build time, since
+  covers are statically generated.
+
+### Depicting a physical or spatial scene (conditional)
+
+When a project's concept *is* a real-world scene — a road, a field, a 3D volume — these
+techniques can help. They are guidance for that case, not requirements for every cover.
+
+- **Tonal value over hue for regions.** Separate scene regions (e.g. sky, mid-ground,
+  foreground) by tonal *value* using neutral surface tokens, and let a *narrowing shape* carry
+  perspective — usually more effective than outline strokes. Borders can be dropped once fill
+  contrast alone defines the edge.
+- **Faithful geometry, strong composition.** When drawing on a real source layout, preserve its
+  essential shape and proportion while still achieving a strong composition. A literal source can
+  clash with composition principles (e.g. a symmetric source versus the symmetry anti-pattern
+  below); asymmetry is one possible resolution, not a fixed rule.
+
 ---
 
 ## Engineering Annotations
@@ -121,6 +156,11 @@ Reject annotation content that could belong to any project in the domain:
 - "ResNet-50", "PyTorch", "CIFAR-10" — these are context, not contribution
 - Generic phase labels: "Training", "Inference"
 
+**Phrasing:** prefer a short plain-language verdict alongside the number over a bare symbol —
+e.g. "misses the latency budget by 2×" reads better at thumbnail scale than "38ms > 19ms". The
+plain-language verdict carries the meaning where a terse inequality does not, especially for a
+negative or comparative result.
+
 ### Construction rules
 
 ```
@@ -128,6 +168,14 @@ Font:   Caveat (var(--font-caveat)) — the only permitted font in annotations
 Color:  var(--accent) for both text and arrow strokes — no other color
 Count:  2–3 annotations maximum; each targets a distinct diagram element
 ```
+
+**Placement:** place an annotation in open negative space, not over structure, and make sure
+its arrow tip lands on (or just outside) the element it points at. (Verify this against the
+rendered cover — see `references/cover-procedure.md` → Visual verification.)
+
+**Multi-line labels:** prefer visual centering and a balanced label block. Choose the leader
+arrow's origin from the available space and the surrounding composition — do not fix it to one
+position.
 
 **Arrow geometry:**
 - Bezier path ends **7–9px before the arrowhead tip** — the path and arrowhead must not share a point
