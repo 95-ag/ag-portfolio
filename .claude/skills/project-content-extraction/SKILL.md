@@ -57,38 +57,46 @@ Ask the user upfront about anything that requires clarification (GitHub URL, log
 permissions, title framing, metric framing choices). Do this before writing, not
 mid-draft.
 
-### Step 2 — Write the MDX
+### Step 2 — Narrative Direction Proposal
 
-Write all structural frontmatter fields first (title, summary, tags, stack, links,
-logos, projectType, publishedAt, heroImage). The schema is strict — get these right
+Before writing anything, surface the narrative direction to the user and wait for
+approval. See `references/extraction-procedure.md` Step 2 for the full format.
+
+In brief: one sentence on the project differentiator, the narrative arc named
+explicitly, the H2 section plan with rationale for non-obvious choices, and any
+framing decisions (built-from-scratch scope, result frame). Keep it to 5–10 lines.
+Do not proceed to Step 3 until the user approves.
+
+### Step 3 — Write the MDX
+
+Three sub-steps in order — do not reorder:
+
+**(a) Frontmatter (except overview).** Write title, summary, tags, stack, links,
+logos, projectType, publishedAt, heroImage. The schema is strict — get these right
 before touching the body. See `references/frontmatter-rules.md` for every field.
+Leave all `overview.*` fields as empty placeholders for now.
 
-**Do not write `overview.*` fields yet.** Leave them as empty placeholders. The
-overview (problem, built, results, transferableSkills) must be written after the
-body is complete — it summarizes the narrative and findings, which are only fully
-understood once the body is drafted.
-
-For the body: discard any existing content and rebuild from source. Old body content
+**(b) Body.** Discard any existing body content and rebuild from source. Old content
 is reference material, not a transformation input. Keep only the file path and any
-frontmatter fields that are already confirmed correct.
+frontmatter already confirmed correct. Follow the standard H2 spine — see
+`references/extraction-procedure.md` Step 3 for the full spine, narrative arc, and
+standalone-readability requirement.
 
-Follow the standard H2 spine. See `references/extraction-procedure.md` Step 2 for
-the full spine, narrative arc, and standalone-readability requirement.
+**(c) Overview (after body is complete).** Return to write all `overview.*` fields
+once the body is finished. The project differentiator, core findings, and narrative
+arc are now established — write the overview to reflect them accurately. See
+`references/frontmatter-rules.md` §overview for field rules and density targets.
 
-Once the body is complete, return to write all `overview.*` fields. At that point
-the project differentiator, core findings, and narrative arc are established — write
-the overview to reflect them accurately.
-
-### Step 3 — Density Reduction
+### Step 4 — Density Reduction
 
 Before finalizing, run the density checklist from `references/extraction-procedure.md`
-Step 3. Convert standard-dataset-property tables to one-sentence prose. Remove figures
+Step 4. Convert standard-dataset-property tables to one-sentence prose. Remove figures
 that duplicate table data. Pull the one interesting hyperparameter into prose with its
-rationale; drop the rest.
+rationale; drop the rest. Run the component audit at the end of this step.
 
-### Step 4 — Reader Review
+### Step 5 — Reader Review
 
-Run the Reader Review pass from `references/extraction-procedure.md` Step 4. Run it
+Run the Reader Review pass from `references/extraction-procedure.md` Step 5. Run it
 as a subagent. Apply all FLAG findings before presenting to the user.
 
 ## Output
@@ -111,8 +119,8 @@ All items are required. Do not present the MDX to the user until all pass.
 - No `slug:` field in frontmatter
 - In repo-only mode: no paper-style metrics written without a traceable source
 - `overview.*` fields written after the body (not drafted before it)
-- Density reduction pass complete (Step 3 checklist in `extraction-procedure.md`)
-- Reader Review pass complete (Step 4 in `extraction-procedure.md`); all FLAG items resolved
+- Density reduction pass complete (Step 4 checklist in `extraction-procedure.md`)
+- Reader Review pass complete (Step 5 in `extraction-procedure.md`); all FLAG items resolved
 
 ## Source mode quick-reference
 

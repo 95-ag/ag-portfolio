@@ -39,7 +39,34 @@ mid-draft clarification requests.
 
 ---
 
-## Step 2 — MDX Content Build
+## Step 2 — Narrative Direction Proposal (gate: user approval required)
+
+Before writing any prose or frontmatter, surface the narrative direction and wait for
+explicit user approval. Do not proceed to Step 3 until approved.
+
+Write a brief — 5–10 lines, readable in under 60 seconds:
+
+1. **Project differentiator** — one sentence on what makes this project credible and
+   memorable. For reproduction: which claims were tested and whether they held. For
+   negative results: the rigor and scope of the investigation. For novel systems: the
+   specific tradeoff navigated and measured.
+
+2. **Narrative arc** — the through-line the body will follow. Name it explicitly before
+   writing. Example: "reproduce → test 3 claims → 2 hold, 1 reverses → interpretability
+   validates representation → honest scope caveats"
+
+3. **H2 section plan** — which standard spine sections to include, which to omit, and
+   why any non-obvious inclusion or exclusion was chosen.
+
+4. **Framing decisions** — choices that affect how results are presented: what to
+   foreground vs. treat as background; how to scope "built from scratch" vs. adapted
+   vs. reused; whether the result frame is positive, negative, or mixed.
+
+This is a check-in, not a spec. Keep it brief. Wait for approval, then proceed.
+
+---
+
+## Step 3 — MDX Content Build
 
 ### Core rule: discard existing body, start fresh
 
@@ -67,8 +94,8 @@ in `references/frontmatter-rules.md`.
 - `links.paper` — add PDF path if the report is in `/public/`; use relative path
   `/projects/<slug>/...`
 - `logos` — only with confirmed brand permission; omit entirely if uncertain
-- `overview` — write all four sub-fields (problem, built, results,
-  transferableSkills); see `references/frontmatter-rules.md` §overview
+- `overview` — **deferred**: leave as empty placeholders now; write after the body
+  is complete (see "Write overview last" below)
 
 ### Standard H2 spine for ML projects
 
@@ -90,18 +117,29 @@ when a nested concept genuinely improves flow and cannot be absorbed into prose.
 
 ### Narrative arc — verify before finalizing
 
-- **Detailed Problem** → opens with the research question or engineering hypothesis,
-  rather than repeating the high-level motivation already in `overview.problem`. After
-  establishing the question: failure modes, constraints, edge cases, why naive approaches
-  fall short. Both the question and the technical challenge belong here — the question
-  sets direction; the challenge establishes why it's non-trivial.
+- **Detailed Problem** → four layers: (1) real-world stakes, deeper than `overview.problem`
+  which is scan-level only; (2) concept/domain setup scaled to how familiar the domain is —
+  only what's needed to make the research question intelligible, not theory; (3) the research
+  question or hypothesis, now landing with weight; (4) why answering it is non-trivial —
+  failure modes, constraints, edge cases. Some overlap with `overview.problem` is acceptable;
+  Detailed Problem deepens it, not avoids it. See `narrative-structure.md` §1 for the full
+  layer breakdown.
 - **Architecture / Data** → what was actually built and what fed into it (not just
   what was tried — what was decided and why)
 - **Results** → primary conclusion in the first sentence, stated explicitly before any table,
   diagram, or metric. Supporting data follows. For negative results: state the non-finding
   directly; do not make the reader infer it from the numbers.
 - **Constraints** → honest scope caveats, not defensive hedging
-- **Next Steps** → where the work goes, not filler bullets
+- **Next Steps** → where the work goes, not filler bullets. Close with one or two sentences
+  framing what the project established and what thread is most worth pursuing — not a
+  restatement of the bullets, but a synthesis of the whole
+
+### Write overview last
+
+Once the body is complete, return to write all `overview.*` fields. The project
+differentiator, core findings, and narrative arc are now fully established — write
+the overview to reflect them accurately. See `references/frontmatter-rules.md` §overview
+for field-level rules and density targets.
 
 ### Standalone readability requirement
 
@@ -111,17 +149,18 @@ alone.
 
 ---
 
-## Step 3 — Density Reduction
+## Step 4 — Density Reduction
 
 Run this pass before Reader Review. The reviewer should evaluate the version closest
 to what the user will actually see.
 
 ### Tables that earn their place
 
-- Two-column comparison with analytical content (e.g., victim vs. attacker
-  normalization strategy)
+- Two-column comparison with analytical content (e.g., for adversarial ML: victim
+  vs. attacker strategy; for ablations: configuration vs. metric; for dataset
+  construction: source vs. count vs. provenance)
 - Results data that cannot be expressed as prose without losing precision
-- OOD dataset construction breakdown with provenance notes
+- Any breakdown where the count or breakdown itself carries credibility
 
 ### Tables that should become prose
 
@@ -143,9 +182,26 @@ wraps naturally. Do not force prose lists into metadata-row flex layouts (those 
 for the overview component bullets, which is a separate rendering context). Ordered
 lists stay native and clearly ordered.
 
+### Component audit
+
+After the density pass, check `src/components/mdx/mdx-components.tsx` for the current
+available set of prose components. For each section, ask: is there a key mechanism,
+finding, or rationale that a flat sentence undersells? If yes, consider whether a
+component gives it appropriate weight. Do not add components for visual variety.
+
+Each component has a specific role:
+- `<Callout>` — flags a core finding or non-obvious constraint. One per major section max.
+- `<Highlight>` — pull-quote for a single key conceptual insight. One per deep-dive max.
+  Best where the *why* behind a mechanism deserves more weight than prose gives it.
+- `<Diagram>` / `<Figure>` — visual evidence that adds something prose cannot.
+- `<DiagramRow>` — side-by-side panels for direct comparison.
+- `<CodeBlock>` — algorithm or config that would lose precision in prose.
+- H4 accent heading — lightweight highlighted sub-heading for a rationale point within
+  an H3. Use sparingly.
+
 ---
 
-## Step 4 — Reader Review (required pre-approval gate)
+## Step 5 — Reader Review (required pre-approval gate)
 
 Run after density reduction. Run it as a subagent to keep the main context clean.
 The reviewer evaluates readability independently from technical correctness. Apply

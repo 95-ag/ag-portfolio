@@ -10,15 +10,15 @@
 ## Active project: `masked-autoencoders`  (pipeline-run plan approved 2026-05-31)
 
 ### Kickoff (before Stage 1)
-- [ ] Locate source files (report PDF, repo + branch/commit, any slides) — locate, don't read
-- [ ] Confirm slug (`masked-autoencoders` unless changed)
+- [x] Locate source files (report PDF, repo + branch/commit, any slides) — locate, don't read
+- [x] Confirm slug (`masked-autoencoders` unless changed)
 
 ### Stage 1 — `project-content-extraction`
-- [ ] Read SKILL.md + references first
-- [ ] Decide all frontmatter with user (title, subtitle, framing, logos, links, projectType, publishedAt, featured, order, tags, stack)
-- [ ] Write body (H2 spine per skill) + density-reduction + reader-review pass
-- [ ] `npm run build` passes; page renders at `/work/masked-autoencoders`
-- [ ] **Gate: user approves MDX**
+- [x] Read SKILL.md + references first
+- [x] Decide all frontmatter with user (title, subtitle, framing, logos, links, projectType, publishedAt, featured, order, tags, stack)
+- [x] Write body (H2 spine per skill) + density-reduction + reader-review pass
+- [x] `npm run build` passes; page renders at `/work/masked-autoencoders`
+- [x] **Gate: user approves MDX**
 
 ### Stage 2 — `project-assets-generation`
 - [ ] Read SKILL.md + references first

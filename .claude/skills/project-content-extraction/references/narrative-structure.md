@@ -49,22 +49,49 @@ reveals.
 - For novel systems: the differentiator is the specific tradeoff navigated and measured
 
 The central narrative arc should be explicit in the body and reflected in the overview.
-Name the arc before drafting: "reproduce → audit → repair → evaluate → report honestly"
-is a clearer target than "write about the DQL project." That arc shapes which decisions
-to foreground and which to treat as background.
+Name the arc before drafting — it shapes which decisions to foreground and which to
+treat as background. Examples by project type:
+
+- Reproduction: "reproduce → test claims → confirm / refute each → characterize limits"
+- Negative result: "hypothesis → implementation → experiment → failure analysis → scope"
+- Novel system: "problem → design decision → implement → benchmark → tradeoff analysis"
 
 ---
 
 ## Standard H2 Narrative Spine (ML Projects)
 
+The operative section list and inclusion criteria live in `extraction-procedure.md`
+Step 3. If the two files ever diverge, `extraction-procedure.md` is authoritative for
+the list. What follows is per-section authoring guidance — how to write each section,
+not just what to include.
+
 Default section order. Reorder only when readability clearly improves; all sections
 are optional but most should be present:
 
-1. **Detailed Problem** — opens with the research question or engineering hypothesis, rather than repeating
-   the high-level motivation already covered in `overview.problem`. After establishing the question, explain
-   the technical difficulty: failure modes, constraints, edge cases, why naive approaches fall short, and
-   the engineering tradeoffs that make the problem non-trivial.
-   (`overview.problem` = why the problem matters; Detailed Problem = what is being asked and why answering it is hard)
+1. **Detailed Problem** — four layers in order. `overview.problem` covers stakes at scan level;
+   Detailed Problem goes deeper. Some overlap is acceptable — they serve different reading modes.
+
+   **Layer 1 — Real-world stakes.** Why anyone would care. What is at risk, what is broken, or
+   what becomes possible. Deeper than `overview.problem`; specific enough that both a recruiter
+   and a technical reader understand the territory before the question is asked.
+
+   **Layer 2 — What the thing is.** The minimum domain or concept setup needed to make the
+   research question intelligible. Length scales with how familiar the domain is: an obscure
+   threat model needs two sentences; lane detection needs one. This is not Background (theory) —
+   it is the minimum context that makes the question non-opaque. Skip entirely if the stakes
+   paragraph already provides it.
+
+   **Layer 3 — The research question or engineering hypothesis.** Stated explicitly, after the
+   reader has the territory. Now the question lands with weight.
+
+   **Layer 4 — Execution constraints and genuine difficulty.** State the real challenges:
+   failure modes, edge cases, why naive approaches fall short, operational limits. Do not
+   force a "non-trivial" narrative. Some research questions are empirically clean — the
+   challenge is in execution (compute constraints, ambiguous setup, implementation bugs),
+   not in the fundamental difficulty of the question. If the question is hard to answer,
+   say why. If the challenge is replication fidelity, compute budget, or underspecified
+   protocols, say that instead. Inventing difficulty produces the meta-commentary the
+   writing rules prohibit.
 2. **Background** — domain context, theoretical background, operational constraints, hardware limits
 3. **Architecture** — system diagrams, component interaction, model choice rationale
 4. **Data** — dataset source, preprocessing, annotations, augmentations, distribution characteristics
@@ -78,7 +105,9 @@ are optional but most should be present:
 8. **Constraints & Limitations** — scope caveats only: what the results *can't* conclude and why.
    Do not re-explain mechanisms already covered in Results. The distinction: Results explains
    *what happened and why*; Constraints explains *what that means for generalizability*.
-9. **Next Steps** — where the work goes; can be carefully inferred if not in the source
+9. **Next Steps** — where the work goes; can be carefully inferred if not in the source.
+   Close with one or two sentences that synthesize what the project established and what
+   thread is most worth pursuing — not a restatement of the bullet list.
 
 Project-specific content lives at H3/H4 under these H2s. H1 is rendered by the layout — never written in MDX body.
 
@@ -99,18 +128,21 @@ The overview component (frontmatter `overview.*` fields) serves the recruiter:
   skill signal if framed as evidence-based evaluation. 4 bullets maximum; each must
   be distinct.
 
-The overview must be scannable in under 60 seconds. If the combined problem + built +
-results fields take longer, they are too dense.
+The overview must be scannable in under 60 seconds. Density targets: `problem` ≤ 3
+sentences, `built` ≤ 2 sentences, `results` = 3 short bullets (one number each),
+`transferableSkills` = 4 bullets starting with gerunds. If any field exceeds this,
+trim before presenting.
 
 The MDX body is the deep technical dive. Do not repeat the executive overview verbatim
 in the body — the body adds technical depth, not a paraphrase of the frontmatter.
 
 **Overview describes what was done, not what was built.** The biggest signal shift
-comes from work-centric language over architecture-centric language. "Reproduced a
-published pipeline, audited 14 implementation errors, repaired the codebase, and
-evaluated rigorously" is more distinctive than "built a D-DQN agent with prioritized
-experience replay." The former communicates research engineering capability; the latter
-describes a configuration choice.
+comes from work-centric language over architecture-centric language. Describe the
+shape of the work — reproduce, audit, design, implement, evaluate — not the
+configuration choices made. "Reproduced a published pipeline, identified failure
+modes, and evaluated rigorously" is more distinctive than "built a model with
+[architecture X and algorithm Y]." The former communicates research engineering
+capability; the latter describes a configuration choice.
 
 ---
 
@@ -144,16 +176,54 @@ to understand the project. This means:
   "as mentioned above". The portfolio page is not an academic document. Readers
   do not have the paper open. State findings directly; reference external work by
   description if needed, not by citation.
+- **Preamble before the first H2.** Start directly with `## Detailed Problem`. No
+  introductory paragraph before the first section heading.
+- **Connective tissue between sections.** Phrases like "With X defined, the next thing
+  is Y" are not needed — section headings do the transitional work.
+- **Explanatory parentheticals for concepts a technical reader knows.** Do not define
+  standard ML metrics or well-known methods inline. Save parentheticals for genuinely
+  non-obvious constraints or domain-specific terms.
+- **Meta-commentary and editorial flourishes.** Do not describe what you are about to
+  say, frame the project in colloquial terms ("the recipe", "this game"), or add turns
+  of phrase that make writing "interesting" rather than credible.
 
 **Abbreviations:** expand on first use, then use the short form throughout. Do not
 assume domain familiarity. Any abbreviation a non-specialist reader would not recognize
 should be spelled out at first occurrence and defined if the meaning isn't obvious from
 the expansion alone.
 
-Structure the page as an engineering narrative, not a documentation dump. The right
-register is an engineering case study: explain decisions and outcomes, not just document
-them. Each section opens with a clear statement of purpose, not a definition. Assume a
-technical reader — do not over-explain the obvious.
+**Writing register — decision-log clarity.** The target register is a senior engineer's
+postmortem or design doc. Every sentence either states a fact, explains a decision, or
+describes an outcome. Nothing exists to frame, warm up, or editorialize. Each section
+opens with a clear statement of purpose, not a definition. Assume a technical reader —
+do not over-explain the obvious.
+
+Test: read each sentence and ask — could a senior engineer have written this in a
+postmortem? If yes, the register is right. If it sounds like a tech blog or essay, cut it.
+
+**Framing sentences — dead vs. load-bearing.** Not all framing sentences should be
+removed. Two types exist:
+
+- *Dead framing* — describes what you are about to say without carrying content.
+  Cut these. Example: "Both answers carry value" as a standalone assertion with no
+  follow-through.
+- *Load-bearing framing* — introduces a consequence pair, sets up a logic chain, or
+  names what is at stake in the answer. Keep these, but restate as a specific
+  consequence rather than an abstract label. "The result matters either way: positive
+  confirms X; negative redirects effort to Y" is load-bearing. "Both answers carry
+  value" is dead.
+
+**Restate as consequence, not label.** When a sentence reads as editorial commentary,
+ask whether the underlying observation is specific and problem-related. If yes, restate
+it as a consequence of a fact — do not delete it. "This is a structural mismatch" is a
+label. "The compounding error is a property of the approach, not a tuning problem" is a
+consequence. The observation survives; only the label changes.
+
+**Stakes framing — scope consequence, not editorial binary.** Framing that tells the
+reader what is at stake in the answer is valid. State it as a scope consequence, not a
+judgment. "Determines whether X is a general method or a niche technique" is an
+editorial binary. "Determines how broadly the method applies" is a consequence. Same
+function, no label.
 
 When revising a draft: apply targeted improvements to the existing text, not a wholesale
 rewrite. Refinement, not substitution — a rewrite discards valid content and resets voice.
@@ -161,7 +231,8 @@ rewrite. Refinement, not substitution — a rewrite discards valid content and r
 **Concept density per section:** a section that introduces more than 2–3 new concepts
 at once forces the reader to context-switch mid-paragraph.
 
-- Background should cover problem framing, RL/algorithmic formulation, and any
+- Background should cover problem framing, the core method's formulation (RL reward
+  design, loss function, inference procedure — whatever drives the approach), and any
   extension hypothesis as separate paragraphs — not merged into one dense block.
 - Engineering Decisions should explain *why* a choice was made, not re-explain *what*
   it is. If a concept was introduced in Background or Architecture, reference it by
@@ -183,8 +254,11 @@ equal significance.
   subsections explaining why, supported by the table and key diagram.
 - **Supporting findings** — configurations that extend or nuance the core finding:
   captured in the results table, briefly interpreted in prose.
-- **Secondary experiments** — extensions that don't materially change the conclusion:
-  one subsection covering hypothesis, result, and likely cause. Not a parallel narrative.
+- **Secondary contributions** — qualitative validation, interpretability checks, or
+  supporting analysis: a named H3 at the logical end of the section it supports
+  (Results, Training Design). H2 is only appropriate when the contribution genuinely
+  has no parent section to live under. The failure mode is burying it as an unnamed
+  paragraph — give it a named H3 so it reads as intentional work, not a footnote.
 
 Apply this test before finalizing: if a secondary experiment has as much body space as
 the core finding, reduce it.

@@ -81,7 +81,7 @@ overview:
   built: |
     What was built. One or two sentences focused on solution, system behavior,
     approach. Honest about scope.
-  results:              # optional; 2–4 bullet strings
+  results:              # optional; 2–3 bullet strings
     - "~80% accuracy at 25k queries"
     - "OOD extraction reached 59% at 15k queries"
   transferableSkills:   # for academic/freelance projects

@@ -19,11 +19,16 @@ All 4 pipeline skills are frozen and audited.
 ## Current Project
 
 **`masked-autoencoders`** — pipeline-run plan **approved 2026-05-31**
-(`/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md`). Not started.
+(`/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md`). Kickoff done 2026-05-31; Stage 1 active.
 
-**Next action — Kickoff** (before Stage 1), two things only:
-1. Locate source files (report PDF, repo + branch/commit, any slides) — locate, don't read.
-2. Confirm slug (`masked-autoencoders` unless changed).
+**Kickoff complete** — sources located, slug confirmed:
+- Report PDF: `tmp/mae_original/Advanced_DL_Project_Report_Group20.pdf`
+- Report images: `tmp/mae_original/` — `MAE_architecture.jpg`, `grad-CAM-heatmap.png`,
+  `grad-CAM-orginalpng.png`, `reconstruction1.png`, `reconstruction2.png`
+- Repo: `https://github.com/95-ag/adl-masked-autoencoders`
+- No slides
+- Slug: `masked-autoencoders`
+- Page links (decided at kickoff): code repo link + self-hosted report
 
 All other frontmatter (title, subtitle, framing, logos, links, projectType, publishedAt,
 featured, order, tags, stack) and body are decided **inside Stage 1** (`project-content-extraction`)
@@ -43,9 +48,9 @@ Project-specific only:
 
 | # | Stage (skill) | Status | Gate | Depends on |
 |---|---|---|---|---|
-| 0 | Kickoff (source files + slug) | **next** | — | — |
-| 1 | `project-content-extraction` | pending | user approves MDX | 0 |
-| 2 | `project-assets-generation` | pending | user approves assets | 1 |
+| 0 | Kickoff (source files + slug) | **done** | — | — |
+| 1 | `project-content-extraction` | **done** | user approves MDX ✓ 2026-05-31; post-gate: Highlight + Grad-CAM restructure + Detailed Problem four-layer rewrite; DQN Detailed Problem also revised; skill updated | 0 |
+| 2 | `project-assets-generation` | **next** | user approves assets | 1 |
 | 3 | `project-cover-generation` | pending | user approves cover (3 sub-gates) | 2 |
 | 4 | `project-review` | pending | user approves → complete | 3 |
 
