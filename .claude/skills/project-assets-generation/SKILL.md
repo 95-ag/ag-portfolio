@@ -28,8 +28,8 @@ the list is approved.
    touching any source material or generating any file.
 
 2. **`references/asset-standards.md`** — format table, directory layout, naming convention,
-   exact mmdc command, matplotlib shared style usage, reproducibility rules, anti-patterns.
-   Read before writing any source file or export command.
+   the shared SVG-theme build, matplotlib shared style usage, reproducibility rules,
+   anti-patterns. Read before writing any source file or export command.
 
 ---
 
@@ -119,12 +119,13 @@ source-first priority rule in the same section.
 | Type | When |
 |---|---|
 | Legacy crop | Adequate source figure exists in PDF/slides at portfolio width |
-| Mermaid | Sequential pipelines, stage diagrams, dependency/state — no adequate source figure |
+| Hand-SVG (shared theme) | Sequential pipelines, stage diagrams, architecture/state — no adequate source figure |
 | matplotlib | Result with source numbers (metrics, curves, comparisons) — no adequate source figure |
 | Composition | Annotated layouts, side-by-side panels |
 
-Do not generate an asset without a source file. The only exception is legacy PDF crops —
-document the crop procedure in a comment or notes file.
+Charts and diagrams must be generated from a source script. Crop and composition
+rasters are the exception — the committed image in `/public` is the deliverable, and the
+crop recipe need not be retained (it depends on `tmp/`, which is not in git).
 
 ### Step 5 — Audit source material (before generating)
 
@@ -135,9 +136,13 @@ framing worse under the assumption you are making it better.
 
 ### Step 6 — Generate
 
-**Mermaid diagrams:**
-1. Write `.mmd` source to `assets-source/mermaid/<slug>/<name>.mmd` — no `%%{init}%%` blocks
-2. Run: `npx mmdc -i <source>.mmd -o /public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json`
+**Hand-authored SVG diagrams (shared theme):**
+1. Author the body in `assets-source/svg/<slug>/<name>.py` — supply `content_bbox`, `title`,
+   `aria_label`, the node/edge `body`, and `out_rel` (production path
+   `public/projects/<slug>/<name>.svg`); `import _theme` and call `_theme.build(...)`
+2. Run: `.venv/bin/python3 assets-source/svg/<slug>/<name>.py` — writes the production SVG
+   with the shared `DEFS` and a tight, padded viewBox
+3. Never copy `DEFS` into a diagram; never hand-edit a production SVG — edit the source and re-run
 
 **matplotlib charts:**
 1. Write Python script to `assets-source/matplotlib/<slug>/<name>.py`
@@ -154,13 +159,15 @@ framing worse under the assumption you are making it better.
 
 Apply framing rules from `references/asset-procedure.md` — Figure Composition and Framing:
 - Width hierarchy: technical diagrams default `width="narrow"`; result visuals earn full width
-- Multi-subplot figures displayed as single composed figures — not split
+- Responsive framing: avoid baked-in margin (tight viewBox for SVG, tight crop for raster) plus a `max-w` cap, so content stays legible when scaled down on small screens
+- Multi-subplot figures (or a left-to-right comparison strip that must stay together) display as one atomic composed figure — not split
+- Independent figures (e.g. original vs heatmap, two examples) are separate images in a responsive `<DiagramRow>` (side-by-side desktop, stacked mobile) — not baked into one PNG
 - Crop normalization: symmetric padding, unified y-bounds across subplots
 - Three-figure comparison sets: `<DiagramRow layout="2+1">` with shared caption
 
 Place exports:
 - Production files → `/public/projects/<slug>/`
-- Source files → `assets-source/{mermaid,matplotlib}/<slug>/`
+- Source files → `assets-source/{svg,matplotlib}/<slug>/`
 
 After placing each asset, verify the alt text and caption drafted in Step 3b against the
 actual generated output:
@@ -212,9 +219,8 @@ Do not generate the hero cover or make further MDX content edits. Those are sepa
 
 ## Validation — check before handing off
 
-- Every asset has a source file (`.mmd` or `.py`) — except documented PDF crops
-- No `%%{init}%%` blocks in any `.mmd` file
-- SVG for all Mermaid and vector outputs; PNG/WebP for raster per the format table
+- Every chart and diagram has a source script (`.py`) — crop/composition rasters ship from `/public` with no retained source
+- SVG for all hand-authored diagrams and vector outputs; PNG/WebP for raster per the format table
 - Filenames are descriptive and stable — not `chart.svg` or `diagram1.svg`
 - Production assets are in `/public/projects/<slug>/`, not in `assets-source/`
 - `next build` passes (no broken `/public` refs from the MDX)

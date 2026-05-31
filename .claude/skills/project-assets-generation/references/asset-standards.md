@@ -9,12 +9,12 @@ and anti-patterns. Authoritative reference for the project-assets-generation ski
 
 | Asset type | Format | Notes |
 |---|---|---|
-| Mermaid flow/pipeline/state diagrams | SVG | Always — via mmdc export |
+| Hand-authored SVG diagrams (flow/pipeline/architecture/state) | SVG | Via the shared `_theme.py` build |
 | matplotlib charts (source data available) | SVG preferred, PNG acceptable | Must be reproducible from script |
-| Legacy PDF crops (no source data) | High-DPI PNG | Crop procedure documented |
+| Legacy PDF crops (no source data) | High-DPI PNG | Crop procedure; source not retained |
 | Raster images / photos | WebP | Compress before committing |
 | Assets requiring transparency | PNG | WebP if transparency + compression needed |
-| Complex custom architecture diagrams (tldraw) | SVG | Fallback only — use when Mermaid is insufficient |
+| tldraw → SVG | SVG | Fallback only — spatial/custom layouts the SVG theme cannot express; no automated path, hand-produce |
 
 ---
 
@@ -22,10 +22,10 @@ and anti-patterns. Authoritative reference for the project-assets-generation ski
 
 ```
 /assets-source/
-  mermaid/
-    _theme.json              ← shared Mermaid theme — never edit during a project run
+  svg/
+    _theme.py                ← shared SVG diagram theme + build() — never edit during a project run
     <slug>/
-      <name>.mmd             ← editable Mermaid source
+      <name>.py              ← per-diagram source (body + bbox + meta → build())
   matplotlib/
     _portfolio.mplstyle      ← shared matplotlib style — never edit during a project run
     _portfolio.py            ← shared palette helper — import, never copy
@@ -54,32 +54,31 @@ Match the `src=` path in the MDX component exactly — filenames drive the MDX r
 
 ---
 
-## Mermaid Tooling
+## Hand-authored SVG Tooling
 
-**Generation command (exact):**
+Pipeline, architecture, flow, and state diagrams are hand-authored SVG generated from a
+shared theme. The theme owns the visual system (node/edge classes, the light/dark
+treatment, the arrowhead marker) and the viewBox framing.
+
+**Shared module** (`assets-source/svg/_theme.py`): canonical `DEFS` (style block + `#arr`
+marker, including a `@media (prefers-color-scheme: dark)` block), a `FRAME_PAD` constant,
+and `build(out_rel, title, aria_label, content_bbox, body)` — writes the production SVG
+with the shared `DEFS` and a tight viewBox computed from `content_bbox` + `FRAME_PAD`.
+
+**Per-diagram source** (`assets-source/svg/<slug>/<name>.py`): defines the node/edge `body`
+markup, the `content_bbox`, `title`, `aria_label`, and `out_rel` — the production path
+relative to the repo root, `public/projects/<slug>/<name>.svg` — then calls `_theme.build(...)`.
+
+**Generation command:**
 ```
-npx mmdc -i assets-source/mermaid/<slug>/<name>.mmd -o public/projects/<slug>/<name>.svg -c assets-source/mermaid/_theme.json
+.venv/bin/python3 assets-source/svg/<slug>/<name>.py
 ```
 
 **Rules:**
-- Always pass `-c assets-source/mermaid/_theme.json` — never inline `%%{init}%%` blocks
-- `.mmd` source files live in `assets-source/mermaid/<slug>/`
-- Test output at dark and light theme tokens; the shared `_theme.json` is already calibrated
-
-**Shared theme config** (`assets-source/mermaid/_theme.json`):
-```json
-{
-  "theme": "base",
-  "themeVariables": {
-    "primaryColor": "#e6f4ec",
-    "primaryBorderColor": "#bbcabf",
-    "primaryTextColor": "#2c2c2a",
-    "lineColor": "#6c7a71",
-    "fontFamily": "Inter, system-ui, sans-serif",
-    "fontSize": "13px"
-  }
-}
-```
+- Never copy `DEFS` into a diagram and never hand-edit a production SVG — edit the source `.py` and re-run
+- Node geometry is authored in the body; `build()` frames the viewBox tight to `content_bbox` + `FRAME_PAD`
+- In the MDX `<Diagram>`, set `aspect` to the generated viewBox ratio and cap desktop with `max-w-[Npx]` for size parity (fluid below)
+- The `@media` dark block lives in `DEFS`, so diagrams adapt to the page theme without a runtime filter
 
 ---
 
@@ -120,10 +119,10 @@ plt.savefig('public/projects/<slug>/<name>.svg', bbox_inches='tight')
 
 ## Reproducibility Rules
 
-- Mermaid diagrams: reproducible via `.mmd` + `_theme.json` + `mmdc` command
+- Hand-SVG diagrams: reproducible via the per-diagram `.py` + shared `_theme.py` (`build()`)
 - matplotlib charts: reproducible via `.py` script + `_portfolio.mplstyle` + `_portfolio.py`
-- Legacy PDF crops: document crop parameters (source figure, padding, tool used) — not automatically reproducible but the decision is documented
-- Do not commit only the export — source is always retained
+- Crop / composition rasters: source is *not* retained — these scripts read `tmp/` (not in git), so the committed `/public` image is the deliverable, not a reproducible artifact
+- Do not commit only the export for a chart or diagram — its `.py` source is always retained
 
 ---
 
@@ -134,7 +133,7 @@ Before committing any asset:
 - [ ] No duplicate exports or variant files
 - [ ] Labels readable at mobile width (≥375px)
 - [ ] Descriptive stable filename
-- [ ] Source file retained in `assets-source/`
+- [ ] Source script retained in `assets-source/` — charts and diagrams only (crop rasters exempt)
 - [ ] No embedded raster graphics inside SVGs where vector would work
 - [ ] Aspect ratio in MDX `aspect` prop matches actual pixel dimensions
 - [ ] **Resampling filter correct** — LANCZOS for charts/plots (smooth lines); NEAREST for
@@ -167,10 +166,10 @@ Assets across all projects should feel visually cohesive — part of the same ed
 not a collection of independently styled one-offs.
 
 **Shared conventions to maintain across every project:**
-- Typography scale — use the shared matplotlib style and Mermaid theme; never override fonts locally
+- Typography scale — use the shared matplotlib style and SVG theme; never override fonts locally
 - Stroke widths — hairline strokes as defined in `_portfolio.mplstyle`; do not introduce heavier strokes
 - Color palette — `_portfolio.py` accent and neutral colors; do not add project-specific accent colors
-- Dark/light compatibility — assets must remain legible on both the light and dark site surface
+- Dark/light compatibility — assets must remain legible on both the light and dark site surface. There is no runtime dark-mode filter on figures: bake charts/rasters with a light background + dark text (they render as light cards on the dark page); only SVGs with an internal `@media (prefers-color-scheme: dark)` adapt
 - Spacing and padding — consistent inner padding (`bbox_inches='tight'`; transparent SVG backgrounds)
 
 Prefer systems (shared theme files, shared scripts) over one-off manual design work. A new project
@@ -184,8 +183,7 @@ should plug into the existing visual system, not create a new one.
 - Inconsistent visual styles across diagrams for the same project
 - Oversized PNG charts that should be SVG
 - Unreadable labels at small sizes
-- `%%{init}%%` blocks inside `.mmd` files (use shared `_theme.json` instead)
 - Manually edited production files (regenerate from source instead)
-- Missing source files (export without corresponding `.mmd` or `.py`)
+- Missing source script for a chart or diagram (export without a corresponding `.py`)
 - Generic filenames (`chart.svg`, `diagram1.png`, `output.svg`)
-- Copying `_portfolio.mplstyle` or `_theme.json` content into project-specific files
+- Copying `_portfolio.mplstyle`, `_portfolio.py`, or the SVG `_theme.py` `DEFS` into project-specific files

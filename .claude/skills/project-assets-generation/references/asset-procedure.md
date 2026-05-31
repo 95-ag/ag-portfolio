@@ -68,14 +68,14 @@ Before generating any asset, categorize every visual in the approved asset list:
 
 | Type | When to use | Output format |
 |---|---|---|
-| Mermaid flow | Sequential pipelines, stage diagrams, selection processes, dependency/state diagrams | SVG |
+| Hand-SVG (shared theme) | Sequential pipelines, stage diagrams, selection processes, architecture/state diagrams | SVG |
 | matplotlib | Any result that has source numbers (metrics, comparisons, curves, heatmaps) | SVG preferred, PNG acceptable |
 | Legacy crop | Figure exists in PDF but no raw data available for regeneration | High-DPI PNG crop |
 | Composition | Annotated layouts, side-by-side image comparisons, raster panels | PNG |
 
 **Source-authoritative figures beat reconstructed diagrams.** Before assigning a type, check
 whether the source material (paper, thesis, defense slides) already contains a figure covering
-the same content. A direct PDF crop is more accurate than a Mermaid/matplotlib reconstruction,
+the same content. A direct PDF crop is more accurate than a hand-SVG/matplotlib reconstruction,
 avoids dimension/label errors, and cannot drift from the reference project's visual style.
 Assign a "Legacy crop" type and use the source figure. Generate from scratch only when no
 adequate source figure exists for the content you need to convey.
@@ -93,7 +93,7 @@ document the crop procedure explicitly (tool, coordinates, padding applied) in a
 notes file alongside the production asset.
 
 **Shared tooling — invoke, never duplicate:**
-- Mermaid theme: `assets-source/mermaid/_theme.json`
+- SVG diagram theme: `assets-source/svg/_theme.py` (`DEFS` + `build()`)
 - matplotlib style: `assets-source/matplotlib/_portfolio.mplstyle`
 - matplotlib palette helper: `assets-source/matplotlib/_portfolio.py`
 
@@ -122,7 +122,7 @@ under the assumption you are making it better. Audit first; only then decide whe
 to regenerate.
 
 For assets being generated for the first time, sketch the expected composition before
-writing the source file: expected aspect ratio, content density, label count. A Mermaid
+writing the source file: expected aspect ratio, content density, label count. A hand-SVG
 diagram or matplotlib figure that cannot render legibly at ~760px column width should be
 redesigned before any source file is written — not after.
 
@@ -130,6 +130,22 @@ redesigned before any source file is written — not after.
 prose column, or whatever `width` prop is set in the MDX component. A figure legible at
 1600px source resolution may be illegible at 760px. Source resolution is irrelevant; only
 rendered readability matters. This applies to all figures, including legacy crops.
+
+### Responsive framing for scale
+
+Baked-in margin wastes container width and shrinks the *content* on small screens — an
+image scales as a whole, so empty space scales with it. Keep framing tight to content, then
+cap desktop size:
+
+- **SVG** — `build()` already frames the viewBox tight to `content_bbox` + `FRAME_PAD`; do
+  not author large empty margins into the body.
+- **Raster** — crop the source tight to its content (see Crop normalization); leave no
+  whitespace padding around the subject.
+- **All figures** — set `aspect` to the real ratio and cap desktop with `max-w-[Npx]` in the
+  MDX component. It holds at the cap on wide screens (centred within padding) and goes fluid
+  on narrower columns, so content stays as large as possible at every width. To match a prior
+  size after tightening: `max-w ≈ newViewBox/oldViewBox × column width` (measure the column —
+  the diagram column is wider than the prose column).
 
 ### Treat multi-subplot figures as single figures
 
@@ -144,6 +160,12 @@ and labels. Respect it.
 Split-panel display is appropriate only for figures that were independently composed and
 need side-by-side presentation for a specific comparison reason. It is not a default
 layout tool for anything wide.
+
+Conversely, do not bake *independent* figures (e.g. an original image and its heatmap, or
+two separate examples) into a single static raster — that is PDF thinking and cannot adapt
+to the viewport. Place them as separate images in a responsive `<DiagramRow>` (side-by-side
+on desktop, stacked on mobile). The single-figure rule applies only to a genuinely atomic
+unit — a multi-subplot figure or a left-to-right comparison strip that must stay together.
 
 ### Width hierarchy — full width is the exception
 
@@ -185,6 +207,9 @@ When cropping figures for publication:
   on one side only), prefer a single-figure crop over splitting
 - Verify the final crop at 100% zoom before committing — aspect ratios in the MDX
   `aspect` prop must match actual pixel dimensions
+- `<Figure>` uses `object-cover` and defaults to `aspect="16/9"` — it clips the sides of a
+  wider image unless `aspect` matches the real ratio. Set `aspect` to actual dimensions, or
+  use `<Diagram>`/`<DiagramPanel>` (`object-contain`) for compositions that must never crop
 
 ### Multi-panel captions
 
@@ -196,22 +221,16 @@ reduce interpretation effort — they do not restate the figure title.
 
 ### Diagram system consistency
 
-Hand-crafted SVG diagrams for the same project must share: node dimensions, CSS class
-vocabulary, dark-mode media query structure, marker definitions, and arrowhead style.
+All diagrams come from the shared SVG theme (`assets-source/svg/_theme.py`), so node
+dimensions, CSS class vocabulary, the dark-mode media query, marker definitions, and
+arrowhead style are inherited automatically — never fork them per project. Author the
+node/edge `body`, the `content_bbox`, and the diagram's `title` / `aria_label` / `out_rel`;
+`build()` supplies the shared `DEFS` and the framing.
 
-Do not mix hand-crafted SVG with Mermaid output in the same visual system — they produce
-incompatible node sizing, font rendering, and edge treatment.
-
-When Mermaid output is unavoidable alongside hand-crafted SVGs, compare node dimensions
-and font sizes explicitly and adjust the export configuration until they match.
-
-**Mermaid viewBox width is content-driven — it cannot be forced via `_theme.json`.** Output
-width is determined by node count and label density; a simple 3-node pipeline and a branching
-architecture produce different proportions. Before writing any `.mmd` file, run a
-visual-consistency check: compare the expected output against `model-extraction-attacks`
-diagrams (the reference project). If proportions will not match — different widths, different
-node weights, different edge style — prefer a source figure from the paper over the Mermaid
-reconstruction.
+`build()` frames the viewBox tight to `content_bbox` + `FRAME_PAD`, so proportions are
+driven by the authored geometry, not a layout engine. Keep node sizes and the row grid
+consistent with the existing diagrams (compare against `model-extraction-attacks` as the
+reference) so a new diagram reads as part of the same set.
 
 ### Figure numbering
 
@@ -257,6 +276,11 @@ is better than one with asymmetric whitespace from an awkward crop.
 **Corrupted source invalidates downstream work.** If an extracted file came from the wrong
 page, the wrong image object, or a failed extraction pipeline, all crops derived from it
 must be discarded. Re-extract from the original PDF — do not patch corrupted assets.
+
+**Add panel labels via the component, not the image.** When a cropped panel needs a label
+(e.g. "Original" / "Grad-CAM"), render it with `<DiagramPanel label=...>` (a sub-figure
+`figcaption`). Do not re-wrap the crop in matplotlib to bake a title — that injects
+figure-margin padding around the image.
 
 ---
 
