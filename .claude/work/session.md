@@ -19,7 +19,7 @@ All 4 pipeline skills are frozen and audited.
 ## Current Project
 
 **`masked-autoencoders`** — pipeline-run plan **approved 2026-05-31**
-(`/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md`). Kickoff done 2026-05-31; Stage 1 active.
+(`/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md`). Stage 1 (MDX) + Stage 2 (assets) approved; **Stage 3 (cover) next**.
 
 **Kickoff complete** — sources located, slug confirmed:
 - Report PDF: `tmp/mae_original/Advanced_DL_Project_Report_Group20.pdf`
@@ -36,7 +36,6 @@ with the user — **not pre-locked here**. Read each skill + the project sources
 stage runs, not before.
 
 ### Review tooling (Stage 4) — project-specific bits
-General WSL / Windows / git-bash / node-PATH mechanics now live in global `rules/windows-claude.md`.
 Project-specific only:
 - Screenshots via `@playwright/cli` (repo devDep), needs chromium **rev 1224**; `.playwright/cli.config.json`
   sets `browserName: chromium` (gitignored; `playwright-cli install` regenerates it). Invoke the binary
@@ -50,8 +49,8 @@ Project-specific only:
 |---|---|---|---|---|
 | 0 | Kickoff (source files + slug) | **done** | — | — |
 | 1 | `project-content-extraction` | **done** | user approves MDX ✓ 2026-05-31; post-gate: Highlight + Grad-CAM restructure + Detailed Problem four-layer rewrite; DQN Detailed Problem also revised; skill updated | 0 |
-| 2 | `project-assets-generation` | **next** | user approves assets | 1 |
-| 3 | `project-cover-generation` | pending | user approves cover (3 sub-gates) | 2 |
+| 2 | `project-assets-generation` | **done** | user approves assets ✓ 2026-06-01; post-gate: shared SVG diagram theme (`assets-source/svg/_theme.py`) + tight responsive framing; Mermaid fully unloaded (dep + docs + skill fold, fresh-eyes reviewed); crop scripts dropped | 1 |
+| 3 | `project-cover-generation` | **next** | user approves cover (3 sub-gates) | 2 |
 | 4 | `project-review` | pending | user approves → complete | 3 |
 
 Each stage is gated: do not advance until the prior gate has explicit user approval in chat.
