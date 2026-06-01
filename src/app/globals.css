@@ -628,15 +628,15 @@ body {
 
 .ascii-bg-glyph-accent {
   color: var(--accent);
-  opacity: 0.55;
+  opacity: 0.72;
 }
 .ascii-bg-glyph-ink {
   color: var(--on-surface);
-  opacity: 0.3;
+  opacity: 0.45;
 }
 .ascii-bg-glyph-mute {
   color: var(--on-surface-muted);
-  opacity: 0.22;
+  opacity: 0.34;
 }
 [data-theme="dark"] .ascii-bg-glyph-accent {
   opacity: 0.5;
