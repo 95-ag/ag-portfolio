@@ -33,19 +33,50 @@ const GLYPHS = [
   "°",
 ];
 
-const DENSITY = 0.2;
 const CELL = 30;
+// Mobile/desktop divider — matches the site's `md` breakpoint and nav switch.
+const MIN_WIDTH = 768;
+const DESKTOP_DENSITY = 0.2;
+// Mobile (non-project) gets a sparser, fainter full-bleed field — texture, not noise.
+const MOBILE_DENSITY = 0.1;
+const MOBILE_OPACITY = 0.55;
+// Desktop/tablet: clear a centered band sized to the content column (+buffer) so
+// glyphs sit only in the outer gutters/corners and never touch the reading column.
+const GUTTER_MASK =
+  "linear-gradient(to right, #000 0, #000 calc(50% - 600px), transparent calc(50% - 540px), transparent calc(50% + 540px), #000 calc(50% + 600px), #000 100%)";
 
-export function AsciiField() {
+interface AsciiFieldProps {
+  /** Project detail pages are dense reading — kept fully clean on mobile. */
+  isProjectDetail: boolean;
+}
+
+export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const host = ref.current;
     if (!host) return;
 
+    const setMask = (value: string) => {
+      host.style.setProperty("mask-image", value);
+      host.style.setProperty("-webkit-mask-image", value);
+    };
+
     const build = () => {
       host.innerHTML = "";
       const W = window.innerWidth;
+      const isMobile = W < MIN_WIDTH;
+
+      // Mobile project pages: no background at all (protect dense prose).
+      if (isMobile && isProjectDetail) {
+        setMask("none");
+        return;
+      }
+
+      const density = isMobile ? MOBILE_DENSITY : DESKTOP_DENSITY;
+      setMask(isMobile ? "none" : GUTTER_MASK);
+      host.style.opacity = isMobile ? String(MOBILE_OPACITY) : "1";
+
       const H = Math.max(
         window.innerHeight,
         document.documentElement.scrollHeight,
@@ -57,7 +88,7 @@ export function AsciiField() {
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          if (rand() > DENSITY) continue;
+          if (rand() > density) continue;
           const s = document.createElement("span");
           s.textContent = GLYPHS[Math.floor(rand() * GLYPHS.length)];
           s.style.position = "absolute";
@@ -91,18 +122,9 @@ export function AsciiField() {
       window.removeEventListener("resize", onResize);
       if (t) window.clearTimeout(t);
     };
-  }, []);
+  }, [isProjectDetail]);
 
   return (
-    <div
-      ref={ref}
-      className="absolute inset-0 font-mono text-[13px] leading-none"
-      style={{
-        WebkitMaskImage:
-          "radial-gradient(ellipse 60% 50% at 50% 42%, transparent 0%, transparent 20%, #000 90%)",
-        maskImage:
-          "radial-gradient(ellipse 60% 50% at 50% 42%, transparent 0%, transparent 20%, #000 90%)",
-      }}
-    />
+    <div ref={ref} className="absolute inset-0 font-mono text-[13px] leading-none" />
   );
 }
