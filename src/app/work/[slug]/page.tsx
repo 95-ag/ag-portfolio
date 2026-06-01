@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import rehypeShiki from "@shikijs/rehype";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
@@ -78,7 +79,20 @@ export default async function ProjectPage({ params }: Props) {
               <MDXRemote
                 source={project.body}
                 components={mdxComponents}
-                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                    rehypePlugins: [
+                      [
+                        rehypeShiki,
+                        {
+                          themes: { light: "vitesse-light", dark: "vitesse-dark" },
+                          defaultColor: "light",
+                        },
+                      ],
+                    ],
+                  },
+                }}
               />
             </div>
 
