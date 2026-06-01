@@ -186,8 +186,8 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `p`, `li` | `body-primary` values (18px) | — |
 | `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid {accent}`, `background: {surface-raised}`, `padding: {spacing.md} {spacing.lg}`, `margin-vertical: {spacing.lg}` |
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
-| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid {outline-variant}`, padding |
-| `td` | `body-caption` values | `border-bottom: 1px solid {outline-hair}`, padding |
+| `th` | `body-caption` values + `font-weight: 600` | `color: {on-surface}` (ink), `border-bottom: 2px solid {accent}`, no fill, padding |
+| `td` | `body-caption` values | `color: {on-surface}` (ink), `border-bottom: 1px solid {outline-variant}`, padding |
 | `code` (inline) | `mono-code` metrics, text `{accent}` | `background: {accent}` 10% tint, `border: 1px solid {accent}` 22%, `padding: 2px 6px`, `border-radius: {radius.sm}` |
 | `pre code` | `mono-code` values | `border: 1px solid {outline-variant}`, `background: {surface-sunken}`, full block padding, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
@@ -227,7 +227,7 @@ Six levels, each defined by border and surface treatment only.
 | **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
 | **2 — Border + blur** | `1px solid outline-variant` + `backdrop-filter: blur(12px)` + `surface: {surface-nav}` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
 | **3 — Border + raised** | `1px solid outline-variant` + `surface: {surface-raised}` | Project cards (all variants), `<Highlight>` editorial pull-quote |
-| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
+| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, `<Diagram>` inner content region, project card media well, project detail hero background |
 | **5 — Accent left border + raised** | `2px solid {accent}` (left only) + `surface: {surface-raised}` | `<Callout>`, prose `<blockquote>` |
 
 #### Backdrop-Blur Carve-out
