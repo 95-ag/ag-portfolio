@@ -110,7 +110,7 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `background` | `#f8f8f7` | `#131313` | Page background |
 | `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
 | `surface-raised` | `#f2f2f1` | `#211f1e` | Cards, callouts, highlighted panels — slightly off-white in light, warm-dark in dark |
-| `surface-sunken` | `#ffffff` | `#0e0e0e` | Code blocks, inline code, diagram content regions — pure white in light for maximum code legibility |
+| `surface-sunken` | `#ffffff` | `#0e0e0e` | Code blocks, diagram content regions — pure white in light for maximum code legibility |
 | `surface-nav` | `#ffffffd9` | `#1c1b1bd9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
 | `surface-selection` | `#e6f4ec` | `#1a2e1f` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
 | `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
@@ -188,7 +188,7 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
 | `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid {outline-variant}`, padding |
 | `td` | `body-caption` values | `border-bottom: 1px solid {outline-hair}`, padding |
-| `code` (inline) | `mono-code` values | `background: {surface-sunken}`, `padding: 2px 6px`, `border-radius: {radius.sm}` |
+| `code` (inline) | `mono-code` metrics, text `{accent}` | `background: {accent}` 10% tint, `border: 1px solid {accent}` 22%, `padding: 2px 6px`, `border-radius: {radius.sm}` |
 | `pre code` | `mono-code` values | `border: 1px solid {outline-variant}`, `background: {surface-sunken}`, full block padding, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
@@ -227,7 +227,7 @@ Six levels, each defined by border and surface treatment only.
 | **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
 | **2 — Border + blur** | `1px solid outline-variant` + `backdrop-filter: blur(12px)` + `surface: {surface-nav}` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
 | **3 — Border + raised** | `1px solid outline-variant` + `surface: {surface-raised}` | Project cards (all variants), `<Highlight>` editorial pull-quote |
-| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, prose inline `<code>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
+| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
 | **5 — Accent left border + raised** | `2px solid {accent}` (left only) + `surface: {surface-raised}` | `<Callout>`, prose `<blockquote>` |
 
 #### Backdrop-Blur Carve-out
@@ -556,9 +556,9 @@ button-icon-leading:
 
 #### CopyableCode
 
-Interactive code chip that copies its value to clipboard; elevation-level-4 surface treatment (sunken bg + outline-variant border) reads as an inline code block that is also a control.
+Interactive code chip that copies its value to clipboard; elevation-level-4 surface treatment (sunken bg + outline-variant border) reads as a code chip that is also a control.
 
-- Surface: `surface-sunken` background, `outline-variant` 1px border, `radius-sm` — matches inline code visual vocabulary.
+- Surface: `surface-sunken` background, `outline-variant` 1px border, `radius-sm` — a sunken control surface, intentionally distinct from inline `code`'s accent-tint treatment.
 - Height `h-11` (44px), `px-md` (16px) — meets accessible touch target floor while reading as a compact chip.
 - Trailing icon swaps `ContentCopyIcon` → `CheckIcon` for 1500ms on copy, then reverts; `aria-live="polite"` announces success.
 - Hover and focus shift border and text to `accent`; focus uses `focus-ring` outline.
