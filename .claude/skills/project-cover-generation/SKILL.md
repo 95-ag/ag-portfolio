@@ -58,16 +58,23 @@ Build and get the base composition approved as a standalone diagram before touch
 annotations. The base must work on its own — readable at thumbnail scale, technically
 grounded, no annotations.
 
-**Accent discipline — one element, no exceptions:**
+**Accent discipline — one focal anchor, no exceptions:**
 
-Accent marks the single focal anchor of the composition — the one structural element
-that carries the project's central tension. Every other element is neutral structure
-(`--on-surface`, `--outline-variant`).
+Accent marks the single focal anchor of the composition — the one element that carries the
+project's central tension. Every other element is neutral structure (`--on-surface`,
+`--outline-variant`).
 
-- A highlighted cluster of nodes is a failure — pick one node or collapse the cluster to a single representative
-- Competing focal structures (two accent elements that both "want" attention) are a failure
-- If you are uncertain which element to accent, that is a signal the composition needs simplification, not more accent
+- The anchor may be a single element OR a **coherent subject that reads as one thing** — e.g. a
+  masked-input image whose scattered visible patches are accent *as a unit*. The unit is one focal
+  subject, not many competing marks.
+- A highlighted cluster of *unrelated/competing* nodes is a failure — if the accent reads as several
+  marks fighting for attention, pick one or collapse it to a single representative.
+- Competing focal structures (two separate accent subjects that both "want" attention) are a failure
+- If you are uncertain which element/subject to accent, that is a signal the composition needs
+  simplification, not more accent
 - When in doubt: remove accent from all candidates, read the composition, then apply it to exactly one
+- Confirm with the user *which* element is THE focal subject when a direction is approved, and flag it
+  if the build ends up deviating from that choice
 
 This applies to the base composition only. Annotations (Gate 3) may freely use `--accent`
 for text and arrow strokes — those are additive overlays, not structural elements.

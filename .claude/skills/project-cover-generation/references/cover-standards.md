@@ -81,6 +81,12 @@ e.g. `color-mix(in srgb, var(--outline-variant) 65%, var(--surface))`. This is t
 approach `globals.css` already uses for `--outline-hair`, and it preserves the
 all-custom-properties rule. Reach for it only when a graded neutral is actually needed.
 
+**Faint fills must stay distinct from the page surface in BOTH themes.** A "receding" fill that
+matches the hero/card background disappears — e.g. `--surface-sunken` can collapse into the page
+surface, making faint cells vanish. Derive the faint step by mixing toward the *figure* ink
+(`color-mix(in srgb, var(--on-surface) N%, var(--surface))`, small `N`) so it reads as present-but-
+quiet in both light and dark, and confirm against the rendered cover, not just the markup.
+
 ---
 
 ## Composition Principles
@@ -91,6 +97,23 @@ all-custom-properties rule. Reach for it only when a graded neutral is actually 
 - Asymmetric balance; preserved whitespace
 - Left-to-right narrative flow for pipeline/process diagrams — terminal element far right
 - Readable thumbnail silhouette — test the 320×180px card crop before finalizing
+
+### Structural labels
+
+- **Label all peer structural elements, or none** — labeling some (e.g. the two middle blocks) but
+  not their peers (e.g. the input/output) reads as incomplete. The cover must be legible standalone,
+  without the page caption.
+- Structural labels are a separate layer from engineering annotations: neutral mono labels
+  (`--on-surface`, JetBrains Mono) name the parts; Caveat/accent annotations carry the
+  project-specific verdicts. Keep the real numbers for the annotation layer so the two don't compete.
+
+### Shape vocabulary
+
+Prefer the **recognizable domain icon over a paper-faithful but generic shape** — a cover is read at
+a glance and at thumbnail scale, so instant recognition beats diagram precision. E.g. an autoencoder
+reads instantly as a trapezoid *funnel* (encoder narrows, decoder widens), where stacked-rectangle
+transformer blocks would read as anonymous boxes when small. Note the precision tradeoff to the user
+when the iconic shape simplifies the real architecture.
 
 ### Safe zones
 
@@ -159,7 +182,21 @@ Reject annotation content that could belong to any project in the domain:
 **Phrasing:** prefer a short plain-language verdict alongside the number over a bare symbol —
 e.g. "misses the latency budget by 2×" reads better at thumbnail scale than "38ms > 19ms". The
 plain-language verdict carries the meaning where a terse inequality does not, especially for a
-negative or comparative result.
+negative or comparative result. Lean slightly fuller over terse: a metric reads better with the
+verdict or the thing it measures attached (illustratively, "0.91 IoU — beats baseline" or
+"2.3× faster decode") than as a bare token ("0.91").
+
+**Anchor each metric to the element that produces it.** Map a number to the element it is literally
+computed on or from — e.g. a linear-probe accuracy is measured on the frozen *encoder*, so it points
+at the encoder, not a downstream output. This is a credibility detail readers notice.
+
+### Direction — point AT the note (notebook gesture)
+
+**Default: the arrow runs FROM the figure TO the handwritten note** — the plain tail sits at the
+diagram element, the arrowHEAD sits at the text. This reads as observations *jotted around an
+inspected figure*, which is the authentic engineering-notebook feel a Caveat annotation is going for.
+Pointing the head *at the object* (textbook-callout direction) is the less authentic choice; use it
+only with a deliberate reason.
 
 ### Construction rules
 
@@ -169,43 +206,48 @@ Color:  var(--accent) for both text and arrow strokes — no other color
 Count:  2–3 annotations maximum; each targets a distinct diagram element
 ```
 
-**Placement:** place an annotation in open negative space, not over structure, and make sure
-its arrow tip lands on (or just outside) the element it points at. (Verify this against the
-rendered cover — see `references/cover-procedure.md` → Visual verification.)
-
-**Multi-line labels:** prefer visual centering and a balanced label block. Choose the leader
-arrow's origin from the available space and the surrounding composition — do not fix it to one
-position.
+**Placement & attachment:**
+- Place the note in open negative space, not over structure.
+- Attach the leader at the **text block's edge facing the figure, at that edge's mid-height** (e.g.
+  the left-middle when the figure is to the left) — reads as one leader, not anchored to a stray glyph.
+- **Fixed, equal gap at both ends.** Use one gap value (≈8px is a good default) between the figure
+  and the tail AND between the arrowhead tip and the text — symmetric. This is separate from the
+  internal path↔arrowhead gap below. Measure the text's bounding box in the rendered DOM (`getBBox`)
+  to place the text-end gap precisely rather than eyeballing.
+- Balance multiple notes around the composition (e.g. one above, one below) rather than clustering them.
 
 **Arrow geometry:**
-- Bezier path ends **7–9px before the arrowhead tip** — the path and arrowhead must not share a point
-- Arrowhead: two independent `<line>` elements branching from the tip point
-- Path starts from the edge of the label text nearest the target (not the far edge)
+- **Curves, not straight lines** — a bowed Bézier gives the hand-drawn feel. Convexity is a
+  deliberate, adjustable choice; complementary convexity across notes (one arches, one sags) reads as
+  organic and balanced.
+- Bezier path ends **7–9px before the arrowhead tip** — the path and arrowhead must not share a point.
+- Arrowhead: two independent `<line>` elements branching from the tip point.
+- **Keep the arrowhead tangent-aligned** or it looks detached. Recipe (with the head at the note);
+  note `headGap` here is the *internal* path↔arrowhead gap (the 7–9px above), distinct from the
+  external ≈8px text/figure gaps:
+  pick the final tangent unit vector `u` (the direction the line travels into the tip); set
+  `tip` at the fixed external gap from the text; `path-end E = tip − headGap·u`; lock the Bézier's end
+  tangent with the last control `P2 = E − k·u` (e.g. `k≈30`); draw barbs to `tip + L·rotate(−u, ±θ)`
+  (e.g. `L≈10`, `θ≈28°`). The same recipe works for either direction — just put `tip` at whichever
+  end carries the head.
 
-**Example structure:**
+**Example structure** (head at the note; figure element is to the lower-left of the text):
 ```tsx
-{/* annotation label */}
-<text
-  x={420} y={180}
-  fontFamily="var(--font-caveat)"
-  fontSize={18}
-  fill="var(--accent)"
->
+{/* note */}
+<text x={520} y={120} textAnchor="middle"
+  fontFamily="var(--font-caveat)" fontSize={30} fill="var(--accent)">
   25k queries
 </text>
 
-{/* arrow path — ends 8px before tip */}
-<path
-  d="M 460 190 Q 480 220 495 238"
-  stroke="var(--accent)"
-  strokeWidth={1.5}
-  fill="none"
-/>
+{/* leader: tail at the figure (8px gap), curved, head at the note (8px gap from text) */}
+<path d="M 360 200 C 380 170 440 140 470 122"
+  stroke="var(--accent)" strokeWidth={1.5} fill="none" strokeLinecap="round" />
 
-{/* arrowhead — two lines from tip */}
-<line x1={495} y1={246} x2={491} y2={238} stroke="var(--accent)" strokeWidth={1.5} />
-<line x1={495} y1={246} x2={503} y2={240} stroke="var(--accent)" strokeWidth={1.5} />
+{/* arrowhead — two lines from the tip, splayed ±~28° about the final tangent */}
+<line x1={476} y1={118} x2={466} y2={120} stroke="var(--accent)" strokeWidth={1.5} strokeLinecap="round" />
+<line x1={476} y1={118} x2={472} y2={129} stroke="var(--accent)" strokeWidth={1.5} strokeLinecap="round" />
 ```
+*(Coordinates are illustrative — derive real ones from the tangent recipe and the measured text bbox.)*
 
 ---
 
@@ -257,9 +299,17 @@ fields — omit the overlay entirely when the field is absent or empty.
 - Accent spread across multiple structural elements — one focal highlight maximum
 - Annotations in any color other than `var(--accent)`
 
+**Annotations:**
+- Arrowhead pointing at the object by default — the notebook gesture points the head at the *note*
+- Arrowhead barbs not aligned to the path's final tangent — reads as a detached chevron
+- Straight (un-curved) leader lines; inconsistent gaps at the two ends
+- Attaching the leader at a label corner or stray glyph instead of the text block's facing mid-edge
+
 **Process:**
 - Building annotations before the base is approved
 - Writing code before a direction is selected
+- Silently deviating from the approved direction (e.g. moving the accent to a different element) —
+  flag it at the gate instead
 - Exporting a theme-adaptive diagram as a static PNG — use a live SVG component
 - Omitting `aria-hidden` from wrapper or SVG
 - Using any font other than Caveat in annotation text

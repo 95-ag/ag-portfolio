@@ -119,12 +119,21 @@ Offer 2–4 annotation directions with specific content options. The user select
 
 Keep to 2–3 annotations maximum. Each must target a **distinct** diagram element.
 Do not cluster multiple annotations at the same region. If an annotation could belong
-to any project in the same domain, cut it.
+to any project in the same domain, cut it. Balance them around the composition (e.g. one
+above, one below) rather than stacking them on one side.
+
+### Annotation direction
+
+Default to the **notebook gesture**: the arrow runs from the figure to the note, with the
+arrowHEAD at the handwritten text — observations jotted around an inspected figure, not
+textbook callouts. See `references/cover-standards.md` → Engineering Annotations → Direction.
 
 ### Annotation construction rules
 
-See `references/cover-standards.md` → Engineering Annotations for exact construction
-rules (font, color, arrow geometry).
+See `references/cover-standards.md` → Engineering Annotations for exact construction rules
+(direction, attachment, fixed gaps, curves, the tangent-aligned arrowhead recipe). If the
+build deviates from the approved direction or focal choice, flag it at the gate — don't change
+it silently.
 
 ---
 
@@ -136,9 +145,11 @@ Use this throughout building and at each gate to confirm what the cover actually
 to dark, locate the cover by selector (`svg[viewBox="0 0 1200 675"]`), screenshot *that element*
 per theme, and inspect the PNGs. Capture the cover by selector, not the whole viewport.
 
-For annotation placement, verify the arrow tip lands on (or just outside) its target
-programmatically — e.g. `el.isPointInFill(point)` — recomputing target coordinates from the live
-DOM (`getBBox`, circle `cx`/`cy`) rather than eyeballing against procedurally-placed markers.
+For annotation placement (notebook-gesture default), verify both ends programmatically from the
+live DOM rather than eyeballing: the arrowHEAD tip sits the fixed gap (≈8px) off the **note text**
+(measure the text `getBBox`), and the plain tail sits the same gap off the **target element**
+(recompute its coordinates — `getBBox`, circle `cx`/`cy`). Confirm the head is at the note and the
+tail at the figure, not reversed.
 
 **If Playwright-CLI or browser rendering is unavailable, stop and ask the user how to proceed
 before using any alternative.** Do not substitute pixel analysis or HTML inspection for a
