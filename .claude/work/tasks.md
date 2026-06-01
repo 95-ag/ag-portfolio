@@ -14,25 +14,36 @@
 > Iterative; several items are investigations to resolve with the user. Color/surface items go
 > through `design-update` / `design-rewrite` (they edit DESIGN.md). Full scope → IMPLEMENTATION-PHASES.md.
 
-### Reading experience
-- [ ] ASCII background — fade toward content center; none on small screens; bias the pattern into
-      corners/free space so it never disrupts body text (project/about/home) — investigate approach
-- [ ] Inline code — unreadable now; try accent (green), Notion-like feel *(decide)*
-- [ ] Code blocks — unreadable now; try ink text + bold accent highlights *(decide)*
-- [ ] Tables — grey now; switch to ink + bold accent highlights *(decide)*
+### Reading experience + Navigation — DONE (verified + signed off 2026-06-01)
+> Plan: `/home/ag-95/.claude/plans/splendid-yawning-gray.md`. All 5 bullets shipped via the
+> per-bullet cycle; batch gate passed: `biome` clean, `tsc` ok, `next build` ok (9 pages),
+> code-reviewer no blockers, both-theme renders confirmed. 14 commits `beba3a7`→`7f35b4e`.
 
-### Navigation & global UI
-- [ ] Home page active-state nav (currently missing)
+- [x] Inline code — accent-tinted chip (variant A, 10% tint + hairline accent border)
+- [x] Tables — editorial ink text + 2px accent header underline, horizontal rules only
+- [x] Home nav active-state — LogoMark accent ring + `aria-current` on `/` (pill + mobile)
+- [x] Code blocks — build-time Shiki (`@shikijs/rehype`, vitesse dual-theme, `defaultColor:false`)
+- [x] ASCII background — page-aware: desktop gutters, mobile sparse (none on project), meteor 768px gate
 
-### Colors *(→ design-update / design-rewrite)*
-- [ ] Dark-theme accent still reads minty — adjust
-- [ ] Light-theme raised surface is a clashing grey — fix
-- [ ] Revisit surface hierarchy (ChatGPT-like preferred; current hard to maintain, ink harsh) —
-      evaluate vs bg design + both themes before committing *(investigate, possible token change)*
+### Colors *(next batch → plan first)*
+- [ ] **Plan the color work before touching tokens.** Run a color *analysis* to find the root
+      issue, not just patch symptoms: use the `audit-color-contrast` skill **plus** other methods
+      (palette logic, accent saturation, WCAG AA in both themes, raised/sunken surface hierarchy,
+      check against the ASCII/meteor bg). Produce a plan → approval → then `design-update` /
+      `design-rewrite` token edits.
+- [ ] Symptoms to resolve (inputs to the analysis): dark-theme accent reads minty; light-theme
+      raised surface is a clashing grey; surface hierarchy hard to maintain / ink harsh
+      (ChatGPT-like preferred) — *(investigate; likely token changes)*
 
 ### Brand / hero
 - [ ] New hero image (person working at a desk / similar)
 - [ ] Mobile: stack hero image **below** the hero paragraph + buttons
+
+### Background revisit *(after colors + hero land)*
+- [ ] Re-check the ASCII/meteor background across all sizes + pages once colors/hero are
+      final. Whimsy is nice but currently makes pages feel less clean/neat — weigh whimsy vs
+      neatness for both themes. Evaluate a more minimal alternative: **top/bottom scroll bands**
+      (pick one) instead of side gutters. Decide keep / minimize / change.
 
 - [ ] **Gate: user approves the polish set** → Phase 7
 
