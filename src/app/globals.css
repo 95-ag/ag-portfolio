@@ -488,14 +488,16 @@ body {
   }
   .prose-content th,
   .prose-content td {
-    border: 1px solid var(--outline-variant);
+    /* editorial table: ink text on horizontal rules only — no grid, no header fill */
+    border: none;
+    border-bottom: 1px solid var(--outline-variant);
     padding: var(--spacing-sm) var(--spacing-md);
     text-align: left;
-    color: var(--on-surface-muted);
+    color: var(--on-surface);
   }
   .prose-content th {
-    background: var(--surface-sunken);
     font-weight: 600;
+    border-bottom: 2px solid var(--accent);
   }
   .prose-content code:not(pre code) {
     /* mono-code metrics + accent token treatment (Notion-like): accent text on a
