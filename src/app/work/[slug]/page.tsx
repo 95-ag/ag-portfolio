@@ -1,6 +1,6 @@
+import rehypeShiki from "@shikijs/rehype";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import rehypeShiki from "@shikijs/rehype";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
@@ -86,8 +86,13 @@ export default async function ProjectPage({ params }: Props) {
                       [
                         rehypeShiki,
                         {
-                          themes: { light: "vitesse-light", dark: "vitesse-dark" },
-                          defaultColor: "light",
+                          themes: {
+                            light: "vitesse-light",
+                            dark: "vitesse-dark",
+                          },
+                          // No default color → Shiki emits only CSS vars (no inline
+                          // token colors), so the dark-theme swap needs no !important.
+                          defaultColor: false,
                         },
                       ],
                     ],

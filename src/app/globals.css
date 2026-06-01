@@ -513,16 +513,24 @@ body {
     border-radius: var(--radius-sm);
     padding: 2px 6px;
   }
-  /* Shiki dual-theme: light colors render inline (defaultColor: light); swap to the
-     dark theme's CSS vars when the site theme is dark. Build-time highlighting — no
-     client highlighter ships. */
+  /* Shiki dual-theme. defaultColor:false emits only CSS vars (no inline token
+     colors), so the cascade swaps light→dark with no !important. Build-time
+     highlighting — no client highlighter ships. */
+  .prose-content .shiki,
+  .prose-content .shiki span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+  }
   [data-theme="dark"] .prose-content .shiki,
   [data-theme="dark"] .prose-content .shiki span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
   }
 
   /* Highlight panel — editorial pull-quote; elevation via border + raised fill only */
