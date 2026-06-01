@@ -1,4 +1,4 @@
-# AG Portfolio
+# Aishwarya Ganesan — Portfolio
 
 Personal portfolio for an AI/ML engineer. Built with Next.js 16 App Router, TypeScript, Tailwind CSS v4, and MDX.
 
@@ -12,9 +12,14 @@ Personal portfolio for an AI/ML engineer. Built with Next.js 16 App Router, Type
 - **Validation:** Zod (build-time frontmatter validation)
 - **Linting/Formatting:** Biome
 
+## Requirements
+
+- Node.js >=20.9.0 (see `.nvmrc`)
+
 ## Development
 
 ```bash
+nvm use        # switch to the pinned Node version
 npm install
 npm run dev
 ```
@@ -24,6 +29,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Content
 
 Projects live in `content/projects/` as MDX files. Adding a file automatically generates a project page at `/work/[slug]`. Frontmatter is validated against a Zod schema at build time — invalid fields fail the build with a specific error.
+
+Assets (diagrams, charts) live in `assets-source/` as editable sources and export to `public/projects/[slug]/`.
 
 ## Build
 

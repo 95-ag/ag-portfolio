@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { HeroMedia } from "@/components/project/hero-media";
+import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
@@ -58,6 +59,12 @@ export default async function ProjectPage({ params }: Props) {
                 alt={fm.heroAlt}
                 poster={fm.heroPoster}
                 loop={fm.heroVideoLoop}
+                slug={slug}
+              />
+              <HeroMetaOverlay
+                logos={fm.logos}
+                contributors={fm.contributors}
+                interactive
               />
             </div>
 

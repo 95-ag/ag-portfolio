@@ -136,11 +136,12 @@ Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-sur
 
 ### Typography
 
-Three families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
+Four families, each with a distinct semantic role. All self-hosted via `next/font` for rendering stability and LCP performance.
 
 - **Manrope** — display and headline.
 - **Inter** — body, UI, prose.
 - **JetBrains Mono** — structural metadata texture, not expressive typography.
+- **Caveat** — handwritten annotation style; cover SVG annotations only. CSS variable `--font-caveat`. Not permitted in UI, prose, or structural elements.
 
 #### Semantic Token Table
 
@@ -300,8 +301,11 @@ layout:
 - Avoid: stock imagery, oversaturated visuals, oversized hero images without supporting context, image-heavy sections with weak structure.
 
 **Diagrams**
-- Diagrams in project deep dives must be production-quality and visually consistent.
-- Tooling is decided once and applied uniformly across all projects.
+- Diagrams in project deep dives must be production-quality and visually consistent across projects.
+- **Hand-authored SVG (shared theme)** — primary tool for flows, pipelines, state, and architecture diagrams; generated from the shared `assets-source/svg/_theme.py` build
+- **matplotlib → SVG/PNG** — charts and metrics visualizations where source data exists; must be script-reproducible
+- **tldraw → SVG** — fallback only for spatial or custom layouts the SVG theme cannot express
+- See `asset-guide.md` for full tooling rules, directory structure, and export standards
 
 ### Iconography
 
@@ -477,30 +481,31 @@ mobile-slide-out-layout:
 Utility button fixed to the bottom-right corner; appears after scrolling one viewport height and provides a one-tap return to page top.
 
 - Bottom-right position does not collide with the pill nav (top-center).
-- Fades in on scroll threshold; hover shifts to `accent` border and color.
+- On `lg+` screens, right edge tracks the content column boundary instead of the viewport edge.
+- At `xl+`, size increases to 48×48px — icon only, no label.
+- Fades in on scroll threshold; hover shifts to `outline` border and `on-surface` color.
 - Hidden when the mobile slide-out menu is open.
 
 ```yaml
 scroll-to-top:
   position: fixed
-  bottom: 24px
-  right: 24px
-  size: 44px x 44px
+  bottom: 80px
+  right: 16px  # lg+: max(1rem, calc(50vw - 36rem))
+  size: 44px x 44px  # xl+: 48px x 48px
   borderRadius: pill
   background: surface-nav
   backdropFilter: blur(12px)
   border: 1px solid outline-variant
-  iconSize: 16px
-  color: on-surface
+  icon: arrow_upward (Material Symbols Outlined)
+  iconSize: 20px
+  color: on-surface-muted
   zIndex: 40
-  
-  appears-after: 1 viewport-height of scroll
-  enter: opacity 0 → 1, 200ms
-  
+
+  appears-after: 400px of scroll
+
   hover:
-    background: accent-muted
-    borderColor: accent
-    color: accent
+    borderColor: outline
+    color: on-surface
 ```
 
 ### Actions & Interactive
@@ -687,9 +692,10 @@ icon-pulse:
 
 Entry point to a project; communicates type, media, and scope at a glance and links to the detail page.
 
-- Three layout variants: `compact` (1:1 hero), `featured` (4:3 hero), `text` (no hero, category icon). The `text` variant is an intentional editorial choice, not a fallback for a missing hero image.
-- Hero image is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
+- Two layout variants: `compact` (1:1 hero) and `featured` (4:3 hero). Every card renders a hero — a live cover when registered, otherwise the `heroImage`; there is no hero-less variant.
+- Hero is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
 - Hover: title underlines with `accent` decoration; border shifts from `outline-variant` to `outline`.
+- Cover metadata overlays (`logos[]`, `contributors[]`) are presentational only in cards — no interactive affordances.
 
 ```yaml
 project-card:
@@ -706,7 +712,6 @@ project-card:
   variants:
     compact:   heroAspect 1/1
     featured:  heroAspect 4/3
-    text:      no hero, categoryIcon visible
 
 project-card-hero:
   wrapperPadding: spacing-md
@@ -723,13 +728,6 @@ project-card-body:
               no flex-1 or reserved spacer — tags follow immediately after visible text
   - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
   card-height: equal within grid row via CSS grid row-stretch; content top-anchored, whitespace falls to bottom
-
-project-card-text-variant:
-  # No hero. Category icon mapped from projectType (academic|freelance|personal):
-  #   academic → ScienceIcon, freelance → WorkIcon, personal → CodeIcon
-  iconSize: 18px
-  iconColor: on-surface-muted at opacity 60
-  layout: icon → title (headline-sm) → summary → tags
 ```
 
 #### Highlight
@@ -869,7 +867,8 @@ project-detail:
 Page header for a project detail page; communicates project identity, tags, and links before the hero media.
 
 - Vertical stack: tags row → display title → optional subtitle → optional links row.
-- Links row renders only when the project has external links.
+- Links row renders only when the project has external links (`github`, `demo`, `paper`, `presentation`).
+- Cover metadata groups (`logos[]`, `contributors[]`) may be interactive in project detail pages when a `url` is present on the entry.
 - Each link: 16px leading type icon (brand or Material) → text label → 12px trailing `OpenInNewIcon` as external link indicator.
 
 ```yaml
@@ -898,6 +897,26 @@ project-header:
         external-icon: translate-x 2px
       active: opacity 0.70
 ```
+
+#### Hero Cover
+
+16:9 hero area below the project header. Every project has a hero from one of two sources — the build fails if neither is present.
+
+- Live cover (preferred default): a React SVG component registered in `coverComponents` keyed by slug. Takes precedence over the image path when present.
+- Static fallback: `next/image` or `<video>` (muted, autoPlay, playsInline, poster required). Same `surface-sunken` 16:9 wrapper in both cases.
+- `aria-hidden="true"` on both the wrapper `<div>` and the `<svg>` element — covers are decorative, not content.
+
+**HeroMetaOverlay** — `absolute inset-0 pointer-events-none` layer over the hero; rendered on the project detail page only, never on cards.
+
+- Bottom-left: `logos[]` — circles (`rounded-full`, `bg-white`, `border: 1px solid {outline-variant}`), `object-contain p-1`; 32×32px on mobile, 40×40px at `md+`.
+- Bottom-right: `contributors[]` — circular avatars stacked with −6px overlap, same border treatment; 20×20px on mobile, 24×24px at `md+`.
+- Overlay padding: `{spacing.sm}` (8px) on mobile, `{spacing.md}` (16px) at `md+`, on all sides. Interactive affordances (links) enabled on detail page only.
+
+**Live SVG cover rules**
+
+- viewBox `0 0 1200 675` (16:9). All colors via CSS custom properties — no hardcoded hex values.
+- Structural diagram elements: `var(--on-surface)`, `var(--background)`, `var(--on-surface-muted)`.
+- Engineering annotations: `var(--font-caveat)` text and `var(--accent)` stroke only. No other font or color in annotations.
 
 #### Section Progress Nav
 
@@ -963,6 +982,7 @@ Definition list grid for structured label/value content; used for the project Ov
 
 - Fixed 180px label column with a fluid content column on desktop; single column on mobile.
 - Not a general prose pattern — purpose-built for project metadata entries.
+- Tech Stack `dd` values render italic; Overview `dd` values render in body default (non-italic).
 
 ```yaml
 editorial-dl:
@@ -1207,8 +1227,8 @@ Components must use z-index tokens, not raw numbers.
 
 ### Open Decisions
 
-1. **Diagram tooling** — deferred from PRODUCT.md, decide before any project page goes to production. Affects the visual identity of project deep-dive content.
+None.
 
 ### Known Gaps
 
-- `Foundations → Layout → Imagery → Diagrams` — diagram tooling and visual style standardization not yet finalized. See Open Decisions → Diagram tooling.
+None.

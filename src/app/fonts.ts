@@ -1,4 +1,4 @@
-import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
+import { Caveat, Inter, JetBrains_Mono, Manrope } from "next/font/google";
 
 export const manrope = Manrope({
   subsets: ["latin"],
@@ -16,4 +16,10 @@ export const mono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-jetbrains",
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-caveat",
 });

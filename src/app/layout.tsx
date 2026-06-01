@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, manrope, mono } from "@/app/fonts";
+import { caveat, inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
 import { BackgroundLayer } from "@/components/bg/background-layer";
 import { Footer } from "@/components/layout/footer";
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${inter.variable} ${mono.variable}`}
+      className={`${manrope.variable} ${inter.variable} ${mono.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

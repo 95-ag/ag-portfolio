@@ -103,4 +103,4 @@ Overlapping concept scope alone is not grounds for merge. When in doubt: flag an
 Any heading rename emits a redirect entry in the manifest:
 `RENAMED: "## Old Name" → "## New Name" — update cross-references`
 
-It is the user's responsibility to propagate heading renames to sibling docs (CLAUDE.md, PRIMER.md, rules files), but the manifest must make every rename visible.
+It is the user's responsibility to propagate heading renames to sibling docs (CLAUDE.md, `.claude/work/session.md`, rules files), but the manifest must make every rename visible.

@@ -80,8 +80,11 @@ projectType: academic                   # academic | freelance | personal
 publishedAt: "2024-09-15"               # ISO 8601 string
 order: 10                               # lower = earlier in lists; ties broken by publishedAt desc
 
-# === Required: hero ===
-heroImage: "/projects/lane-rl/hero.jpg"     # image, video, or animated SVG (see §3.6)
+# === Required: hero (live cover OR heroImage) ===
+# Preferred: register a live React SVG cover by slug in
+# src/components/project/covers/index.ts — then heroImage may be omitted.
+# Otherwise heroImage is required. The build fails if a project has neither.
+heroImage: "/projects/lane-rl/hero.jpg"     # optional; image, video, or animated SVG (see §3.6)
 heroAlt: "Side-by-side comparison of baseline vs RL-refined lane detection on an occluded curve."
 heroPoster: "/projects/lane-rl/hero-poster.jpg"   # required if heroImage is a video
 heroVideoLoop: true                                # optional, defaults true for videos
@@ -128,6 +131,7 @@ links:
   github: "https://github.com/user/lane-rl"
   demo: "https://lane-rl.example.com"
   paper: "/projects/lane-rl/paper.pdf"
+  presentation: "/projects/lane-rl/slides.pdf"
 
 # === Optional: featured on homepage ===
 featured: true                          # default false; cap of 3 enforced at build
@@ -138,6 +142,14 @@ logos:
     alt: "Simon Fraser University"
   - src: "/projects/lane-rl/clientco-logo.svg"
     alt: "ClientCo"
+
+# === Optional: contributors ===
+contributors:
+  - name: "Jane Smith"
+    avatar: "/projects/lane-rl/jane-smith.jpg"
+    url: "https://janesmith.dev"           # optional
+  - name: "Alex Lee"
+    avatar: "/projects/lane-rl/alex-lee.jpg"
 
 # === Optional: SEO ===
 ogImage: "/projects/lane-rl/og.png"     # falls back to heroImage if omitted
@@ -160,16 +172,17 @@ relatedProjects:
 | `projectType` | enum | yes | `academic` \| `freelance` \| `personal` |
 | `publishedAt` | ISO date string | yes | Drives sort order tiebreak |
 | `order` | number | yes | Primary sort key. Lower = earlier |
-| `heroImage` | string | yes | Web path under `/public`. Accepts image (`.jpg`/`.png`/`.svg`), video (`.mp4`/`.webm`), or animated SVG. See §3.6 |
+| `heroImage` | string | conditional | Web path under `/public`. Accepts image (`.jpg`/`.png`/`.svg`), video (`.mp4`/`.webm`), or animated SVG. See §3.6. Optional when a live cover is registered for the slug; otherwise required |
 | `heroAlt` | string | yes | Alt text for accessibility. Required for all hero types including video |
 | `heroPoster` | string | conditional | Required if `heroImage` is a video. Web path to a still image used as the video poster |
 | `heroVideoLoop` | boolean | no | Default `true`. Only applies when `heroImage` is a video |
 | `tags` | string[] | yes | 3–6 recommended. Free-form strings |
 | `stack` | object | yes | See §3.2 |
 | `overview` | object | yes | See §3.3 |
-| `links` | object | no | Optional `github`, `demo`, `paper`. Each is a URL string |
+| `links` | object | no | Optional `github`, `demo`, `paper`, `presentation`. Each is a URL or relative path string |
 | `featured` | boolean | no | Default `false`. Triggers homepage inclusion |
 | `logos` | array | no | Associated org/company logos. Each `{src, alt}` |
+| `contributors` | array | no | Presentational collaborator credits. Each `{name, avatar, url?}`. `avatar` required and must start with `/`. `url` optional |
 | `ogImage` | string | no | Falls back to `heroImage` |
 | `metaDescription` | string | no | Falls back to `summary` |
 | `relatedProjects` | string[] | no | Array of slugs. v2 — validated at build but not rendered in v1 |
@@ -225,6 +238,7 @@ Build fails on:
 - `relatedProjects` references that don't resolve to existing slugs.
 - Image paths that don't start with `/`.
 - `heroImage` is a video (`.mp4`/`.webm`) but `heroPoster` is missing.
+- A project has neither a registered live cover nor a `heroImage` (every project must have a hero).
 
 Build warns (does not fail) on:
 
@@ -235,7 +249,17 @@ Build warns (does not fail) on:
 
 ### 3.6 Hero media
 
-The `heroImage` field accepts three formats. The renderer detects the type from the file extension and behaves accordingly.
+Every project's hero is satisfied by **one of two** sources, checked by the content loader:
+
+1. **Live cover (preferred)** — a React SVG component registered by slug in
+   `src/components/project/covers/index.ts`. Takes precedence over `heroImage` when
+   present, and renders on both the project page hero and the project card. When a live
+   cover is registered, `heroImage` may be omitted.
+2. **`heroImage`** — a static asset (image, video, or animated SVG), described below.
+
+The build fails if a project has neither.
+
+When present, the `heroImage` field accepts three formats. The renderer detects the type from the file extension and behaves accordingly.
 
 **Image** (`.jpg`, `.png`, `.webp`):
 - Renders as a static image via `next/image`.
@@ -587,11 +611,18 @@ const LinksSchema = z.object({
   github: z.string().url().optional(),
   demo: z.string().url().optional(),
   paper: z.string().optional(),                // can be relative path
+  presentation: z.string().optional(),         // can be relative path
 }).optional()
 
 const LogoSchema = z.object({
   src: z.string().startsWith('/'),
   alt: z.string().min(1),
+})
+
+const ContributorSchema = z.object({
+  name: z.string().min(1),
+  avatar: z.string().startsWith('/'),
+  url: z.string().url().optional(),
 })
 
 const VIDEO_EXTENSIONS = ['.mp4', '.webm']
@@ -615,6 +646,7 @@ export const ProjectFrontmatterSchema = z.object({
   links: LinksSchema,
   featured: z.boolean().optional().default(false),
   logos: z.array(LogoSchema).optional(),
+  contributors: z.array(ContributorSchema).optional(),
   ogImage: z.string().startsWith('/').optional(),
   metaDescription: z.string().max(160).optional(),
   relatedProjects: z.array(z.string()).optional(),
@@ -658,4 +690,4 @@ No code changes. No card-component edits. No manual route registration.
 
 1. **Tag normalization.** Tags are currently free-form strings, which means "Computer Vision" and "computer vision" are different tags for v2 search/filter. Decide before v2: case-insensitive matching, or a controlled tag vocabulary?
 2. **Stack vs tags overlap.** A project tagged `["Reinforcement Learning"]` with stack `frameworks: [PyTorch]` works, but the boundary is fuzzy. v1 ships as-is; revisit if it causes drift.
-3. **Multi-author / collaborator credit.** No field for co-authors or team members in v1. Add an optional `collaborators[]` field if/when needed — not pre-emptively.
+3. **Multi-author / collaborator credit.** `contributors[]` added as optional presentational metadata (`name`, `avatar`, `url?`). No contributor profile system or cross-link architecture.

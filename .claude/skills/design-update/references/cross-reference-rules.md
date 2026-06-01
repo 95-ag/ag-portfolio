@@ -5,7 +5,7 @@ DESIGN.md uses heading-path style for cross-references: `Section → Subsection 
 These appear in:
 - DESIGN.md itself (inline references to other sections)
 - CLAUDE.md (project config)
-- PRIMER.md (session state)
+- .claude/work/session.md (session state)
 - `.claude/rules/design-system.md` and other rules files
 
 When any heading or token name changes, all references must be updated in the same edit.
@@ -34,7 +34,7 @@ When renaming a heading or token, search:
 
 1. DESIGN.md — all inline mentions and any embedded cross-references.
 2. CLAUDE.md — often references DESIGN.md sections in rules tables.
-3. PRIMER.md — may reference current section paths.
+3. .claude/work/session.md — may reference current section paths.
 4. `.claude/rules/design-system.md` — frequently references token names and section paths.
 5. Any other sibling docs the user names explicitly.
 
@@ -80,6 +80,6 @@ After a structural migration of DESIGN.md (e.g., the Architectural Migration Pas
 
 Before running a large structural migration, the agent SHOULD ask the user which sibling docs, rule files, prompts, or automation configs depend on DESIGN.md heading paths or token names. Cross-reference propagation must adapt to the project ecosystem — not a hardcoded file inventory.
 
-At minimum, check all sibling docs that reference DESIGN.md heading paths or token names. In this portfolio project, that includes files such as `.claude/CLAUDE.md`, `PRIMER.md`, and files in `.claude/rules/` — but the user's project may have additional dependents (automation scripts, prompt templates, other rule files) that the agent cannot enumerate independently.
+At minimum, check all sibling docs that reference DESIGN.md heading paths or token names. In this portfolio project, that includes files such as `.claude/CLAUDE.md`, `.claude/work/session.md`, and files in `.claude/rules/` — but the user's project may have additional dependents (automation scripts, prompt templates, other rule files) that the agent cannot enumerate independently.
 
 Cross-reference propagation is in scope for the migration pass, not pre-migration contract work. After migration, verify that every heading path in sibling docs resolves to a real heading in the updated DESIGN.md.

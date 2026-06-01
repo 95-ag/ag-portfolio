@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 
-type FigureWidth = "default" | "wide" | "full";
+type FigureWidth = "default" | "narrow" | "wide" | "full";
 
 const containerClass: Record<FigureWidth, string> = {
   default: "w-full",
+  narrow: "mx-auto w-full max-w-[560px]",
   wide: "w-full max-w-[960px]",
   full: "w-full",
 };

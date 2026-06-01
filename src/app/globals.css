@@ -417,8 +417,16 @@ body {
     color: var(--on-surface);
     margin-bottom: var(--spacing-lg);
   }
-  .prose-content ul,
+  .prose-content ul {
+    list-style-type: disc;
+    padding-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  .prose-content ul > li::marker {
+    color: var(--outline-variant);
+  }
   .prose-content ol {
+    list-style-type: decimal;
     padding-left: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
   }
@@ -434,6 +442,19 @@ body {
     color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+  .prose-content a[href^="#"] {
+    color: var(--on-surface);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: var(--outline-variant);
+    transition:
+      color var(--duration-fast),
+      text-decoration-color var(--duration-fast);
+  }
+  .prose-content a[href^="#"]:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
   }
   .prose-content strong {
     /* body-primary + semibold weight */

@@ -2,7 +2,7 @@
 /**
  * primer-guard.mjs — PreToolUse/Bash, git commit only
  *
- * Encourages PRIMER.md checkpointing at meaningful architectural boundaries.
+ * Encourages session.md checkpointing at meaningful architectural boundaries.
  * Never hard-blocks. Warn or ask only.
  *
  * Note: /exit and /clear are CLI-level commands and cannot be intercepted
@@ -12,7 +12,7 @@
  * No session files, no external tracking.
  *
  * Severity model (max 5 pts):
- *   Cadence  (0–2): commits since last committed PRIMER.md update
+ *   Cadence  (0–2): commits since last committed session.md update
  *   Arch     (0–2): cumulative path weight across bounded commit window + staged
  *   Breadth  (0–1): distinct file areas touched (secondary modifier only)
  *
@@ -21,7 +21,7 @@
  *     4 → stronger warn
  *    5+ → ask permission
  *
- * Reset: if HEAD already touches PRIMER.md → silent pass-through.
+ * Reset: if HEAD already touches session.md → silent pass-through.
  * Bounded window: last 15 commits maximum.
  */
 
@@ -29,6 +29,7 @@ import { createInterface } from "readline";
 import { execSync } from "child_process";
 
 const WINDOW = 15;
+const SESSION_PATH = ".claude/work/session.md";
 
 // ---------------------------------------------------------------------------
 // Path weights (architectural significance)
@@ -112,22 +113,22 @@ function runGit(cmd) {
   }
 }
 
-function getCommitsSincePrimer() {
+function getCommitsSinceSession() {
   // All commits in window
   const allLog = runGit(`git log --oneline -${WINDOW} --format=%H`);
   const allShas = allLog.split("\n").filter(Boolean);
 
-  // Last commit that touched PRIMER.md (within window)
-  const primerLog = runGit(
-    `git log --oneline -${WINDOW} --format=%H -- PRIMER.md`,
+  // Last commit that touched session.md (within window)
+  const sessionLog = runGit(
+    `git log --oneline -${WINDOW} --format=%H -- "${SESSION_PATH}"`,
   );
-  const lastPrimerSha = primerLog.split("\n").filter(Boolean)[0] || null;
+  const lastSessionSha = sessionLog.split("\n").filter(Boolean)[0] || null;
 
-  if (!lastPrimerSha) return { count: allShas.length, shas: allShas };
+  if (!lastSessionSha) return { count: allShas.length, shas: allShas };
 
-  const idx = allShas.indexOf(lastPrimerSha);
+  const idx = allShas.indexOf(lastSessionSha);
   if (idx === -1) return { count: allShas.length, shas: allShas };
-  if (idx === 0) return { count: 0, shas: [] }; // HEAD is the PRIMER commit
+  if (idx === 0) return { count: 0, shas: [] }; // HEAD is the session commit
 
   return { count: idx, shas: allShas.slice(0, idx) };
 }
@@ -146,11 +147,11 @@ function getStagedFiles() {
   return runGit("git diff --cached --name-only").split("\n").filter(Boolean);
 }
 
-function primerHasLocalChanges() {
+function sessionHasLocalChanges() {
   // Modified but not staged
-  const unstaged = runGit("git diff --name-only -- PRIMER.md");
+  const unstaged = runGit(`git diff --name-only -- "${SESSION_PATH}"`);
   // Staged but not committed
-  const staged = runGit("git diff --cached --name-only -- PRIMER.md");
+  const staged = runGit(`git diff --cached --name-only -- "${SESSION_PATH}"`);
   return { unstaged: unstaged.length > 0, staged: staged.length > 0 };
 }
 
@@ -189,16 +190,16 @@ rl.on("close", () => {
 
   if (!/\bgit\s+commit\b/.test(command)) process.exit(0);
 
-  // --- Reset: if HEAD already touches PRIMER.md, pass through silently ---
-  const headPrimer = runGit("git log -1 --format=%H -- PRIMER.md");
+  // --- Reset: if HEAD already touches session.md, pass through silently ---
+  const headSession = runGit(`git log -1 --format=%H -- "${SESSION_PATH}"`);
   const headCommit = runGit("git rev-parse HEAD");
-  if (headPrimer && headPrimer === headCommit) process.exit(0);
+  if (headSession && headSession === headCommit) process.exit(0);
 
   // --- Gather state (git only) ---
-  const { count: commitsSince, shas } = getCommitsSincePrimer();
+  const { count: commitsSince, shas } = getCommitsSinceSession();
   const recentFiles = getFilesForShas(shas);
   const stagedFiles = getStagedFiles();
-  const primerChanges = primerHasLocalChanges();
+  const sessionChanges = sessionHasLocalChanges();
 
   // Deduplicated file set: recent committed + currently staged
   const allFiles = [...new Set([...recentFiles, ...stagedFiles])];
@@ -223,30 +224,30 @@ rl.on("close", () => {
 
   if (commitsSince > 0) {
     lines.push(
-      `${commitsSince} commit${commitsSince === 1 ? "" : "s"} since last PRIMER checkpoint.`,
+      `${commitsSince} commit${commitsSince === 1 ? "" : "s"} since last session checkpoint.`,
     );
   }
   if (areas.length > 0) {
     lines.push(`Areas touched: ${areas.join(", ")}.`);
   }
-  if (primerChanges.staged) {
+  if (sessionChanges.staged) {
     lines.push(
-      `PRIMER.md is staged but not yet committed — still vulnerable to crashes.`,
+      `session.md is staged but not yet committed — still vulnerable to crashes.`,
     );
-  } else if (primerChanges.unstaged) {
+  } else if (sessionChanges.unstaged) {
     lines.push(
-      `PRIMER.md has local changes but is not committed — still vulnerable to crashes.`,
+      `session.md has local changes but is not committed — still vulnerable to crashes.`,
     );
   }
   lines.push(
-    `Consider: git add PRIMER.md && git commit -m "docs: update PRIMER"`,
+    `Consider: git add ${SESSION_PATH} && git commit -m "docs: update session"`,
   );
 
   if (severity >= 5) {
     ask(lines);
   } else if (severity === 4) {
     lines.unshift(
-      `Significant architectural progress since last PRIMER checkpoint.`,
+      `Significant architectural progress since last session checkpoint.`,
     );
     warn(lines);
   } else {

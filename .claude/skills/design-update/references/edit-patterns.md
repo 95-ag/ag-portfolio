@@ -30,7 +30,7 @@ This is a cross-reference-heavy operation. Read `references/cross-reference-rule
 1. Confirm the new name with the user.
 2. Update the YAML registry entry (primary source).
 3. Find and replace all markdown body references (prose, bullets, component spec blocks).
-4. Find and replace in sibling docs named by the user (`CLAUDE.md`, `PRIMER.md`, `.claude/rules/*.md`).
+4. Find and replace in sibling docs named by the user (`CLAUDE.md`, `.claude/work/session.md`, `.claude/rules/*.md`).
 5. Diff summary lists every touched location — registry first, then markdown body, then sibling docs.
 
 ---

@@ -35,6 +35,12 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
 # vercel
 .vercel
 
@@ -46,3 +52,8 @@ next-env.d.ts
 .playwright/
 .playwright-cli
 /
+.claude/**/*-workspace/
+
+# Claude Code local files
+.claude/launch.json
+.claude/settings.local.json
