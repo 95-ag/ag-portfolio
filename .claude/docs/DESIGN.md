@@ -333,6 +333,7 @@ Fixed top-center navigation bar that persists across all scroll positions; the p
 - Centered relative to the content max-width, not the viewport — aligns with content on ultrawide displays.
 - Active item signals current location; hover signals affordance — states are visually distinct by design.
 - Logomark replaces the Home nav item — no separate Home link at any viewport size.
+- Logomark active state (on `/`): 2px `{accent}` ring + `aria-current="page"` — a ring, not the `surface-selection` fill used by other active items, because the 32px icon fully occludes a background fill. The mobile-panel logomark mirrors this.
 - Blur surface maintains legibility above any page background at any scroll position.
 
 ```yaml
