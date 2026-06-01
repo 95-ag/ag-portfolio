@@ -222,27 +222,29 @@ export function DqnLaneLocalizationCover() {
         {/* Arrow: from the text's CENTER-bottom, a pronounced curve down to a point
             just OUTSIDE (left of) the truth lane at ~(472,556); the truth circle there
             is at x≈495. Path stops 8px before the arrowhead tip. */}
+        {/* notebook gesture: tail at the truth-vs-prediction gap (figure), head up-left
+            at the note's bottom edge. Final tangent u≈(-0.6,-0.8); barbs splay ±28°. */}
         <path
-          d="M 256,376 C 300,460 380,540 464,555"
+          d="M 472,556 C 405,548 291,423 261,383"
           fill="none"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="472"
-          y1="556"
-          x2="462"
-          y2="550"
+          x1="256"
+          y1="377"
+          x2="258"
+          y2="387"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="472"
-          y1="556"
-          x2="461"
-          y2="561"
+          x1="256"
+          y1="377"
+          x2="265"
+          y2="381"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"

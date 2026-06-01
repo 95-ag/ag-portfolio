@@ -177,42 +177,43 @@ export function ModelExtractionAttacksCover() {
         {/* 1. "entropy-ranked / selection" → QUERIES dot matrix as a whole
                Text is below the target; path starts from TOP of text block (closest edge to matrix). */}
         <text
-          x="136"
-          y="452"
+          x="225"
+          y="490"
           textAnchor="middle"
           style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
         >
           entropy-ranked
         </text>
         <text
-          x="136"
-          y="484"
+          x="225"
+          y="522"
           textAnchor="middle"
           style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
         >
           selection
         </text>
+        {/* notebook gesture: tail at the matrix, convex sweep bowing LEFT, head into the note */}
         <path
-          d="M 136,428 C 134,415 133,400 136,381"
+          d="M 115,388 C 88,435 97,469 129,476"
           fill="none"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="136"
-          y1="373"
-          x2="130"
-          y2="381"
+          x1="137"
+          y1="478"
+          x2="129"
+          y2="472"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="136"
-          y1="373"
-          x2="142"
-          y2="381"
+          x1="137"
+          y1="478"
+          x2="127"
+          y2="481"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
@@ -221,34 +222,35 @@ export function ModelExtractionAttacksCover() {
         {/* 2. "25K queries" → arrow 1 midpoint (281, 337)
                Path starts 10px below text baseline; tip stops 7px above the arrow line. */}
         <text
-          x="281"
-          y="255"
+          x="310"
+          y="168"
           textAnchor="middle"
           style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
         >
-          25K queries
+          only 25K queries
         </text>
+        {/* notebook gesture: tail at arrow 1, tall convex sweep up (bows left), head at the note */}
         <path
-          d="M 281,265 C 276,282 278,304 280,322"
+          d="M 305,330 C 289,288 302,225 309,192"
           fill="none"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="280"
-          y1="330"
-          x2="274"
-          y2="322"
+          x1="311"
+          y1="184"
+          x2="305"
+          y2="192"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="280"
-          y1="330"
-          x2="287"
-          y2="322"
+          x1="311"
+          y1="184"
+          x2="314"
+          y2="194"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
@@ -257,34 +259,35 @@ export function ModelExtractionAttacksCover() {
         {/* 3. "82.88% fidelity" → SURROGATE box bottom (y=427)
                Text is below the target; path starts from TOP of text (closest edge to box). */}
         <text
-          x="1026"
-          y="490"
+          x="820"
+          y="505"
           textAnchor="middle"
           style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
         >
           82.88% fidelity
         </text>
+        {/* notebook gesture: tail below the surrogate, hooks out right then sweeps left, head at the note */}
         <path
-          d="M 1026,465 C 1020,455 1023,445 1026,440"
+          d="M 1000,450 C 1045,478 948,494 914,497"
           fill="none"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="1026"
-          y1="432"
-          x2="1020"
-          y2="440"
+          x1="906"
+          y1="498"
+          x2="915"
+          y2="502"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
         <line
-          x1="1026"
-          y1="432"
-          x2="1032"
-          y2="440"
+          x1="906"
+          y1="498"
+          x2="914"
+          y2="493"
           stroke="var(--accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
