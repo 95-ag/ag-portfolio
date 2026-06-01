@@ -64,6 +64,7 @@ export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
 
     const build = () => {
       host.innerHTML = "";
+      host.style.opacity = "1"; // reset so every path (incl. early return) is clean
       const W = window.innerWidth;
       const isMobile = W < MIN_WIDTH;
 
@@ -75,7 +76,7 @@ export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
 
       const density = isMobile ? MOBILE_DENSITY : DESKTOP_DENSITY;
       setMask(isMobile ? "none" : GUTTER_MASK);
-      host.style.opacity = isMobile ? String(MOBILE_OPACITY) : "1";
+      if (isMobile) host.style.opacity = String(MOBILE_OPACITY);
 
       const H = Math.max(
         window.innerHeight,
@@ -125,6 +126,9 @@ export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
   }, [isProjectDetail]);
 
   return (
-    <div ref={ref} className="absolute inset-0 font-mono text-[13px] leading-none" />
+    <div
+      ref={ref}
+      className="absolute inset-0 font-mono text-[13px] leading-none"
+    />
   );
 }
