@@ -11,8 +11,10 @@
 
 **Phase 6 — Project Content** · branch `phase-6-real-content`
 Completed projects: `model-extraction-attacks` (full pipeline — reference exemplar),
-`dqn-lane-localization` (full pipeline — negative-result project, approved 2026-05-31).
-All 4 pipeline skills are frozen and audited.
+`dqn-lane-localization` (full pipeline — negative-result project, approved 2026-05-31),
+`masked-autoencoders` (full pipeline — all 4 stages complete + signed off 2026-06-01).
+Post-`masked-autoencoders`: `project-cover-generation` skill updated with the notebook
+arrow gesture + base nudges; existing heroes' arrows flipped to match.
 
 ---
 
@@ -51,7 +53,7 @@ Project-specific only:
 | 1 | `project-content-extraction` | **done** | user approves MDX ✓ 2026-05-31; post-gate: Highlight + Grad-CAM restructure + Detailed Problem four-layer rewrite; DQN Detailed Problem also revised; skill updated | 0 |
 | 2 | `project-assets-generation` | **done** | user approves assets ✓ 2026-06-01; post-gate: shared SVG diagram theme (`assets-source/svg/_theme.py`) + tight responsive framing; Mermaid fully unloaded (dep + docs + skill fold, fresh-eyes reviewed); crop scripts dropped | 1 |
 | 3 | `project-cover-generation` | **done** | user approves cover ✓ 2026-06-01 (live SVG `covers/masked-autoencoders.tsx`; accent=visible patches; autoencoder funnel; 2 Caveat annotations — notebook gesture: arrowhead AT note, fixed 8px gaps, convex curves; fresh-eyes review passed). Committed `55d9593`. Post-gate: folded cover-annotation principles into `project-cover-generation` skill (`5148568`) + flipped existing heroes' arrows to notebook gesture (`59bf90e`); tooling → `lessons.md`; `skill-notes.md` dropped | 2 |
-| 4 | `project-review` | pending | user approves → complete | 3 |
+| 4 | `project-review` | **done** | user approves ✓ 2026-06-01 — both reviewers STRONG; applied fix #2 (subtitle leads with outcome, `5c3911a`); #1 (harness wording) confirmed intended | 3 |
 
 Each stage is gated: do not advance until the prior gate has explicit user approval in chat.
 Each stage reads its own SKILL.md + references and generates its own execution detail when invoked.

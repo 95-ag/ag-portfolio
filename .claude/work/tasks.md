@@ -78,12 +78,12 @@ annotations) → `src/components/project/covers/masked-autoencoders.tsx`, regist
 - Cover + index committed `55d9593`; `.claude/work` docs intentionally uncommitted (go with follow-ups)
 
 ### Stage 4 — `project-review`
-- [ ] Read SKILL.md + references first
-- [ ] Capture playwright screenshots (desktop + mobile, light + dark) — reuse dqn tooling
-- [ ] Recruiter + technical reviewer passes (parallel cold subagents); findings noted
-- [ ] Surface conflicts + prioritized fix list; apply approved fixes
-- [ ] `npm run build` passes after fixes
-- [ ] **Gate: user approves** → project complete
+- [x] Read SKILL.md + references first
+- [x] Capture playwright screenshots (desktop + mobile, light + dark) → `tmp/review-shots/masked-autoencoders/`
+- [x] Recruiter + technical reviewer passes (parallel cold subagents) — recruiter STRONG/FORWARD YES; technical STRONG
+- [x] Surface conflicts (none) + prioritized fix list; applied fix #2 (subtitle leads with outcome); #1 confirmed intended
+- [x] `npm run build` passes after fix; committed `5c3911a`
+- [x] **Gate: user approves** ✓ 2026-06-01 → project complete
 
 ---
 
