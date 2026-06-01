@@ -49,16 +49,33 @@ so content shrinks too small on mobile. Fix = single source + tight padded viewB
   MDX aspect/max-w updates
 
 ### Stage 3 — `project-cover-generation`
-> **Start here (next task):** read `project-cover-generation` SKILL.md + references first,
-> then **rewrite this section** with the full Stage 3 task list exactly as the skill defines
-> the 3-gate flow (directions → base → annotations) — then proceed. The items below are a
-> placeholder until that rewrite.
-- [ ] Read SKILL.md + references; rewrite this section with all Stage 3 subtasks
-- [ ] **Sub-gate 3a: directions approved**
-- [ ] **Sub-gate 3b: base cover approved**
-- [ ] **Sub-gate 3c: annotations approved**
-- [ ] Register live cover; `npm run build` passes
-- [ ] **Gate: user approves final cover**
+3-gate flow: directions → base composition → annotations (optional). Each sub-gate needs
+explicit user approval before the next. Live React SVG component (theme-adaptive + Caveat
+annotations) → `src/components/project/covers/masked-autoencoders.tsx`, registered by slug.
+
+- [x] Read SKILL.md + references first; rewrite this section with all Stage 3 subtasks
+- [x] **Gate 1 — directions:** propose 3–4 directions (incl. typography fallback) w/ ASCII skeletons
+  - [x] **Sub-gate 3a: direction approved** — Direction A (masked-grid → asym enc→dec → reconstruction)
+- [x] **Gate 2 — base composition:** build standalone diagram (one accent focal element only),
+      `viewBox="0 0 1200 675"`, `aria-hidden` on wrapper + svg, all colors via CSS custom props
+  - [x] Register slug in `src/components/project/covers/index.ts`; `npm run build` passes
+  - [x] Visual-verify base via playwright-cli (light + dark, element-cropped) + card-scale on /work
+        — masked grid reads as 75%-blanked; both themes ok
+  - [x] Refinements (user-directed): + MASKED INPUT/RECONSTRUCTION labels; encoder/decoder → autoencoder
+        funnel (trapezoids, small dashed decoder); accent moved to visible patches (masked input = single
+        focal subject) per approved Direction A. Re-verified light+dark+card scale.
+  - [x] **Sub-gate 3b: base cover approved** ✓ 2026-06-01
+- [x] **Gate 3 — annotations (optional):** Direction 1 — `75% masking / sweet spot` (→ visible
+      patch) + `66.85% / linear-probe acc` (→ ENCODER label). Notebook gesture (arrowhead at
+      note), left-middle text attach, fixed 8px gap both ends, tangent-aligned heads, convex
+      curves (top arches / bottom sags).
+  - [x] Visual-verify arrows + gaps (light + dark) via playwright-cli
+  - [x] **Sub-gate 3c: annotations approved** ✓ 2026-06-01
+- [x] Final visual review — separate-agent fresh-eyes pass (thumbnail + both themes): no blocking
+      issues; one non-blocking soft spot (reconstruction grid reads inert — intentional per MDX "blurry")
+- [x] `heroAlt` verified accurate; `heroImage` omitted (live component); `npm run build` passes
+- [x] **Gate: user approves final cover** ✓ 2026-06-01 (cover committed `55d9593`)
+- Cover + index committed `55d9593`; `.claude/work` docs intentionally uncommitted (go with follow-ups)
 
 ### Stage 4 — `project-review`
 - [ ] Read SKILL.md + references first
@@ -75,6 +92,13 @@ so content shrinks too small on mobile. Fix = single source + tight padded viewB
   - [x] `npm uninstall @mermaid-js/mermaid-cli` (dep + lockfile + `mmdc` bin removed)
   - [x] Update docs: `.claude/docs/{PRODUCT.md,DESIGN.md (via design-update),IMPLEMENTATION-PHASES.md}`
   - [x] Fold skill changes into `project-assets-generation` (SKILL.md, references, evals.json) — hand-SVG theme over Mermaid + crop-policy; fresh-eyes reviewed (`out_rel` gap fixed); residual tooling notes → `lessons.md`; `skill-notes.md` removed
+- [x] **Fold Stage-3 cover learnings into `project-cover-generation` skill** ✓ 2026-06-01
+  (plan `wise-toasting-backus.md`). Annotations + base nudges folded (generalized/neutralized);
+  separate-agent fresh-eyes review passed (4 fixes applied); committed `5148568`.
+- [x] **Flip arrow directions in existing hero covers to the notebook gesture** ✓ 2026-06-01 —
+  `model-extraction-attacks` (3 annotations, repositioned + curved per user red marks) +
+  `dqn-lane-localization` (1 annotation, more convex). Verified light/dark; committed `59bf90e`.
+- [x] **Tooling note** → folded into `lessons.md` (Cover-verification tooling section). `skill-notes.md` dropped.
 - [ ] Phase 6 final: add freelance project; finalize featured set (≤3 site-wide)
 
 ## Complete

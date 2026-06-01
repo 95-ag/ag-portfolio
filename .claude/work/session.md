@@ -50,7 +50,7 @@ Project-specific only:
 | 0 | Kickoff (source files + slug) | **done** | — | — |
 | 1 | `project-content-extraction` | **done** | user approves MDX ✓ 2026-05-31; post-gate: Highlight + Grad-CAM restructure + Detailed Problem four-layer rewrite; DQN Detailed Problem also revised; skill updated | 0 |
 | 2 | `project-assets-generation` | **done** | user approves assets ✓ 2026-06-01; post-gate: shared SVG diagram theme (`assets-source/svg/_theme.py`) + tight responsive framing; Mermaid fully unloaded (dep + docs + skill fold, fresh-eyes reviewed); crop scripts dropped | 1 |
-| 3 | `project-cover-generation` | **next** | user approves cover (3 sub-gates) | 2 |
+| 3 | `project-cover-generation` | **done** | user approves cover ✓ 2026-06-01 (live SVG `covers/masked-autoencoders.tsx`; accent=visible patches; autoencoder funnel; 2 Caveat annotations — notebook gesture: arrowhead AT note, fixed 8px gaps, convex curves; fresh-eyes review passed). Committed `55d9593`. Post-gate: folded cover-annotation principles into `project-cover-generation` skill (`5148568`) + flipped existing heroes' arrows to notebook gesture (`59bf90e`); tooling → `lessons.md`; `skill-notes.md` dropped | 2 |
 | 4 | `project-review` | pending | user approves → complete | 3 |
 
 Each stage is gated: do not advance until the prior gate has explicit user approval in chat.

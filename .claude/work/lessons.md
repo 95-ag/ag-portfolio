@@ -49,3 +49,29 @@ lazy; a `playwright-cli screenshot` fires before the image loads and captures a 
 Scroll the element into view and wait (confirm `naturalWidth>0` if unsure) before shooting —
 don't mistake a lazy-load race for a real bug. (Candidate to graduate into `project-review`
 tooling notes.)
+
+---
+
+## Cover-verification tooling — `@playwright/cli` 0.1.13 + preview server (2026-06-01)
+
+Captured while building/flipping covers. Environment/tooling, not cover-design content
+(the design learnings were folded into `project-cover-generation`).
+
+**`@playwright/cli` 0.1.13 command surface (drifted from older capture scripts):**
+- The command is `eval`, not `run-code`. `eval <func>` runs in the **browser** context, so
+  Playwright *page* APIs (`emulateMedia`, `waitForLoadState`) are unavailable there — calling
+  them throws/silently no-ops.
+- Flip the site theme via `eval "() => localStorage.setItem('theme','light'|'dark')"` then
+  `reload` (the site uses next-themes `attribute="data-theme"`, storageKey `theme`) — NOT
+  `emulateMedia`. Confirm by diffing the two PNGs (identical size ⇒ theme didn't flip).
+- Screenshot a single element with `screenshot '<selector>' --filename <path>` (selector is the
+  positional target); `--full-page` for the whole page.
+- Inline `CLI=./node_modules/.bin/playwright-cli; $CLI open …` gets MSYS-mangled from the
+  git-bash Bash tool (the var empties; `open` falls through to the system opener). Run a
+  **script file** via `wsl -d ubuntu bash <file>` instead. Pattern: `tmp/review-shots/cover-capture*.sh`.
+- Measure text/element geometry for precise annotation placement with `getBBox` via `eval`
+  (returns viewBox-unit coords); navigate first in a separate `eval`, then read in the next call.
+
+**`preview_start` vs a hand-backgrounded dev server collide on port 3000.** Stop the background
+task (TaskStop) AND `pkill -f next-server` before `preview_start`, or it errors ("Another next
+dev server is already running") and falls back to 3001.
