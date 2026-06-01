@@ -600,7 +600,64 @@ Ensure:
 * layouts scale with real content and real assets
 * visuals support understanding rather than dominate layout
 
-Do not begin Phase 7 until at least two real projects are fully authored and verified.
+Do not begin Phase 6.5 until at least two real projects are fully authored and verified.
+
+---
+
+# Phase 6.5 — UI Polish
+
+## Goals
+
+Targeted reading-experience, navigation, color, and brand refinements — surfaced now that real
+content exists, before SEO and audits. This phase is **iterative**: several items below are open
+investigations resolved with the user, not settled decisions. Color/surface items touch design
+tokens and must go through the `design-update` / `design-rewrite` skills (they edit DESIGN.md).
+
+Do not over-engineer; keep changes restrained and content-first.
+
+---
+
+## Backlog
+
+### 1. Reading experience
+
+* ASCII background — fade toward the content center; none on small screens. Investigate biasing the
+  pattern into corners / free space (away from center) so it never disrupts body text on
+  project/about/home — or another method.
+* Inline code — currently unreadable; try an accent (green) treatment, aiming for a Notion-like feel. *(decide)*
+* Code blocks — currently unreadable; try ink text with bold accent highlights. *(decide)*
+* Tables — currently grey; switch to ink with bold accent highlights. *(decide)*
+
+### 2. Navigation & global UI
+
+* Add active-state nav for the Home page (currently missing).
+
+### 3. Colors *(touches DESIGN.md → via design-update / design-rewrite)*
+
+* Accent in dark theme still reads minty — adjust.
+* Light-theme raised surface is a clashing grey — fix.
+* Revisit surface hierarchy: user leans toward a ChatGPT-like hierarchy over the current one
+  (current is hard to maintain; ink color is harsh on the eyes). Evaluate against the bg design and
+  both themes before committing. *(investigate — possible larger token change)*
+
+### 4. Brand / hero area
+
+* New hero image (e.g. a person working at a desk / similar).
+* On mobile, stack the hero image **below** the hero paragraph + buttons.
+
+---
+
+## Verification Requirements
+
+Ensure:
+
+* reading surfaces (inline code, code blocks, tables) are legible in both light and dark themes
+* the background never disrupts body text at any breakpoint; absent on small screens
+* nav active state is correct on every route including Home
+* color/surface changes preserve WCAG AA contrast in both themes and remain token-driven
+* hero reads well on desktop and stacks correctly on mobile
+
+Gate: user approves the polish set. Do not begin Phase 7 until the polish set is approved.
 
 ---
 

@@ -1,82 +1,50 @@
-# Session State — Portfolio Pipeline
+# Session State — Portfolio
 
-> **Fresh sessions: read this file FIRST**, then `tasks.md`, then the active stage's skill.
-> This file holds pipeline STATE (status, sources, decisions). `tasks.md` holds the actionable
-> checklist. Stage execution detail comes from each skill when invoked.
-> Process rules → `.claude/CLAUDE.md`. Active plan → `/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md` (WSL global plans dir, not the repo).
+> **Fresh sessions: read this file FIRST**, then `tasks.md`, then the relevant `.claude/docs`.
+> This file holds phase STATE (status, decisions). `tasks.md` is the actionable checklist.
+> Build-flow + gates → `.claude/docs/IMPLEMENTATION-PHASES.md`. Process rules → `.claude/CLAUDE.md`.
 
 ---
 
 ## Phase
 
-**Phase 6 — Project Content** · branch `phase-6-real-content`
-Completed projects: `model-extraction-attacks` (full pipeline — reference exemplar),
-`dqn-lane-localization` (full pipeline — negative-result project, approved 2026-05-31),
-`masked-autoencoders` (full pipeline — all 4 stages complete + signed off 2026-06-01).
-Post-`masked-autoencoders`: `project-cover-generation` skill updated with the notebook
-arrow gesture + base nudges; existing heroes' arrows flipped to match.
+**Branch `phase-6-real-content`.**
+
+- **Phase 6 — Project Content: effectively complete.** Three real projects authored + reviewed:
+  `model-extraction-attacks` (reference exemplar), `dqn-lane-localization` (negative result),
+  `masked-autoencoders` (signed off 2026-06-01). All three `featured: true`. No placeholder
+  projects remain. Phase-6 gate (≥2 real projects) met.
+- **Phase 6.5 — UI Polish: next.** New phase added to the build flow (reading experience,
+  navigation, colors, brand/hero). Iterative; several items are investigations to resolve with the
+  user, and color/surface items route through `design-update` / `design-rewrite` (DESIGN.md edits).
+  Full backlog → `tasks.md` + `IMPLEMENTATION-PHASES.md`.
+- Then: **7** SEO + AI readability → **8** Audits → **9** Refactor/clean/align → **10** Deploy.
+
+**Two projects are deferred until after the first deploy** (per user, 2026-06-01): a freelance
+project and a self-referential "this web portfolio" case study — content not ready, and the
+portfolio case study is stronger written against a live URL.
 
 ---
 
-## Current Project
+## Pipeline skills (available, not the active tracker)
 
-**`masked-autoencoders`** — pipeline-run plan **approved 2026-05-31**
-(`/home/ag-95/.claude/plans/masked-autoencoders-pipeline.md`). Stage 1 (MDX) + Stage 2 (assets) approved; **Stage 3 (cover) next**.
-
-**Kickoff complete** — sources located, slug confirmed:
-- Report PDF: `tmp/mae_original/Advanced_DL_Project_Report_Group20.pdf`
-- Report images: `tmp/mae_original/` — `MAE_architecture.jpg`, `grad-CAM-heatmap.png`,
-  `grad-CAM-orginalpng.png`, `reconstruction1.png`, `reconstruction2.png`
-- Repo: `https://github.com/95-ag/adl-masked-autoencoders`
-- No slides
-- Slug: `masked-autoencoders`
-- Page links (decided at kickoff): code repo link + self-hosted report
-
-All other frontmatter (title, subtitle, framing, logos, links, projectType, publishedAt,
-featured, order, tags, stack) and body are decided **inside Stage 1** (`project-content-extraction`)
-with the user — **not pre-locked here**. Read each skill + the project sources only when that
-stage runs, not before.
-
-### Review tooling (Stage 4) — project-specific bits
-Project-specific only:
-- Screenshots via `@playwright/cli` (repo devDep), needs chromium **rev 1224**; `.playwright/cli.config.json`
-  sets `browserName: chromium` (gitignored; `playwright-cli install` regenerates it). Invoke the binary
-  directly (`./node_modules/.bin/playwright-cli`); capture-script pattern: `tmp/review-shots/capture.sh`.
+The 4 portfolio pipeline skills (`project-content-extraction` → `project-assets-generation` →
+`project-cover-generation` → `project-review`) are frozen and audited. They drive the deferred
+post-deploy projects when those resume; they no longer drive this file. `project-cover-generation`
+now documents the notebook arrow gesture (head at the note) + base-composition nudges; all three
+existing covers were flipped to match.
 
 ---
 
-## Pipeline Stage Status — `masked-autoencoders`
+## Standing deviations from PRODUCT.md
 
-| # | Stage (skill) | Status | Gate | Depends on |
-|---|---|---|---|---|
-| 0 | Kickoff (source files + slug) | **done** | — | — |
-| 1 | `project-content-extraction` | **done** | user approves MDX ✓ 2026-05-31; post-gate: Highlight + Grad-CAM restructure + Detailed Problem four-layer rewrite; DQN Detailed Problem also revised; skill updated | 0 |
-| 2 | `project-assets-generation` | **done** | user approves assets ✓ 2026-06-01; post-gate: shared SVG diagram theme (`assets-source/svg/_theme.py`) + tight responsive framing; Mermaid fully unloaded (dep + docs + skill fold, fresh-eyes reviewed); crop scripts dropped | 1 |
-| 3 | `project-cover-generation` | **done** | user approves cover ✓ 2026-06-01 (live SVG `covers/masked-autoencoders.tsx`; accent=visible patches; autoencoder funnel; 2 Caveat annotations — notebook gesture: arrowhead AT note, fixed 8px gaps, convex curves; fresh-eyes review passed). Committed `55d9593`. Post-gate: folded cover-annotation principles into `project-cover-generation` skill (`5148568`) + flipped existing heroes' arrows to notebook gesture (`59bf90e`); tooling → `lessons.md`; `skill-notes.md` dropped | 2 |
-| 4 | `project-review` | **done** | user approves ✓ 2026-06-01 — both reviewers STRONG; applied fix #2 (subtitle leads with outcome, `5c3911a`); #1 (harness wording) confirmed intended | 3 |
-
-Each stage is gated: do not advance until the prior gate has explicit user approval in chat.
-Each stage reads its own SKILL.md + references and generates its own execution detail when invoked.
-
-## Resume Instructions (cold start)
-
-1. Read this file, then `tasks.md`, then `lessons.md` (auto-loaded via `@` in `.claude/CLAUDE.md`).
-2. Find the first un-checked item in `tasks.md` (Kickoff, or the active stage).
-3. For a stage: read that stage's `SKILL.md` + references under `.claude/skills/<skill>/` first.
-4. Do NOT read project sources or skill internals ahead of their stage. Frontmatter is decided
-   with the user inside Stage 1 — not pre-cached here.
-5. Execute → propose commit cluster (propose-and-wait) → user approval at the gate → tick `tasks.md`
-   then update this file → only then advance.
-6. Never mark a stage complete without explicit user approval recorded in chat.
+- **Hero CTAs (§7.1):** CTAs integrated into the hero directly; bottom CTA section removed.
+  Intentional — reconcile PRODUCT.md in Phase 9 cleanup.
 
 ---
 
 ## Blockers
 
-None. `masked-autoencoders` pipeline-run plan approved; Kickoff is next (locate source files +
-confirm slug), then Stage 1 (`project-content-extraction`).
-
-## Standing Deviations from PRODUCT.md
-
-- **Hero CTAs (§7.1):** CTAs integrated into hero directly; bottom CTA section removed.
-  Intentional — update PRODUCT.md in Phase 9 cleanup.
+None. Next actionable work is Phase 6.5 (UI Polish) — see `tasks.md`. Each polish item gets its
+own pass/gate; the open investigations (background approach, surface hierarchy) need a decision
+with the user before implementing.
