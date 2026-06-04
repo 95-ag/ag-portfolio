@@ -25,15 +25,18 @@
 - [x] Code blocks — build-time Shiki (`@shikijs/rehype`, vitesse dual-theme, `defaultColor:false`)
 - [x] ASCII background — page-aware: desktop gutters, mobile sparse (none on project), meteor 768px gate
 
-### Colors *(next batch → plan first)*
-- [ ] **Plan the color work before touching tokens.** Run a color *analysis* to find the root
-      issue, not just patch symptoms: use the `audit-color-contrast` skill **plus** other methods
-      (palette logic, accent saturation, WCAG AA in both themes, raised/sunken surface hierarchy,
-      check against the ASCII/meteor bg). Produce a plan → approval → then `design-update` /
-      `design-rewrite` token edits.
-- [ ] Symptoms to resolve (inputs to the analysis): dark-theme accent reads minty; light-theme
-      raised surface is a clashing grey; surface hierarchy hard to maintain / ink harsh
-      (ChatGPT-like preferred) — *(investigate; likely token changes)*
+### Colors — DONE (signed off 2026-06-04)
+> Analysis-first (audit-color-contrast + OKLCH/WCAG matrix). Shipped: neutral ChatGPT-style
+> palette; context-aware surface depth (showcase white/deep-black vs reading soft, via `data-read`);
+> deepened dark accent `#2aa566` (less minty); softer ink + dark `antialiased`; `body-lead`→ink;
+> inverted light-mode meteor (dark-ink streaks via `uDark` shader); kept green H4 headings.
+> Build green; DESIGN.md aligned. Commits `72c490c`, `c1f02aa`.
+- [x] Neutral palette, context-aware surfaces, accent, ink, meteor, body-lead — done + committed
+
+### Pre-hero polish (do before the hero image)
+- [ ] Social links (About) + project links (work/project pages: Code/Report/Paper/Slides) — unify to
+      a single consistent look
+- [ ] About page headline — increase font weight
 
 ### Brand / hero
 - [ ] New hero image (person working at a desk / similar)

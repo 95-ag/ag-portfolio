@@ -125,3 +125,40 @@ fix is "unsafe" (won't auto-apply) — fix the root cause by hand.
 **Inline `$(seq …)` / `$(…)` in `wsl -d ubuntu bash -lc '…'` from git-bash gets MSYS-mangled**
 (syntax error near the number). Use a literal loop bound, a script file, or wait on the
 `run_in_background` task notification instead of polling with a mangled command.
+
+---
+
+## Color batch (phase 6.5, 2026-06-04)
+
+**Root-cause color work needs a token-level pass, not just the audit skill on screenshots.** A
+dependency-free node script (`tmp/color-analyze.mjs`) converting every token to OKLCH + computing
+a WCAG matrix surfaced the real causes the eye/skill missed: light elevation was *inverted*
+(raised darker than bg), surfaces were mixed-temperature (warm bg + cool ink/tag), and the dark
+accent was just too high L+C ("minty"). Run the math; pair it with the `audit-color-contrast`
+skill for the qualitative read.
+
+**Decide palette direction from the palette applied to REAL pages, not swatches.** Scratch routes
+(`src/app/scratch/home-b`, etc.) that re-render the actual home/project pages with a candidate
+palette injected — via a client component toggling a `pal-*` class on `<html>` (+ the `--*-rgb`
+triples so the bg layer matches) — let the user feel hover/nav/real components. Swatch grids and
+even per-component scratch pads under-sell it.
+
+**Light-on-dark text "blooms" heavier and flattens weight hierarchy.** Fix with
+`-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;` scoped to
+`[data-theme="dark"] body` (leave light alone) — thins the render so 600-vs-400 reads again.
+
+**An additive-glow WebGL effect can't be made to read on a light bg by tinting/opacity alone.**
+`multiply` only darkens where the source is *dark*, but the glow shader's hot core is *bright* →
+it washes to white and vanishes. Invert per-theme in the shader (a `uDark` uniform): light branch
+uses accumulated luminance as ink *density* (`mix(white, inkColor, density)`) so the hot core =
+darkest saturated ink, falloff = white; blend `multiply`. Concept: dark = bright neon streaks,
+light = dark vivid streaks.
+
+**Context-aware surface depth without a flash:** a `data-read` attribute on `<html>` set by a
+pre-paint inline script in the root layout (mirrors next-themes), kept in sync on client nav by a
+small `usePathname` component. CSS holds the default in `:root`/`[data-theme="dark"]` and the
+override in `[data-read="long"]` (compound selector for the dark override).
+
+**biome `useExhaustiveDependencies` fires when an effect newly closes over a prop.** Adding
+`opacity` use inside a `useEffect` whose deps were `[]` failed the build; add the prop to the deps
+(safe when it's effectively constant) rather than disabling the rule.

@@ -20,12 +20,18 @@
   - Shiki: `@shikijs/rehype`, dual vitesse themes, `defaultColor:false` → CSS-var swap on
     `[data-theme="dark"]` (no `!important`, passes biome). `@shikijs/rehype` install flagged
     2 moderate npm-audit advisories (transitive) — left for Phase 9 / explicit fix.
-- **Phase 6.5 batch 2 — Colors: NEXT, plan-first.** Per user: run a color *analysis* before any
-  token edit — `audit-color-contrast` skill + other methods (palette logic, accent saturation,
-  both-theme WCAG, surface hierarchy, check vs ASCII/meteor bg) → plan → approval → token edits.
-  Symptoms feeding it: minty dark accent, clashing light raised surface, surface-hierarchy
-  maintainability. Then Brand/hero, then the deferred Background revisit (tasks.md). Color edits
-  route through `design-update` / `design-rewrite`.
+- **Phase 6.5 batch 2 — Colors: DONE (signed off 2026-06-04).** Analysis-first
+  (`audit-color-contrast` + OKLCH/WCAG matrix `tmp/color-analyze.mjs`). Shipped: neutral
+  ChatGPT-style palette; **context-aware surface depth** via `data-read` on `<html>` (showcase
+  white/deep-black vs reading soft `#f8f8f9`/`#1a1a1a`; pre-paint inline script + `SurfaceContext`);
+  light depth = sunken brightest/raised gentle/bg ground; deepened dark accent `#2aa566` (less
+  minty); softer ink (`#2d2d2d` / `#e2e2e2`) + dark `antialiased`; `body-lead`→ink; **inverted
+  light-mode meteor** (dark-ink streaks via `uDark` shader branch, multiply; dark = neon glow,
+  unchanged). Kept green H4 headings (exception). Build green, DESIGN.md aligned. Commits
+  `72c490c` (code), `c1f02aa` (docs), C5 chore (work files).
+- **Phase 6.5 — Pre-hero polish: NEXT.** Two small items before the hero image: (1) unify social
+  links (About) + project links (Code/Report/Paper/Slides) to one consistent look; (2) increase
+  About headline weight. Then Brand/hero, then the deferred Background revisit (tasks.md).
 
 - **Phase 6 — Project Content: effectively complete.** Three real projects authored + reviewed:
   `model-extraction-attacks` (reference exemplar), `dqn-lane-localization` (negative result),
