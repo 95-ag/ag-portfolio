@@ -104,33 +104,35 @@ The portfolio combines the structural clarity of a technical journal with the pr
 
 - Tokens are role-based.
 - The same role has different hex values per theme to maintain contrast and visual weight.
+- **Background depth is context-aware** (set via `data-read="long"` on `<html>` — see Technical Conventions → Surface Context): *showcase* pages (home, about, work index) use the extreme ground — white in light / deep-black in dark — so background effects feel immersive; *reading* pages (project detail) use a softer middle ground for legibility. The table lists the showcase (default) value; reading overrides only the ground — light `background`/`surface` `#f8f8f9`; dark `background`/`surface` `#1a1a1a`, `surface-raised` `#292929`, `surface-sunken` `#141414`, `surface-nav` `#1f1f1fd9`.
+- **Light depth logic:** `surface-sunken` is the brightest (pure white — image/code/diagram clarity), `surface-raised` lifts only gently, `background` is the off-white ground. Dark inverts (sunken darkest, raised lighter).
 
 | Role | Light | Dark | Used for |
 |---|---|---|---|
-| `background` | `#f8f8f7` | `#131313` | Page background |
-| `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
-| `surface-raised` | `#f2f2f1` | `#211f1e` | Cards, callouts, highlighted panels — slightly off-white in light, warm-dark in dark |
-| `surface-sunken` | `#ffffff` | `#0e0e0e` | Diagram content regions, sunken insets (card media well, hero) — pure white in light. Code blocks instead use the Shiki theme background (see Technical Conventions → Code Block Highlighting) |
-| `surface-nav` | `#ffffffd9` | `#1c1b1bd9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
-| `surface-selection` | `#e6f4ec` | `#1a2e1f` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
-| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
-| `on-background` | `#191c1d` | `#e5e2e1` | Primary text on background |
-| `on-surface` | `#191c1d` | `#e5e2e1` | Primary text on surfaces |
-| `on-surface-muted` | `#6b7280` | `#a0a0a0` | Secondary text, captions |
-| `outline` | `#6c7a71` | `#86948a` | Default borders, dividers |
-| `outline-variant` | `#bbcabf` | `#3c4a42` | Subtle borders, low-contrast dividers |
-| `outline-hair` | `color-mix(in srgb, #191c1d 10%, transparent)` | `color-mix(in srgb, #e5e2e1 10%, transparent)` | Alpha hairline border, surface-relative |
-| `accent` | `#006e37` | `#35c27d` | Active nav, primary CTA, links, focus rings, callout accents |
-| `accent-on` | `#ffffff` | `#0a1f0e` | Text/icon on accent fills |
-| `accent-muted` | `#e6f4ec` | `#1a2e1f` | Hover backgrounds, accent-tinted surfaces |
+| `background` | `#fcfcfc` | `#0e0e0e` | Page background (showcase default; reading override above) |
+| `surface` | `#fcfcfc` | `#0e0e0e` | Default content surface (= background) |
+| `surface-raised` | `#ededed` | `#1c1c1c` | Cards, callouts, highlighted panels — gently lifted neutral panel (light: subtly off the bg; dark: lighter than bg) |
+| `surface-sunken` | `#ffffff` | `#080808` | Diagram content regions, sunken insets (card media well, hero) — brightest in light for image/code clarity. Code blocks instead use the Shiki theme background (see Technical Conventions → Code Block Highlighting) |
+| `surface-nav` | `#fcfcfcd9` | `#141414d9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
+| `surface-selection` | `#e8f3ec` | `#16271b` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
+| `surface-overlay` | `#ffffffd9` | `#141414d9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
+| `surface-overlay-panel` | `#ffffffb8` | `#141414ba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
+| `surface-tag` | `#ebecee` | `#2a2a2a` | Tag chip background — neutral grey |
+| `on-background` | `#2d2d2d` | `#e2e2e2` | Primary text on background |
+| `on-surface` | `#2d2d2d` | `#e2e2e2` | Primary text on surfaces |
+| `on-surface-muted` | `#66696f` | `#a1a1aa` | Secondary text, captions |
+| `outline` | `#9aa0a6` | `#8a8a8a` | Default borders, dividers |
+| `outline-variant` | `#e2e3e5` | `#333333` | Subtle borders, low-contrast dividers |
+| `outline-hair` | `color-mix(in srgb, #2d2d2d 10%, transparent)` | `color-mix(in srgb, #e2e2e2 10%, transparent)` | Alpha hairline border, surface-relative |
+| `accent` | `#006e37` | `#2aa566` | Active nav, primary CTA, links, focus rings, callout accents |
+| `accent-on` | `#ffffff` | `#06210e` | Text/icon on accent fills |
+| `accent-muted` | `#e8f3ec` | `#16271b` | Hover backgrounds, accent-tinted surfaces |
 | `secondary` | `#565e74` | `#bdc7d9` | Reserved — categorical use only (e.g., callout variants) |
 | `tertiary` | `#a43a3a` | `#e8a5a5` | Reserved — categorical use only (e.g., warning callouts) |
 | `error` | `#c0392b` | `#ff6b5e` | 404, validation errors |
-| `success` | `#006e37` | `#35c27d` | Build status, confirmations (= accent in v1) |
-| `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
-| `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
+| `success` | `#006e37` | `#2aa566` | Build status, confirmations (= accent in v1) |
+| `focus-ring` | `#006e37` | `#2aa566` | 2px outline on keyboard focus (= accent) |
+| `selection` | `#006e3733` | `#2aa56633` | Text selection background (accent at 20% alpha) |
 
 Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/bg/`. Do not use these directly in CSS.
 
@@ -159,7 +161,7 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
-| `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface-muted` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
+| `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels. Ink (not muted) — a large lead in grey reads dull/low-presence |
 | `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
 | `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
 | `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
@@ -1101,7 +1103,7 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 - **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
 - **ASCII field:** ambient structural texture, not decorative ornamentation. Static — no animation. Desktop/tablet (≥768px, all routes): masked to the outer gutters/corners — a centered band sized to the content column + buffer is cleared (short fade in) so glyphs never touch the reading column. Mobile (<768px): full-bleed but sparser + fainter on non-project pages, and omitted entirely on project detail pages (dense reading). Three opacity tiers (accent, ink, mute); light-theme values are higher to compensate for the cream background's lower contrast.
 - **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), below the 768px mobile breakpoint (re-checked on resize), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes (reading focus). The 768px floor keeps the meteor and the full-bleed mobile ASCII field from ever co-rendering.
-- **Theme-aware palette:** meteor color responds to `data-theme` changes via `MutationObserver` with no flash. Light theme uses the accent green family with a muted sage secondary; dark theme uses accent green with a steel-blue secondary.
+- **Theme-aware palette + render mode:** meteor colors and blend respond to `data-theme` via `MutationObserver` (no flash). **Dark** = additive neon glow on the deep bg — true accent `#2aa566` + steel-blue `#598cd9`, blend `normal`, opacity 0.42. **Light** = the inverse: a `uDark` shader branch maps the hot core to the darkest saturated ink and the falloff to white, blended `multiply` (opacity 0.52) so trails read as dark vivid streaks — true accent `#006e37` + blue `#3059b3`. Concept: dark = bright neon streaks, light = dark vivid streaks.
 - **Performance:** Three.js loaded via `next/dynamic` (`ssr: false`) to preserve initial bundle size and interaction responsiveness. DPR capped at 1.5 and frame delta clamped to maintain rendering comfort on HiDPI screens and across tab focus changes.
 
 ---
@@ -1225,6 +1227,14 @@ Components must use z-index tokens, not raw numbers.
 ### Code Block Highlighting
 
 Fenced code blocks are syntax-highlighted at build time via Shiki (`@shikijs/rehype` in the MDX RSC pipeline) — no client-side highlighter ships. Dual theme `vitesse-light` / `vitesse-dark`: light token colors render inline; `[data-theme="dark"]` swaps to the dark theme's `--shiki-*` CSS vars. The theme supplies the panel background and per-token colors; `<CodeBlock>` adds only the `{outline-variant}` border, block padding, 0px radius, and `mono-code` metrics.
+
+### Surface Context
+
+Background depth switches by page type via `data-read` on `<html>`: long-read project pages (`/work/[slug]`) get `data-read="long"` (softer reading ground); every other page uses the showcase default (the extreme ground). A pre-paint inline script in `layout.tsx` sets it before first paint (no flash); `<SurfaceContext>` keeps it in sync across client navigation. `globals.css` holds the showcase values in `:root` / `[data-theme="dark"]` and the reading overrides in `[data-read="long"]`. Values: Foundations → Colors.
+
+### Font Smoothing
+
+Dark theme applies `-webkit-font-smoothing: antialiased` / `-moz-osx-font-smoothing: grayscale` to `body` (light untouched). Light text on the dark background renders visually heavier ("bloom"), flattening font-weight hierarchy; grayscale antialiasing thins it so weight contrast reads.
 
 ---
 
