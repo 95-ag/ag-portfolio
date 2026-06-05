@@ -2,8 +2,8 @@ import { GitHubIcon } from "@/components/icons/brands/github";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
-import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
+import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
@@ -63,18 +63,13 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
               const Icon = meta?.Icon;
               return (
                 <li key={key}>
-                  <a
+                  <LinkPill
                     href={url as string}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group interactive-label font-semibold inline-flex items-center gap-[var(--spacing-md)] rounded-[var(--radius-sm)] px-[var(--spacing-sm)] py-[var(--spacing-xs)] text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] active:opacity-70"
+                    icon={Icon ? <Icon /> : null}
+                    external
                   >
-                    {Icon && <Icon />}
                     {label}
-                    <span className="text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)]">
-                      <OpenInNewIcon size={12} />
-                    </span>
-                  </a>
+                  </LinkPill>
                 </li>
               );
             })}
