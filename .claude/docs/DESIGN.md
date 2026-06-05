@@ -150,14 +150,13 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 - Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
-- Mid-tier values (769–1279): `display-primary`/`display-accent` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
+- Mid-tier values (769–1279): `display-primary` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
-| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
-| `display-accent` | Manrope | 56 / 46 / 36px | 500 | 64 / 54 / 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
-| `heading-display` | Manrope | 36 / 32 / 28px | 500 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
+| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 (Home, Work, About, Project, 404) |
+| `heading-display` | Manrope | 36 / 32 / 28px | 600 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
 | `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
@@ -208,9 +207,9 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 Four surface categories, each with a fixed radius:
 
 - **Structural containers** — 0px (sharp). Cards, code blocks, callouts. Architectural, no softening.
-- **Interactive controls** — `{radius.sm}` (4px). Tags, chips, buttons, inline code. Minimum radius to read as a control.
+- **Interactive controls** — `{radius.sm}` (4px). Tags, block buttons, inline code. Minimum radius to read as a control.
 - **Media surfaces** — `{radius.md}` (8px). Headshot, hero images, figures, diagrams, highlights.
-- **Floating controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark.
+- **Floating & link controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark, and link pills (`LinkPill` — About socials + project-header links). The pill radius distinguishes lightweight inline links from square block buttons and static tags.
 
 `{radius.lg}` (12px) is reserved and unused in v1 — previously assigned to the headshot, now normalized to `{radius.md}`.
 
@@ -622,31 +621,37 @@ copy-link:
     outlineOffset: 2px
 ```
 
-#### SocialLink
+#### LinkPill
 
-Quiet utility link for profile and contact links; lighter visual weight than `Button`, heavier than a static `Tag`.
+Quiet utility link for profile, contact, and project links; lighter visual weight than `Button`, heavier than a static `Tag`. Shared by the About identity row (GitHub, LinkedIn, Email) and the project-header links row (Code, Report, Paper, Slides, Demo).
 
-- Smaller than `Button` (36px vs 56px) with a transparent bordered surface rather than filled.
-- Used on the About page identity row for GitHub, LinkedIn, and Email.
-- Hover intensifies border and text to `outline` / `on-surface` — no fill change.
+- Smaller than `Button` (36px vs 56px); a soft-filled pill rather than a bordered box.
+- `surface-raised` fill, no border, pill radius — reads as a solid tappable token.
+- Hover shifts fill to `accent-muted` and text to `accent` (no border change).
+- `external` adds `target="_blank" rel="noopener noreferrer"` **and** a trailing 12px open-in-new icon; mailto links (Email) omit both.
 
 ```yaml
-social-link:
+link-pill:
   height: 36px                       # h-9 — quieter than Button (56px)
   paddingHorizontal: spacing-md      # 16px
   gap-icon-label: spacing-sm         # 8px
-  borderRadius: sm                   # 4px — matches interactive controls
-  background: transparent
-  border: 1px solid outline-variant
-  color: on-surface-muted
+  borderRadius: pill                 # round — distinguishes link chips from square buttons/tags
+  background: surface-raised
+  border: none
+  color: on-surface
   type: interactive-label
 
   hover:
-    borderColor: outline
-    color: on-surface
-    transition: all 150ms
+    background: accent-muted
+    color: accent
+    transition: colors 150ms
 
-  external: adds target="_blank" rel="noopener noreferrer" when external prop is true
+  active:
+    opacity: 0.70
+
+  external:                          # genuinely external (new-tab) links only
+    adds: target="_blank" rel="noopener noreferrer"
+    trailing-icon: OpenInNewIcon 12px — on-surface-muted → accent + translate-x 2px on hover
 ```
 
 #### Tag
@@ -889,16 +894,8 @@ project-header:
     color: on-surface-muted
 
   links-row:                          # optional, renders if links exist
-    layout: flex-wrap, gap lg
-    link:
-      type: interactive-label, font-semibold
-      padding: spacing-xs spacing-sm
-      borderRadius: sm
-      hover:
-        background: accent-muted
-        color: accent
-        external-icon: translate-x 2px
-      active: opacity 0.70
+    layout: flex-wrap, gap sm
+    link: LinkPill (external) — soft-filled pill with trailing open-in-new icon (see Components → Actions & Interactive → LinkPill)
 ```
 
 #### Hero Cover
@@ -1114,8 +1111,8 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
 
-- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top. Communicates affordance without color takeover.
-- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode, SocialLink. Communicates interactive intent on contained surfaces.
+- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top, and `LinkPill` (which also shifts text to `accent`). Communicates affordance without color takeover.
+- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode. Communicates interactive intent on contained surfaces.
 - **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
 - **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
 - **Exception — project card directional:** border intensifies from `outline-variant` to `outline`; card title underlines with `accent` decoration. Communicates link affordance without recoloring the editorial surface.
