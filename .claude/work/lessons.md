@@ -26,6 +26,13 @@
 
 ---
 
+## Biome JSX suppression — multiline elements
+
+**`{/* biome-ignore rule */}` only suppresses single-line elements.** For multiline JSX, the lint error fires on the attribute line (not the element tag), so the sibling comment doesn't reach it — biome reports both `suppressions/unused` and the original error.
+**Fix: use `biome.json` overrides scoped to the specific files** — not a global rule disable, which silently removes the safety net everywhere else.
+
+---
+
 ## Skill maintenance — generalize, don't overfit
 
 **Skill standards are principles, not one project's recipe.** When folding per-project learnings into a frozen skill, each item enters as a principle or *conditional* guidance ("when a project needs X, consider Y") — never as project-specific constants, a composition-specific tactic hardened into a universal rule, or a mandate every run must follow. Default to the most general framing and let the user tighten, not loosen.
