@@ -12,9 +12,14 @@ const MeteorShower = dynamic(
   { ssr: false, loading: () => null },
 );
 
-// Routes where the meteor layer is suppressed (WebGL canvas distracts from
-// dense prose content on project detail pages).
-const METEOR_EXCLUDED_PATTERN = /^\/work\/.+/;
+// Project detail pages — dense reading. The WebGL meteor layer is suppressed
+// here, and the ASCII field is dropped entirely on mobile (see AsciiField).
+const PROJECT_DETAIL_PATTERN = /^\/work\/.+/;
+
+// Mobile/desktop divider — matches AsciiField's MIN_WIDTH. The meteor must honor
+// the same floor (and re-check on resize) so a hover-capable laptop dragged below
+// 768px doesn't keep meteors over the full-bleed mobile ASCII field.
+const MOBILE_BREAKPOINT = 768;
 
 function isMeteorCapable(): boolean {
   // Honor reduced-motion system preference — non-negotiable.
@@ -36,16 +41,29 @@ function isMeteorCapable(): boolean {
 
 export function BackgroundLayer() {
   const pathname = usePathname();
+  const isProjectDetail = PROJECT_DETAIL_PATTERN.test(pathname);
   const [mountMeteor, setMountMeteor] = useState(false);
 
   useEffect(() => {
-    const excluded = METEOR_EXCLUDED_PATTERN.test(pathname);
-    if (!excluded && isMeteorCapable()) {
-      setMountMeteor(true);
-    } else {
-      setMountMeteor(false);
-    }
-  }, [pathname]);
+    let t: number | undefined;
+    const evaluate = () => {
+      setMountMeteor(
+        !isProjectDetail &&
+          window.innerWidth >= MOBILE_BREAKPOINT &&
+          isMeteorCapable(),
+      );
+    };
+    evaluate();
+    const onResize = () => {
+      if (t) window.clearTimeout(t);
+      t = window.setTimeout(evaluate, 200);
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (t) window.clearTimeout(t);
+    };
+  }, [isProjectDetail]);
 
   return (
     <div
@@ -59,7 +77,7 @@ export function BackgroundLayer() {
         isolation: "isolate",
       }}
     >
-      <AsciiField />
+      <AsciiField isProjectDetail={isProjectDetail} />
       {mountMeteor && <MeteorShower opacity={0.42} />}
     </div>
   );

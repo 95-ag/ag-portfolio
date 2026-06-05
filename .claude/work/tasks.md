@@ -1,56 +1,37 @@
-# Tasks — Phase 6 close-out → 6.5 → deploy
+# Tasks — Phase 7 (SEO + AI readability)
 
 > Phase state & decisions → `session.md`. Build-flow + gates → `.claude/docs/IMPLEMENTATION-PHASES.md`.
-> The 4 portfolio pipeline skills are frozen and stay available for the deferred projects (below) —
-> they are not the active tracker anymore.
+> Phase 6.5 (UI Polish) is COMPLETE and handed off as a manual PR (`phase-6.5-ui-polish` → main).
+> Phase 7 work starts on a fresh branch off updated main after the merge.
 
-## Phase 6 — Project Content (close-out)
-- [x] Three real projects authored + reviewed: `model-extraction-attacks`, `dqn-lane-localization`,
-      `masked-autoencoders` (full pipeline each). Phase-6 gate (≥2 real projects) met.
-- [x] Featured set: all three `featured: true` (= the ≤3 cap); home `#featured` shows all three.
-- [x] No leftover Phase-4 placeholder projects — `content/projects/` holds only the 3 real MDX files.
+## Phase 7 — SEO + AI readability
+- [ ] **Lessons review (do FIRST).** Read all lessons — project `.claude/work/lessons.md`, the
+      global `~/.claude` rules (`CLAUDE.md`, `rules/*`, `windows-claude.md`), project `.claude/rules/*`,
+      and the project MEMORY. Organize/dedupe; **promote genuinely-general lessons into the CLAUDE
+      workflow/rules**; **remove ones no longer applicable**. Report a disposition table (kept /
+      promoted / pruned) before editing; confirm zero information loss.
+- [ ] Per-page metadata (title/description) + Open Graph + Twitter cards
+- [ ] `sitemap.xml` + `robots.txt`
+- [ ] `llms.txt` (AI readability)
+- [ ] JSON-LD structured data (Person; project case studies)
+- [ ] Verify (biome / tsc / `next build` + render checks) → gate
 
-## Phase 6.5 — UI Polish (next)
-> Iterative; several items are investigations to resolve with the user. Color/surface items go
-> through `design-update` / `design-rewrite` (they edit DESIGN.md). Full scope → IMPLEMENTATION-PHASES.md.
-
-### Reading experience
-- [ ] ASCII background — fade toward content center; none on small screens; bias the pattern into
-      corners/free space so it never disrupts body text (project/about/home) — investigate approach
-- [ ] Inline code — unreadable now; try accent (green), Notion-like feel *(decide)*
-- [ ] Code blocks — unreadable now; try ink text + bold accent highlights *(decide)*
-- [ ] Tables — grey now; switch to ink + bold accent highlights *(decide)*
-
-### Navigation & global UI
-- [ ] Home page active-state nav (currently missing)
-
-### Colors *(→ design-update / design-rewrite)*
-- [ ] Dark-theme accent still reads minty — adjust
-- [ ] Light-theme raised surface is a clashing grey — fix
-- [ ] Revisit surface hierarchy (ChatGPT-like preferred; current hard to maintain, ink harsh) —
-      evaluate vs bg design + both themes before committing *(investigate, possible token change)*
-
-### Brand / hero
-- [ ] New hero image (person working at a desk / similar)
-- [ ] Mobile: stack hero image **below** the hero paragraph + buttons
-
-- [ ] **Gate: user approves the polish set** → Phase 7
-
-## Remaining phases (roadmap)
-- [ ] Phase 7 — SEO + AI readability (metadata, OG, sitemap/robots, llms.txt, JSON-LD)
-- [ ] Phase 8 — Audits (typography/spacing/hierarchy/consistency/responsive/a11y)
-- [ ] Phase 9 — Refactor/clean/align (incl. reconcile Hero-CTA deviation vs PRODUCT.md §7.1)
-- [ ] Phase 10 — Deploy (Vercel); then hand user the PR for `phase-6-real-content`
+## Remaining roadmap
+- [ ] Phase 8 — Audits (typography / spacing / hierarchy / responsive / a11y)
+- [ ] Phase 9 — Refactor/clean/align (incl. reconcile Hero-CTA deviation vs PRODUCT.md §7.1;
+      resolve the 2 transitive moderate npm-audit advisories from `@shikijs/rehype`)
+- [ ] Phase 10 — Deploy (Vercel)
 
 ## Deferred — after first deploy
-- [ ] Freelance project — full 4-stage pipeline (sources/content not ready yet)
-- [ ] "This web portfolio" self-referential case study — author after deploy (live URL + real
-      screenshots + the build story make it stronger)
+- [ ] Freelance project — full 4-stage pipeline (sources/content not ready)
+- [ ] "This web portfolio" self-referential case study (stronger against a live URL)
 - [ ] Revisit featured set if the project count grows past 3
 
 ## Complete
-- `masked-autoencoders` — full pipeline; signed off 2026-06-01
-- `dqn-lane-localization` — full pipeline (negative-result project)
-- `model-extraction-attacks` — full pipeline (reference exemplar)
-- All 4 pipeline skills — audited, frozen; `project-cover-generation` updated with the notebook
-  arrow gesture; all three covers consistent
+- **Phase 6.5 — UI Polish** (branch `phase-6.5-ui-polish`, 23 commits `beba3a7`→`0e53053` + work
+  chore): reading/nav (inline code, prose tables, logomark active ring, build-time Shiki, page-aware
+  background), color system (neutral context-aware palette, softer ink, inverted light meteor),
+  links/headings (shared `LinkPill`, ink H1s, removed `display-accent`, `heading-display` 600), and
+  the theme-aware blend hero. Background evaluated and **kept as-is**.
+- **Phase 6** — three real projects (`model-extraction-attacks`, `dqn-lane-localization`,
+  `masked-autoencoders`), full pipeline each.

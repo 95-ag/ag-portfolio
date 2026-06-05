@@ -104,33 +104,35 @@ The portfolio combines the structural clarity of a technical journal with the pr
 
 - Tokens are role-based.
 - The same role has different hex values per theme to maintain contrast and visual weight.
+- **Background depth is context-aware** (set via `data-read="long"` on `<html>` — see Technical Conventions → Surface Context): *showcase* pages (home, about, work index) use the extreme ground — white in light / deep-black in dark — so background effects feel immersive; *reading* pages (project detail) use a softer middle ground for legibility. The table lists the showcase (default) value; reading overrides only the ground — light `background`/`surface` `#f8f8f9`; dark `background`/`surface` `#1a1a1a`, `surface-raised` `#292929`, `surface-sunken` `#141414`, `surface-nav` `#1f1f1fd9`.
+- **Light depth logic:** `surface-sunken` is the brightest (pure white — image/code/diagram clarity), `surface-raised` lifts only gently, `background` is the off-white ground. Dark inverts (sunken darkest, raised lighter).
 
 | Role | Light | Dark | Used for |
 |---|---|---|---|
-| `background` | `#f8f8f7` | `#131313` | Page background |
-| `surface` | `#f8f8f7` | `#131313` | Default content surface (= background) |
-| `surface-raised` | `#f2f2f1` | `#211f1e` | Cards, callouts, highlighted panels — slightly off-white in light, warm-dark in dark |
-| `surface-sunken` | `#ffffff` | `#0e0e0e` | Code blocks, inline code, diagram content regions — pure white in light for maximum code legibility |
-| `surface-nav` | `#ffffffd9` | `#1c1b1bd9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
-| `surface-selection` | `#e6f4ec` | `#1a2e1f` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
-| `surface-overlay` | `#ffffffd9` | `#1c1b1bd9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-overlay-panel` | `#ffffffb8` | `#1c1b1bba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-tag` | `#e2e3e4` | `#2a2a2a` | Tag chip background — lighter than bg/card in light, darker in dark |
-| `on-background` | `#191c1d` | `#e5e2e1` | Primary text on background |
-| `on-surface` | `#191c1d` | `#e5e2e1` | Primary text on surfaces |
-| `on-surface-muted` | `#6b7280` | `#a0a0a0` | Secondary text, captions |
-| `outline` | `#6c7a71` | `#86948a` | Default borders, dividers |
-| `outline-variant` | `#bbcabf` | `#3c4a42` | Subtle borders, low-contrast dividers |
-| `outline-hair` | `color-mix(in srgb, #191c1d 10%, transparent)` | `color-mix(in srgb, #e5e2e1 10%, transparent)` | Alpha hairline border, surface-relative |
-| `accent` | `#006e37` | `#35c27d` | Active nav, primary CTA, links, focus rings, callout accents |
-| `accent-on` | `#ffffff` | `#0a1f0e` | Text/icon on accent fills |
-| `accent-muted` | `#e6f4ec` | `#1a2e1f` | Hover backgrounds, accent-tinted surfaces |
+| `background` | `#fcfcfc` | `#0e0e0e` | Page background (showcase default; reading override above) |
+| `surface` | `#fcfcfc` | `#0e0e0e` | Default content surface (= background) |
+| `surface-raised` | `#ededed` | `#1c1c1c` | Cards, callouts, highlighted panels — gently lifted neutral panel (light: subtly off the bg; dark: lighter than bg) |
+| `surface-sunken` | `#ffffff` | `#080808` | Diagram content regions, sunken insets (card media well, hero) — brightest in light for image/code clarity. Code blocks instead use the Shiki theme background (see Technical Conventions → Code Block Highlighting) |
+| `surface-nav` | `#fcfcfcd9` | `#141414d9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
+| `surface-selection` | `#e8f3ec` | `#16271b` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
+| `surface-overlay` | `#ffffffd9` | `#141414d9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
+| `surface-overlay-panel` | `#ffffffb8` | `#141414ba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
+| `surface-tag` | `#ebecee` | `#2a2a2a` | Tag chip background — neutral grey |
+| `on-background` | `#2d2d2d` | `#e2e2e2` | Primary text on background |
+| `on-surface` | `#2d2d2d` | `#e2e2e2` | Primary text on surfaces |
+| `on-surface-muted` | `#66696f` | `#a1a1aa` | Secondary text, captions |
+| `outline` | `#9aa0a6` | `#8a8a8a` | Default borders, dividers |
+| `outline-variant` | `#e2e3e5` | `#333333` | Subtle borders, low-contrast dividers |
+| `outline-hair` | `color-mix(in srgb, #2d2d2d 10%, transparent)` | `color-mix(in srgb, #e2e2e2 10%, transparent)` | Alpha hairline border, surface-relative |
+| `accent` | `#006e37` | `#2aa566` | Active nav, primary CTA, links, focus rings, callout accents |
+| `accent-on` | `#ffffff` | `#06210e` | Text/icon on accent fills |
+| `accent-muted` | `#e8f3ec` | `#16271b` | Hover backgrounds, accent-tinted surfaces |
 | `secondary` | `#565e74` | `#bdc7d9` | Reserved — categorical use only (e.g., callout variants) |
 | `tertiary` | `#a43a3a` | `#e8a5a5` | Reserved — categorical use only (e.g., warning callouts) |
 | `error` | `#c0392b` | `#ff6b5e` | 404, validation errors |
-| `success` | `#006e37` | `#35c27d` | Build status, confirmations (= accent in v1) |
-| `focus-ring` | `#006e37` | `#35c27d` | 2px outline on keyboard focus (= accent) |
-| `selection` | `#006e3733` | `#35c27d33` | Text selection background (accent at 20% alpha) |
+| `success` | `#006e37` | `#2aa566` | Build status, confirmations (= accent in v1) |
+| `focus-ring` | `#006e37` | `#2aa566` | 2px outline on keyboard focus (= accent) |
+| `selection` | `#006e3733` | `#2aa56633` | Text selection background (accent at 20% alpha) |
 
 Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/bg/`. Do not use these directly in CSS.
 
@@ -148,18 +150,17 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 - Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
-- Mid-tier values (769–1279): `display-primary`/`display-accent` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
+- Mid-tier values (769–1279): `display-primary` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
-| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 |
-| `display-accent` | Manrope | 56 / 46 / 36px | 500 | 64 / 54 / 44px | -0.025em | `accent` | Section title with accent color (Work page, About page) |
-| `heading-display` | Manrope | 36 / 32 / 28px | 500 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
+| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 (Home, Work, About, Project, 404) |
+| `heading-display` | Manrope | 36 / 32 / 28px | 600 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
 | `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
-| `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface-muted` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels |
+| `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels. Ink (not muted) — a large lead in grey reads dull/low-presence |
 | `body-primary` | Inter | 18px | 400 | 28px | — | — (Ink) | Long-form prose paragraphs |
 | `body-secondary` | Inter | 18px | 400 | 28px | — | `on-surface-muted` | Supporting copy, card subtitles, summaries |
 | `body-caption` | Inter | 14px | 400 | 20px | — | `on-surface-muted` | Figure captions, table text, timestamps |
@@ -186,10 +187,10 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `p`, `li` | `body-primary` values (18px) | — |
 | `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid {accent}`, `background: {surface-raised}`, `padding: {spacing.md} {spacing.lg}`, `margin-vertical: {spacing.lg}` |
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
-| `th` | `body-caption` values + `font-weight: 600` | `border-bottom: 1px solid {outline-variant}`, padding |
-| `td` | `body-caption` values | `border-bottom: 1px solid {outline-hair}`, padding |
-| `code` (inline) | `mono-code` values | `background: {surface-sunken}`, `padding: 2px 6px`, `border-radius: {radius.sm}` |
-| `pre code` | `mono-code` values | `border: 1px solid {outline-variant}`, `background: {surface-sunken}`, full block padding, 0px radius |
+| `th` | `body-caption` values + `font-weight: 600` | `color: {on-surface}` (ink), `border-bottom: 2px solid {accent}`, no fill, padding |
+| `td` | `body-caption` values | `color: {on-surface}` (ink), `border-bottom: 1px solid {outline-variant}`, padding |
+| `code` (inline) | `mono-code` metrics, text `{accent}` | `background: {accent}` 10% tint, `border: 1px solid {accent}` 22%, `padding: 2px 6px`, `border-radius: {radius.sm}` |
+| `pre code` | `mono-code` metrics; Shiki tokens | `border: 1px solid {outline-variant}`, background + token colors from Shiki (`vitesse`), full block padding, 0px radius |
 | `strong` | inherits surrounding token | `font-weight: 600` (no family or size change) |
 
 ### Spacing
@@ -206,9 +207,9 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 Four surface categories, each with a fixed radius:
 
 - **Structural containers** — 0px (sharp). Cards, code blocks, callouts. Architectural, no softening.
-- **Interactive controls** — `{radius.sm}` (4px). Tags, chips, buttons, inline code. Minimum radius to read as a control.
+- **Interactive controls** — `{radius.sm}` (4px). Tags, block buttons, inline code. Minimum radius to read as a control.
 - **Media surfaces** — `{radius.md}` (8px). Headshot, hero images, figures, diagrams, highlights.
-- **Floating controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark.
+- **Floating & link controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark, and link pills (`LinkPill` — About socials + project-header links). The pill radius distinguishes lightweight inline links from square block buttons and static tags.
 
 `{radius.lg}` (12px) is reserved and unused in v1 — previously assigned to the headshot, now normalized to `{radius.md}`.
 
@@ -227,7 +228,7 @@ Six levels, each defined by border and surface treatment only.
 | **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
 | **2 — Border + blur** | `1px solid outline-variant` + `backdrop-filter: blur(12px)` + `surface: {surface-nav}` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
 | **3 — Border + raised** | `1px solid outline-variant` + `surface: {surface-raised}` | Project cards (all variants), `<Highlight>` editorial pull-quote |
-| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<CodeBlock>`, prose inline `<code>`, `<Diagram>` inner content region, prose table `<th>` cells, project card media well, project detail hero background |
+| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<Diagram>` inner content region, project card media well, project detail hero background |
 | **5 — Accent left border + raised** | `2px solid {accent}` (left only) + `surface: {surface-raised}` | `<Callout>`, prose `<blockquote>` |
 
 #### Backdrop-Blur Carve-out
@@ -333,6 +334,7 @@ Fixed top-center navigation bar that persists across all scroll positions; the p
 - Centered relative to the content max-width, not the viewport — aligns with content on ultrawide displays.
 - Active item signals current location; hover signals affordance — states are visually distinct by design.
 - Logomark replaces the Home nav item — no separate Home link at any viewport size.
+- Logomark active state (on `/`): 2px `{accent}` ring + `aria-current="page"` — a ring, not the `surface-selection` fill used by other active items, because the 32px icon fully occludes a background fill. The mobile-panel logomark mirrors this.
 - Blur surface maintains legibility above any page background at any scroll position.
 
 ```yaml
@@ -556,9 +558,9 @@ button-icon-leading:
 
 #### CopyableCode
 
-Interactive code chip that copies its value to clipboard; elevation-level-4 surface treatment (sunken bg + outline-variant border) reads as an inline code block that is also a control.
+Interactive code chip that copies its value to clipboard; elevation-level-4 surface treatment (sunken bg + outline-variant border) reads as a code chip that is also a control.
 
-- Surface: `surface-sunken` background, `outline-variant` 1px border, `radius-sm` — matches inline code visual vocabulary.
+- Surface: `surface-sunken` background, `outline-variant` 1px border, `radius-sm` — a sunken control surface, intentionally distinct from inline `code`'s accent-tint treatment.
 - Height `h-11` (44px), `px-md` (16px) — meets accessible touch target floor while reading as a compact chip.
 - Trailing icon swaps `ContentCopyIcon` → `CheckIcon` for 1500ms on copy, then reverts; `aria-live="polite"` announces success.
 - Hover and focus shift border and text to `accent`; focus uses `focus-ring` outline.
@@ -619,31 +621,37 @@ copy-link:
     outlineOffset: 2px
 ```
 
-#### SocialLink
+#### LinkPill
 
-Quiet utility link for profile and contact links; lighter visual weight than `Button`, heavier than a static `Tag`.
+Quiet utility link for profile, contact, and project links; lighter visual weight than `Button`, heavier than a static `Tag`. Shared by the About identity row (GitHub, LinkedIn, Email) and the project-header links row (Code, Report, Paper, Slides, Demo).
 
-- Smaller than `Button` (36px vs 56px) with a transparent bordered surface rather than filled.
-- Used on the About page identity row for GitHub, LinkedIn, and Email.
-- Hover intensifies border and text to `outline` / `on-surface` — no fill change.
+- Smaller than `Button` (36px vs 56px); a soft-filled pill rather than a bordered box.
+- `surface-raised` fill, no border, pill radius — reads as a solid tappable token.
+- Hover shifts fill to `accent-muted` and text to `accent` (no border change).
+- `external` adds `target="_blank" rel="noopener noreferrer"` **and** a trailing 12px open-in-new icon; mailto links (Email) omit both.
 
 ```yaml
-social-link:
+link-pill:
   height: 36px                       # h-9 — quieter than Button (56px)
   paddingHorizontal: spacing-md      # 16px
   gap-icon-label: spacing-sm         # 8px
-  borderRadius: sm                   # 4px — matches interactive controls
-  background: transparent
-  border: 1px solid outline-variant
-  color: on-surface-muted
+  borderRadius: pill                 # round — distinguishes link chips from square buttons/tags
+  background: surface-raised
+  border: none
+  color: on-surface
   type: interactive-label
 
   hover:
-    borderColor: outline
-    color: on-surface
-    transition: all 150ms
+    background: accent-muted
+    color: accent
+    transition: colors 150ms
 
-  external: adds target="_blank" rel="noopener noreferrer" when external prop is true
+  active:
+    opacity: 0.70
+
+  external:                          # genuinely external (new-tab) links only
+    adds: target="_blank" rel="noopener noreferrer"
+    trailing-icon: OpenInNewIcon 12px — on-surface-muted → accent + translate-x 2px on hover
 ```
 
 #### Tag
@@ -829,7 +837,8 @@ Two-column desktop layout: content left, portrait right. Single-column on mobile
 
 - Content column (`shrink-0`, `lg:w-[480px]` / `xl:w-[560px]`): fixed width locks the headline to 2 lines across breakpoints. Eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
 - CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
-- Portrait column (`flex-1`, `height: 600px`): `hero.png` via `next/image` with `fill`, `object-cover object-left-top`. Left-edge linear mask (`transparent 0% → black 15%`) fades the portrait into the page background in both themes without theme-specific overlays.
+- Portrait column (`flex-1`, `hidden lg:block`): two theme-specific portraits — `hero-dark.png` / `hero-light.png` — via `next/image` at **natural aspect** (`width 800 × height 1000`, `h-auto w-full`, no crop — the full figure shows, dissolving into the page on all sides). Only the active theme's image shows (`globals.css` `[data-theme]` `display:none` swap); both render in the DOM for a flash-free, JS-free swap. **No `priority`.** On mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile). Each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges: dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask.
+- **Hero blend constraint (deliberate, scoped exception to "no effects"):** `mix-blend-mode` composites against the backdrop within the element's stacking context. It sits on the `<img>` — a `filter`/`mix-blend` on the image *itself* is fine (an element's own blend still reaches its parent backdrop). What must NOT happen is a stacking context or opaque background on any **ancestor**: no `z-index`/`transform`/`opacity`/`filter`/`mask`/`isolation` on the wrapper or up to `<body>`, or the blend keys against an opaque box instead of the `BackgroundLayer` meteors. The hero is above the meteors by tree order and below the nav (`z-50`) — no explicit z-index. (`html`'s opaque `--background` is fine; meteors paint over it.) Works with or without the meteor canvas: when meteors are suppressed (reduced-motion / low-core / project pages) the blend simply drops each bake toward the flat page background.
 - Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
 #### Featured Projects Grid
@@ -886,16 +895,8 @@ project-header:
     color: on-surface-muted
 
   links-row:                          # optional, renders if links exist
-    layout: flex-wrap, gap lg
-    link:
-      type: interactive-label, font-semibold
-      padding: spacing-xs spacing-sm
-      borderRadius: sm
-      hover:
-        background: accent-muted
-        color: accent
-        external-icon: translate-x 2px
-      active: opacity 0.70
+    layout: flex-wrap, gap sm
+    link: LinkPill (external) — soft-filled pill with trailing open-in-new icon (see Components → Actions & Interactive → LinkPill)
 ```
 
 #### Hero Cover
@@ -1098,9 +1099,9 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 - **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/bg/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
 - **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
-- **ASCII field:** ambient structural texture, not decorative ornamentation. Rendered on all routes and devices. Static — no animation. Three opacity tiers (accent, ink, mute); light-theme values are slightly higher to compensate for the cream background's lower contrast.
-- **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes — intentionally suppressed on project detail pages to preserve reading focus.
-- **Theme-aware palette:** meteor color responds to `data-theme` changes via `MutationObserver` with no flash. Light theme uses the accent green family with a muted sage secondary; dark theme uses accent green with a steel-blue secondary.
+- **ASCII field:** ambient structural texture, not decorative ornamentation. Static — no animation. Desktop/tablet (≥768px, all routes): masked to the outer gutters/corners — a centered band sized to the content column + buffer is cleared (short fade in) so glyphs never touch the reading column. Mobile (<768px): full-bleed but sparser + fainter on non-project pages, and omitted entirely on project detail pages (dense reading). Three opacity tiers (accent, ink, mute); light-theme values are higher to compensate for the cream background's lower contrast.
+- **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), below the 768px mobile breakpoint (re-checked on resize), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes (reading focus). The 768px floor keeps the meteor and the full-bleed mobile ASCII field from ever co-rendering.
+- **Theme-aware palette + render mode:** meteor colors and blend respond to `data-theme` via `MutationObserver` (no flash). **Dark** = additive neon glow on the deep bg — true accent `#2aa566` + steel-blue `#598cd9`, blend `normal`, opacity 0.42. **Light** = the inverse: a `uDark` shader branch maps the hot core to the darkest saturated ink and the falloff to white, blended `multiply` (opacity 0.52) so trails read as dark vivid streaks — true accent `#006e37` + blue `#3059b3`. Concept: dark = bright neon streaks, light = dark vivid streaks.
 - **Performance:** Three.js loaded via `next/dynamic` (`ssr: false`) to preserve initial bundle size and interaction responsiveness. DPR capped at 1.5 and frame delta clamped to maintain rendering comfort on HiDPI screens and across tab focus changes.
 
 ---
@@ -1111,8 +1112,8 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
 
-- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top. Communicates affordance without color takeover.
-- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode, SocialLink. Communicates interactive intent on contained surfaces.
+- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top, and `LinkPill` (which also shifts text to `accent`). Communicates affordance without color takeover.
+- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode. Communicates interactive intent on contained surfaces.
 - **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
 - **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
 - **Exception — project card directional:** border intensifies from `outline-variant` to `outline`; card title underlines with `accent` decoration. Communicates link affordance without recoloring the editorial surface.
@@ -1220,6 +1221,18 @@ Components must use z-index tokens, not raw numbers.
 ### Root Layout Shell
 
 `body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom. `<BackgroundLayer />` mounts as first child of `<Providers>`, before `<Nav>` — fixed-position, does not affect document flow.
+
+### Code Block Highlighting
+
+Fenced code blocks are syntax-highlighted at build time via Shiki (`@shikijs/rehype` in the MDX RSC pipeline) — no client-side highlighter ships. Dual theme `vitesse-light` / `vitesse-dark`: light token colors render inline; `[data-theme="dark"]` swaps to the dark theme's `--shiki-*` CSS vars. The theme supplies the panel background and per-token colors; `<CodeBlock>` adds only the `{outline-variant}` border, block padding, 0px radius, and `mono-code` metrics.
+
+### Surface Context
+
+Background depth switches by page type via `data-read` on `<html>`: long-read project pages (`/work/[slug]`) get `data-read="long"` (softer reading ground); every other page uses the showcase default (the extreme ground). A pre-paint inline script in `layout.tsx` sets it before first paint (no flash); `<SurfaceContext>` keeps it in sync across client navigation. `globals.css` holds the showcase values in `:root` / `[data-theme="dark"]` and the reading overrides in `[data-read="long"]`. Values: Foundations → Colors.
+
+### Font Smoothing
+
+Dark theme applies `-webkit-font-smoothing: antialiased` / `-moz-osx-font-smoothing: grayscale` to `body` (light untouched). Light text on the dark background renders visually heavier ("bloom"), flattening font-weight hierarchy; grayscale antialiasing thins it so weight contrast reads.
 
 ---
 

@@ -9,6 +9,7 @@ const FRAG = /* glsl */ `
   uniform vec2  iResolution;
   uniform vec3  uAccent;
   uniform vec3  uAltColor;
+  uniform float uDark;
 
   float rand(vec2 n){ return fract(sin(dot(n, vec2(12.9898,4.1414))) * 43758.5453); }
   float noise(vec2 p){
@@ -43,13 +44,24 @@ const FRAG = /* glsl */ `
       o += contribution * (1. + tail*0.8) * thin;
     }
     o = tanh(pow(o/100., vec4(1.6)));
-    float a = clamp(max(max(o.r, o.g), o.b) * 1.4, 0., 1.);
-    gl_FragColor = vec4(o.rgb * 1.2, a);
+    if (uDark > 0.5) {
+      // DARK — additive neon glow: hot core = brightest.
+      float a = clamp(max(max(o.r, o.g), o.b) * 1.4, 0., 1.);
+      gl_FragColor = vec4(o.rgb * 1.2, a);
+    } else {
+      // LIGHT — inverted: accumulated luminance is ink DENSITY. Hot core => darkest, most
+      // saturated ink; falloff => white (multiply identity). Same streak geometry/motion.
+      float density = clamp(pow(max(max(o.r, o.g), o.b) * 3.0, 0.7), 0., 1.);
+      vec3 hue = normalize(o.rgb + 1e-4);
+      vec3 ink = mix(uAccent, uAltColor, clamp(hue.b, 0., 1.));
+      gl_FragColor = vec4(mix(vec3(1.0), ink, density), density);
+    }
   }
 `;
 
 function readAccent(): THREE.Vector3 {
   if (typeof window === "undefined") return new THREE.Vector3(0, 0.43, 0.22);
+  // True accent in both themes (light #006e37 / dark #2aa566) via the live --accent-rgb.
   const raw = getComputedStyle(document.documentElement)
     .getPropertyValue("--accent-rgb")
     .trim();
@@ -61,15 +73,14 @@ function readAccent(): THREE.Vector3 {
 }
 
 // Secondary particle color — theme-aware so both themes feel palette-native.
-// Light: muted sage (80, 118, 96) — stays in the accent green family,
-//        avoids the neon/blue cast the steel-blue produces on light surfaces.
-// Dark:  steel blue (89, 140, 217) — cool contrast reads well on dark bg.
+// Light: blue #3059b3 — paired with the true green accent for the inverted dark-ink streaks.
+// Dark:  steel blue (89, 140, 217) — cool glow contrast reads well on dark bg.
 function readAltColor(): THREE.Vector3 {
   if (typeof window === "undefined") return new THREE.Vector3(0.35, 0.55, 0.85);
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   return isDark
     ? new THREE.Vector3(0.35, 0.55, 0.85)
-    : new THREE.Vector3(0.314, 0.463, 0.376);
+    : new THREE.Vector3(0.188, 0.349, 0.702);
 }
 
 export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {
@@ -79,6 +90,19 @@ export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const canvas = ref.current;
     if (!canvas) return;
+
+    // The shader is additive — it "glows" on the dark bg, but on a light bg adding color can't
+    // brighten past white, so trails just muddily tint. Switch the canvas to `multiply` in light
+    // so trails darken the bg into visible colored streaks; keep normal (glow) in dark.
+    const applyBlend = () => {
+      const isDark =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      canvas.style.mixBlendMode = isDark ? "normal" : "multiply";
+      // Light streaks (multiply, dark-on-white) wash out at the dark-mode opacity, so light
+      // needs more presence to match the glow's contrast in dark.
+      canvas.style.opacity = isDark ? String(opacity) : "0.52";
+    };
+    applyBlend();
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -99,6 +123,12 @@ export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {
         iResolution: { value: new THREE.Vector2() },
         uAccent: { value: readAccent() },
         uAltColor: { value: readAltColor() },
+        uDark: {
+          value:
+            document.documentElement.getAttribute("data-theme") === "dark"
+              ? 1
+              : 0,
+        },
       },
       vertexShader: "void main(){ gl_Position = vec4(position, 1.0); }",
       fragmentShader: FRAG,
@@ -131,6 +161,9 @@ export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {
     const themeObs = new MutationObserver(() => {
       material.uniforms.uAccent.value = readAccent();
       material.uniforms.uAltColor.value = readAltColor();
+      material.uniforms.uDark.value =
+        document.documentElement.getAttribute("data-theme") === "dark" ? 1 : 0;
+      applyBlend();
     });
     themeObs.observe(document.documentElement, {
       attributes: true,
@@ -146,7 +179,7 @@ export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {
       material.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [opacity]);
 
   return (
     <canvas

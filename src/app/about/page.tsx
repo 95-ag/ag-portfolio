@@ -9,7 +9,7 @@ import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { Heading } from "@/components/ui/heading";
-import { SocialLink } from "@/components/ui/social-link";
+import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 
@@ -28,34 +28,34 @@ export default function AboutPage() {
         <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-5xl)]">
           {/* Identity header */}
           <header className="flex flex-col gap-[var(--spacing-lg)]">
-            <Heading level={1} type="display-accent">
+            <Heading level={1} type="display-primary">
               {about.name}
             </Heading>
             <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
               {about.socials.github && (
-                <SocialLink
+                <LinkPill
                   href={about.socials.github}
                   icon={<GitHubIcon size={16} />}
                   external
                 >
                   GitHub
-                </SocialLink>
+                </LinkPill>
               )}
               {about.socials.linkedin && (
-                <SocialLink
+                <LinkPill
                   href={about.socials.linkedin}
                   icon={<LinkedInIcon size={16} />}
                   external
                 >
                   LinkedIn
-                </SocialLink>
+                </LinkPill>
               )}
-              <SocialLink
+              <LinkPill
                 href={`mailto:${about.contactEmail}`}
                 icon={<MailIcon size={16} />}
               >
                 Email
-              </SocialLink>
+              </LinkPill>
             </div>
           </header>
 

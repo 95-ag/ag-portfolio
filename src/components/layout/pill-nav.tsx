@@ -16,12 +16,16 @@ const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
   { href: "/work", label: "Work", Icon: FolderCodeIcon },
 ];
 
-function LogoMark() {
+function LogoMark({ active }: { active: boolean }) {
   return (
     <Link
       href="/"
       aria-label="Home"
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]"
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
+        active && "outline-2 outline-[var(--accent)]",
+      )}
     >
       <Image
         src="/cat_head_icon.svg"
@@ -44,7 +48,7 @@ export function PillNav() {
         aria-label="Primary"
         className="pointer-events-auto flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] px-[var(--spacing-sm)] backdrop-blur-[12px]"
       >
-        <LogoMark />
+        <LogoMark active={pathname === "/"} />
 
         <div
           aria-hidden="true"

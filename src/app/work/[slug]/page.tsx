@@ -1,3 +1,4 @@
+import rehypeShiki from "@shikijs/rehype";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -78,7 +79,25 @@ export default async function ProjectPage({ params }: Props) {
               <MDXRemote
                 source={project.body}
                 components={mdxComponents}
-                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                    rehypePlugins: [
+                      [
+                        rehypeShiki,
+                        {
+                          themes: {
+                            light: "vitesse-light",
+                            dark: "vitesse-dark",
+                          },
+                          // No default color → Shiki emits only CSS vars (no inline
+                          // token colors), so the dark-theme swap needs no !important.
+                          defaultColor: false,
+                        },
+                      ],
+                    ],
+                  },
+                }}
               />
             </div>
 

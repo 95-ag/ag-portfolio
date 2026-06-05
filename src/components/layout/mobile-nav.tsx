@@ -119,7 +119,11 @@ export function MobileNav() {
                 <Link
                   href="/"
                   aria-label="Home"
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]"
+                  aria-current={pathname === "/" ? "page" : undefined}
+                  className={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
+                    pathname === "/" && "outline-2 outline-[var(--accent)]",
+                  )}
                 >
                   <Image
                     src="/cat_head_icon.svg"
