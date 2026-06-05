@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
@@ -12,18 +13,32 @@ import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
+import { buildPersonSchema } from "@/lib/seo/jsonld";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "About",
   description:
-    "AI/ML engineer building practical systems for real-world constraints.",
+    "AI engineer building practical systems for real-world constraints.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    type: "website",
+    url: "/about",
+    images: [{ url: "/opengraph-image" }],
+  },
 };
 
 export default function AboutPage() {
   const { frontmatter: about } = getAbout();
+  const personSchema = buildPersonSchema(about);
 
   return (
     <Section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <Container>
         <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-5xl)]">
           {/* Identity header */}

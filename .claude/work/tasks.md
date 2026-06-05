@@ -2,19 +2,25 @@
 
 > Phase state & decisions → `session.md`. Build-flow + gates → `.claude/docs/IMPLEMENTATION-PHASES.md`.
 > Phase 6.5 (UI Polish) is COMPLETE and handed off as a manual PR (`phase-6.5-ui-polish` → main).
-> Phase 7 work starts on a fresh branch off updated main after the merge.
+> Plan: `/home/ag-95/.claude/plans/serene-gliding-sunset.md`
 
 ## Phase 7 — SEO + AI readability
-- [ ] **Lessons review (do FIRST).** Read all lessons — project `.claude/work/lessons.md`, the
-      global `~/.claude` rules (`CLAUDE.md`, `rules/*`, `windows-claude.md`), project `.claude/rules/*`,
-      and the project MEMORY. Organize/dedupe; **promote genuinely-general lessons into the CLAUDE
-      workflow/rules**; **remove ones no longer applicable**. Report a disposition table (kept /
-      promoted / pruned) before editing; confirm zero information loss.
-- [ ] Per-page metadata (title/description) + Open Graph + Twitter cards
-- [ ] `sitemap.xml` + `robots.txt`
-- [ ] `llms.txt` (AI readability)
-- [ ] JSON-LD structured data (Person; project case studies)
-- [ ] Verify (biome / tsc / `next build` + render checks) → gate
+- [x] **Lessons review — DONE (signed off 2026-06-05).**
+- [x] **C1–C4 implementation — committed.**
+      - C1 `2f86b96`: `src/app/opengraph-image.tsx`
+      - C2 `d92c0e6`: metadata + OG/Twitter + canonicals + JSON-LD (all 5 pages + `src/lib/seo/jsonld.ts` + `biome.json`)
+      - C3 `6585fb5`: `src/app/sitemap.ts` + `src/app/robots.ts`
+      - C4 `215e423`: `src/app/llms.txt/route.ts`
+- [x] **Verify:** `/sitemap.xml`, `/robots.txt`, `/llms.txt` — curl confirmed ✓
+- [x] **Verify:** OG/canonical meta tags + JSON-LD — browser confirmed ✓ (all 3 pages)
+- [x] **C7 — Update `implement-ai-seo` skill** (done, signed off 2026-06-06)
+      Plan: `/home/ag-95/.claude/plans/serene-gliding-sunset.md`
+      - SKILL.md: fix JSON-LD placement, add CreativeWork, add §3a framework APIs,
+        add §5 opengraph-image.tsx + no-merge warning, add §7 Route Handler note, §1 inventory item
+      - REFERENCE.md: enrich Person schema, add CreativeWork, add Next.js Metadata API section,
+        expand llms.txt template, rename Raw HTML heading, sameAs safety note
+      - Fresh-eyes review gate before done
+- [x] **C6 — work files commit** (done 2026-06-06)
 
 ## Remaining roadmap
 - [ ] Phase 8 — Audits (typography / spacing / hierarchy / responsive / a11y)

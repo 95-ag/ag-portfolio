@@ -8,7 +8,53 @@
 
 ## Phase
 
-**Branch `phase-6.5-ui-polish`.**
+**Branch `phase-7-seo-ai`.**
+
+- **Phase 7 — SEO + AI readability: IN PROGRESS.**
+  - **Lessons review — DONE (signed off 2026-06-05).** Promoted general web/Next/WSL/tooling lessons
+    into `rules/frontend.md` (image cache, `next/image` `display:none` fetch, Shiki `defaultColor:false`,
+    Local Iteration & Caching, `useExhaustiveDependencies`), `rules/build-verification.md` (Batch Gate
+    + Dev Server & Browser Verification, format-only-hook directive), `rules/design-system.md` (Color
+    work), and global `windows-claude.md` (Long-running-servers rewrite: inline MSYS guard + `pkill`
+    bracket trick) + global `CLAUDE.md` ×2 (§0 queue-verbs, no-bypass guardrail, notes-in-work).
+    Trimmed `lessons.md` to pipeline-only with a format header. MEMORY 5→3: deleted lint-strategy +
+    notes-in-work (promoted), trimmed stale rewrite-campaign block, marked about-page font-weights done.
+    Strengthened the global-config guardrail (own explicit gate; never bundled into a plan/blanket
+    approval; no unilateral scope-widening). Permission-rule angle: `file-protect.mjs` GLOBAL_ASK
+    already exists but is project-scoped + "ask" is auto-accepted in auto mode — global promotion
+    evaluated, **left as-is per user**.
+  - **C1–C5 implementation DONE — biome + tsc clean, `next build` green (13 pages). Render checks
+    partially done. Awaiting user go-ahead to complete render checks → then propose C1–C5 commits.**
+    Plan: `/home/ag-95/.claude/plans/serene-gliding-sunset.md`
+    - C1: `src/app/opengraph-image.tsx` — `ImageResponse` card, 1200×630, dark bg + accent green
+    - C2: metadata + OG/Twitter + `alternates.canonical` on all 5 pages; `metadataBase` + title template in root layout
+    - C3: `src/app/sitemap.ts` + `src/app/robots.ts` (explicit AI crawler allows: GPTBot, ClaudeBot, Google-Extended, PerplexityBot)
+    - C4: `src/app/llms.txt/route.ts` — dynamic route, `force-static`; order: positioning → capabilities → projects → contact (no raw email)
+    - C5: `src/lib/seo/jsonld.ts` + WebSite schema (layout), Person schema (home + about), CreativeWork + BreadcrumbList (project pages)
+    - `biome.json` — `noDangerouslySetInnerHtml: off` via **overrides** scoped to 4 files only (not global); rule stays active everywhere else
+  - **`next build` output (13 pages):** /, /_not-found, /about, /llms.txt, /opengraph-image,
+    /robots.txt, /sitemap.xml, /work, /work/model-extraction-attacks, /work/dqn-lane-localization,
+    /work/masked-autoencoders. All static (○/●).
+  - **Render checks so far (inferred from HTML/curl):**
+    - `/sitemap.xml` ✓ — correct URLs + priorities + changefreq
+    - `/robots.txt` ✓ — wildcard + GPTBot/ClaudeBot/Google-Extended/PerplexityBot explicit allows + sitemap directive
+    - `/llms.txt` ✓ — correct structure: positioning → bio → capabilities → projects (3) → contact (no email)
+    - Browser checks (OG tags, canonical, JSON-LD) — **not yet done**; `verify-seo.sh` written to
+      `tmp/verify-seo.sh`; run via `wsl -d ubuntu bash /home/ag-95/projects/ag-portfolio/tmp/verify-seo.sh`
+  - **playwright-cli status:** IS installed at `node_modules/.bin/playwright-cli` (v0.1.13).
+    Must be invoked via WSL: `wsl -d ubuntu bash -lc 'cd /home/ag-95/projects/ag-portfolio && npx playwright-cli ...'`
+    NOT from git-bash directly — git-bash can't reach WSL node_modules.
+  - **C7 — `implement-ai-seo` skill update: DONE (signed off 2026-06-06).** Both SKILL.md and
+    REFERENCE.md updated. Fresh-eyes review passed (4 corrections applied): removed invalid
+    `<link rel="sitemap">`, qualified `src/` path caveat in llms.txt §7, removed CreativeWork
+    parenthetical overspecification, consolidated duplicate `sameAs` note.
+  - **Phase 7 — SEO + AI readability: COMPLETE (signed off 2026-06-06).** 4 commits
+    `2f86b96`→`215e423`: OG image, metadata + OG/Twitter + canonical + JSON-LD (all pages),
+    sitemap + robots, llms.txt. Skill updated + synced WSL↔Windows. C6 work files commit pending.
+
+---
+
+**Branch `phase-6.5-ui-polish` (done, manual PR → main).**
 
 - **Phase 6.5 batch 1 — Reading experience + Navigation: DONE (signed off 2026-06-01).**
   Plan `/home/ag-95/.claude/plans/splendid-yawning-gray.md`. All 5 bullets shipped via the gated
@@ -94,7 +140,4 @@ existing covers were flipped to match.
 
 ## Blockers
 
-None. Phase 6.5 (UI Polish) is COMPLETE and handed off as a manual PR (`phase-6.5-ui-polish` →
-main, squash). Next: user merges the PR, branches Phase 7 from updated main; the first Phase-7 task
-is the **lessons review** (read/organize/prune `lessons.md` + global & project rules), then SEO + AI
-readability — see `tasks.md`.
+None. Phase 7 complete. Next: Phase 8 — Audits.
