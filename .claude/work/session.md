@@ -29,9 +29,35 @@
   light-mode meteor** (dark-ink streaks via `uDark` shader branch, multiply; dark = neon glow,
   unchanged). Kept green H4 headings (exception). Build green, DESIGN.md aligned. Commits
   `72c490c` (code), `c1f02aa` (docs), C5 chore (work files).
-- **Phase 6.5 — Pre-hero polish: NEXT.** Two small items before the hero image: (1) unify social
-  links (About) + project links (Code/Report/Paper/Slides) to one consistent look; (2) increase
-  About headline weight. Then Brand/hero, then the deferred Background revisit (tasks.md).
+- **Phase 6.5 batch 3 — Pre-hero polish: DONE (signed off 2026-06-05).** Render-to-compare via
+  throwaway scratch routes before each permanent change. Shipped: shared `LinkPill` (soft-filled
+  pill — `surface-raised`, no border, pill radius; hover `accent-muted`+`accent`; `external` drives
+  both new-tab attrs and the trailing open-in-new icon, mailto excluded) replacing `social-link.tsx`,
+  used by About socials + project-header links (round link-chip vs square tag/button is now a system
+  rule); About positioning deck `heading-display` 500→600; About + Work H1s `display-accent`→
+  `display-primary` (ink), `display-accent` token removed entirely (CSS base + responsive overrides +
+  `heading.tsx` union + DESIGN table). biome/tsc clean, clean `next build` (9 pages), both-theme
+  renders confirmed (computed-style + screenshots). Commits `18da5c0` (feat), `65e4349` (refactor),
+  `1fe609e` (docs); work-folder commit held by user.
+  - Stale-Turbopack-CSS-cache trap recurred (CSS-only edits don't always invalidate `.next`). The
+    documented `rm -rf .next` fix is firewall-blocked → used `touch src/app/globals.css` to force an
+    HMR recompile instead; verify weight/color via `getComputedStyle`, not screenshots.
+- **Phase 6.5 batch 4 — Brand/hero + Background: DONE (signed off 2026-06-05).** Plan
+  `/home/ag-95/.claude/plans/hero-blend-portraits.md`. Theme-aware hero portraits (`hero-dark.png` /
+  `hero-light.png`) that dissolve their baked bg via `mix-blend-mode` (dark `screen`, light
+  `multiply`) over the WebGL meteor layer; per-theme `contrast()` (1.07 / 1.03) snaps the near-pure
+  `#080808`/`#fcfcfc` field to true `#000`/`#fff` so no residual rectangle; natural aspect (no crop,
+  contained full figure); CSS `[data-theme]` `display:none` swap (zero JS, flash-free; mobile column
+  hidden → neither portrait fetches; desktop fetches both); old `hero.png` removed. biome/tsc clean,
+  `next build` green (9 pages), both-theme renders confirmed (computed-style + screenshots). Commits
+  `7c8e46d` (feat), `0e53053` (docs). **Background revisit → DECIDED keep as-is** — scratch eval
+  showed the meteor field is centered/height-scaled (misses ultrawide gutters even unmasked) and
+  left/right-asymmetric (shader rotation + fixed particle cloud); no code change, scratch discarded.
+- **Phase 6.5 — UI Polish: COMPLETE (signed off 2026-06-05).** All batches shipped (reading/nav,
+  colors, links/headings, blend hero, background-kept). Branch `phase-6.5-ui-polish` = 23 commits
+  `beba3a7`→`0e53053` + a work-folder chore. Handed to user as a manual PR → main. **Next: Phase 7
+  (SEO + AI readability); FIRST task = lessons review (read/organize/prune `lessons.md` + global &
+  project rules, fold general ones into the workflow).**
 
 - **Phase 6 — Project Content: effectively complete.** Three real projects authored + reviewed:
   `model-extraction-attacks` (reference exemplar), `dqn-lane-localization` (negative result),
@@ -68,6 +94,7 @@ existing covers were flipped to match.
 
 ## Blockers
 
-None. Next actionable work is Phase 6.5 (UI Polish) — see `tasks.md`. Each polish item gets its
-own pass/gate; the open investigations (background approach, surface hierarchy) need a decision
-with the user before implementing.
+None. Phase 6.5 (UI Polish) is COMPLETE and handed off as a manual PR (`phase-6.5-ui-polish` →
+main, squash). Next: user merges the PR, branches Phase 7 from updated main; the first Phase-7 task
+is the **lessons review** (read/organize/prune `lessons.md` + global & project rules), then SEO + AI
+readability — see `tasks.md`.
