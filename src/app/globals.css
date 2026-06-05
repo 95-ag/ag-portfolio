@@ -219,6 +219,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Theme-aware hero portraits — show only the active theme's image. Both render in
+   the DOM for a flash-free, JS-free swap driven by data-theme; the inactive one
+   stays display:none so it is never fetched (lazy + never in viewport). The visible
+   one's mix-blend-mode (set in page.tsx) drops its baked bg over the meteor layer. */
+[data-theme="dark"] .hero-light,
+[data-theme="light"] .hero-dark {
+  display: none;
+}
+
 ::selection {
   background-color: var(--selection);
 }

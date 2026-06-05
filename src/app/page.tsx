@@ -52,27 +52,35 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Portrait - flex-1 takes remaining space, overflows right */}
-            <div
-              className="hidden lg:block flex-1 relative"
-              style={{ height: "600px" }}
-            >
-              <div
-                className="absolute inset-0"
-                style={{
-                  maskImage: `linear-gradient(to right, transparent 0%, black 15%, black 100%)`,
-                  WebkitMaskImage: `linear-gradient(to right, transparent 0%, black 15%, black 100%)`,
-                }}
-              >
-                <Image
-                  src="/hero.png"
-                  alt="Aishwarya Ganesan"
-                  fill
-                  sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
-                  className="object-cover object-left-top"
-                  priority
-                />
-              </div>
+            {/* Portrait — two theme-specific portraits at natural aspect (no crop).
+                globals.css shows only the active one via the `data-theme` swap.
+                mix-blend-mode drops each baked background so the fixed WebGL meteor
+                layer shows through the dissolved edges: dark #080808 → screen,
+                light #fcfcfc → multiply. The per-theme contrast() snaps the near-pure
+                field to true #000 / #fff (screen/multiply only fully drop PURE
+                black/white) so no residual rectangle shows when meteors are absent.
+                The wrapper and every ancestor up to <body> MUST stay transparent and
+                stacking-context-free (no z-index/transform/opacity/mask on ANCESTORS)
+                or the blend composites against an opaque box instead of the meteors —
+                the contrast filter is on the <img> itself, which is fine. See
+                DESIGN.md Home → Hero. */}
+            <div className="hidden flex-1 lg:block">
+              <Image
+                src="/hero-dark.png"
+                alt="Aishwarya Ganesan"
+                width={800}
+                height={1000}
+                sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
+                className="hero-dark h-auto w-full mix-blend-screen [filter:contrast(1.07)]"
+              />
+              <Image
+                src="/hero-light.png"
+                alt="Aishwarya Ganesan"
+                width={800}
+                height={1000}
+                sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
+                className="hero-light h-auto w-full mix-blend-multiply [filter:contrast(1.03)]"
+              />
             </div>
           </div>
         </Container>
