@@ -13,6 +13,12 @@ import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
+import {
+  buildBreadcrumbSchema,
+  buildCreativeWorkSchema,
+} from "@/lib/seo/jsonld";
+
+const SITE_URL = "https://ag-portfolio.vercel.app";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -29,10 +35,25 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
+  const fm = project.frontmatter;
+  const heroImg = fm.ogImage ?? fm.heroImage;
   return {
-    title: project.frontmatter.title,
-    description:
-      project.frontmatter.metaDescription ?? project.frontmatter.summary,
+    title: fm.title,
+    description: fm.metaDescription ?? fm.summary,
+    alternates: {
+      canonical: `/work/${slug}`,
+    },
+    openGraph: {
+      type: "article" as const,
+      url: `/work/${slug}`,
+      publishedTime: new Date(fm.publishedAt).toISOString(),
+      authors: ["Aishwarya Ganesan"],
+      ...(heroImg ? { images: [heroImg] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      ...(heroImg ? { images: [heroImg] } : {}),
+    },
   };
 }
 
@@ -42,9 +63,23 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   const fm = project.frontmatter;
+  const creativeWorkSchema = buildCreativeWorkSchema(slug, fm);
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: "Work", url: `${SITE_URL}/work` },
+    { name: fm.title, url: `${SITE_URL}/work/${slug}` },
+  ]);
 
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <SectionProgressNav />
 
       <Section>

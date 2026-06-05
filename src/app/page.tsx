@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
@@ -7,13 +8,35 @@ import { Section } from "@/components/layout/section";
 import { ProjectCard } from "@/components/project/project-card";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
+import { buildPersonSchema } from "@/lib/seo/jsonld";
+
+export const metadata: Metadata = {
+  title: { absolute: "AG — AI/ML Engineer" },
+  description:
+    "Portfolio of Aishwarya Ganesan, an AI/ML engineer specializing in AI systems, machine learning, and computer vision.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    images: [{ url: "/opengraph-image" }],
+  },
+};
 
 export default function HomePage() {
   const featured = getFeaturedProjects();
+  const { frontmatter: about } = getAbout();
+  const personSchema = buildPersonSchema(about);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       {/* Hero */}
       <Section
         as="header"

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
@@ -5,10 +6,18 @@ import { ProjectCard } from "@/components/project/project-card";
 import { Heading } from "@/components/ui/heading";
 import { getProjectsForWork } from "@/lib/content/projects";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Work",
   description:
     "AI/ML and software engineering projects — case studies, research, and freelance work.",
+  alternates: {
+    canonical: "/work",
+  },
+  openGraph: {
+    type: "website",
+    url: "/work",
+    images: [{ url: "/opengraph-image" }],
+  },
 };
 
 export default function WorkPage() {

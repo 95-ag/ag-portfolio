@@ -38,5 +38,22 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "src/app/layout.tsx",
+        "src/app/page.tsx",
+        "src/app/about/page.tsx",
+        "src/app/work/\\[slug\\]/page.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
+    }
+  ]
 }
