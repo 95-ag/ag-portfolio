@@ -16,15 +16,15 @@ const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/work\\/.+/.
 export const metadata: Metadata = {
   metadataBase: new URL("https://ag-portfolio.vercel.app"),
   title: {
-    default: "AG — AI/ML Engineer",
+    default: "Aishwarya Ganesan",
     template: "%s | AG",
   },
   description:
-    "Portfolio of Aishwarya Ganesan, an AI/ML engineer building practical machine learning systems.",
+    "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.",
   authors: [{ name: "Aishwarya Ganesan" }],
   openGraph: {
     type: "website",
-    siteName: "AG — AI/ML Engineer",
+    siteName: "Aishwarya Ganesan",
     locale: "en_US",
   },
   twitter: {

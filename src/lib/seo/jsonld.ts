@@ -7,10 +7,10 @@ export function buildWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "AG — AI/ML Engineer",
+    name: "Aishwarya Ganesan",
     url: SITE_URL,
     description:
-      "Portfolio of Aishwarya Ganesan, an AI/ML engineer building practical machine learning systems.",
+      "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.",
     creator: {
       "@type": "Person",
       name: "Aishwarya Ganesan",
@@ -18,17 +18,30 @@ export function buildWebSiteSchema() {
   };
 }
 
-export function buildPersonSchema(about: AboutFrontmatter) {
+export function buildPersonSchema(
+  about: AboutFrontmatter,
+  extraTags: string[] = [],
+) {
+  const capabilityTags = about.capabilities.flatMap((c) => c.tags);
+  // Merge project tags, deduplicating case-insensitively across both lists
+  const seen = new Set(capabilityTags.map((t) => t.toLowerCase()));
+  const uniqueExtraTags = extraTags.filter((t) => {
+    const lower = t.toLowerCase();
+    if (seen.has(lower)) return false;
+    seen.add(lower);
+    return true;
+  });
+  const merged = [...capabilityTags, ...uniqueExtraTags];
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name: about.name,
     url: SITE_URL,
-    jobTitle: "AI/ML Engineer",
+    jobTitle: "ML AI Engineer",
     description: about.positioning,
     image: `${SITE_URL}${about.headshot}`,
     sameAs: [about.socials.github, about.socials.linkedin].filter(Boolean),
-    knowsAbout: about.capabilities.flatMap((c) => c.tags),
+    knowsAbout: merged,
   };
 }
 

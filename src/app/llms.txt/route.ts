@@ -9,10 +9,11 @@ export function GET() {
   const { frontmatter: about } = getAbout();
   const projects = getAllProjects();
 
-  const firstParagraph = about.detailedPositioning
+  const aboutSection = about.detailedPositioning
     .split("\n\n")
-    .find((p) => p.trim().length > 0)
-    ?.trim();
+    .filter((p) => p.trim().length > 0)
+    .map((p) => p.trim())
+    .join("\n\n");
 
   const capabilitiesSection = about.capabilities
     .map((c) => `- ${c.area}: ${c.tags.join(", ")}`)
@@ -32,7 +33,7 @@ export function GET() {
     "",
     "## About",
     "",
-    firstParagraph ?? "",
+    aboutSection,
     "",
     "## Capabilities",
     "",

@@ -18,7 +18,7 @@ import { buildPersonSchema } from "@/lib/seo/jsonld";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "AI/ML engineer building practical systems for real-world constraints.",
+    "AI engineer building practical systems for real-world constraints.",
   alternates: {
     canonical: "/about",
   },

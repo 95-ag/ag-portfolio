@@ -13,9 +13,9 @@ import { getFeaturedProjects } from "@/lib/content/projects";
 import { buildPersonSchema } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = {
-  title: { absolute: "AG — AI/ML Engineer" },
+  title: { absolute: "Aishwarya Ganesan" },
   description:
-    "Portfolio of Aishwarya Ganesan, an AI/ML engineer specializing in AI systems, machine learning, and computer vision.",
+    "Portfolio of Aishwarya Ganesan, an AI engineer specializing in AI systems, machine learning, and computer vision.",
   alternates: {
     canonical: "/",
   },
@@ -29,7 +29,8 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const featured = getFeaturedProjects();
   const { frontmatter: about } = getAbout();
-  const personSchema = buildPersonSchema(about);
+  const projectTags = featured.flatMap((p) => p.frontmatter.tags);
+  const personSchema = buildPersonSchema(about, projectTags);
 
   return (
     <>

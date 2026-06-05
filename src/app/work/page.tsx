@@ -9,7 +9,7 @@ import { getProjectsForWork } from "@/lib/content/projects";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "AI/ML and software engineering projects — case studies, research, and freelance work.",
+    "AI and software engineering projects — case studies, research, and freelance work.",
   alternates: {
     canonical: "/work",
   },
