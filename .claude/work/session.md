@@ -8,7 +8,27 @@
 
 ## Phase
 
-**Branch `phase-6.5-ui-polish`.**
+**Branch `phase-7-seo-ai`.**
+
+- **Phase 7 — SEO + AI readability: IN PROGRESS.**
+  - **Lessons review — DONE (signed off 2026-06-05).** Promoted general web/Next/WSL/tooling lessons
+    into `rules/frontend.md` (image cache, `next/image` `display:none` fetch, Shiki `defaultColor:false`,
+    Local Iteration & Caching, `useExhaustiveDependencies`), `rules/build-verification.md` (Batch Gate
+    + Dev Server & Browser Verification, format-only-hook directive), `rules/design-system.md` (Color
+    work), and global `windows-claude.md` (Long-running-servers rewrite: inline MSYS guard + `pkill`
+    bracket trick) + global `CLAUDE.md` ×2 (§0 queue-verbs, no-bypass guardrail, notes-in-work).
+    Trimmed `lessons.md` to pipeline-only with a format header. MEMORY 5→3: deleted lint-strategy +
+    notes-in-work (promoted), trimmed stale rewrite-campaign block, marked about-page font-weights done.
+    Strengthened the global-config guardrail (own explicit gate; never bundled into a plan/blanket
+    approval; no unilateral scope-widening). Permission-rule angle: `file-protect.mjs` GLOBAL_ASK
+    already exists but is project-scoped + "ask" is auto-accepted in auto mode — global promotion
+    evaluated, **left as-is per user**.
+  - **Next:** plan the full SEO + AI pass (plan mode), then build in order: per-page metadata +
+    OG/Twitter → `sitemap.xml`/`robots.txt` → `llms.txt` → JSON-LD (Person + projects) → verify gate.
+
+---
+
+**Branch `phase-6.5-ui-polish` (done, manual PR → main).**
 
 - **Phase 6.5 batch 1 — Reading experience + Navigation: DONE (signed off 2026-06-01).**
   Plan `/home/ag-95/.claude/plans/splendid-yawning-gray.md`. All 5 bullets shipped via the gated
@@ -94,7 +114,6 @@ existing covers were flipped to match.
 
 ## Blockers
 
-None. Phase 6.5 (UI Polish) is COMPLETE and handed off as a manual PR (`phase-6.5-ui-polish` →
-main, squash). Next: user merges the PR, branches Phase 7 from updated main; the first Phase-7 task
-is the **lessons review** (read/organize/prune `lessons.md` + global & project rules), then SEO + AI
-readability — see `tasks.md`.
+None. On `phase-7-seo-ai`. Lessons review DONE + committed. Next: plan the full SEO + AI pass
+(plan mode), then implement metadata/OG → sitemap/robots → `llms.txt` → JSON-LD → verify gate —
+see `tasks.md`.

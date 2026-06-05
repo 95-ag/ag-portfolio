@@ -9,6 +9,12 @@ Token values, type scale, color palette, spacing scale, and component specs are 
 - One accent color — do not introduce additional accent variants beyond what is in the doc
 - `secondary` and `tertiary` tokens are reserved for callout variants — do not use for general styling
 
+### Color work
+
+- Root-cause color changes with a token-level pass — convert tokens to OKLCH and compute a WCAG contrast matrix, don't eyeball screenshots. Pair the math with the `audit-color-contrast` skill for the qualitative read.
+- Decide palette direction from a candidate applied to **real rendered pages**, not swatches or per-component pads.
+- Light-on-dark text blooms heavier and flattens weight hierarchy — scope `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;` to `[data-theme="dark"] body` (leave light alone).
+
 ## Typography
 
 - Use type scale tokens for all text — never set font sizes or weights directly

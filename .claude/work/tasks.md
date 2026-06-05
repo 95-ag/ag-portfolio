@@ -5,11 +5,12 @@
 > Phase 7 work starts on a fresh branch off updated main after the merge.
 
 ## Phase 7 — SEO + AI readability
-- [ ] **Lessons review (do FIRST).** Read all lessons — project `.claude/work/lessons.md`, the
-      global `~/.claude` rules (`CLAUDE.md`, `rules/*`, `windows-claude.md`), project `.claude/rules/*`,
-      and the project MEMORY. Organize/dedupe; **promote genuinely-general lessons into the CLAUDE
-      workflow/rules**; **remove ones no longer applicable**. Report a disposition table (kept /
-      promoted / pruned) before editing; confirm zero information loss.
+- [x] **Lessons review — DONE (signed off 2026-06-05).** Promoted general web/Next/WSL/tooling
+      lessons into `rules/frontend.md`, `rules/build-verification.md`, `rules/design-system.md`,
+      global `windows-claude.md` + `CLAUDE.md` (both copies); trimmed `lessons.md` to pipeline-only
+      (+ format header); pruned MEMORY 5→3 (promoted lint-strategy + notes-in-work, trimmed stale
+      rewrite-campaign block, font-weights marked done). Strengthened the global-config guardrail
+      (own gate, no bundling, no scope-widening). Permission-hook promotion evaluated → left as-is.
 - [ ] Per-page metadata (title/description) + Open Graph + Twitter cards
 - [ ] `sitemap.xml` + `robots.txt`
 - [ ] `llms.txt` (AI readability)
