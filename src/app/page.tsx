@@ -15,7 +15,7 @@ import { buildPersonSchema } from "@/lib/seo/jsonld";
 export const metadata: Metadata = {
   title: { absolute: "Aishwarya Ganesan" },
   description:
-    "Portfolio of Aishwarya Ganesan, an AI engineer specializing in AI systems, machine learning, and computer vision.",
+    "Aishwarya Ganesan — AI engineer who builds ML systems for real users, scale, and operational pressure: retrieval, LLMs, and computer vision.",
   alternates: {
     canonical: "/",
   },
@@ -46,7 +46,7 @@ export default function HomePage() {
         <Container>
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center">
             {/* Content column - fixed width so headline stays 2 lines */}
-            <div className="flex shrink-0 flex-col gap-[var(--spacing-xl)] lg:w-[480px] xl:w-[560px]">
+            <div className="flex flex-col gap-[var(--spacing-xl)] lg:flex-1">
               <div className="flex flex-col gap-[var(--spacing-lg)]">
                 <p className="mono-anchor">Aishwarya Ganesan — AI Engineer</p>
                 <Heading level={1} type="display-primary">
@@ -88,22 +88,22 @@ export default function HomePage() {
                 or the blend composites against an opaque box instead of the meteors —
                 the contrast filter is on the <img> itself, which is fine. See
                 DESIGN.md Home → Hero. */}
-            <div className="hidden flex-1 lg:block">
+            <div className="hidden shrink-0 lg:block lg:w-[460px]">
               <Image
                 src="/hero-dark.png"
                 alt="Aishwarya Ganesan"
                 width={800}
                 height={1000}
-                sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
-                className="hero-dark h-auto w-full mix-blend-screen [filter:contrast(1.07)]"
+                sizes="(max-width: 1024px) 0px, 460px"
+                className="hero-dark h-auto w-full opacity-90 mix-blend-screen [filter:contrast(1.07)_saturate(0.85)]"
               />
               <Image
                 src="/hero-light.png"
                 alt="Aishwarya Ganesan"
                 width={800}
                 height={1000}
-                sizes="(max-width: 1024px) 0px, (max-width: 1280px) calc(100vw - 480px), calc(100vw - 560px)"
-                className="hero-light h-auto w-full mix-blend-multiply [filter:contrast(1.03)]"
+                sizes="(max-width: 1024px) 0px, 460px"
+                className="hero-light h-auto w-full opacity-90 mix-blend-multiply [filter:contrast(1.03)_saturate(0.85)]"
               />
             </div>
           </div>
