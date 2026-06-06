@@ -107,9 +107,9 @@ optional — include only what's substantive for this project.
 3. Architecture
 4. Data
 5. Engineering Decisions
-6. Algorithm & Training Design
+6. Training Design
 7. Results
-8. Constraints & Limitations
+8. Limitations
 9. Next Steps
 
 Project-specific content lives at H3/H4 under these H2s. Use H4 intentionally — only
@@ -213,8 +213,8 @@ all FLAG findings before presenting to the user.
 - Same information stated in multiple sections without adding depth
 - Same metric or finding stated more than once within a few lines
 - Overview fields that restate body content verbatim rather than summarizing it
-- Constraints & Limitations re-explaining mechanisms already covered in Results
-  (Constraints = scope caveats; Results = mechanisms)
+- Limitations re-explaining mechanisms already covered in Results
+  (Limitations = scope caveats; Results = mechanisms)
 
 **Narrative flow**
 - Abrupt section transitions with no bridging sentence

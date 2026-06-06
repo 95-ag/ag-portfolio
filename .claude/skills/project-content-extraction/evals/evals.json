@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Extract the model-extraction-attacks project into MDX. The PDF report is at /home/ag-95/projects/ag-portfolio/public/projects/model-extraction-attacks/DL_Project.pdf, the repo is at https://github.com/95-ag/dl-model-extraction, and the slug is model-extraction-attacks. The project is already built — use this as a golden reference run to check the skill's output structure.",
-      "expected_output": "A complete MDX file at content/projects/model-extraction-attacks.mdx with valid frontmatter (title, summary, projectType: academic, publishedAt, order, heroImage, heroAlt, tags, stack with all 4 keys, overview with problem/built/results/transferableSkills), H2 spine (Detailed Problem, Background, Architecture, Data, Engineering Decisions, Algorithm & Training Design, Results, Constraints & Limitations, Next Steps), no H1 in body, no raw HTML, no slug: field. Build should pass.",
+      "expected_output": "A complete MDX file at content/projects/model-extraction-attacks.mdx with valid frontmatter (title, summary, projectType: academic, publishedAt, order, heroImage, heroAlt, tags, stack with all 4 keys, overview with problem/built/results/transferableSkills), H2 spine (Detailed Problem, Background, Architecture, Data, Engineering Decisions, Training Design, Results, Limitations, Next Steps), no H1 in body, no raw HTML, no slug: field. Build should pass.",
       "files": [
         "/home/ag-95/projects/ag-portfolio/public/projects/model-extraction-attacks/DL_Project.pdf"
       ],
