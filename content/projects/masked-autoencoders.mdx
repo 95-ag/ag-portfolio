@@ -2,10 +2,12 @@
 title: "Evaluating Masked Autoencoders for Computer Vision"
 subtitle: "Two of three MAE ablation trends reproduced at reduced scale — 66.85% linear-probe accuracy at 75% masking"
 summary: "Reproduced the MAE paper's masking and decoder-depth trends at reduced scale (ViT-B/16, Imagenette) — 66.85% linear-probe accuracy at 75% masking, with one honest deviation on augmentation."
+metaDescription: "Reproduced the MAE paper's masking and decoder-depth trends at reduced scale (ViT-B/16, Imagenette) — 66.85% linear-probe accuracy at 75% masking."
 projectType: academic
 publishedAt: "2022-12-16"
 order: 60
 featured: true
+heroImage: "/projects/masked-autoencoders/cover.png"
 heroAlt: "Masked autoencoder concept: an image grid with most patches masked out, the small visible subset flowing through an asymmetric encoder and a lightweight decoder that reconstructs the missing patches."
 tags:
   - Self-Supervised Learning
@@ -103,7 +105,7 @@ The original paper used ImageNet-1K (1,000 classes, 1.4M images). The experiment
 
 **Grad-CAM for qualitative validation.** Added to inspect whether the encoder attends to semantically meaningful image regions rather than surface texture — a sanity check on representation quality that goes beyond the accuracy numbers.
 
-## Algorithm & Training Design
+## Training Design
 
 Training runs in two phases: **self-supervised pretraining** (200 epochs, masked reconstruction, 75% masking ratio by default) followed by **linear probing** (100 supervised epochs on a frozen encoder, top-1 and top-5 classification accuracy).
 
@@ -191,7 +193,7 @@ Grad-CAM (Gradient-weighted Class Activation Mapping) was implemented to check w
 
 The analysis covers one class as a qualitative sanity check. It confirms the representation direction; it does not quantify it across the dataset.
 
-## Constraints & Limitations
+## Limitations
 
 **Small dataset is the binding constraint.** Imagenette's 13K images capped absolute performance throughout. The augmentation deviation is likely a small-dataset artifact; whether it holds at ImageNet scale is an open question.
 

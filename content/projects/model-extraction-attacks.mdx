@@ -2,11 +2,12 @@
 title: "Stealing Black-Box ML Models"
 subtitle: "Query-Efficient Black-Box Model Extraction and Privacy Attack Transferability"
 summary: "Built a complete black-box model extraction pipeline that replicated a proprietary ResNet-50 at ~80% accuracy using only 25k queries — up to 82.88% with richer API output access."
+metaDescription: "A complete black-box model-extraction pipeline that cloned a ResNet-50 to ~80% accuracy with only 25k queries — up to 82.88% with richer API output."
 projectType: academic
 publishedAt: "2022-05-01"
 order: 40
 featured: true
-heroImage: "/projects/model-extraction-attacks/hero-cover.webp"
+heroImage: "/projects/model-extraction-attacks/cover.png"
 heroAlt: "Attacker-victim ML pipeline diagram showing query arrows flowing into an opaque victim model and a surrogate being trained on the labeled responses."
 tags:
   - Adversarial Machine Learning
@@ -140,7 +141,7 @@ An early assumption to test was whether the attacker's architecture needs to mat
 
 The coreset selection indices were pre-computed and stored as pickle files rather than generated online during each experiment. This reflects a practical design choice: the ResNet-18 proxy training (20 epochs on CIFAR) is cheap but not instant, and pre-computing once avoids re-running the selection for each query budget experiment. The coreset files encode the entropy-ranked indices into the CIFAR training set; experiments simply slice from the front of the ordered list to get the top-k highest-entropy inputs.
 
-## Algorithm & Training Design
+## Training Design
 
 ### Entropy-based coreset query selection
 
@@ -270,7 +271,7 @@ When the unseen population was drawn from the OOD dataset, the classifier perfor
 
 When the unseen population was instead drawn from the CIFAR-10 test set (same distribution, but not part of training), the classifier was nearly random. In plain terms: when a model is accurate and well-calibrated on a clean dataset, it assigns similar confidence to both its training images and unseen test images — there is no detectable entropy gap to exploit. This is consistent with CIFAR-10's relative simplicity; on noisier or higher-dimensional data, overfitting creates a detectable confidence gap even within the training distribution.
 
-## Constraints & Limitations
+## Limitations
 
 <Callout title="CIFAR scale is not representative of production deployment">
   CIFAR-10/100's 32×32 inputs and small class counts are low-dimensional relative to commercial vision APIs. Extraction efficiency, coreset advantage, adversarial transfer rates, and membership inference signal all likely behave differently at higher resolution and finer class granularity. The findings establish viability of the approach; the quantitative results should not be read as production threat estimates.
