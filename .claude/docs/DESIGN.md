@@ -117,11 +117,11 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `surface-selection` | `#e8f3ec` | `#16271b` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
 | `surface-overlay` | `#ffffffd9` | `#141414d9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
 | `surface-overlay-panel` | `#ffffffb8` | `#141414ba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-tag` | `#ebecee` | `#2a2a2a` | Tag chip background — neutral grey |
+| `surface-tag` | `#dadce0` | `#2a2a2a` | Tag chip background — neutral grey; light deepened so chips read as filled pills on the raised card |
 | `on-background` | `#2d2d2d` | `#e2e2e2` | Primary text on background |
 | `on-surface` | `#2d2d2d` | `#e2e2e2` | Primary text on surfaces |
 | `on-surface-muted` | `#66696f` | `#a1a1aa` | Secondary text, captions |
-| `outline` | `#9aa0a6` | `#8a8a8a` | Default borders, dividers |
+| `outline` | `#8b9197` | `#8a8a8a` | Default borders, dividers — light raised to ~3:1 UI contrast |
 | `outline-variant` | `#e2e3e5` | `#333333` | Subtle borders, low-contrast dividers |
 | `outline-hair` | `color-mix(in srgb, #2d2d2d 10%, transparent)` | `color-mix(in srgb, #e2e2e2 10%, transparent)` | Alpha hairline border, surface-relative |
 | `accent` | `#006e37` | `#2aa566` | Active nav, primary CTA, links, focus rings, callout accents |
@@ -150,12 +150,13 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
 - Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
-- Mid-tier values (769–1279): `display-primary` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
+- Mid-tier values (769–1279): `display-primary` → 52px / 58px; `display-title` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
 - Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
-| `display-primary` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 (Home, Work, About, Project, 404) |
+| `display-primary` | Manrope | 64 / 52 / 40px | 600 | 70 / 58 / 48px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 (Home, Work, About, 404) |
+| `display-title` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Project-page H1 — one tier below `display-primary` so long titles stay controlled |
 | `heading-display` | Manrope | 36 / 32 / 28px | 600 | 44 / 40 / 36px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
 | `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
@@ -835,9 +836,9 @@ Page- and domain-bound composition systems that orchestrate Components and Found
 
 Two-column desktop layout: content left, portrait right. Single-column on mobile (portrait hidden below `lg`, 1024px). Section carries `overflow-hidden` to contain the portrait bleed.
 
-- Content column (`shrink-0`, `lg:w-[480px]` / `xl:w-[560px]`): fixed width locks the headline to 2 lines across breakpoints. Eyebrow (`mono-anchor`) → H1 (`display-primary`) → tagline (`body-lead`) → CTA row.
+- Content column (`lg:flex-1`): flexes to fill the row up to the portrait so no gap opens between text and image; H1 (`display-primary`, 64px desktop) wraps ~2 lines. Eyebrow (`mono-anchor`) → H1 → tagline (`body-lead`) → CTA row.
 - CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
-- Portrait column (`flex-1`, `hidden lg:block`): two theme-specific portraits — `hero-dark.png` / `hero-light.png` — via `next/image` at **natural aspect** (`width 800 × height 1000`, `h-auto w-full`, no crop — the full figure shows, dissolving into the page on all sides). Only the active theme's image shows (`globals.css` `[data-theme]` `display:none` swap); both render in the DOM for a flash-free, JS-free swap. **No `priority`.** On mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile). Each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges: dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask.
+- Portrait column (`shrink-0`, `lg:w-[460px]`, `hidden lg:block`): a fixed width keeps the portrait a stable size across the desktop range (no big→small scaling that would reopen the H1-vs-portrait balance). Two theme-specific portraits — `hero-dark.png` / `hero-light.png` — via `next/image` at **natural aspect** (`width 800 × height 1000`, `h-auto w-full`, no crop — the full figure shows, dissolving into the page on all sides). Only the active theme's image shows (`globals.css` `[data-theme]` `display:none` swap); both render in the DOM for a flash-free, JS-free swap. **No `priority`.** On mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile). Each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges: dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask. A per-theme `saturate(0.85)` + `opacity 0.9` on the `<img>` calms the full-colour portrait against the near-monochrome scheme so the H1 leads.
 - **Hero blend constraint (deliberate, scoped exception to "no effects"):** `mix-blend-mode` composites against the backdrop within the element's stacking context. It sits on the `<img>` — a `filter`/`mix-blend` on the image *itself* is fine (an element's own blend still reaches its parent backdrop). What must NOT happen is a stacking context or opaque background on any **ancestor**: no `z-index`/`transform`/`opacity`/`filter`/`mask`/`isolation` on the wrapper or up to `<body>`, or the blend keys against an opaque box instead of the `BackgroundLayer` meteors. The hero is above the meteors by tree order and below the nav (`z-50`) — no explicit z-index. (`html`'s opaque `--background` is fine; meteors paint over it.) Works with or without the meteor canvas: when meteors are suppressed (reduced-motion / low-core / project pages) the blend simply drops each bake toward the flat page background.
 - Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
@@ -888,7 +889,7 @@ project-header:
     Tag chips (canonical treatment), gap xs
 
   title:
-    type: display-primary
+    type: display-title
 
   subtitle:                           # optional
     type: body-secondary

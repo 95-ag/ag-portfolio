@@ -8,9 +8,73 @@
 
 ## Phase
 
-**Branch `phase-7-seo-ai`.**
+**Branch `phase-8-audits`.**
 
-- **Phase 7 — SEO + AI readability: IN PROGRESS.**
+- **Phase 8 — Audits: COMPLETE (signed off 2026-06-06).** Plan: `/home/ag-95/.claude/plans/drifting-greeting-elephant.md`.
+  Two halves: Part A = capture + 6 parallel skill audits → unified findings (NO implementation);
+  Part B = fix + ship (scoped after Part A review). **Scope: 6 skill audits only** (token-consistency
+  grep, keyboard/focus/alt/ARIA a11y, responsive review, Lighthouse deferred to Part B/final verify).
+  Agent models: Opus ×5 vision/design + Sonnet ×1 ai-seo.
+  - **A0–A4 DONE (technical) — awaiting user finalization. NOT signed off.**
+  - **A1** — 36-shot capture DONE (`tmp/audit/shots/`, all 36 OK, theme-flip confirmed) + 10
+    HTML/utility dumps (`tmp/audit/data/html/`). Computed-style scrape dropped (globals.css has exact
+    per-token metrics). Capture flow: rAF-frozen meteor + lazy-scroll + full-page via playwright-cli.
+  - **A2** — token bundle = `globals.css` + `DESIGN.md`; contrast matrix recomputed (`tmp/audit/contrast-matrix.mjs`).
+  - **A3** — 6 agents returned (Opus ×5 + Sonnet ×1). **A4** — synthesis → `tmp/audit/FINDINGS.md`
+    (unified table + conflicts C1–C4 + per-issue fixes) + `tmp/audit/SKILL-NOTES.md`.
+  - **Result: NO Critical; all text/bg pairs pass WCAG AA both themes+contexts. High 6 · Med 7 · Low 12.**
+    Themes: prose heading rhythm (proj pages), hero emphasis, light-mode tag-chip theming, per-page SEO
+    metadata (incl. proj-mae broken share card — VERIFY mae cover is React-SVG vs static asset).
+  - **Deferred to Part B (not run in A):** token-consistency grep, live keyboard/focus/ARIA/alt a11y,
+    responsive breakpoint review, Lighthouse.
+  - **Part A finalized with user (2026-06-06). Part B decisions LOCKED — writing Part B plan.**
+    - **FIX:** h1 (prose heading-margin reorder + DESIGN.md prose reconcile) · h2 (two-tier headline:
+      `display-primary`→**64px** for home/about/work H1s +404; new **56px** tier for project titles;
+      home hero = 64px H1 + **620px** column + portrait **`saturate(0.85) opacity(0.9)`**; About deck
+      stays `heading-display` 36) · h3 (About portrait `clamp(180,20vw,280)` + tagline `text-wrap:balance`)
+      · h4 (deepen light `--surface-tag` — also affects DQL cover band) · h5 (rework DQL cover top band
+      for light) · h6 (screenshot the 3 React-SVG covers **dark** → set as `heroImage`/OG for all 3,
+      drop old `hero.svg`/`hero-cover.webp`) · m1 (cap prose text measure ~70ch, media full-width) ·
+      m2 (Person schema 31 on About too) · m3 (add `metaDescription` ≤155 ×3, drafts approved) · m4
+      (expand home+about descriptions, drafts approved) · m5 (project-card single gap tier + pin tags
+      bottom) · l6 (scroll-to-top pinned to viewport corner) · l8 (shorten 2 section headings ×3 MDX:
+      "Algorithm & Training Design"→"Training Design", "Constraints & Limitations"→"Limitations";
+      align `project-content-extraction` skill) · l11 (darken light `--outline`→~#8b9197 for 3:1) ·
+      l12b/c/d (work `<header>`, `<time datetime>` on dates, llms.txt `## Key Pages`) · l4 (touch
+      targets ≥44×44: theme-toggle + footer icons).
+    - **NO-FIX (locked):** m6 (outline-variant decorative), m7+l1 (project h2 mono-anchor intended),
+      l2 (two list rhythms intentional), l3 (768 orphan ok), l5 (dt 1px optical), l7 (tag wrap), l9
+      (capability heading already dominates), l10 (AI = decorative bg glyph), l12a (JSON-LD-in-body = RSC).
+    - **Deferred to Part B batch gate:** token-consistency grep, full keyboard/focus/ARIA/alt a11y,
+      responsive review (375/768/1280 all routes), Lighthouse.
+    - Scratch eval routes (`src/app/scratch/*`) + old hero files (`hero-cover.webp`, `hero.svg`) removed by
+      user. Preview server (Claude_Preview MCP) on :3000 via `.claude/launch.json` "Next.js dev". Scratch
+      images/scripts in `tmp/audit/{explain,scratch,partb}/`.
+
+  - **Part B IMPLEMENTED — gate GREEN, commits 1–7 landed. Awaiting skill updates + PR + final sign-off.**
+    - **Shipped (7 commits `6bfe6e4`→`1159395`):** two-tier display scale (display-primary 64 / new
+      display-title 56) + light `--surface-tag` #dadce0 + `--outline` #8b9197 + prose h4 rhythm; home hero
+      (content `flex-1`/no-gap, portrait fixed 460 + `saturate(0.85) opacity-90`); About (portrait
+      `clamp(180,20vw,280)` + deck `text-balance`, Person schema→31, description); work `<header>`;
+      llms.txt Key Pages; 3 project MDX (section renames "Training Design"/"Limitations", metaDescription,
+      cover heroImage); **3 React-SVG covers rendered to dark `cover.png` → OG for all 3 (mae fixed)**;
+      DESIGN.md aligned.
+    - **Reverted per user (dropped):** m1 prose measure, m5 card tag-pin, l6 scroll-to-top, l4 touch
+      targets (sidebar/footer proportion). h5 = keep DQL band (no merge). l12c (`<time>`) N/A — no
+      visible dates. m6/l9/l5 = no-fix (locked Part A).
+    - **Gate:** tsc clean · biome clean (85) · `next build` green (13 routes) · WCAG new tokens pass
+      (`tmp/audit/_contrast.mjs`) · OG curl all 3 ✓ · mobile 375 ✓ · desktop signed off 2026-06-06.
+      Lighthouse deferred to Phase 10/deploy.
+    - **Skill updates DONE.** 12a: `project-content-extraction` spine names shortened (narrative-structure,
+      extraction-procedure, evals) — committed `adba24f`. 12b: 6 GLOBAL audit skills (`~/.claude/skills`,
+      mirrored Win↔WSL) folded `SKILL-NOTES.md` in as principles (disposition table); independent fresh-eyes
+      review caught 2 overfit blockers (color-contrast "reading/showcase mode", ai-seo "Next.js App Router")
+      + 1 nit (typography "mono uppercase") — all neutralized; 9 files synced WSL→Windows (diff-clean).
+    - **Phase 8 SIGNED OFF (2026-06-06).** PR handed to user (title/body/next-branch); work files committed
+      (this chore). Branch `phase-8-audits` = 8 source commits `6bfe6e4`→`adba24f` + work-files chore.
+      **Next: Phase 9 — Refactor / Clean / Align.**
+
+- **Phase 7 — SEO + AI readability: COMPLETE (signed off 2026-06-06).**
   - **Lessons review — DONE (signed off 2026-06-05).** Promoted general web/Next/WSL/tooling lessons
     into `rules/frontend.md` (image cache, `next/image` `display:none` fetch, Shiki `defaultColor:false`,
     Local Iteration & Caching, `useExhaustiveDependencies`), `rules/build-verification.md` (Batch Gate
@@ -140,4 +204,4 @@ existing covers were flipped to match.
 
 ## Blockers
 
-None. Phase 7 complete. Next: Phase 8 — Audits.
+None. Phase 8 complete (signed off 2026-06-06). Next: Phase 9 — Refactor / Clean / Align.

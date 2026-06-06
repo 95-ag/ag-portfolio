@@ -28,11 +28,11 @@
   --on-surface: #2d2d2d;
   --on-surface-muted: #66696f;
 
-  /* Tag surface — neutral grey */
-  --surface-tag: #ebecee;
+  /* Tag surface — neutral grey, deepened so chips read as filled pills on the raised card */
+  --surface-tag: #dadce0;
 
   /* Borders — neutral */
-  --outline: #9aa0a6;
+  --outline: #8b9197;
   --outline-variant: #e2e3e5;
 
   /* Accent */
@@ -248,8 +248,18 @@ body {
 @layer components {
   /* ── Semantic typography tokens ── */
 
-  /* Display */
+  /* Display — page-title tier (home / about / work / 404) */
   .display-primary {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 70px;
+    letter-spacing: -0.025em;
+    color: var(--on-surface);
+  }
+
+  /* Display — project-title tier: smaller so long titles stay controlled */
+  .display-title {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 56px;
     font-weight: 600;
@@ -444,8 +454,9 @@ body {
     line-height: 28px;
     letter-spacing: -0.01em;
     color: var(--accent);
-    margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    /* gap ABOVE a heading > gap BELOW: detaches from the previous block, binds to its own body */
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-xs);
   }
   .prose-content p {
     /* body-primary values */
@@ -625,6 +636,10 @@ body {
   /* Mid-tier overrides (tablet / small-desktop — 769–1279) */
   @media (max-width: 1279px) {
     .display-primary {
+      font-size: 52px;
+      line-height: 58px;
+    }
+    .display-title {
       font-size: 46px;
       line-height: 54px;
     }
@@ -645,6 +660,10 @@ body {
   /* Mobile overrides (≤768) */
   @media (max-width: 768px) {
     .display-primary {
+      font-size: 40px;
+      line-height: 48px;
+    }
+    .display-title {
       font-size: 36px;
       line-height: 44px;
     }

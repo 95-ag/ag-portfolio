@@ -13,12 +13,13 @@ import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
+import { getFeaturedProjects } from "@/lib/content/projects";
 import { buildPersonSchema } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "AI engineer building practical systems for real-world constraints.",
+    "About Aishwarya Ganesan — an AI engineer who builds ML systems like real software: retrieval, LLMs, model extraction, and computer vision.",
   alternates: {
     canonical: "/about",
   },
@@ -31,7 +32,8 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const { frontmatter: about } = getAbout();
-  const personSchema = buildPersonSchema(about);
+  const projectTags = getFeaturedProjects().flatMap((p) => p.frontmatter.tags);
+  const personSchema = buildPersonSchema(about, projectTags);
 
   return (
     <Section>
@@ -76,7 +78,7 @@ export default function AboutPage() {
 
           {/* Portrait + editorial intro */}
           <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-start md:gap-[var(--spacing-2xl)]">
-            <div className="w-full shrink-0 md:w-[clamp(200px,24vw,320px)]">
+            <div className="w-full shrink-0 md:w-[clamp(180px,20vw,280px)]">
               <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] grayscale md:aspect-[3/4]">
                 <Image
                   src={about.headshot}
@@ -85,13 +87,15 @@ export default function AboutPage() {
                   className="object-cover object-[center_25%]"
                   priority
                   unoptimized={about.headshot.endsWith(".svg")}
-                  sizes="(min-width: 768px) clamp(200px, 24vw, 320px), 100vw"
+                  sizes="(min-width: 768px) clamp(180px, 20vw, 280px), 100vw"
                 />
               </div>
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-md)]">
-              <p className="heading-display">{about.positioning}</p>
+              <p className="heading-display text-balance">
+                {about.positioning}
+              </p>
               {about.detailedPositioning
                 .split("\n\n")
                 .filter(Boolean)

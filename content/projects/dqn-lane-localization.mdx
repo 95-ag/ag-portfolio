@@ -2,11 +2,12 @@
 title: "Deep Q-Learning for Lane Localization"
 subtitle: "Exploring Reinforcement Learning for Accurate Lane Detection"
 summary: "Reproduced and extended a DQL lane localization pipeline on TuSimple — DQL degraded accuracy below the CV baseline, and Bézier curve localization did not improve on point-based approaches."
+metaDescription: "Reproduced and extended a DQL lane-localization pipeline on TuSimple — the RL approach fell below the CV baseline. An honest negative result."
 projectType: academic
 publishedAt: "2024-03-25"
 order: 50
 featured: true
-heroImage: "/projects/dqn-lane-localization/hero.svg"
+heroImage: "/projects/dqn-lane-localization/cover.png"
 heroAlt: "Two-stage lane localization pipeline showing a DQL agent iteratively adjusting detected lane points toward ground truth on a highway image from the TuSimple dataset."
 tags:
   - Reinforcement Learning
@@ -134,7 +135,7 @@ Using a pretrained ResNet-50 (frozen) as the feature extractor separates these c
 
 The initial curve design used 4-control-point Bézier curves. The action space for a 4-point curve — moving start, end, and two curvature points in each direction, then terminating — results in 27 actions per control-point adjustment cycle. For a DQL agent operating on discrete actions, this is large. Reducing to 3 control points (start and end fixed; only the middle curvature point adjusted) collapsed the action space to 9 moves while retaining the curve's ability to represent non-straight lanes.
 
-## Algorithm & Training Design
+## Training Design
 
 ### Point localization game
 
@@ -219,7 +220,7 @@ Visualizations are consistent with this interpretation: predicted curves appeare
   width="wide"
 />
 
-## Constraints & Limitations
+## Limitations
 
 <Callout title="Time and compute constrained the experiment scope">
   100,000 training steps on a single RTX 4000 with image processing at 224×224 limited the number of configurations tested. Extensive hyperparameter tuning was not feasible. The results establish whether the approach works under standard settings, not whether it could work with significant tuning.

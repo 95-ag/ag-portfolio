@@ -66,7 +66,9 @@ the list. What follows is per-section authoring guidance — how to write each s
 not just what to include.
 
 Default section order. Reorder only when readability clearly improves; all sections
-are optional but most should be present:
+are optional but most should be present. Section names double as the desktop sticky
+section-nav labels (truncate at ~140px), so keep them short (≤ ~18 chars) — prefer
+concise forms like "Training Design" / "Limitations" over longer phrasings:
 
 1. **Detailed Problem** — four layers in order. `overview.problem` covers stakes at scan level;
    Detailed Problem goes deeper. Some overlap is acceptable — they serve different reading modes.
@@ -96,15 +98,15 @@ are optional but most should be present:
 3. **Architecture** — system diagrams, component interaction, model choice rationale
 4. **Data** — dataset source, preprocessing, annotations, augmentations, distribution characteristics
 5. **Engineering Decisions** — implementation choices and tradeoffs (architecture selection, accuracy vs latency, etc.)
-6. **Algorithm & Training Design** — training pipeline, loss/reward design, validation strategy, memory/compute
+6. **Training Design** — training pipeline, loss/reward design, validation strategy, memory/compute
 7. **Results** — opens with the primary conclusion stated explicitly in the first sentence, before any
    table, diagram, or supporting metric. ("DQL did not outperform the baseline detector." not "The
    results are summarized in Table 1.") Supporting metrics, comparisons, and interpretation follow.
    For negative results: state the non-finding directly; explain causes; emphasize rigor of the
    investigation, not the size of the metric.
-8. **Constraints & Limitations** — scope caveats only: what the results *can't* conclude and why.
+8. **Limitations** — scope caveats only: what the results *can't* conclude and why.
    Do not re-explain mechanisms already covered in Results. The distinction: Results explains
-   *what happened and why*; Constraints explains *what that means for generalizability*.
+   *what happened and why*; Limitations explains *what that means for generalizability*.
 9. **Next Steps** — where the work goes; can be carefully inferred if not in the source.
    Close with one or two sentences that synthesize what the project established and what
    thread is most worth pursuing — not a restatement of the bullet list.
@@ -237,7 +239,7 @@ at once forces the reader to context-switch mid-paragraph.
 - Engineering Decisions should explain *why* a choice was made, not re-explain *what*
   it is. If a concept was introduced in Background or Architecture, reference it by
   name — don't redefine it.
-- Algorithm & Training Design owns implementation detail; Background owns conceptual
+- Training Design owns implementation detail; Background owns conceptual
   framing. Do not merge them.
 
 If a section is doing work that belongs to another section, split or move — don't compress.

@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils/cn";
 
 type SemanticType =
   | "display-primary"
+  | "display-title"
   | "heading-display"
   | "heading-section"
   | "heading-component"
