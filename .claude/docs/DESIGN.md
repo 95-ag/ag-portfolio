@@ -7,11 +7,9 @@
 
 ---
 
-```yaml
-# YAML Registry — globally reusable canonical tokens
-# Primitive token values only. For semantic meaning, role, and
-# usage constraints, see the Foundations section below.
+**YAML Registry** — globally reusable canonical tokens; primitive values only. For semantic meaning, role, and usage constraints, see Foundations.
 
+```yaml
 spacing:
   xs:   4px
   sm:   8px
@@ -799,6 +797,14 @@ Three-column project grid anchored with `id="featured"` as the scroll target for
 - No section heading above the grid — content leads directly.
 - "View all projects →" link sits below the grid, right-aligned.
 - Grid: `grid-cols-1` mobile → `grid-cols-2` mid → `grid-cols-3` desktop, `gap-gutter`.
+
+### Work Index `[inline]`
+
+Project index page listing all projects: a display H1 above a responsive `ProjectCard` grid.
+
+- `display-primary` H1 ("Work") above the grid, in a `Stack` with `{spacing.xl}` gap.
+- Grid: `grid-cols-1` mobile → `grid-cols-2` at `md` → `grid-cols-3` at `lg`, `gap-gutter` — same as the home Featured Grid.
+- Lists every project (no featured filter, no "view all" link).
 
 ### Project Detail
 
