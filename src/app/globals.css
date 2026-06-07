@@ -44,7 +44,7 @@
   --focus-ring: #006e37;
   --selection: #006e3733;
 
-  /* Background layer RGB triples — consumed only by src/components/bg/.
+  /* Background layer RGB triples — consumed only by src/components/background/.
      Space-separated so Three.js can parse: rgb(var(--accent-rgb)). */
   --accent-rgb: 0 110 55;
   --on-surface-rgb: 45 45 45;
