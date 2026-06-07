@@ -7,7 +7,6 @@ Token values, type scale, color palette, spacing scale, and component specs are 
 - Use semantic color tokens only — never raw hex values in components
 - Token names are defined in `docs/DESIGN.md` — Foundations → Colors
 - One accent color — do not introduce additional accent variants beyond what is in the doc
-- `secondary` and `tertiary` tokens are reserved for callout variants — do not use for general styling
 
 ### Color work
 

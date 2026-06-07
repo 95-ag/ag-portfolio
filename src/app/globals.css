@@ -40,13 +40,7 @@
   --accent-on: #ffffff;
   --accent-muted: #e8f3ec;
 
-  /* Categorical (reserved — Phase 2+ callouts) */
-  --secondary: #565e74;
-  --tertiary: #a43a3a;
-
   /* Semantic */
-  --error: #c0392b;
-  --success: #006e37;
   --focus-ring: #006e37;
   --selection: #006e3733;
 
@@ -95,11 +89,6 @@
   --accent-on: #06210e;
   --accent-muted: #16271b;
 
-  --secondary: #bdc7d9;
-  --tertiary: #e8a5a5;
-
-  --error: #ff6b5e;
-  --success: #2aa566;
   --focus-ring: #2aa566;
   --selection: #2aa56633;
 
@@ -140,14 +129,9 @@
   --color-on-surface-muted: var(--on-surface-muted);
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
-  --outline-hair: color-mix(in srgb, var(--on-background) 10%, transparent);
   --color-accent: var(--accent);
   --color-accent-on: var(--accent-on);
   --color-accent-muted: var(--accent-muted);
-  --color-secondary: var(--secondary);
-  --color-tertiary: var(--tertiary);
-  --color-error: var(--error);
-  --color-success: var(--success);
 
   /* Fonts */
   --font-display: var(--font-manrope);
