@@ -1,5 +1,5 @@
-import { MobileNav } from "@/components/layout/mobile-nav";
-import { PillNav } from "@/components/layout/pill-nav";
+import { MobileNav } from "@/components/shell/mobile-nav";
+import { PillNav } from "@/components/shell/pill-nav";
 
 export function Nav() {
   return (
