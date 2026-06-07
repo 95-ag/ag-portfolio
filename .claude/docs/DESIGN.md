@@ -1188,4 +1188,4 @@ None.
 
 ### Known Gaps
 
-None.
+- **Touch targets below 44px:** several mobile tappables fall short of the 44×44 minimum in Accessibility Rules — mobile slide-out nav items (40px), the close button (36px), and `LinkPill` (36px). The mobile trigger, scroll-to-top, CopyableCode (44px) and Buttons (56px) comply; pill-nav items are 32px but desktop-only, where the touch rule doesn't apply.
