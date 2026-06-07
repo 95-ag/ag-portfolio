@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils/cn";
 
 interface ProjectCardProps {
   project: Project;
-  variant?: "compact" | "featured";
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {

@@ -132,8 +132,3 @@ export function InlineThemeSelector({ className }: { className?: string }) {
     </div>
   );
 }
-
-/* ── Legacy export ── */
-export function ThemeToggle() {
-  return <PillThemeSelector />;
-}
