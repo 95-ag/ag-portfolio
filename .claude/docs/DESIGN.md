@@ -123,14 +123,9 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `on-surface-muted` | `#66696f` | `#a1a1aa` | Secondary text, captions |
 | `outline` | `#8b9197` | `#8a8a8a` | Default borders, dividers — light raised to ~3:1 UI contrast |
 | `outline-variant` | `#e2e3e5` | `#333333` | Subtle borders, low-contrast dividers |
-| `outline-hair` | `color-mix(in srgb, #2d2d2d 10%, transparent)` | `color-mix(in srgb, #e2e2e2 10%, transparent)` | Alpha hairline border, surface-relative |
 | `accent` | `#006e37` | `#2aa566` | Active nav, primary CTA, links, focus rings, callout accents |
 | `accent-on` | `#ffffff` | `#06210e` | Text/icon on accent fills |
 | `accent-muted` | `#e8f3ec` | `#16271b` | Hover backgrounds, accent-tinted surfaces |
-| `secondary` | `#565e74` | `#bdc7d9` | Reserved — categorical use only (e.g., callout variants) |
-| `tertiary` | `#a43a3a` | `#e8a5a5` | Reserved — categorical use only (e.g., warning callouts) |
-| `error` | `#c0392b` | `#ff6b5e` | 404, validation errors |
-| `success` | `#006e37` | `#2aa566` | Build status, confirmations (= accent in v1) |
 | `focus-ring` | `#006e37` | `#2aa566` | 2px outline on keyboard focus (= accent) |
 | `selection` | `#006e3733` | `#2aa56633` | Text selection background (accent at 20% alpha) |
 
