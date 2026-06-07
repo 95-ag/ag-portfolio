@@ -171,7 +171,7 @@ export default function AboutPage() {
                 <Button
                   variant="primary"
                   href={`mailto:${about.contactEmail}`}
-                  icon={<MailIcon size={16} />}
+                  icon={<MailIcon size={18} />}
                   className="justify-center"
                 >
                   Let&apos;s talk
@@ -182,7 +182,7 @@ export default function AboutPage() {
                 variant="secondary"
                 href="/AishwaryaGanesan_Resume.pdf"
                 download
-                icon={<DownloadIcon size={16} />}
+                icon={<DownloadIcon size={18} />}
                 className="justify-center"
               >
                 Download Resume

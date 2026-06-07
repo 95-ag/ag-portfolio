@@ -23,7 +23,7 @@ export default function NotFound() {
             <Button
               variant="primary"
               href="/work"
-              icon={<ArrowForwardIcon size={16} />}
+              icon={<ArrowForwardIcon size={18} />}
             >
               See Projects
             </Button>
