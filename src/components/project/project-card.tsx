@@ -26,7 +26,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {/* Hero — every card renders a hero (live cover or heroImage) */}
       <div className="p-[var(--spacing-md)]">
         <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)] aspect-video">
-          <div className="absolute inset-0 transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03]">
+          <div className="absolute inset-0 transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
             <HeroMedia
               src={fm.heroImage}
               alt={fm.heroAlt}
@@ -52,7 +52,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </p>
           <ArrowForwardIcon
             size={16}
-            className="mt-[3px] shrink-0 text-[var(--on-surface-muted)] opacity-0 transition-all duration-[var(--duration-fast)] group-hover:translate-x-[3px] group-hover:text-[var(--accent)] group-hover:opacity-100"
+            className="mt-[3px] shrink-0 text-[var(--on-surface-muted)] opacity-0 transition-all duration-[var(--duration-fast)] group-hover:translate-x-[3px] group-hover:text-[var(--accent)] group-hover:opacity-100 motion-reduce:group-hover:translate-x-0"
           />
         </div>
 

@@ -32,7 +32,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
             >
               <GitHubIcon size={20} />
             </a>
@@ -41,14 +41,14 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
             >
               <LinkedInIcon size={20} />
             </a>
             <a
               href="mailto:aishwaryaganesan95@gmail.com"
               aria-label="Send email"
-              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)]"
+              className="text-[var(--on-surface)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
             >
               <MailIcon size={20} />
             </a>
