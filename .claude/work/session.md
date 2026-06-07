@@ -2,13 +2,72 @@
 
 > **Fresh sessions: read this file FIRST**, then `tasks.md`, then the relevant `.claude/docs`.
 > This file holds phase STATE (status, decisions). `tasks.md` is the actionable checklist.
-> Build-flow + gates → `.claude/docs/IMPLEMENTATION-PHASES.md`. Process rules → `.claude/CLAUDE.md`.
+> Build-flow + gates → `.claude/docs/IMPLEMENTATION-PLAN.md`. Process rules → `.claude/CLAUDE.md`.
 
 ---
 
 ## Phase
 
-**Branch `phase-8-audits`.**
+**Branch `phase-9-refactor`.**
+
+- **Phase 9 — Refactor / Clean / Align: IN PROGRESS.** Plan: `/home/ag-95/.claude/plans/phase-9-doc-alignment.md`.
+  First sub-task = **doc alignment** (PRODUCT + CONTENT-SCHEMA + DESIGN). Docs-only, zero `src/` edits.
+  - **Approach:** bidirectional drift pass (code→doc AND doc→code) + finalized two-tier writing style
+    (PRODUCT = design-agnostic + reasoning; companion docs = terse + specific) + strip section numbering
+    (named-path cross-refs only) + split prose into bullets. DESIGN edits via `design-update` skill.
+  - **Confirmed decisions:** A — "Work with me" About section (email + resume) is v1; v2 = scheduling/meeting
+    button + chat only. B — document DiagramRow/DiagramPanel. C — `detailedPositioning` = string. D — de-dup
+    diagram tooling (PRODUCT keeps philosophy, cross-refs asset-guide). E — keep+restyle+prune open-questions.
+  - **Dead-code guard:** do not enshrine vestigial code into docs; flag for the NEXT cleanup sub-phase.
+  - **Verification incl. fresh-eyes pass both ways** (separate subagent) + grep `§`→0 + boundary check +
+    `biome`/`tsc`/`next build` green.
+  - **Findings:** PRODUCT P1–P10 · CONTENT-SCHEMA C1–C7 · DESIGN D1–D2 (full list in plan + tasks.md).
+  - **Doc alignment IMPLEMENTED + verified — 3 commits landed `248d083`→`b922e05`** (PRODUCT,
+    CONTENT-SCHEMA, DESIGN). Gate green: biome (91)/tsc/`next build` (13 routes) clean; grep `§`→0;
+    all named cross-refs resolve; fresh-eyes subagent pass (both ways) = all MATCH, boundaries CLEAN,
+    no blockers. Commit 4 dropped (no cross-ref fixes needed). **Awaiting user sign-off.** Work-files
+    chore (tasks/session) pending.
+  - Then: code cleanup (dead-code/unused tokens, `@shikijs/rehype` npm-audit advisories) → Phase 10 deploy.
+
+- **`spec-write` skill — BUILT (via skill-creator), awaiting commit + sign-off.** Plan:
+  `C:\Users\aishw\.claude\plans\breezy-wibbling-globe.md`. One reusable local project skill that
+  authors AND maintains the non-design spec docs (PRODUCT/PROJECT, IMPLEMENTATION-PLAN, CONTENT-SCHEMA,
+  other prose) — DESIGN.md excluded (owned by design-update/design-rewrite). Scope = writing/format/
+  structure only, never ideation/requirement-invention. Files: `.claude/skills/spec-write/SKILL.md`
+  + `references/writing-contract.md` (two-tier voice, no §/numbering, named-path refs, bullet rules,
+  anti-patterns) + `references/doc-archetypes.md` (per-archetype structure + ownership boundaries).
+  - **Decisions:** skill named `spec-write` (renamed from `project-docs` — had no verb + collided with
+    the `project-*` portfolio skills; `spec-write` mirrors `design-update`/`-rewrite` domain-verb shape).
+    Impl-plan archetype canonical name `IMPLEMENTATION-PLAN.md`. Inline rules in the skill (no shared
+    sibling contract). Local now; global promotion deferred to post-deploy.
+  - **Fresh-eyes subagent review:** 2 blockers (overfit token examples → labeled illustrative; tier
+    assignment not stated in SKILL.md → added) + 1 nit (contract-vs-DESIGN.md phrasing) — all fixed.
+    Dimensions self-containment/consistency/guardrail/reproduce-known-good/triggering all PASS.
+  - **Description-optimization loop — ATTEMPTED, ABORTED (not viable here).** skill-creator's
+    trigger-eval harness doesn't fire in this `claude` CLI build: its proxy is a temp slash-command,
+    which this CLI doesn't auto-invoke for a plain query → the obvious positive ("write the PRODUCT.md")
+    scores 0/2 even under `--model opus`, isolated cwd or not (`claude -p` itself works: pong 3.9s).
+    All-zero signal → loop would optimize against noise + degrade a reviewed description. Kept the
+    fresh-eyes-reviewed description. Revisit if a compatible harness/CLI is available. Scratch in `/tmp/spec-write-opt`.
+  - **IMPLEMENTATION-PHASES.md → IMPLEMENTATION-PLAN.md rename — DONE.** File renamed + 6 refs updated
+    (CLAUDE.md ×2, build-verification.md, code-reviewer.md, tasks.md, session.md). `spec-write`
+    doc-archetypes.md keeps `IMPLEMENTATION-PHASES.md` as an illustrative *variant* name (general skill).
+  - **Code cleanup — IMPLEMENTED, gate GREEN, awaiting commits + sign-off.** Plan:
+    `C:\Users\aishw\.claude\plans\breezy-wibbling-globe.md`. (1) Deleted dead code: 3 unused icon files
+    (`science`/`work`/`code`), legacy `ThemeToggle` fn (file kept — selectors live), `ProjectCard.variant`
+    prop (interface + 2 call sites). (2) Removed 5 reserved-unused tokens (`secondary`/`tertiary`/`error`/
+    `success`/`outline-hair`) from `globals.css` + `rules/design-system.md` bullet + DESIGN.md Colors rows
+    (via design-update). **Change #1 before/after screenshots (home + /work, both themes) = byte-identical
+    → zero regression**, DESIGN.md alignment preserved (shots in `/tmp/cleanup-shots`). Gate: biome (88,
+    was 91)/tsc/`next build` (13 routes) green; removed symbols grep → 0.
+  - **Known advisory — ACCEPTED (deferred).** `npm audit` = 2 moderate, both `postcss <8.5.10` vendored
+    inside Next (GHSA-qx2v-qp2m-jg93, XSS in CSS stringify) — build-time only, no user-supplied CSS in this
+    static portfolio → non-exploitable. NOT `@shikijs/rehype` (old note stale). `fix --force` downgrades
+    Next to 9.x (rejected). **Decided: fix at Phase 10 deploy** (public repo → Dependabot optics) — prefer
+    `npm update next` for an upstream postcss ≥8.5.10 bump (no override); `overrides:{"postcss":"^8.5.10"}`
+    only as fallback; re-audit clean before deploy.
+
+**Branch `phase-8-audits` (merged via PR).**
 
 - **Phase 8 — Audits: COMPLETE (signed off 2026-06-06).** Plan: `/home/ag-95/.claude/plans/drifting-greeting-elephant.md`.
   Two halves: Part A = capture + 6 parallel skill audits → unified findings (NO implementation);
@@ -176,7 +235,7 @@
 - **Phase 6.5 — UI Polish: next.** New phase added to the build flow (reading experience,
   navigation, colors, brand/hero). Iterative; several items are investigations to resolve with the
   user, and color/surface items route through `design-update` / `design-rewrite` (DESIGN.md edits).
-  Full backlog → `tasks.md` + `IMPLEMENTATION-PHASES.md`.
+  Full backlog → `tasks.md` + `IMPLEMENTATION-PLAN.md`.
 - Then: **7** SEO + AI readability → **8** Audits → **9** Refactor/clean/align → **10** Deploy.
 
 **Two projects are deferred until after the first deploy** (per user, 2026-06-01): a freelance
@@ -197,11 +256,14 @@ existing covers were flipped to match.
 
 ## Standing deviations from PRODUCT.md
 
-- **Hero CTAs (§7.1):** CTAs integrated into the hero directly; bottom CTA section removed.
-  Intentional — reconcile PRODUCT.md in Phase 9 cleanup.
+- None. (Former Hero-CTA deviation reconciled in Phase 9: PRODUCT.md hero section rewritten to match the
+  shipped integrated CTAs; confirmed code + docs agree during cleanup.)
 
 ---
 
 ## Blockers
 
-None. Phase 8 complete (signed off 2026-06-06). Next: Phase 9 — Refactor / Clean / Align.
+None. **Phase 9 — Refactor / Clean / Align: IN PROGRESS.** Done + committed: doc alignment
+(`248d083`→`b922e05`), `spec-write` skill (`abffccf`), IMPLEMENTATION-PLAN rename (`4f5f1fa`). Code
+cleanup IMPLEMENTED (gate green) — awaiting commits + sign-off. After cleanup commits: Phase 9 ≈ done →
+Phase 10 deploy. Sign-offs pending: doc alignment + spec-write + cleanup.

@@ -1,6 +1,7 @@
 # Lessons — Patterns from Corrections
 
-> This file holds **only portfolio-pipeline-specific** lessons (the 4 project skills).
+> This file holds **portfolio-pipeline lessons** (the 4 project skills) and **project skill-authoring
+> lessons** (building/maintaining this repo's skills — design-*, spec-write).
 > General web/Next/WSL/tooling lessons live in the CLAUDE rules — promote there, not here:
 > `rules/frontend.md`, `rules/build-verification.md`, `rules/design-system.md`,
 > global `windows-claude.md` / `CLAUDE.md`.
@@ -30,6 +31,14 @@
 
 **`{/* biome-ignore rule */}` only suppresses single-line elements.** For multiline JSX, the lint error fires on the attribute line (not the element tag), so the sibling comment doesn't reach it — biome reports both `suppressions/unused` and the original error.
 **Fix: use `biome.json` overrides scoped to the specific files** — not a global rule disable, which silently removes the safety net everywhere else.
+
+---
+
+## Skill authoring
+
+**Name a skill with an action and a non-colliding prefix.** A noun-only name (`project-docs`) reads as a thing, not a tool, and `project-*` collided with the portfolio `project-content-extraction`/`-review`/etc. Mirror the working pattern: `<domain>-<verb>` like `design-update` / `spec-write`.
+
+**skill-creator's description-optimization loop does not fire in this Claude CLI build.** Its trigger-eval (`run_eval`/`run_loop`) proxies a skill via a temp slash-command, which this CLI doesn't auto-invoke for a plain query — so even an obvious positive scores 0/N (confirmed under `--model opus`, isolated cwd; `claude -p` itself works). All-zero signal would optimize a description against noise. Rely on a fresh-eyes triggering review instead; revisit the loop only on a compatible harness/CLI.
 
 ---
 
