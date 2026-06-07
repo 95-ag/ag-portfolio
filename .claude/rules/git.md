@@ -76,6 +76,7 @@ Skipping this gate is a process violation, not a shortcut. Recovery (`git reset 
 - Secrets or `.env` values
 - Build artifacts (`.next/`, `dist/`)
 - OS/editor cruft (`.DS_Store`, `.vscode/` unless intentionally shared)
+- `.claude/work/` process notes (`session.md`, `tasks.md`, `lessons.md`) — local-only working files, never tracked in the public repo
 
 ## PR and merge policy
 
@@ -111,4 +112,5 @@ Treat `.gitignore` as part of the rules. Required entries:
 - `.next/`
 - `.env*` (except `.env.example` if you add one)
 - `.DS_Store`
+- `.claude/work/` (local process notes — `session.md`, `tasks.md`, `lessons.md`)
 - Build outputs and caches
