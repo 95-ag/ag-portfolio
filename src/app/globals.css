@@ -160,16 +160,11 @@
 
   /* Z-index — DESIGN.md §12 */
   --z-base: 0;
-  --z-raised: 10;
   --z-sticky-content: 20;
-  --z-reading-progress: 30;
   --z-scroll-to-top: 40;
   --z-pill-nav: 50;
   --z-mobile-menu-overlay: 55;
   --z-mobile-menu-panel: 60;
-  --z-tooltip: 70;
-  --z-modal: 80;
-  --z-toast: 90;
 
   /* Motion — DESIGN.md §9 */
   --duration-fast: 150ms;

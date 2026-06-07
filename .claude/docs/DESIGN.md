@@ -49,16 +49,11 @@ breakpoints:
 
 z-index:
   base: 0
-  raised: 10
   sticky-content: 20
-  reading-progress: 30
   scroll-to-top: 40
   pill-nav: 50
   mobile-menu-overlay: 55
   mobile-menu-panel: 60
-  tooltip: 70
-  modal: 80
-  toast: 90
 ```
 
 ---
@@ -1161,16 +1156,11 @@ Components must use z-index tokens, not raw numbers.
 | Token | Value | Usage |
 |---|---|---|
 | `base` | 0 | Default document flow |
-| `raised` | 10 | Reserved — raised cards, hover lifts (unused in v1) |
 | `sticky-content` | 20 | Section progress nav (sticky sidebar) |
-| `reading-progress` | 30 | Reserved — reading progress bar (unused in v1) |
 | `scroll-to-top` | 40 | Scroll-to-top button |
 | `pill-nav` | 50 | Floating pill nav |
 | `mobile-menu-overlay` | 55 | Semi-opaque overlay behind mobile slide-out |
 | `mobile-menu-panel` | 60 | Mobile slide-out panel |
-| `tooltip` | 70 | Reserved — tooltip popups (unused in v1) |
-| `modal` | 80 | Reserved |
-| `toast` | 90 | Reserved |
 
 ### Root Layout Shell
 
