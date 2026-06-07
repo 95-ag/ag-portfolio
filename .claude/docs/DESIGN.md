@@ -103,7 +103,12 @@ The portfolio combines the structural clarity of a technical journal with the pr
 
 - Tokens are role-based.
 - The same role has different hex values per theme to maintain contrast and visual weight.
-- **Background depth is context-aware** (set via `data-read="long"` on `<html>` — see Technical Conventions → Surface Context): *showcase* pages (home, about, work index) use the extreme ground — white in light / deep-black in dark — so background effects feel immersive; *reading* pages (project detail) use a softer middle ground for legibility. The table lists the showcase (default) value; reading overrides only the ground — light `background`/`surface` `#f8f8f9`; dark `background`/`surface` `#1a1a1a`, `surface-raised` `#292929`, `surface-sunken` `#141414`, `surface-nav` `#1f1f1fd9`.
+- **Background depth is context-aware** — a `data-read="long"` attribute on `<html>` switches the ground tone (see Technical Conventions → Surface Context):
+  - *Showcase* pages (home, about, work index) use the extreme ground — white in light, deep-black in dark — so background effects feel immersive.
+  - *Reading* pages (project detail) soften to a middle ground for legibility.
+  - The table below lists showcase (default) values. Reading mode overrides:
+    - Light: only the ground softens — `background`/`surface` → `#f8f8f9`, `surface-nav` → `#f8f8f9d9`.
+    - Dark: the whole depth stack lifts — `background`/`surface` → `#1a1a1a`, `surface-raised` → `#292929`, `surface-sunken` → `#141414`, `surface-nav` → `#1f1f1fd9`. The showcase deep-black sits far from reading comfort, so the lift is large; raised and sunken must move with the ground or elevation order inverts.
 - **Light depth logic:** `surface-sunken` is the brightest (pure white — image/code/diagram clarity), `surface-raised` lifts only gently, `background` is the off-white ground. Dark inverts (sunken darkest, raised lighter).
 
 | Role | Light | Dark | Used for |
@@ -143,9 +148,9 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 
 - 19 tokens, role-based.
 - Tokens with a fixed color have it baked in; tokens without a color entry are context-dependent (color applied by the component).
-- Three-tier responsive scale: ≤768 (mobile) / 769–1279 (mid) / ≥1280 (desktop). Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with layout transitions: portrait+intro and capabilities → md (768); Approach 3-col grid → xl (1280).
-- Mid-tier values (769–1279): `display-primary` → 52px / 58px; `display-title` → 46px / 54px; `heading-display` → 32px / 40px; `heading-section` → 24px / 32px. `body-lead` is 3-tier: 18/28 mobile → 20/30 mid → 24/34 desktop.
-- Responsive exception: `support-meta` defaults to 13px; `footer.tsx` applies a local override (11px/18px mobile, 15px/24px desktop). This is the only component-level responsive exception to a semantic token.
+- **Responsive scale — three tiers.** Multi-value Size and Line-height cells read **desktop / mid / mobile** (largest first); a single value is fixed across tiers. Tiers: ≥1280 desktop · 769–1279 mid · ≤768 mobile.
+- **Tier mechanism.** Base declarations in `@layer components` set desktop values; `@media (max-width: 1279px)` steps to mid; `@media (max-width: 768px)` steps to mobile. Breakpoints align with About layout transitions — portrait+intro and capabilities collapse at md (768); the Approach 3-column grid collapses at xl (1280).
+- Responsive exception: `support-meta` defaults to 13px; `footer.tsx` overrides locally (11px/18px mobile, 15px/24px desktop) — the only component-level responsive exception to a semantic token.
 
 | Token | Family | Size | Weight | Line-height | Tracking | Color | Role |
 |---|---|---|---|---|---|---|---|
@@ -179,8 +184,10 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `h2` | `mono-anchor` values | `border-bottom: 1px solid {on-surface-muted}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.2xl}` |
 | `h3` | `heading-component` values | `margin-top: {spacing.2xl}`, `margin-bottom: {spacing.sm}` |
 | `h4` | `heading-narrative` values | `margin-top: {spacing.xl}`, `margin-bottom: {spacing.xs}` |
-| `p`, `li` | `body-primary` values (18px) | — |
+| `p`, `li` | `body-primary` values (18px) | `p`: `margin-bottom: {spacing.lg}` · `li`: `margin-bottom: {spacing.xs}`, lists indent `padding-left: {spacing.xl}`, marker `{outline-variant}` |
+| `a` (link) | inherits surrounding token; text `{accent}` | `text-decoration: underline`, `text-underline-offset: 2px`. Anchor links (`href^="#"`): text `{on-surface}`, underline `{outline-variant}`; hover → `{accent}` text + underline (`{motion.duration-fast}` transition) |
 | `blockquote` | `body-secondary` values + `font-style: italic` | `border-left: 2px solid {accent}`, `background: {surface-raised}`, `padding: {spacing.md} {spacing.lg}`, `margin-vertical: {spacing.lg}` |
+| `hr` | — | `border-top: 1px solid {outline-variant}`, `margin: {spacing.xl} 0` |
 | `table` | `body-caption` values (14px) | `border-collapse: collapse`, full-width |
 | `th` | `body-caption` values + `font-weight: 600` | `color: {on-surface}` (ink), `border-bottom: 2px solid {accent}`, no fill, padding |
 | `td` | `body-caption` values | `color: {on-surface}` (ink), `border-bottom: 1px solid {outline-variant}`, padding |
@@ -191,10 +198,10 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 ### Spacing
 
 - Strict 4px base. Used for padding, margins, gaps, and rhythm.
-- Major section gaps: `{spacing.3xl}` (64px) desktop, `{spacing.2xl}` (48px) mobile.
+- Major section gaps: `{spacing.2xl}` (48px) mobile, `{spacing.3xl}` (64px) at md+; editorial pages (About) escalate to `{spacing.5xl}` (128px) at xl.
 - Section page-edge padding: `pt-xl / pb-xl` (32px each) mobile; `pt-3xl / pb-2xl` (64px / 48px) desktop. Top is asymmetric at desktop — calibrated for pill-nav clearance. Mobile uses less top padding because the slide-out trigger occupies less vertical real estate than the pill nav.
-- Paragraph separation: `{spacing.md}` (16px). List item separation: `{spacing.sm}` (8px).
-- Card internal padding: `{spacing.lg}` (24px).
+- Prose paragraph and list rhythm is owned by Typography → Prose Composition Rules.
+- Callout/panel internal padding: `{spacing.lg}` (24px). Component-specific card padding is documented with the component.
 - Whitespace beyond these minimums is intentional, not arbitrary.
 
 ### Shapes
@@ -204,9 +211,10 @@ Four surface categories, each with a fixed radius:
 - **Structural containers** — 0px (sharp). Cards, code blocks, callouts. Architectural, no softening.
 - **Interactive controls** — `{radius.sm}` (4px). Tags, block buttons, inline code. Minimum radius to read as a control.
 - **Media surfaces** — `{radius.md}` (8px). Headshot, hero images, figures, diagrams, highlights.
-- **Floating & link controls** — `{radius.pill}`. Pill nav, mobile trigger, theme toggle, scroll-to-top, logomark, and link pills (`LinkPill` — About socials + project-header links). The pill radius distinguishes lightweight inline links from square block buttons and static tags.
+- **Floating & link controls** — `{radius.pill}`. Pill nav, mobile trigger, theme selector, scroll-to-top, logomark, link pills (`LinkPill` — About socials + project-header links).
+  - The pill radius distinguishes lightweight inline links from square block buttons and static tags.
 
-`{radius.lg}` (12px) is reserved and unused in v1 — previously assigned to the headshot, now normalized to `{radius.md}`.
+`{radius.lg}` (12px) is reserved — unused in v1.
 
 ### Elevation & Depth
 
@@ -219,24 +227,23 @@ Six levels, each defined by border and surface treatment only.
 
 | Level | Treatment | Components |
 |---|---|---|
-| **0 — Flat** | No border, no fill | Page sections, hero regions, all About sections, Home CTA, Work index, footer |
-| **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, `<Diagram>` outer shell, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav + mobile nav vertical dividers |
-| **2 — Border + blur** | `1px solid outline-variant` + `backdrop-filter: blur(12px)` + `surface: {surface-nav}` | Pill nav, mobile nav panel, mobile nav trigger, scroll-to-top button |
+| **0 — Flat** | No border, no fill | Page sections, hero regions, all About sections, Work index, footer |
+| **1 — Border only** | `1px solid outline-variant` | `<Figure>` image frame, prose `<hr>`, prose table cell borders, back-link `border-t`, pill nav vertical dividers |
+| **2 — Border + blur** | `backdrop-filter: blur(12px)` + `surface: {surface-nav}` + `1px solid outline-variant` (except the edge-flush mobile panel, which is borderless) | Pill nav, mobile nav trigger, scroll-to-top (bordered); mobile nav slide-out panel (borderless) |
 | **3 — Border + raised** | `1px solid outline-variant` + `surface: {surface-raised}` | Project cards (all variants), `<Highlight>` editorial pull-quote |
-| **4 — Border + sunken** | `1px solid outline-variant` + `surface: {surface-sunken}` | `<Diagram>` inner content region, project card media well, project detail hero background |
+| **4 — Sunken inset** | `surface: {surface-sunken}`; `1px solid outline-variant` when standalone, borderless when nested in a bordered parent | `<Diagram>` / `<DiagramRow>` frame (bordered); project card media well, project detail hero (borderless, framed by parent) |
 | **5 — Accent left border + raised** | `2px solid {accent}` (left only) + `surface: {surface-raised}` | `<Callout>`, prose `<blockquote>` |
 
 #### Backdrop-Blur Carve-out
 
 - Only floating nav and utility UI may use `backdrop-filter`.
-- All blur surfaces use `{surface-nav}`.
+- The floating pills and buttons carry a `1px outline-variant` border; the edge-flush mobile slide-out panel is borderless.
 - These surfaces float above arbitrary content and must remain legible against any background.
 
 ```yaml
 blur-ui:
   surface: surface-nav
   backdrop-filter: blur(12px)
-  border: 1px solid outline-variant
 
 applies-to:
   - pill nav container
@@ -249,45 +256,26 @@ applies-to:
 
 #### Motion Principles
 
-Motion is calm, restrained, intentional. All transitions respect `prefers-reduced-motion`.
+Motion is calm, restrained, intentional.
 
-- **Permitted:** opacity transitions, small transforms (≤4px translate, ≤2% scale), color transitions (border, background, text), slide-in for the mobile menu.
+- **Permitted:** opacity transitions, small transforms (≤4px translate, ≤3% scale), color transitions (border, background, text), slide-in for the mobile menu.
 - **Prohibited:** scroll-jacking, parallax, per-section entrance animations on scroll, continuous ambient motion, cursor-tracking effects, page-load reveal sequences.
+- **Reduced motion:** Framer Motion animations collapse to instant (`useReducedMotion`); the meteor background and video-hero autoplay are disabled. CSS hover transforms reduce to color-only, gated per-element with the `motion-reduce:` variant; color transitions are retained. Full fallback: Accessibility Rules.
 
 #### Duration & Easing
 
-- `{motion.duration-fast}` (150ms) — hover states, button presses.
-- `{motion.duration-base}` (200ms) — nav transitions, fades.
-- `{motion.duration-slow}` (300ms) — slide-out menu, larger reveals.
-- `{motion.ease-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
-- `{motion.ease-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
+- `{motion.duration-fast}` (150ms) — interactive micro-transitions: hover, button presses, nav links, copy actions.
+- `{motion.duration-base}` (200ms) — mobile menu overlay fade.
+- `{motion.duration-slow}` (300ms) — mobile slide-out panel, theme-selector expand, project-card image scale.
+- `{motion.ease-standard}` — default easing curve; applied explicitly on the theme-selector expand.
+- `{motion.ease-emphasis}` — entrance/exit emphasis; mobile slide-out panel.
 
 ### Layout
 
 #### Grid & Containers
 
-- Three-tier responsive grid: 12 columns on desktop, 8 on tablet, 4 on mobile.
-- Content is capped at `1200px` max-width with tier-specific gutters and side margins.
-
-```yaml
-layout:
-  max-content-width: 1200px
-
-  desktop:
-    columns: 12
-    gutter: 24px
-    side-margin: 64px
-
-  tablet:
-    columns: 8
-    gutter: 20px
-    side-margin: 32px
-
-  mobile:
-    columns: 4
-    gutter: 16px
-    side-margin: 16px
-```
+- Three-tier responsive grid (`Grid`): 12 columns desktop · 8 tablet · 4 mobile; uniform `{spacing.gutter}` (24px) gap across tiers.
+- Content container (`Container`): `1200px` max-width; side padding steps `{spacing.margin-mobile}` (16px) mobile → `{spacing.gutter}` (24px) tablet → `{spacing.xl}` (32px) desktop.
 
 #### Imagery
 
@@ -301,7 +289,7 @@ layout:
 - **Hand-authored SVG (shared theme)** — primary tool for flows, pipelines, state, and architecture diagrams; generated from the shared `assets-source/svg/_theme.py` build
 - **matplotlib → SVG/PNG** — charts and metrics visualizations where source data exists; must be script-reproducible
 - **tldraw → SVG** — fallback only for spatial or custom layouts the SVG theme cannot express
-- See `asset-guide.md` for full tooling rules, directory structure, and export standards
+- See the `project-assets-generation` skill (`asset-procedure.md`, `asset-standards.md`) for full tooling rules, directory structure, and export standards
 
 ### Iconography
 
@@ -311,10 +299,10 @@ layout:
 
 | Context | Size |
 |---|---|
-| Standalone icon links (footer) | 20px |
-| Buttons, nav items, utility controls | 16px |
-| Card/list metadata icons | 18px |
-| Inline action indicators | 12px |
+| Standalone icon-only controls (footer social, scroll-to-top) | 20px |
+| Buttons; mobile-nav trigger & close | 18px |
+| Nav items, LinkPill icons, project-card chevron | 16px |
+| Inline indicators (copy, external-link) | 12–14px |
 
 ---
 
