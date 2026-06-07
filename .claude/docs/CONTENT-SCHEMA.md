@@ -163,10 +163,10 @@ relatedProjects:
 | `heroAlt` | string | yes | Alt text. Required for all hero types including video |
 | `heroPoster` | string | conditional | Required if `heroImage` is a video |
 | `heroVideoLoop` | boolean | no | Default `true`. Applies to video `heroImage` only |
-| `tags` | string[] | yes | 3–6 recommended. Free-form strings |
+| `tags` | string[] | yes | Free-form strings; 3–6 recommended, 1–8 enforced (build fails outside) |
 | `stack` | object | yes | See → Stack Categories |
 | `overview` | object | yes | See → Overview Structure |
-| `links` | object | no | Optional `github`, `demo`, `paper`, `report`, `presentation`. Each is a URL or relative path string |
+| `links` | object | no | Optional `github`, `demo` (full URLs); `paper`, `report`, `presentation` (URL or relative path) |
 | `featured` | boolean | no | Default `false`. Triggers homepage inclusion |
 | `logos` | array | no | Associated org/company logos. Each `{ src, alt }` |
 | `contributors` | array | no | Presentational collaborator credits. Each `{ name, avatar, url? }`. `avatar` required, must start with `/`. `url` optional |
@@ -220,17 +220,14 @@ overview:
 **Build fails on:**
 - Missing required field.
 - Invalid `projectType` enum value.
+- Empty `tags` array, or more than 8 tags.
+- `summary` longer than 200 characters.
+- `metaDescription` longer than 160 characters.
 - More than 3 projects with `featured: true`.
 - `relatedProjects` reference that doesn't resolve to an existing slug.
 - Image path not starting with `/`.
 - Video `heroImage` with no `heroPoster`.
 - Project with neither a registered live cover nor a `heroImage`.
-
-**Build warns (does not fail) on:**
-- Empty `tags` array.
-- More than 6 tags.
-- `summary` longer than 200 characters.
-- `metaDescription` longer than 160 characters.
 
 ### Hero Media
 
@@ -357,11 +354,12 @@ Image with optional caption and width control.
 | `src` | string | yes | Web path under `/public` |
 | `alt` | string | yes | Accessibility |
 | `caption` | string | no | Renders below image, muted caption style |
-| `width` | enum | no | `"default"` (720px) \| `"wide"` (960px) \| `"full"` (page width). Default `"default"` |
+| `width` | enum | no | `"default"` (full container width) \| `"wide"` (capped at 960px). Default `"default"` |
+| `aspect` | string | no | Aspect ratio e.g. `"16/9"`, `"4/3"`. Default `"16/9"` |
 
 ### `<Diagram>`
 
-Architecture diagrams, flow charts, system illustrations. Same props as `<Figure>` with slightly more vertical breathing room and no border by default.
+Architecture diagrams, flow charts, system illustrations. Rendered in a sunken, bordered frame with the image fitted inside (`object-contain`), rather than filling edge-to-edge like `<Figure>` (`object-cover`).
 
 ```mdx
 <Diagram
@@ -370,6 +368,14 @@ Architecture diagrams, flow charts, system illustrations. Same props as `<Figure
   caption="Two-stage refinement pipeline."
 />
 ```
+
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `src` | string | yes | Web path under `/public` |
+| `alt` | string | yes | Accessibility |
+| `caption` | string | no | Renders below, muted caption style |
+| `width` | enum | no | `"default"` (full) \| `"narrow"` (560px) \| `"wide"` (960px). Default `"default"` |
+| `aspect` | string | no | Aspect ratio e.g. `"16/9"`. Default `"16/9"` |
 
 ### `<DiagramRow>`
 
@@ -429,7 +435,7 @@ Vertical stack of items with consistent spacing. Used when default markdown spac
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `gap` | enum | no | `"sm"` \| `"md"` (default) \| `"lg"` |
+| `gap` | enum | no | `"xs"` \| `"sm"` \| `"md"` (default) \| `"lg"` \| `"xl"` \| `"2xl"` \| `"3xl"` |
 
 ### `<Highlight>`
 
