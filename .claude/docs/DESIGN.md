@@ -1053,17 +1053,28 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 ### Hover
 
-Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
+All transitions use `{motion.duration-fast}` (150ms) on color, background, and border — never opacity alone (opacity reads as appearing/disappearing, not interacting).
 
-- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-selector buttons, scroll-to-top, and `LinkPill` (which also shifts text to `accent`). Communicates affordance without color takeover.
-- **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode. Communicates interactive intent on contained surfaces.
-- **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
-- **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
-- **Exception — project card directional:** border intensifies from `outline-variant` to `outline`; card title underlines with `accent` decoration. Communicates link affordance without recoloring the editorial surface.
-- **Exception — footer social icons:** color shifts to `accent` + `scale(1.1)`. Small persistent scale permitted here only.
-- When `prefers-reduced-motion` is active, all hover transforms reduce to color-only.
+**Fill shifts**
+- **Accent fill** — background → `accent-muted`. Logomark (pill + mobile; also gains a 1px `accent` outline) and `LinkPill` (also text → `accent`).
+- **Neutral fill** — background → `surface-sunken`, text → `on-surface`. Nav links (pill + mobile) and the mobile-nav close button.
 
-Component YAML blocks remain colocated as the local spec source. This section documents the shared interaction language they implement.
+**Text / border shifts (no fill)**
+- **Text → accent** — prose and anchor links, "View all projects", the project back-link.
+- **Text → ink** — muted controls becoming prominent: the mobile-nav trigger, and scroll-to-top (which also shifts border `outline-variant` → `outline`). The theme-selector's non-selected options also shift text → `on-surface`; its selected option is a persistent `accent-muted` fill + `accent` text, not a hover.
+- **Accent border + text** — border and text → `accent`. CopyableCode.
+
+**Committed actions (`Button`)**
+- **Secondary** — `accent-muted` fill + `accent` border + `accent` text.
+- **Primary** — ink flip: background `accent` → `on-surface`, text `accent-on` → `surface`.
+
+**Special**
+- **Project card** — border `outline-variant` → `outline`, fill `surface-raised` → `surface`, title underlines with `accent`.
+- **Footer social icons** — text → `accent` + `scale(1.1)` (the only persistent hover scale).
+
+When `prefers-reduced-motion` is active, all hover transforms reduce to color-only.
+
+Component YAML blocks remain colocated as the local spec source; this section documents the shared interaction language they implement.
 
 ### Focus
 
