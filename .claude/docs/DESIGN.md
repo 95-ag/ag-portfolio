@@ -379,22 +379,15 @@ Explicit three-option theme selector in the pill nav; shows the active mode icon
 
 ```yaml
 theme-selector:
-  size: 40px x 40px
+  size: 32px x 32px
   borderRadius: pill
   iconSize: 16px
-  
-  hover:
+  selected:
     background: accent-muted
-    transition: background 150ms
-  
-  tooltip:
-    appears-after: 500ms hover
-    text: "Light" | "Dark" | "System"
-    fontSize: body-xs
-    background: on-surface
-    color: surface
-    padding: 4px 8px
-    borderRadius: 4px
+    color: accent
+  unselected-hover:
+    color: on-surface
+    transition: color 150ms
 
 icons:
   light: LightModeIcon
@@ -409,7 +402,7 @@ Touch-primary navigation panel for mobile viewports; mirrors pill nav structure 
 - Fixed trigger button in the top-right corner; opens with a slide-in from the right over a dimmed overlay.
 - Active items use `surface-selection` — same token as pill nav active state; hover uses `surface-sunken`.
 - Blur surface matches the pill nav visually; no left border — separation is achieved by the overlay and blur alone.
-- Traps focus while open; overlay tap and close button both dismiss the panel.
+- Traps focus while open; overlay tap, close button, and Escape all dismiss the panel.
 
 ```yaml
 mobile-menu-trigger:
@@ -463,7 +456,7 @@ mobile-slide-out-layout:
 
 #### Scroll-to-top Button
 
-Utility button fixed to the bottom-right corner; appears after scrolling one viewport height and provides a one-tap return to page top.
+Utility button fixed to the bottom-right corner; appears after 400px of scroll and provides a one-tap return to page top.
 
 - Bottom-right position does not collide with the pill nav (top-center).
 - On `lg+` screens, right edge tracks the content column boundary instead of the viewport edge.
@@ -475,8 +468,10 @@ Utility button fixed to the bottom-right corner; appears after scrolling one vie
 scroll-to-top:
   position: fixed
   bottom: 80px
-  right: 16px  # lg+: max(1rem, calc(50vw - 36rem))
-  size: 44px x 44px  # xl+: 48px x 48px
+  right: 16px
+  right-lg: max(1rem, calc(50vw - 36rem))
+  size: 44px x 44px
+  size-xl: 48px x 48px
   borderRadius: pill
   background: surface-nav
   backdropFilter: blur(12px)
@@ -535,7 +530,7 @@ button-secondary:
     transition: all 150ms
 
 button-icon-leading:
-  iconSize: 16px
+  iconSize: 18px
   gap-icon-label: 8px
 ```
 
@@ -557,7 +552,7 @@ copyable-code:
   border: 1px solid outline-variant
   borderRadius: sm
   color: on-surface-muted
-  fontSize: 16px       # mono-code
+  fontSize: 16px
   fontFamily: JetBrains Mono
   fontWeight: 400
 
@@ -583,7 +578,7 @@ Low-visual-weight copy interaction for editorial and contact contexts; deliberat
 ```yaml
 copy-link:
   height: auto
-  fontSize: 14px       # body-caption
+  fontSize: 14px
   fontWeight: 400
   color: on-surface-muted
   textDecoration: underline
@@ -615,10 +610,10 @@ Quiet utility link for profile, contact, and project links; lighter visual weigh
 
 ```yaml
 link-pill:
-  height: 36px                       # h-9 — quieter than Button (56px)
-  paddingHorizontal: spacing-md      # 16px
-  gap-icon-label: spacing-sm         # 8px
-  borderRadius: pill                 # round — distinguishes link chips from square buttons/tags
+  height: 36px
+  paddingHorizontal: spacing-md
+  gap-icon-label: spacing-sm
+  borderRadius: pill
   background: surface-raised
   border: none
   color: on-surface
@@ -632,7 +627,7 @@ link-pill:
   active:
     opacity: 0.70
 
-  external:                          # genuinely external (new-tab) links only
+  external:
     adds: target="_blank" rel="noopener noreferrer"
     trailing-icon: OpenInNewIcon 12px — on-surface-muted → accent + translate-x 2px on hover
 ```
@@ -661,9 +656,10 @@ tag:
 
 Entry point to a project; communicates type, media, and scope at a glance and links to the detail page.
 
-- Two layout variants: `compact` (1:1 hero) and `featured` (4:3 hero). Every card renders a hero — a live cover when registered, otherwise the `heroImage`; there is no hero-less variant.
-- Hero is inset with padding — not edge-to-edge — on a `surface-sunken` inner background.
-- Hover: title underlines with `accent` decoration; border shifts from `outline-variant` to `outline`.
+- Single layout; every card renders a 16:9 hero — a live cover when registered, otherwise the `heroImage`. There is no hero-less or alternate-aspect variant.
+- Hero is inset with `{spacing.md}` padding (not edge-to-edge) on a `surface-sunken` inner well.
+- Hover: title underlines with `accent`; the card border shifts `outline-variant` → `outline` and the fill lightens `surface-raised` → `surface`.
+- Cards equalize height within a grid row (grid row-stretch); the body fills remaining height (`flex-1`) so content stays top-anchored and whitespace falls to the bottom.
 - Cover metadata overlays (`logos[]`, `contributors[]`) are presentational only in cards — no interactive affordances.
 
 ```yaml
@@ -673,30 +669,27 @@ project-card:
   borderRadius: 0px
   display: flex
   flexDirection: column
-  transition: border-color 150ms
+  transition: colors 150ms
 
   hover:
     borderColor: outline
-
-  variants:
-    compact:   heroAspect 1/1
-    featured:  heroAspect 4/3
+    background: surface
 
 project-card-hero:
   wrapperPadding: spacing-md
   innerBackground: surface-sunken
-  innerBorderRadius: md               # 8px — media surface, matches all image/media radius
+  innerBorderRadius: md
+  innerAspect: 16/9
 
 project-card-body:
+  flex: 1
   paddingX: spacing-lg
-  paddingBottom: spacing-lg
-  gap: spacing-sm
-  - title:    heading-component, on-surface, font-semibold
-              hover: underline (decoration: accent, offset 2px)
-  - summary:  body-caption, on-surface-muted, line-clamp: 3
-              no flex-1 or reserved spacer — tags follow immediately after visible text
-  - tag-row:  Tag (single canonical variant), gap xs, max 3 tags
-  card-height: equal within grid row via CSS grid row-stretch; content top-anchored, whitespace falls to bottom
+  paddingTop: spacing-xs
+  paddingBottom: spacing-xl
+  gap: spacing-md
+  - title:   heading-component, on-surface, font-semibold; hover underline (accent, offset 2px)
+  - summary: body-caption, on-surface-muted, line-clamp 3
+  - tag-row: Tag, gap xs, max 3 tags
 ```
 
 #### Highlight
@@ -722,8 +715,7 @@ highlight:
     margin-bottom: spacing-lg
 
   body:
-    type: body-md
-    fontWeight: 500 (medium)
+    type: body-emphasis
     color: on-surface
     lineHeight: relaxed
 ```
@@ -737,6 +729,7 @@ Editorial pull block integrated with prose flow; level-5 elevation with `accent`
 
 ```yaml
 callout:
+  element: <aside role="note">
   background: surface-raised
   borderLeft: 2px solid accent
   borderRadius: none
@@ -745,16 +738,19 @@ callout:
 
 callout-title:
   type: callout-title
-  fontWeight: 600
   color: accent
   marginBottom: spacing-sm
+
+callout-body:
+  type: body-emphasis
+  color: on-surface
 ```
 
 ### Footer
 
-Single-row page footer with copyright copy, a social icon, and branding text; no theme toggle.
+Single-row page footer: a copyright line (year · name · repo link) on the left, social icons on the right; no theme toggle.
 
-- Copyright: separators dimmed to 50% opacity; name at full `on-surface`; repo link label underlined.
+- Copyright line is `support-meta`/`on-surface-muted`; the name is full `on-surface`; the repo link is underlined (hover → `on-surface`).
 - No top border; top separation comes from content margin above.
 
 ```yaml
@@ -767,13 +763,11 @@ footer:
   layout: flex-row, space-between, align-center — single row at all viewport sizes
 
 copyright-format:
-  type: support-meta (responsive exception — 11px/18px mobile, 15px/24px desktop; local Tailwind override in footer.tsx)
+  type: support-meta (local responsive override — see Typography)
   color: on-surface-muted
-  opacity-spans:                      # "© {year} /" and "/" separators
-    opacity: 0.50
-  name-span:                          # "<name>"
+  name-span:
     color: on-surface
-  repo-link:                          # "Designed & developed by me."
+  repo-link:
     underline: yes, underline-offset 2px
     hover: on-surface
 
