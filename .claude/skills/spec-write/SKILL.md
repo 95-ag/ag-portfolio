@@ -110,8 +110,15 @@ For a full first-time authoring, output the complete doc plus a short summary of
 When the request is "align this doc to the code/reality" rather than a pure wording edit, run a
 bidirectional drift pass instead of editing blind:
 
-1. **Code → doc** — does the doc still describe what's shipped? List drift.
-2. **Doc → code** — does the code implement what the doc claims? List drift.
+1. **Code → doc** — does the doc still describe what's shipped? List drift. Enumerate what the code
+   actually exposes — generated or emitted outputs, public API surface (exported functions, parameters,
+   enum members), configuration options — and confirm each appears in the doc; silently-shipped
+   behavior is the common miss.
+2. **Doc → code** — does the code implement what the doc claims? List drift. Test claims against the
+   real mechanism, not the doc's own examples: a documented behavior tier or category (e.g. "warning"
+   vs "error") must map to an actual mechanism in code; a documented value or enum must match what the
+   code produces or accepts, not the sample shown; an "X drives/determines Y" claim must correspond to
+   code that branches on X.
 3. **Boundary + reference check** — grep the doc for `§` / `section N` (should be zero after a pass),
    and confirm every cross-doc named path resolves to a real heading in the target doc.
 4. **Fresh-eyes pass** — for a high-stakes alignment, have a separate subagent verify both directions
