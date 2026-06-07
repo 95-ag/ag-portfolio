@@ -129,7 +129,7 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `focus-ring` | `#006e37` | `#2aa566` | 2px outline on keyboard focus (= accent) |
 | `selection` | `#006e3733` | `#2aa56633` | Text selection background (accent at 20% alpha) |
 
-Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/bg/`. Do not use these directly in CSS.
+Four RGB-triple custom properties (`--accent-rgb`, `--on-surface-rgb`, `--on-surface-muted-rgb`, `--outline-variant-rgb`) exist for WebGL uniform consumption — space-separated format. Consumed exclusively by `src/components/background/`. Do not use these directly in CSS.
 
 ### Typography
 
@@ -252,7 +252,7 @@ applies-to:
 
 Motion is calm, restrained, intentional. All transitions respect `prefers-reduced-motion`.
 
-- **Permitted:** opacity transitions, small transforms (≤4px translate, ≤2% scale), color transitions (border, background, text), slide-in for the mobile menu, slow pulse on the Hire Me CTA icon (see Components → Actions & Interactive → Hire Me CTA Pulse).
+- **Permitted:** opacity transitions, small transforms (≤4px translate, ≤2% scale), color transitions (border, background, text), slide-in for the mobile menu.
 - **Prohibited:** scroll-jacking, parallax, per-section entrance animations on scroll, continuous ambient motion, cursor-tracking effects, page-load reveal sequences.
 
 #### Duration & Easing
@@ -346,7 +346,7 @@ pill-nav:
   border: 1px solid outline-variant
   zIndex: 50
 
-  layout: [ logo-mark ] ─ [ divider ] ─ [ About  Work ] ─ [ divider ] ─ [ theme-toggle ]
+  layout: [ logo-mark ] ─ [ divider ] ─ [ About  Work ] ─ [ divider ] ─ [ theme-selector ]
 
 pill-nav-logo:
   size: 32px x 32px
@@ -382,7 +382,7 @@ pill-nav-divider:
   background: outline-variant
 ```
 
-#### Theme Toggle
+#### Theme Selector
 
 Explicit three-option theme selector in the pill nav; shows the active mode icon collapsed and expands to all three options on hover.
 
@@ -391,7 +391,7 @@ Explicit three-option theme selector in the pill nav; shows the active mode icon
 - In the mobile slide-out panel: always expanded, grouped in a `surface-sunken` pill container.
 
 ```yaml
-theme-toggle:
+theme-selector:
   size: 40px x 40px
   borderRadius: pill
   iconSize: 16px
@@ -471,7 +471,7 @@ mobile-slide-out-layout:
     active: surface-selection / on-surface
     hover: surface-sunken / on-surface
   flex-spacer
-  theme-toggle: bottom of panel (no label, no divider)
+  theme-selector: bottom of panel (no label, no divider)
 ```
 
 #### Scroll-to-top Button
@@ -668,28 +668,6 @@ tag:
   border: none
 ```
 
-#### Hire Me CTA Pulse
-
-Primary button variant on the homepage with an animated leading icon; used exclusively for the Hire Me CTA.
-
-- Pulse is on the leading icon only — never the button shell.
-- Animation stops on hover, settling the control as the user approaches the click target.
-- Reduced-motion fallback: icon holds at default state, no animation.
-
-```yaml
-hire-me-cta:
-
-icon-pulse:
-  animation: pulse 2400ms ease-in-out infinite
-  keyframes:
-    0%:   opacity 1.0, scale 1.0
-    50%:  opacity 0.7, scale 1.05
-    100%: opacity 1.0, scale 1.0
-  
-  reduced-motion-fallback:
-    animation: none
-```
-
 ### Content Surfaces
 
 #### Project Card
@@ -825,9 +803,11 @@ social-icon:
 
 Page- and domain-bound composition systems that orchestrate Components and Foundations into product surfaces; assume a specific page context, content schema, or editorial purpose.
 
+Each entry is tagged **`[standalone]`** (has its own component file under `src/components/`) or **`[inline]`** (a page section composed directly in `src/app/**`, no separate component). Portable Components (above) are standalone by nature. See `rules/component-structure.md` → Doc ↔ code bridge.
+
 ### Home Page
 
-#### Hero
+#### Hero `[inline]`
 
 Two-column desktop layout: content left, portrait right. Single-column on mobile (portrait hidden below `lg`, 1024px). Section carries `overflow-hidden` to contain the portrait bleed.
 
@@ -837,7 +817,7 @@ Two-column desktop layout: content left, portrait right. Single-column on mobile
 - **Hero blend constraint (deliberate, scoped exception to "no effects"):** `mix-blend-mode` composites against the backdrop within the element's stacking context. It sits on the `<img>` — a `filter`/`mix-blend` on the image *itself* is fine (an element's own blend still reaches its parent backdrop). What must NOT happen is a stacking context or opaque background on any **ancestor**: no `z-index`/`transform`/`opacity`/`filter`/`mask`/`isolation` on the wrapper or up to `<body>`, or the blend keys against an opaque box instead of the `BackgroundLayer` meteors. The hero is above the meteors by tree order and below the nav (`z-50`) — no explicit z-index. (`html`'s opaque `--background` is fine; meteors paint over it.) Works with or without the meteor canvas: when meteors are suppressed (reduced-motion / low-core / project pages) the blend simply drops each bake toward the flat page background.
 - Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
-#### Featured Projects Grid
+#### Featured Projects Grid `[inline]`
 
 Three-column project grid anchored with `id="featured"` as the scroll target for the hero primary CTA.
 
@@ -847,7 +827,7 @@ Three-column project grid anchored with `id="featured"` as the scroll target for
 
 ### Project Detail
 
-#### Project Detail Layout
+#### Project Detail Layout `[inline]`
 
 Single-column editorial layout optimized for long-form project reading; no sidebar at any breakpoint.
 
@@ -867,7 +847,7 @@ project-detail:
     - backlink            # "← Back to Work"
 ```
 
-#### Project Header
+#### Project Header `[standalone]`
 
 Page header for a project detail page; communicates project identity, tags, and links before the hero media.
 
@@ -895,7 +875,7 @@ project-header:
     link: LinkPill (external) — soft-filled pill with trailing open-in-new icon (see Components → Actions & Interactive → LinkPill)
 ```
 
-#### Hero Cover
+#### Hero Cover `[standalone]`
 
 16:9 hero area below the project header. Every project has a hero from one of two sources — the build fails if neither is present.
 
@@ -915,7 +895,7 @@ project-header:
 - Structural diagram elements: `var(--on-surface)`, `var(--background)`, `var(--on-surface-muted)`.
 - Engineering annotations: `var(--font-caveat)` text and `var(--accent)` stroke only. No other font or color in annotations.
 
-#### Section Progress Nav
+#### Section Progress Nav `[standalone]`
 
 Desktop-only sticky TOC derived from H2 headings in the MDX body; highlights the active section as the user scrolls.
 
@@ -931,7 +911,7 @@ section-progress-nav:
   zIndex: sticky-content (20)
 ```
 
-#### Project Section Label
+#### Project Section Label `[inline]`
 
 Architectural divider separating the overview block from the MDX body on project detail pages; emitted by the page template, not authored in MDX.
 
@@ -947,7 +927,7 @@ project-section-label:
     opacity: 0.40
 ```
 
-#### Prose (MDX Deep-dive) Layout
+#### Prose (MDX Deep-dive) Layout `[inline]`
 
 Spacing and vertical rhythm for MDX long-form content; typographic treatment defined in Foundations → Typography → Prose Composition Rules.
 
@@ -973,7 +953,7 @@ prose-list-item:
   marginBottom: spacing-xs
 ```
 
-#### Editorial Two-column Layout
+#### Editorial Two-column Layout `[inline]`
 
 Definition list grid for structured label/value content; used for the project Overview and Tech Stack sections.
 
@@ -1008,7 +988,7 @@ editorial-dl:
 
 - Inter-section gap (top-level flex container): `{spacing.2xl}` (48px) mobile → `{spacing.3xl}` (64px) mid → `{spacing.5xl}` (128px) desktop (≥1280). Breakpoints align with layout transitions: portrait+intro and capabilities go row at `md`; Approach 3-col grid at `xl`.
 
-#### About — Two-panel Intro
+#### About — Two-panel Intro `[inline]`
 
 Flex row intro layout for the About page; headshot panel beside intro copy on tablet and desktop, stacked identity block on mobile.
 
@@ -1047,7 +1027,7 @@ about-intro:
       objectFit: cover
 ```
 
-#### About — Two-column Structured Layout
+#### About — Two-column Structured Layout `[inline]`
 
 25/75 column layout for structured About sections (Approach, Capabilities); heading column on the left, content on the right.
 
@@ -1078,7 +1058,7 @@ about-two-col:
     gap: md
 ```
 
-#### About — Work with Me
+#### About — Work with Me `[inline]`
 
 Contact and resume section at the bottom of the About page. Two actions side by side on small viewports and wider: primary opens a mailto link, secondary downloads the resume PDF.
 
@@ -1115,7 +1095,7 @@ about-work-with-me:
       - src: /AishwaryaGanesan_Resume.pdf
 ```
 
-### 404 Not Found
+### 404 Not Found `[inline]`
 
 Vertically centered error page that fits within the viewport without scrolling; footer pins to the bottom.
 
@@ -1126,11 +1106,11 @@ Vertically centered error page that fits within the viewport without scrolling; 
 
 ---
 
-### Background Layer
+### Background Layer `[standalone]`
 
 Atmospheric, secondary visual layer providing environmental depth. Must remain visually subordinate to typography and content surfaces at all times — visibility biases toward peripheral and negative-space perception rather than direct focal attention.
 
-- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/bg/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
+- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/background/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
 - **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
 - **ASCII field:** ambient structural texture, not decorative ornamentation. Static — no animation. Desktop/tablet (≥768px, all routes): masked to the outer gutters/corners — a centered band sized to the content column + buffer is cleared (short fade in) so glyphs never touch the reading column. Mobile (<768px): full-bleed but sparser + fainter on non-project pages, and omitted entirely on project detail pages (dense reading). Three opacity tiers (accent, ink, mute); light-theme values are higher to compensate for the cream background's lower contrast.
 - **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), below the 768px mobile breakpoint (re-checked on resize), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes (reading focus). The 768px floor keeps the meteor and the full-bleed mobile ASCII field from ever co-rendering.
@@ -1145,7 +1125,7 @@ Atmospheric, secondary visual layer providing environmental depth. Must remain v
 
 Three shared tiers plus two named exceptions. All transitions use `{motion.duration-fast}` (150ms) on color, background, and border properties — never opacity alone (opacity transitions read as appearing/disappearing, not interacting).
 
-- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-toggle buttons, scroll-to-top, and `LinkPill` (which also shifts text to `accent`). Communicates affordance without color takeover.
+- **Tier 1 — accent-surface fill:** surface shifts to `accent-muted`. Used on nav items (pill + mobile), logomark, theme-selector buttons, scroll-to-top, and `LinkPill` (which also shifts text to `accent`). Communicates affordance without color takeover.
 - **Tier 2 — accent border + text:** border and text shift to `accent`. Used on outline controls: CopyableCode. Communicates interactive intent on contained surfaces.
 - **Tier 3 — full accent shift:** `accent-muted` fill + `accent` border + `accent` text. Used on secondary Button only. Communicates committed-action readiness.
 - **Exception — primary CTA ink-flip:** background shifts from `accent` to `on-surface`; text shifts from `accent-on` to `surface`. Reserved exclusively for primary `Button`. Communicates maximum commitment without opacity collapse.
@@ -1202,7 +1182,7 @@ No loading states are defined in v1 — all pages are statically generated; no a
 - **Focus rings:** 2px solid `focus-ring` (= accent), 2px offset, on all keyboard-focused interactive elements. Use `:focus-visible`, not `:focus`, to avoid showing on mouse-click.
 - **Contrast:** all text/background combinations meet WCAG AA (4.5:1 for body, 3:1 for large text and UI components). Active pill nav fill (`accent` background + `accent-on` text) must pass AA in both themes.
 - **Touch targets:** minimum 44x44px for all interactive elements on mobile.
-- **Reduced motion:** all motion in Foundations → Motion & Interaction has a no-motion fallback. The Hire Me pulse becomes static. Page transitions become instant. Hover transforms become color-only.
+- **Reduced motion:** all motion in Foundations → Motion & Interaction has a no-motion fallback. Page transitions become instant. Hover transforms become color-only.
 - **Theme toggle accessible name:** `aria-label` reflects current state ("Switch to dark theme", "Switch to system theme", etc.) and updates on cycle.
 
 ---

@@ -149,7 +149,6 @@ Missing optional fields are omitted from rendering — no placeholders.
 - Subtle and purposeful only.
 - Page transitions: short fade.
 - Hover and focus states: brief opacity or transform transition.
-- Hire-me CTA: a single understated attention cue on the icon only, not the button shell.
 - All animation gated by `prefers-reduced-motion`.
 - No scroll-jacking, no parallax, no per-section entrance animations.
 

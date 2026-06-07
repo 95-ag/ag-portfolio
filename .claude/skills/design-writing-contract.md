@@ -361,7 +361,7 @@ Components SHOULD include contextual examples.
 Preferred:
 
 ```md
-Used for Hire Me (home CTA), project navigation, and contact actions.
+Used for the primary home CTA, project navigation, and contact actions.
 ```
 
 Preferred component format:
@@ -373,7 +373,7 @@ Primary committed action using tonal contrast rather than elevation.
 
 - Background `{colors.accent}`, text `{colors.accent-on}`.
 - Height `{height-interactive-md}` (44px), radius `{radius.sm}` (4px).
-- Used for Hire Me (home CTA), contact actions, and project navigation.
+- Used for the primary home CTA, contact actions, and project navigation.
 - Hover reduces opacity only; focus uses `{colors.focus-ring}`.
 ```
 
@@ -390,7 +390,7 @@ Reusable components SHOULD include contextual usage examples whenever practical.
 Preferred:
 
 ```md
-Used for Hire Me (home CTA), project navigation, and contact actions.
+Used for the primary home CTA, project navigation, and contact actions.
 ```
 
 Avoid:
