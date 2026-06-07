@@ -236,7 +236,7 @@ The original spec described a sticky sidebar with a main column. That was replac
 - **Backlink.** "← Back to Work" at the end of content.
 - **Related projects** — v2. 2–3 suggested projects below the backlink.
 
-**Section visibility by `projectType`:**
+**Content depth by `projectType`** — authoring convention; the page renders sections by field presence, not by type:
 
 | Section | academic | freelance | personal |
 |---|---|---|---|
@@ -296,10 +296,11 @@ The system is uniform; content depth honestly reflects the work. Personal projec
 
 **Project type and content depth.** The `projectType` field determines:
 - Sort priority on the Work page.
-- Visible sections on the project page — see → Page Specifications → Project Detail.
-- Acceptable content density. Personal projects may have a short overview and brief or absent deep dive. Academic and freelance projects are expected to be more thorough.
+- Acceptable content density (a convention, not enforced at render). Personal projects may have a short overview and brief or absent deep dive; academic and freelance projects are expected to be more thorough.
 
-**`projectType` is internal metadata — not displayed.** No badge on cards or project pages. Drives sort order and section visibility only. Project nature surfaces through content, not a label.
+Section visibility is driven by which frontmatter fields are present, not by `projectType` — see → Page Specifications → Project Detail.
+
+**`projectType` is internal metadata — not displayed.** No badge on cards or project pages. Drives sort order only; project nature surfaces through content, not a label.
 
 **Resume.** Single PDF at `/public/AishwaryaGanesan_Resume.pdf`. Updated manually. One resume for both audiences in v1.
 
@@ -338,10 +339,13 @@ Touch devices: no hover-only affordances. All hover content is also reachable vi
 - Default OG image generated dynamically via the `/opengraph-image` route.
 - Per-project OG image from `ogImage` frontmatter when present, falling back to `heroImage`.
 - `sitemap.xml` and `robots.txt` generated at build.
-- JSON-LD: Person schema on Home and About; CreativeWork schema on project pages.
+- JSON-LD: `WebSite` site-wide; `Person` on Home and About; `CreativeWork` and `BreadcrumbList` on project pages.
 - Clean, descriptive slugs.
 
-**AI-agent readability.** All text content present in initial HTML — Next.js static generation handles this.
+**AI-agent readability.**
+- All text content present in initial HTML — Next.js static generation handles this.
+- `robots.txt` explicitly allows major AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot).
+- `/llms.txt` endpoint summarizes the site (about, capabilities, projects) for AI agents.
 
 ---
 
