@@ -1,4 +1,4 @@
-# IMPLEMENTATION-PHASES.md
+# IMPLEMENTATION-PLAN.md
 
 # Implementation Rules
 

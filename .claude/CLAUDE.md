@@ -14,7 +14,7 @@ Personal portfolio for an AI/ML engineer. Content-led, editorial, minimal, techn
 | `.claude/docs/PRODUCT.md` | What to build and why |
 | `.claude/docs/DESIGN.md` | All visual decisions — wins over PRODUCT.md on visuals |
 | `.claude/docs/CONTENT-SCHEMA.md` | MDX and frontmatter structure — wins over PRODUCT.md on content fields |
-| `.claude/docs/IMPLEMENTATION-PHASES.md` | Phase-by-phase build order and verification gates |
+| `.claude/docs/IMPLEMENTATION-PLAN.md` | Phase-by-phase build order and verification gates |
 
 Current session state → `.claude/work/session.md`.
 
@@ -45,7 +45,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 
 ## Key Constraints
 
-- Do not skip build phases — see `IMPLEMENTATION-PHASES.md` for phase gates
+- Do not skip build phases — see `IMPLEMENTATION-PLAN.md` for phase gates
 - No client-side syntax highlighting — build-time only via Shiki
 - No animation libraries beyond Framer Motion
 - No shadows — elevation via tonal borders and surface fills only (Highlight shadow carve-out removed)
