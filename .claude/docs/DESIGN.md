@@ -30,7 +30,6 @@ spacing:
 radius:
   sm:   4px
   md:   8px
-  lg:   12px
   pill: 9999px
 
 motion:
@@ -114,8 +113,6 @@ The portfolio combines the structural clarity of a technical journal with the pr
 | `surface-sunken` | `#ffffff` | `#080808` | Diagram content regions, sunken insets (card media well, hero) — brightest in light for image/code clarity. Code blocks instead use the Shiki theme background (see Technical Conventions → Code Block Highlighting) |
 | `surface-nav` | `#fcfcfcd9` | `#141414d9` | Floating nav/utility blur UI only — pill nav, mobile trigger, mobile panel, scroll-to-top (~85% opacity) |
 | `surface-selection` | `#e8f3ec` | `#16271b` | Active nav state, future tabs/segmented controls — accent-tinted, no border |
-| `surface-overlay` | `#ffffffd9` | `#141414d9` | Legacy — superseded by `surface-nav`. Do not use for new work. |
-| `surface-overlay-panel` | `#ffffffb8` | `#141414ba` | Legacy — superseded by `surface-nav`. Do not use for new work. |
 | `surface-tag` | `#dadce0` | `#2a2a2a` | Tag chip background — neutral grey; light deepened so chips read as filled pills on the raised card |
 | `on-background` | `#2d2d2d` | `#e2e2e2` | Primary text on background |
 | `on-surface` | `#2d2d2d` | `#e2e2e2` | Primary text on surfaces |
@@ -208,8 +205,6 @@ Four surface categories, each with a fixed radius:
 - **Media surfaces** — `{radius.md}` (8px). Headshot, hero images, figures, diagrams, highlights.
 - **Floating & link controls** — `{radius.pill}`. Pill nav, mobile trigger, theme selector, scroll-to-top, logomark, link pills (`LinkPill` — About socials + project-header links).
   - The pill radius distinguishes lightweight inline links from square block buttons and static tags.
-
-`{radius.lg}` (12px) is reserved — unused in v1.
 
 ### Elevation & Depth
 

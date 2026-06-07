@@ -16,8 +16,6 @@
   --surface: #fcfcfc;
   --surface-raised: #ededed;
   --surface-sunken: #ffffff;
-  --surface-overlay: #ffffffd9;
-  --surface-overlay-panel: #ffffffb8;
   /* Floating nav/utility blur surface */
   --surface-nav: #fcfcfcd9;
   /* Selection state — active nav, future tabs/segmented controls */
@@ -67,8 +65,6 @@
   --surface: #0e0e0e;
   --surface-raised: #1c1c1c;
   --surface-sunken: #080808;
-  --surface-overlay: #141414d9;
-  --surface-overlay-panel: #141414ba;
   --surface-nav: #141414d9;
   --surface-selection: #16271b;
 
@@ -119,8 +115,6 @@
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-surface-sunken: var(--surface-sunken);
-  --color-surface-overlay: var(--surface-overlay);
-  --color-surface-overlay-panel: var(--surface-overlay-panel);
   --color-surface-nav: var(--surface-nav);
   --color-surface-selection: var(--surface-selection);
   --color-surface-tag: var(--surface-tag);
@@ -155,7 +149,6 @@
   /* Radius — DESIGN.md §7 */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
   --radius-pill: 9999px;
 
   /* Z-index — DESIGN.md §12 */
