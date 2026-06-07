@@ -6,66 +6,59 @@
 
 ---
 
-## 1. Scope & Principles
+## Scope & Principles
 
 This document defines:
-
-- The directory structure and file conventions for content.
+- Directory structure and file conventions for content.
 - Frontmatter schemas with required and optional fields.
-- The MDX components available in body content.
+- MDX components available in body content.
 - Section conventions for project deep dives.
 - Validation behavior at build time.
 
 This document does **not** define:
-
-- Writing style or tone (no `WRITING_GUIDE.md` exists yet).
-- v2 blog content schema beyond a placeholder reference.
+- Writing style or tone — no writing guide exists yet.
+- Blog content schema beyond a placeholder reference — v2.
 - Components that don't exist yet — new MDX components are added when a project needs them, not pre-emptively.
 
-### Authoring principles
-
-- **Frontmatter is for structured, uniform fields.** Cards, sidebars, and overview subsections — anywhere visual consistency matters across projects.
-- **MDX body is for variable, free-form content.** Deep-dive subsections, prose, embedded components.
-- **Required fields fail the build.** Missing optional fields render nothing — never placeholders, never "TBD."
-- **Slug is the filename.** No `slug:` field. Filename is the source of truth.
+**Authoring principles:**
+- Frontmatter is for structured, uniform fields — cards, sidebars, overview subsections, anywhere visual consistency matters across projects.
+- MDX body is for variable, free-form content — deep-dive subsections, prose, embedded components.
+- Required fields fail the build. Missing optional fields render nothing — never placeholders, never "TBD."
+- Slug is the filename — no `slug:` field. Filename is the source of truth.
 
 ---
 
-## 2. Directory Structure
+## Directory Structure
 
 ```
 /content
   /projects
-    lane-refinement-rl.mdx
-    distributed-task-queue.mdx
-    ...
-  /blog                       # v2
+    project-slug.mdx
+  /blog                       — v2
     post-slug.mdx
   /about
-    about.mdx                 # body content for /about page (optional, see §7)
+    about.mdx                 frontmatter only; body unused in v1
 /public
   /projects
     /[slug]
-      hero.jpg                # or hero.mp4
-      diagram-architecture.svg
+      cover.png               dark-theme cover screenshot (for OG + heroImage)
+      diagram-name.svg
       ...
-  /resume.pdf
-  /headshot.jpg
-  /og-default.png             # fallback Open Graph image
+  /AishwaryaGanesan_Resume.pdf
+  /headshot.jpeg
 ```
 
-### File naming rules
-
+**File naming rules:**
 - Filenames are kebab-case: `lane-refinement-rl.mdx`.
 - Slug is derived from the filename, lowercased, `.mdx` extension stripped.
 - One MDX file = one project. No multi-project files.
-- Image paths in MDX and frontmatter are written as **web paths from `/public`** (e.g., `/projects/lane-rl/hero.jpg`), not as filesystem-relative paths. This matches Next.js's static-asset convention.
+- Image paths in MDX and frontmatter are **web paths from `/public`** — e.g. `/projects/lane-rl/hero.jpg` — not filesystem-relative paths.
 
 ---
 
-## 3. Project Frontmatter Schema
+## Project Frontmatter Schema
 
-Frontmatter is YAML. Validated at build time against the Zod schema in §10. Build fails on schema violations.
+Frontmatter is YAML. Validated at build time against the Zod schema in → Validation Implementation. Build fails on schema violations.
 
 ### Full schema
 
@@ -82,12 +75,12 @@ order: 10                               # lower = earlier in lists; ties broken 
 
 # === Required: hero (live cover OR heroImage) ===
 # Preferred: register a live React SVG cover by slug in
-# src/components/project/covers/index.ts — then heroImage may be omitted.
-# Otherwise heroImage is required. The build fails if a project has neither.
-heroImage: "/projects/lane-rl/hero.jpg"     # optional; image, video, or animated SVG (see §3.6)
+# src/components/project/covers/index.ts — heroImage may then be omitted.
+# Otherwise heroImage is required. Build fails if a project has neither.
+heroImage: "/projects/lane-rl/cover.png"    # optional when live cover is registered
 heroAlt: "Side-by-side comparison of baseline vs RL-refined lane detection on an occluded curve."
 heroPoster: "/projects/lane-rl/hero-poster.jpg"   # required if heroImage is a video
-heroVideoLoop: true                                # optional, defaults true for videos
+heroVideoLoop: true                                # optional; defaults true for videos
 
 # === Required: tags ===
 tags:
@@ -95,14 +88,14 @@ tags:
   - Computer Vision
   - Autonomous Driving
 
-# === Required: stack (categorized; categories fixed) ===
+# === Required: stack (fixed categories) ===
 stack:
   languages: [Python, C++]
   frameworks: [PyTorch, OpenCV]
   libraries: [NumPy, Pandas, scikit-learn]
   tools: [Docker, Git, Linux]
 
-# === Required: overview (renders the recruiter-readable section) ===
+# === Required: overview ===
 overview:
   problem: |
     Lane detection fails in shadows and sharp curves, which compromises
@@ -114,16 +107,11 @@ overview:
   results:
     - "Improved lane-point accuracy by 18% on occluded segments"
     - "Reduced curvature errors by 23% on the tightest-radius test set"
-    - "Maintained near real-time inference (38ms per frame on a single GPU)"
-  transferableSkills:                   # rendered as "Transferable Skills" for academic/freelance
+  transferableSkills:                   # academic/freelance; use `learnings` for personal
     - Designing modular ML pipelines
     - Working with noisy perception data
-    - Optimizing models under latency constraints
-    - Communicating technical work clearly
-  # For projectType: personal, use `learnings` instead of `transferableSkills`.
-  # See §3.3 below.
 
-# === Optional: subtitle (long descriptive title) ===
+# === Optional: subtitle ===
 subtitle: "Two-Stage Deep Reinforcement Learning Pipeline for Lane Boundary Refinement"
 
 # === Optional: external links ===
@@ -131,6 +119,7 @@ links:
   github: "https://github.com/user/lane-rl"
   demo: "https://lane-rl.example.com"
   paper: "/projects/lane-rl/paper.pdf"
+  report: "/projects/lane-rl/report.pdf"
   presentation: "/projects/lane-rl/slides.pdf"
 
 # === Optional: featured on homepage ===
@@ -140,14 +129,12 @@ featured: true                          # default false; cap of 3 enforced at bu
 logos:
   - src: "/projects/lane-rl/sfu-logo.svg"
     alt: "Simon Fraser University"
-  - src: "/projects/lane-rl/clientco-logo.svg"
-    alt: "ClientCo"
 
 # === Optional: contributors ===
 contributors:
   - name: "Jane Smith"
     avatar: "/projects/lane-rl/jane-smith.jpg"
-    url: "https://janesmith.dev"           # optional
+    url: "https://janesmith.dev"        # optional
   - name: "Alex Lee"
     avatar: "/projects/lane-rl/alex-lee.jpg"
 
@@ -155,39 +142,39 @@ contributors:
 ogImage: "/projects/lane-rl/og.png"     # falls back to heroImage if omitted
 metaDescription: "..."                  # falls back to summary if omitted
 
-# === v2: related projects (frontmatter prepared, rendering deferred) ===
+# === v2: related projects ===
 relatedProjects:
   - distributed-task-queue
   - serverless-media-api
 ---
 ```
 
-### 3.1 Field reference
+### Field reference
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `title` | string | yes | Full project title used in headers, OG tags, browser tab |
-| `subtitle` | string | no | Long descriptive title (e.g., research-paper style). Renders below `title` in the project header |
-| `summary` | string | yes | One-line description. Used on cards and meta description fallback |
+| `subtitle` | string | no | Long descriptive title. Renders below `title` in the project header |
+| `summary` | string | yes | One-line description. Used on cards; fallback for meta description |
 | `projectType` | enum | yes | `academic` \| `freelance` \| `personal` |
 | `publishedAt` | ISO date string | yes | Drives sort order tiebreak |
 | `order` | number | yes | Primary sort key. Lower = earlier |
-| `heroImage` | string | conditional | Web path under `/public`. Accepts image (`.jpg`/`.png`/`.svg`), video (`.mp4`/`.webm`), or animated SVG. See §3.6. Optional when a live cover is registered for the slug; otherwise required |
-| `heroAlt` | string | yes | Alt text for accessibility. Required for all hero types including video |
-| `heroPoster` | string | conditional | Required if `heroImage` is a video. Web path to a still image used as the video poster |
-| `heroVideoLoop` | boolean | no | Default `true`. Only applies when `heroImage` is a video |
+| `heroImage` | string | conditional | Web path under `/public`. Optional when a live cover is registered for the slug; required otherwise. Accepts image, video, or animated SVG — see → Hero Media |
+| `heroAlt` | string | yes | Alt text. Required for all hero types including video |
+| `heroPoster` | string | conditional | Required if `heroImage` is a video |
+| `heroVideoLoop` | boolean | no | Default `true`. Applies to video `heroImage` only |
 | `tags` | string[] | yes | 3–6 recommended. Free-form strings |
-| `stack` | object | yes | See §3.2 |
-| `overview` | object | yes | See §3.3 |
-| `links` | object | no | Optional `github`, `demo`, `paper`, `presentation`. Each is a URL or relative path string |
+| `stack` | object | yes | See → Stack Categories |
+| `overview` | object | yes | See → Overview Structure |
+| `links` | object | no | Optional `github`, `demo`, `paper`, `report`, `presentation`. Each is a URL or relative path string |
 | `featured` | boolean | no | Default `false`. Triggers homepage inclusion |
-| `logos` | array | no | Associated org/company logos. Each `{src, alt}` |
-| `contributors` | array | no | Presentational collaborator credits. Each `{name, avatar, url?}`. `avatar` required and must start with `/`. `url` optional |
+| `logos` | array | no | Associated org/company logos. Each `{ src, alt }` |
+| `contributors` | array | no | Presentational collaborator credits. Each `{ name, avatar, url? }`. `avatar` required, must start with `/`. `url` optional |
 | `ogImage` | string | no | Falls back to `heroImage` |
 | `metaDescription` | string | no | Falls back to `summary` |
-| `relatedProjects` | string[] | no | Array of slugs. v2 — validated at build but not rendered in v1 |
+| `relatedProjects` | string[] | no | Array of slugs. Validated at build; not rendered in v1 |
 
-### 3.2 Stack categories
+### Stack Categories
 
 Fixed enum. New categories require a schema change, not free-form additions.
 
@@ -199,114 +186,102 @@ stack:
   tools: [...]          # Docker, Git, Linux, AWS, etc.
 ```
 
-All four keys are required objects but may be empty arrays. Empty arrays render nothing. Missing keys fail the build.
+All four keys are required but may be empty arrays. Empty arrays render nothing. Missing keys fail the build.
 
-### 3.3 Overview structure
+### Overview Structure
 
-The `overview` object renders the recruiter/HR-readable section on the project page (PRODUCT.md §7.3). Four subsections, structured for visual uniformity.
+The `overview` object renders the recruiter-readable section on the project page — see `PRODUCT.md → Page Specifications → Project Detail`.
 
 ```yaml
 overview:
   problem: string             # markdown-allowed paragraph; multi-line OK with YAML `|`
   built: string               # markdown-allowed paragraph
-  results: string[]           # bulleted list, 2–4 items recommended (optional)
-  transferableSkills: string[]   # optional
-  learnings: string[]            # optional
+  results: string[]           # bulleted list; 2–4 items recommended (optional)
+  transferableSkills: string[]   # optional; use for academic and freelance
+  learnings: string[]            # optional; use for personal
 ```
 
-**Convention (author discipline, not enforced by build):**
-- `academic` and `freelance` projects use `transferableSkills`.
-- `personal` projects use `learnings` and may omit `results`.
-- Use only one of `transferableSkills` or `learnings` per project — pick the one that fits the work.
+**Convention — not enforced by build:**
+- `academic` / `freelance`: use `transferableSkills`.
+- `personal`: use `learnings`; `results` optional.
+- One field per project — both present renders both (valid; visually redundant).
+- Neither present: that row is omitted from the overview.
 
-The renderer displays whichever field is present. If both are present, both render (not a build error, but visually awkward — avoid). If neither is present, that section is omitted from the overview.
+### Featured Projects
 
-### 3.4 Featured projects
+`featured: true` marks a project for homepage inclusion.
 
-Frontmatter field `featured: true` marks a project for homepage inclusion. Build validates:
-
+**Build validates:**
 - Maximum 3 featured projects across the entire content set. More than 3 fails the build.
-- Featured projects sort by `order` on the homepage (independent of Work-page sort).
+- Featured projects sort by `order` on the homepage, independent of the Work-page sort.
 
-### 3.5 Validation rules summary
+### Validation Rules
 
-Build fails on:
-
+**Build fails on:**
 - Missing required field.
 - Invalid `projectType` enum value.
 - More than 3 projects with `featured: true`.
-- `relatedProjects` references that don't resolve to existing slugs.
-- Image paths that don't start with `/`.
-- `heroImage` is a video (`.mp4`/`.webm`) but `heroPoster` is missing.
-- A project has neither a registered live cover nor a `heroImage` (every project must have a hero).
+- `relatedProjects` reference that doesn't resolve to an existing slug.
+- Image path not starting with `/`.
+- Video `heroImage` with no `heroPoster`.
+- Project with neither a registered live cover nor a `heroImage`.
 
-Build warns (does not fail) on:
-
-- Empty `tags` array (recommend 3–6).
+**Build warns (does not fail) on:**
+- Empty `tags` array.
 - More than 6 tags.
 - `summary` longer than 200 characters.
 - `metaDescription` longer than 160 characters.
 
-### 3.6 Hero media
+### Hero Media
 
-Every project's hero is satisfied by **one of two** sources, checked by the content loader:
+Every project's hero is satisfied by one of two sources, checked by the content loader:
 
-1. **Live cover (preferred)** — a React SVG component registered by slug in
-   `src/components/project/covers/index.ts`. Takes precedence over `heroImage` when
-   present, and renders on both the project page hero and the project card. When a live
-   cover is registered, `heroImage` may be omitted.
-2. **`heroImage`** — a static asset (image, video, or animated SVG), described below.
+1. **Live cover (preferred)** — a React SVG component registered by slug in `src/components/project/covers/index.ts`. Takes precedence over `heroImage` when present. Renders on both the project page hero and the project card. When a live cover is registered, `heroImage` may be omitted.
+2. **`heroImage`** — a static asset described below.
 
 The build fails if a project has neither.
 
-When present, the `heroImage` field accepts three formats. The renderer detects the type from the file extension and behaves accordingly.
-
 **Image** (`.jpg`, `.png`, `.webp`):
-- Renders as a static image via `next/image`.
-- `heroPoster` ignored.
-- `heroVideoLoop` ignored.
+- Renders via `next/image`.
+- `heroPoster` and `heroVideoLoop` are ignored.
 
 **Video** (`.mp4`, `.webm`):
 - Renders as a `<video>` element.
-- `autoplay`, `muted`, `playsinline` always on (required for autoplay on mobile browsers).
-- `loop` defaults to `true`; override via `heroVideoLoop: false`.
-- **`heroPoster` is required** — used as the loading state and for users with autoplay disabled.
-- Recommended length: ≤ 8 seconds. Loops should feel seamless (last frame ≈ first frame).
-- Recommended encoding: H.264 MP4 + VP9 WebM, both ≤ 2 MB. Browsers pick what they support.
+- `autoplay`, `muted`, `playsinline` always on.
+- `loop` defaults `true`; override via `heroVideoLoop: false`.
+- `heroPoster` is required — used as loading state and for users with autoplay disabled.
+- Recommended length: ≤ 8 seconds. Loops should feel seamless.
+- Recommended encoding: H.264 MP4 + VP9 WebM, both ≤ 2 MB.
 
 **Animated SVG** (`.svg` with embedded `<animate>` or CSS animations):
-- Renders as `<img>` (animations play natively).
-- `heroPoster` ignored.
-- Animation must respect `prefers-reduced-motion` — if it doesn't, don't use it.
+- Renders as `<img>`.
+- Animation must respect `prefers-reduced-motion`. If it can't be paused, use a static image instead.
 
 **Rules across all types:**
-- `heroAlt` is required regardless of media type. For videos, describe what the video shows, not "video of...".
+- `heroAlt` is required regardless of media type. For videos, describe what the video shows — not "video of...".
 - Aspect ratio: 16:9 recommended. Other ratios work but may letterbox.
-- Reduced-motion fallback: video heroes display only the poster image (no autoplay) for users with `prefers-reduced-motion: reduce`. Animated SVGs that can't be paused this way should be replaced with static images.
+- Reduced-motion fallback: video heroes display the poster only.
 
-**What not to use:**
-- GIFs. Large files, poor quality, no audio control. Use video instead.
-- Lottie / JSON animations. Heavy dependency, not justified for a hero in v1.
-- Auto-playing audio. All videos render muted; no exception.
+**No GIFs** — use video instead. **No Lottie/JSON animations** — not justified for a hero in v1. **No autoplay audio** — all videos render muted.
 
 ---
 
-## 4. Project Body MDX
+## Project Body MDX
 
-Body MDX renders below the hero and overview, as the **deep-dive section** of the project page (PRODUCT.md §7.3).
+Body MDX renders below the hero and overview as the deep-dive section — see `PRODUCT.md → Page Specifications → Project Detail`.
 
-### Section conventions
+### Section Conventions
 
-The deep dive uses H2 headings. Recommended sections (all optional — include only what's substantive):
+H2 headings divide the deep dive. Recommended sections — all optional, include only what's substantive:
 
 ```mdx
-## Detailed Problem
+## Problem
 
 Prose explaining edge cases, failure modes, why standard approaches fall short.
 
 ## Background
 
-Domain context, theoretical background, hardware/environment constraints,
+Domain context, theoretical background, hardware or environment constraints,
 operational requirements.
 
 ## Data
@@ -320,19 +295,10 @@ characteristics, challenges.
 
 Prose explaining the design.
 
-## Algorithm & Code Design
+## Training Design
 
-State/action definitions, reward shaping, training loop, memory and compute
+State and action definitions, reward shaping, training loop, memory and compute
 considerations. Pseudocode where helpful.
-
-```python
-def step(state, action):
-    ...
-```
-
-## Constraints & Resources
-
-Latency targets, hardware limits, real-world variability.
 
 ## Optimization
 
@@ -348,27 +314,30 @@ Quantitative metrics, qualitative examples, before/after comparisons.
 
 <Figure src="/projects/lane-rl/results-curve.png" caption="..." />
 
+## Limitations
+
+Honest accounting of what didn't work, binding constraints, open questions.
+
 ## Next Steps
 
-Engineering maturity — what would improve this further.
+What would improve this further — engineering maturity, not aspirational scope.
 ```
 
 **Rules:**
+- H2 is reserved for deep-dive section headings. No H1 in body — one H1 per page is rendered by the layout from `title`.
+- H3 and below are free for sub-structuring within sections.
+- Section ordering above is a recommendation, not a requirement — adjust to fit the project.
+- `personal` projects may have a single short section or skip the deep dive entirely.
 
-- H2 (`##`) is reserved for deep-dive section headings. Do not use H1 in body content (one H1 per page is rendered by the layout from `title`).
-- H3 (`###`) and below are free for sub-structuring within sections.
-- Section ordering above is a recommendation, not a requirement. Adjust to fit the project.
-- `personal` projects may have a single short section or skip the deep dive entirely. Acceptable.
+### Reading Width
 
-### Reading width
-
-Body MDX renders inside a `max-w-[960px]` single-column layout (DESIGN.md — Domain Components → Project Detail → Project Detail Layout). Wide content (full-bleed diagrams, tables) can use the `<Figure wide>` variant — see §5.
+Body MDX renders inside a single-column layout with a capped reading width — see `DESIGN.md → Domain Components → Project Detail → Project Detail Layout`. Wide content (full-bleed diagrams, tables) uses the `<Figure wide>` variant.
 
 ---
 
-## 5. MDX Components
+## MDX Components
 
-Four custom components plus standard markdown. New components are added when a project needs them, not pre-emptively.
+Seven custom components plus standard markdown. New components are added when a project needs them, not pre-emptively.
 
 ### `<Figure>`
 
@@ -378,8 +347,8 @@ Image with optional caption and width control.
 <Figure
   src="/projects/lane-rl/results-curve.png"
   alt="Training reward curve showing convergence at episode 4000"
-  caption="Reward converges around episode 4000; later episodes show fine-tuning."
-  width="default"   {/* "default" (720px) | "wide" (960px) | "full" (page width) */}
+  caption="Reward converges around episode 4000."
+  width="default"
 />
 ```
 
@@ -387,14 +356,12 @@ Image with optional caption and width control.
 |---|---|---|---|
 | `src` | string | yes | Web path under `/public` |
 | `alt` | string | yes | Accessibility |
-| `caption` | string | no | Renders below image, `body-caption` muted |
-| `width` | enum | no | Default `"default"` |
-
-Renders with a subtle border (`outline-variant`) and `radius: md`.
+| `caption` | string | no | Renders below image, muted caption style |
+| `width` | enum | no | `"default"` (720px) \| `"wide"` (960px) \| `"full"` (page width). Default `"default"` |
 
 ### `<Diagram>`
 
-Architecture diagrams, flow charts, system illustrations. Same props as `<Figure>` plus a slightly different default treatment (more vertical breathing room, no border by default since most diagrams have their own background).
+Architecture diagrams, flow charts, system illustrations. Same props as `<Figure>` with slightly more vertical breathing room and no border by default.
 
 ```mdx
 <Diagram
@@ -403,6 +370,34 @@ Architecture diagrams, flow charts, system illustrations. Same props as `<Figure
   caption="Two-stage refinement pipeline."
 />
 ```
+
+### `<DiagramRow>`
+
+Side-by-side panel layout for comparing two or three related diagrams. Wraps `<DiagramPanel>` children.
+
+```mdx
+<DiagramRow layout="2col" caption="Overall row caption.">
+  <DiagramPanel src="/projects/example/a.png" alt="..." label="Panel A" aspect="1/1" />
+  <DiagramPanel src="/projects/example/b.png" alt="..." label="Panel B" aspect="1/1" />
+</DiagramRow>
+```
+
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `layout` | enum | no | `"2col"` (default) — two equal columns; `"2+1"` — two columns then a centered third |
+| `caption` | string | no | Row-level caption rendered below all panels |
+| `className` | string | no | Additional Tailwind classes (e.g. `max-w-[620px]`) |
+
+### `<DiagramPanel>`
+
+Single panel inside a `<DiagramRow>`. Renders the image in a sunken bordered frame with an optional sub-label.
+
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `src` | string | yes | Web path under `/public` |
+| `alt` | string | yes | Accessibility |
+| `aspect` | string | no | Aspect ratio string e.g. `"4/3"`, `"1/1"`. Default `"4/3"` |
+| `label` | string | no | Sub-figure caption below the panel (e.g. "Original" / "Grad-CAM") |
 
 ### `<Callout>`
 
@@ -417,13 +412,13 @@ penalty would likely close the remaining gap on tight turns.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `title` | string | no | Optional bold lead-in, renders in Accent |
+| `title` | string | no | Optional bold lead-in rendered in accent color |
 
-Single visual treatment: Accent left border, Accent title, `body-emphasis` body text. No type variants. The component is self-contained — does not rely on prose cascade. Visual treatment in DESIGN.md — Components → Content Surfaces → Callout.
+Single visual treatment: accent left border, accent title. Visual spec: `DESIGN.md → Components → Content Surfaces → Callout`.
 
 ### `<Stack>`
 
-A vertical stack of items with consistent spacing. Used for grouped lists where default markdown spacing is too tight or inconsistent.
+Vertical stack of items with consistent spacing. Used when default markdown spacing is too tight or inconsistent.
 
 ```mdx
 <Stack gap="md">
@@ -438,10 +433,10 @@ A vertical stack of items with consistent spacing. Used for grouped lists where 
 
 ### `<Highlight>`
 
-Editorial pull-quote panel for a single key insight. Elevated above normal prose — not a callout variant.
+Standalone elevated pull-quote for a single key insight. A physically separated panel — not an inline callout variant.
 
 ```mdx
-<Highlight heading="Notes #1">
+<Highlight heading="Key finding">
   High-entropy inputs sit near class boundaries — training on these provides
   a denser map of the victim's decision surface per query.
 </Highlight>
@@ -449,14 +444,14 @@ Editorial pull-quote panel for a single key insight. Elevated above normal prose
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `heading` | string | no | Renders as `insight-label` caption above the body. No heading = body panel only |
-| `children` | ReactNode | yes | Prose content. Rendered at `body-emphasis` weight |
+| `heading` | string | no | Renders as a small label above the body. Omit for body panel only |
+| `children` | ReactNode | yes | Prose content |
 
-Visual treatment in DESIGN.md — Components → Content Surfaces → Highlight. Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; Highlight is a standalone elevated statement.
+Use sparingly — one per deep dive at most. Not a substitute for `<Callout>`. Callouts are inline asides; `<Highlight>` is a standalone elevated statement. Visual spec: `DESIGN.md → Components → Content Surfaces → Highlight`.
 
-### Code blocks
+### Code Blocks
 
-Standard fenced code blocks. Syntax-highlighted at build time via Shiki (PRODUCT.md §7.3). Language hint required for highlighting.
+Standard fenced code blocks, syntax-highlighted at build time via Shiki. Language hint required for highlighting.
 
 ````mdx
 ```python
@@ -465,78 +460,59 @@ def reward(state, next_state):
 ```
 ````
 
-Inline code uses single backticks: `` `like this` ``. Renders per DESIGN.md — Foundations → Typography — `mono-code` token.
+Inline code uses single backticks. Visual spec: `DESIGN.md → Technical Conventions → Code Block Highlighting`.
 
 ---
 
-## 6. Standard Markdown Conventions
-
-Within MDX body, standard markdown is used:
+## Standard Markdown Conventions
 
 | Element | Use |
 |---|---|
-| `**bold**` | Emphasis. Use sparingly. |
-| `*italic*` | Term introduction, foreign words, emphasis. |
-| `[link](url)` | Inline links. Open external links in new tabs (handled by the renderer for `http://`/`https://`). |
-| `> quote` | Blockquote. Renders per DESIGN.md `blockquote` token. |
-| `---` | Horizontal rule. Use to separate major shifts within a section, sparingly. |
-| Lists | Unordered or ordered. List items follow DESIGN.md `list-item` spacing. |
-| Tables | GFM tables. Render with `outline-variant` borders. |
+| `**bold**` | Emphasis. Use sparingly |
+| `*italic*` | Term introduction, foreign words, light emphasis |
+| `[link](url)` | Inline links. External `http`/`https` links open in a new tab |
+| `> quote` | Blockquote |
+| `---` | Horizontal rule. Use sparingly for major shifts within a section |
+| Lists | Unordered or ordered |
+| Tables | GFM tables |
 
-### What not to do
-
-- No raw HTML in MDX body. Use components instead.
-- No `<br>` for spacing — let the layout handle it.
-- No styling inline (no `style=`, no class names).
-- No multiple consecutive blank lines.
+**No raw HTML in MDX body** — use components instead. **No `<br>` for spacing.** **No inline `style=` or `className=`.**
 
 ---
 
-## 7. About Page Content
+## About Page Content
 
-PRODUCT.md §7.4 specifies About-page sections. Content for these sections is **not** in MDX body — it lives in structured frontmatter on a single `/content/about/about.mdx` file.
+`PRODUCT.md → Page Specifications → About` specifies the About page sections. Content lives in structured frontmatter on a single `/content/about/about.mdx` file — not in MDX body.
 
-Reason: the About page has a structured two-column layout (DESIGN.md — Domain Components → About Layouts) where each section's heading and body must be rendered consistently. Frontmatter enforces structure better than MDX body for this case.
+The About page has a structured layout where each section's heading and body must render consistently across rebuilds. Frontmatter enforces that structure; MDX body cannot.
 
 ```yaml
 ---
-# /content/about/about.mdx (frontmatter only; body is unused)
+# /content/about/about.mdx (frontmatter only; body is unused in v1)
 
-# Identity
 name: "Your Name"
-role: "AI/ML Engineer"
 
-# Intro paragraph — rendered as the opening body-lg sentence in the two-panel intro.
-# One paragraph. Plain prose, first person. States what you build and how you think.
+# Opening statement — rendered as the editorial deck under the H1.
+# One concise sentence. States what you build and how you think about it.
 positioning: "Building practical ML systems for real-world constraints."
 
-# Supporting points — rendered as a bullet list below the intro paragraph.
-# 3–5 items. Each is a concise, standalone engineering-focused statement.
-# Covers: how you work, what you optimise for, domain breadth, collaboration style.
-detailedPositioning:
-  - "Systems thinking across model training, inference, and backend — these are connected problems."
-  - "I optimise for shipping. Usable systems early, refined against real data."
-  # 3–5 items recommended
+# Supporting paragraphs — rendered as body-weight prose below the opening statement.
+# Multi-paragraph string; paragraphs separated by a blank line.
+# Covers: domain focus, how you work, what you optimise for.
+detailedPositioning: |
+  Systems thinking across model training, inference, and backend — these are connected problems.
 
-headshot: "/headshot.jpg"
+  I optimise for shipping. Usable systems early, refined against real data.
+
+headshot: "/headshot.jpeg"
 headshotAlt: "Portrait of [Your Name]"
+
 socials:
   github: "https://github.com/..."
   linkedin: "https://linkedin.com/in/..."
-  # extend as needed
 
-# Populates the email affordance in the identity contact row and the contact section
 contactEmail: "you@example.com"
 
-# Approach (rendered as numbered or bulleted principles per DESIGN.md)
-approach:
-  - title: "Systems thinking"
-    body: "..."
-  - title: "Iteration over speculation"
-    body: "..."
-  # 4–6 recommended
-
-# Capabilities (grouped per PRODUCT.md §7.4 #6)
 capabilities:
   - area: "ML Systems"
     description: "End-to-end model development, deployment, and monitoring."
@@ -544,54 +520,61 @@ capabilities:
   - area: "Computer Vision"
     description: "..."
     tags: [OpenCV, Detectron2]
-  - area: "Backend & Infra"
-    description: "..."
-    tags: [FastAPI, Postgres, Docker]
+
+approach:
+  - title: "Systems thinking"
+    body: "..."
+  - title: "Iteration over speculation"
+    body: "..."
 ---
 ```
 
-### About frontmatter rules
+### About Frontmatter Rules
 
-- All top-level fields except `socials` are required.
-- `socials` requires at least one entry.
-- `capabilities` minimum two entries (single-area capabilities read as thin).
-- Date strings are free-form for human readability ("2022 — Present", "Sep 2024") because they're displayed verbatim, not sorted.
+| Field | Required | Notes |
+|---|---|---|
+| `name` | yes | |
+| `positioning` | yes | One sentence |
+| `detailedPositioning` | yes | Multi-paragraph string; paragraphs split on blank lines |
+| `headshot` | yes | Web path starting with `/` |
+| `headshotAlt` | yes | |
+| `socials` | yes | Minimum one entry; each value is a URL |
+| `contactEmail` | yes | Valid email address |
+| `capabilities` | yes | Minimum two entries |
+| `approach` | yes | Minimum one entry |
 
-### Body content
+- `capabilities[].description` is optional — omitted fields render nothing.
+- `capabilities[].tags` is required per entry.
+- Date strings in any display field are free-form for human readability — they are displayed verbatim, not sorted.
 
-The MDX body of `about.mdx` is unused in v1. Reserved for v2 if a need arises. Validation does not check body content.
+**Body content:** the MDX body of `about.mdx` is unused in v1.
 
 ---
 
-## 8. Resume
+## Resume
 
-Single PDF at `/public/resume.pdf`. Updated manually. No content schema — it's a binary asset.
-
-The recruiter CTA on the homepage links directly to `/resume.pdf` for download.
+Single PDF at `/public/AishwaryaGanesan_Resume.pdf`. Updated manually. No content schema — it's a binary asset.
 
 ---
 
-## 9. Blog (v2)
+## Blog — v2
 
-Blog content schema is **deferred to v2**. When v2 is scoped:
-
+Blog content schema is deferred to v2. When v2 is scoped:
 - Blog posts will reuse the MDX pipeline.
-- Frontmatter will share `title`, `summary`, `publishedAt`, `tags`, `heroImage`, `ogImage`, `metaDescription` with projects (consider extracting a shared base schema).
-- Blog posts will have free-form body MDX (no equivalent of `overview` frontmatter).
-- Blog-specific fields (e.g., `readingTime`, `series`) are TBD.
+- Frontmatter will share `title`, `summary`, `publishedAt`, `tags`, `heroImage`, `ogImage`, `metaDescription` with projects.
+- Blog posts will have free-form body MDX — no `overview` frontmatter equivalent.
+- Blog-specific fields (e.g. `readingTime`, `series`) are TBD.
 
-Do not pre-create blog frontmatter fields in v1.
+No blog frontmatter fields in v1.
 
 ---
 
-## 10. Validation Implementation
+## Validation Implementation
 
 Frontmatter is validated at build time using Zod. All schemas live in `/lib/schemas/`.
 
 ```ts
-// /lib/schemas/project.ts
-import { z } from 'zod'
-
+// /lib/schemas/project.ts (representative — refer to source for authoritative schema)
 const StackSchema = z.object({
   languages: z.array(z.string()),
   frameworks: z.array(z.string()),
@@ -610,24 +593,10 @@ const OverviewSchema = z.object({
 const LinksSchema = z.object({
   github: z.string().url().optional(),
   demo: z.string().url().optional(),
-  paper: z.string().optional(),                // can be relative path
-  presentation: z.string().optional(),         // can be relative path
+  paper: z.string().optional(),
+  report: z.string().optional(),
+  presentation: z.string().optional(),
 }).optional()
-
-const LogoSchema = z.object({
-  src: z.string().startsWith('/'),
-  alt: z.string().min(1),
-})
-
-const ContributorSchema = z.object({
-  name: z.string().min(1),
-  avatar: z.string().startsWith('/'),
-  url: z.string().url().optional(),
-})
-
-const VIDEO_EXTENSIONS = ['.mp4', '.webm']
-const isVideo = (path: string) =>
-  VIDEO_EXTENSIONS.some(ext => path.toLowerCase().endsWith(ext))
 
 export const ProjectFrontmatterSchema = z.object({
   title: z.string().min(1),
@@ -636,7 +605,7 @@ export const ProjectFrontmatterSchema = z.object({
   projectType: z.enum(['academic', 'freelance', 'personal']),
   publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   order: z.number(),
-  heroImage: z.string().startsWith('/'),
+  heroImage: z.string().startsWith('/').optional(),   // optional when live cover registered
   heroAlt: z.string().min(1),
   heroPoster: z.string().startsWith('/').optional(),
   heroVideoLoop: z.boolean().optional().default(true),
@@ -651,43 +620,38 @@ export const ProjectFrontmatterSchema = z.object({
   metaDescription: z.string().max(160).optional(),
   relatedProjects: z.array(z.string()).optional(),
 }).refine(
-  (data) => !isVideo(data.heroImage) || !!data.heroPoster,
+  (data) => !data.heroImage || !isVideo(data.heroImage) || !!data.heroPoster,
   { message: 'heroPoster is required when heroImage is a video', path: ['heroPoster'] }
 )
-
-// Cross-project validation runs after parsing all files:
-// - featured count ≤ 3
-// - relatedProjects slugs all exist
 ```
 
-The build script:
+**Build script flow:**
+1. Read every `.mdx` file under `/content/projects/`.
+2. Parse frontmatter with `gray-matter`.
+3. Validate against `ProjectFrontmatterSchema`.
+4. Validate cross-project rules (featured count, related-project slugs).
+5. Fail with file-and-field-specific error messages on any violation.
 
-1. Reads every `.mdx` file under `/content/projects/`.
-2. Parses frontmatter with `gray-matter`.
-3. Validates against `ProjectFrontmatterSchema`.
-4. Validates cross-project rules (featured count, related-project slugs).
-5. Fails the build with file-and-field-specific error messages on any violation.
-
-Same approach applies to `/content/about/about.mdx` against an `AboutFrontmatterSchema`.
+Same approach applies to `/content/about/about.mdx` against `AboutFrontmatterSchema`.
 
 ---
 
-## 11. Adding a New Project — Author Workflow
+## Adding a New Project — Author Workflow
 
 1. Create `/content/projects/my-project.mdx`.
-2. Fill in required frontmatter (see §3).
-3. Add hero image to `/public/projects/my-project/hero.jpg`.
+2. Fill in required frontmatter — see → Project Frontmatter Schema → Field reference.
+3. Add hero asset to `/public/projects/my-project/` (image, video, or register a live cover).
 4. Write the deep dive in MDX body using H2 section headings.
-5. Run `npm run build` (or local dev server) — build will fail with specific errors if frontmatter is incomplete or invalid.
-6. The new project appears automatically on `/work` and at `/work/my-project`.
-7. To feature on homepage: add `featured: true` (max 3 across all projects).
+5. Run `npm run build` — build fails with specific errors if frontmatter is incomplete or invalid.
+6. The project appears automatically on `/work` and at `/work/my-project`.
+7. To feature on the homepage: add `featured: true` — max 3 across all projects.
 
 No code changes. No card-component edits. No manual route registration.
 
 ---
 
-## 12. Open Decisions
+## Open Questions
 
-1. **Tag normalization.** Tags are currently free-form strings, which means "Computer Vision" and "computer vision" are different tags for v2 search/filter. Decide before v2: case-insensitive matching, or a controlled tag vocabulary?
-2. **Stack vs tags overlap.** A project tagged `["Reinforcement Learning"]` with stack `frameworks: [PyTorch]` works, but the boundary is fuzzy. v1 ships as-is; revisit if it causes drift.
-3. **Multi-author / collaborator credit.** `contributors[]` added as optional presentational metadata (`name`, `avatar`, `url?`). No contributor profile system or cross-link architecture.
+- **Tag normalization.** Tags are currently free-form strings — `"Computer Vision"` and `"computer vision"` are different values. Decide before v2 search/filter: case-insensitive matching or a controlled tag vocabulary?
+- **Stack vs tags overlap.** A project tagged `["Reinforcement Learning"]` with `stack.frameworks: [PyTorch]` works, but the boundary is fuzzy. v1 ships as-is; revisit if it causes drift.
+- **Multi-author credit.** `contributors[]` is presentational metadata (`name`, `avatar`, `url?`). No contributor profile system or cross-link architecture.
