@@ -6,7 +6,7 @@ import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { SurfaceContext } from "@/components/shell/surface-context";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
-import { buildWebSiteSchema } from "@/lib/seo/jsonld";
+import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import "./globals.css";
 
 // Set the reading-surface flag before first paint (no flash on direct loads of project pages);
@@ -52,7 +52,7 @@ export default function RootLayout({
       <body className="flex min-h-dvh flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }}
         />
         <script dangerouslySetInnerHTML={{ __html: SURFACE_INIT }} />
         <Providers>

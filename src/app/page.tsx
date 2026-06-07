@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
-import { buildPersonSchema } from "@/lib/seo/jsonld";
+import { buildPersonSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = {
   title: { absolute: "Aishwarya Ganesan" },
@@ -36,7 +36,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personSchema) }}
       />
       {/* Hero */}
       <Section

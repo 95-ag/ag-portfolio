@@ -3,6 +3,17 @@ import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 const SITE_URL = "https://ag-portfolio.vercel.app";
 
+// Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
+// not escape `<`, so a value containing `</script>` would break out of the tag.
+// Escaping the HTML-significant characters closes that injection sink. (The script
+// is type="application/ld+json", not executed as JS, so JS line separators are moot.)
+export function serializeJsonLd(schema: object): string {
+  return JSON.stringify(schema)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
+
 export function buildWebSiteSchema() {
   return {
     "@context": "https://schema.org",

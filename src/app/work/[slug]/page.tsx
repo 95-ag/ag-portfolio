@@ -16,6 +16,7 @@ import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
 import {
   buildBreadcrumbSchema,
   buildCreativeWorkSchema,
+  serializeJsonLd,
 } from "@/lib/seo/jsonld";
 
 const SITE_URL = "https://ag-portfolio.vercel.app";
@@ -74,11 +75,13 @@ export default async function ProjectPage({ params }: Props) {
     <article>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(creativeWorkSchema),
+        }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
       <SectionProgressNav />
 

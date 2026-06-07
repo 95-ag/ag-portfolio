@@ -14,7 +14,7 @@ import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
-import { buildPersonSchema } from "@/lib/seo/jsonld";
+import { buildPersonSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = {
   title: "About",
@@ -39,7 +39,7 @@ export default function AboutPage() {
     <Section>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personSchema) }}
       />
       <Container>
         <div className="flex flex-col gap-[var(--spacing-2xl)] md:gap-[var(--spacing-3xl)] xl:gap-[var(--spacing-5xl)]">
