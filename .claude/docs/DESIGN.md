@@ -28,7 +28,6 @@ spacing:
   margin-desktop: 64px
 
 radius:
-  0px:  0px
   sm:   4px
   md:   8px
   lg:   12px
@@ -38,8 +37,8 @@ motion:
   duration-fast: 150ms
   duration-base: 200ms
   duration-slow: 300ms
-  easing-standard: cubic-bezier(0.2, 0, 0, 1)
-  easing-emphasis: cubic-bezier(0.3, 0, 0, 1)
+  ease-standard: cubic-bezier(0.2, 0, 0, 1)
+  ease-emphasis: cubic-bezier(0.3, 0, 0, 1)
 
 breakpoints:
   sm: 640px
@@ -260,8 +259,8 @@ Motion is calm, restrained, intentional. All transitions respect `prefers-reduce
 - `{motion.duration-fast}` (150ms) — hover states, button presses.
 - `{motion.duration-base}` (200ms) — nav transitions, fades.
 - `{motion.duration-slow}` (300ms) — slide-out menu, larger reveals.
-- `{motion.easing-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
-- `{motion.easing-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
+- `{motion.ease-standard}` — `cubic-bezier(0.2, 0, 0, 1)`.
+- `{motion.ease-emphasis}` — `cubic-bezier(0.3, 0, 0, 1)`.
 
 ### Layout
 
@@ -448,8 +447,8 @@ mobile-slide-out:
   padding: 24px
   zIndex: 60
   
-  enter: slide-in from right, 300ms, easing-emphasis
-  exit: slide-out to right, 300ms, easing-emphasis
+  enter: slide-in from right, 300ms, ease-emphasis
+  exit: slide-out to right, 300ms, ease-emphasis
 
 mobile-slide-out-overlay:
   position: fixed
