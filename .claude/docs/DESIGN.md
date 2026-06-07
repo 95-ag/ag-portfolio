@@ -1142,7 +1142,7 @@ No loading states are defined in v1 — all pages are statically generated; no a
 
 ### Don't
 
-- Don't introduce `backdrop-filter` outside floating navigation surfaces (pill nav, mobile nav panel, scroll-to-top).
+- Don't introduce `backdrop-filter` outside the floating nav/utility surfaces named in Foundations → Elevation & Depth → Backdrop-Blur Carve-out.
 - Don't use shadows to imply depth — tonal layering is the only elevation mechanism in v1.
 - Don't use oversized hero imagery without contextual framing — images serve editorial narrative, not decoration.
 - Don't use mono typography in body copy, headlines, or prose.
