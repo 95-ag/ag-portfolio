@@ -1162,19 +1162,19 @@ Components must use z-index tokens, not raw numbers.
 |---|---|---|
 | `base` | 0 | Default document flow |
 | `raised` | 10 | Reserved — raised cards, hover lifts (unused in v1) |
-| `sticky-content` | 20 | Sticky sidebars, sticky table headers, section progress nav |
-| `reading-progress` | 30 | Reading progress bar |
+| `sticky-content` | 20 | Section progress nav (sticky sidebar) |
+| `reading-progress` | 30 | Reserved — reading progress bar (unused in v1) |
 | `scroll-to-top` | 40 | Scroll-to-top button |
 | `pill-nav` | 50 | Floating pill nav |
 | `mobile-menu-overlay` | 55 | Semi-opaque overlay behind mobile slide-out |
 | `mobile-menu-panel` | 60 | Mobile slide-out panel |
-| `tooltip` | 70 | Tooltip popups |
+| `tooltip` | 70 | Reserved — tooltip popups (unused in v1) |
 | `modal` | 80 | Reserved |
 | `toast` | 90 | Reserved |
 
 ### Root Layout Shell
 
-`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom. `<BackgroundLayer />` mounts as first child of `<Providers>`, before `<Nav>` — fixed-position, does not affect document flow.
+`body` is `flex min-h-dvh flex-col`; `main` is `flex flex-1 flex-col pt-[var(--spacing-3xl)]`. `min-h-dvh` avoids iOS Safari viewport height bugs. On content-heavy pages this is transparent — `main` expands naturally. On short pages (404), a `flex flex-1 items-center` child centers content while the footer pins to the viewport bottom. `<BackgroundLayer />` mounts in `<Providers>` before `<Nav>` (after the non-visual `<SurfaceContext>`) — fixed-position, does not affect document flow.
 
 ### Code Block Highlighting
 
