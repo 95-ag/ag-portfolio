@@ -1017,7 +1017,7 @@ editorial-dl:
 
 Flex row intro layout for the About page; headshot panel beside intro copy on tablet and desktop, stacked identity block on mobile.
 
-- Headshot column is a fluid clamp — `clamp(200px, 24vw, 320px)` — giving progressive portrait presence from tablet through desktop without exceeding a restrained ceiling. Text column takes the remaining width.
+- Headshot column is a fluid clamp — `clamp(180px, 20vw, 280px)` — giving progressive portrait presence from tablet through desktop without exceeding a restrained ceiling. Text column takes the remaining width.
 - Image renders in black and white (`grayscale(100%)`), `object-fit: cover`. `object-position` should be tuned to the source image composition to preserve face/shoulder framing at both aspect ratios.
 - On mobile (below `md`, 768px): stacked single column, headshot goes full container width at 1:1 square aspect — acts as a contextual identity block, not a collapsed sidebar asset.
 
@@ -1030,7 +1030,7 @@ about-intro:
     alignItems: start
 
     headshot-panel:
-      width: "clamp(200px, 24vw, 320px)"
+      width: "clamp(180px, 20vw, 280px)"
       aspectRatio: 3/4
       borderRadius: "{radius.md}"
       filter: grayscale(100%)
@@ -1081,6 +1081,43 @@ about-two-col:
     display: flex
     flexDirection: column
     gap: md
+```
+
+#### About — Work with Me
+
+Contact and resume section at the bottom of the About page. Two actions side by side on small viewports and wider: primary opens a mailto link, secondary downloads the resume PDF.
+
+- Flat elevation — no card border or surface fill, matching the rest of the About section stack.
+- Two-action grid: single column on mobile, `sm:grid-cols-2 sm:w-fit` on small viewports and wider. Gap `{spacing.md}`.
+- Primary action: `Button` (primary variant, email mailto). A copyable email text link (`body-caption`, `on-surface-muted`, underline) sits below as a low-friction alternative.
+- Secondary action: `Button` (secondary variant, resume download — `/AishwaryaGanesan_Resume.pdf`).
+
+```yaml
+about-work-with-me:
+  layout: flex-col
+  gap: "{spacing.lg}"
+
+  heading:
+    element: h2
+    type: heading-section
+    text: "Work with me"
+
+  body:
+    type: body-secondary
+    color: on-surface-muted
+
+  actions:
+    layout: grid-cols-1 sm:grid-cols-2
+    width: sm:w-fit
+    gap: "{spacing.md}"
+
+    primary-action:
+      - Button (primary, email mailto)
+      - CopyLink below: body-caption, on-surface-muted, underline
+
+    secondary-action:
+      - Button (secondary, resume download)
+      - src: /AishwaryaGanesan_Resume.pdf
 ```
 
 ### 404 Not Found
