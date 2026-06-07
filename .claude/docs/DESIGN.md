@@ -1121,10 +1121,10 @@ No loading states are defined in v1 — all pages are statically generated; no a
 ## Accessibility Rules
 
 - **Focus rings:** 2px solid `focus-ring` (= accent), 2px offset, on all keyboard-focused interactive elements. Use `:focus-visible`, not `:focus`, to avoid showing on mouse-click.
-- **Contrast:** all text/background combinations meet WCAG AA (4.5:1 for body, 3:1 for large text and UI components). Active pill nav fill (`accent` background + `accent-on` text) must pass AA in both themes.
+- **Contrast:** all text/background combinations meet WCAG AA (4.5:1 body, 3:1 large text and UI components). The highest-risk fills — the primary CTA (`accent` + `accent-on`) and the active nav state (`surface-selection` + `on-surface`) — must pass AA in both themes.
 - **Touch targets:** minimum 44x44px for all interactive elements on mobile.
 - **Reduced motion:** all motion in Foundations → Motion & Interaction has a no-motion fallback. Page transitions become instant. Hover transforms become color-only.
-- **Theme toggle accessible name:** `aria-label` reflects current state ("Switch to dark theme", "Switch to system theme", etc.) and updates on cycle.
+- **Theme selector accessible names:** each option carries `aria-label="Set {Light|Dark|System} theme"` and `aria-pressed` marks the active mode — a three-option selector, not a cycling toggle.
 
 ---
 
