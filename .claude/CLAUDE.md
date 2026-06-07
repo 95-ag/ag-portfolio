@@ -35,6 +35,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 | Rule file | Covers |
 |---|---|
 | `rules/frontend.md` | Next.js, fonts, images, imports, MDX |
+| `rules/component-structure.md` | Component folder map, naming, inline-vs-extract, doc↔code bridge |
 | `rules/design-system.md` | Color tokens, typography, spacing, elevation, z-index |
 | `rules/motion.md` | Animation constraints, duration tokens, reduced-motion |
 | `rules/content.md` | Frontmatter schema, MDX body, Zod validation |
