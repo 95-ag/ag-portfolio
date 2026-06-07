@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { caveat, inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
-import { BackgroundLayer } from "@/components/bg/background-layer";
+import { BackgroundLayer } from "@/components/background/background-layer";
 import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { SurfaceContext } from "@/components/shell/surface-context";
