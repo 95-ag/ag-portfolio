@@ -23,7 +23,6 @@ export function buildPersonSchema(
   extraTags: string[] = [],
 ) {
   const capabilityTags = about.capabilities.flatMap((c) => c.tags);
-  // Merge project tags, deduplicating case-insensitively across both lists
   const seen = new Set(capabilityTags.map((t) => t.toLowerCase()));
   const uniqueExtraTags = extraTags.filter((t) => {
     const lower = t.toLowerCase();

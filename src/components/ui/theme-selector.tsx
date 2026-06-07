@@ -63,7 +63,6 @@ export function PillThemeSelector() {
     >
       {MODES.map((mode) => {
         const isSelected = mode === current;
-        // Selected button is always visible; others appear only when expanded
         const visible = isSelected || expanded;
         const ModeIcon = ICON[mode];
         return (

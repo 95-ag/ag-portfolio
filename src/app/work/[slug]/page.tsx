@@ -104,7 +104,6 @@ export default async function ProjectPage({ params }: Props) {
               />
             </div>
 
-            {/* Overview + Tech Stack + deep-dive prose share .prose-content */}
             <div className="prose-content mt-[var(--spacing-3xl)]">
               <h2>Overview</h2>
               <ProjectOverview overview={fm.overview} />

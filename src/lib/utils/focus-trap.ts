@@ -15,7 +15,6 @@ export function useFocusTrap(
     const returnFocus = document.activeElement as HTMLElement;
 
     if (!active) {
-      // Restore focus to the element that was focused before the trap opened
       returnFocus?.focus();
       return;
     }
