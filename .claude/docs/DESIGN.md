@@ -794,7 +794,11 @@ Two-column desktop layout: content left, portrait right. Single-column on mobile
 
 - Content column (`lg:flex-1`): flexes to fill the row up to the portrait so no gap opens between text and image; H1 (`display-primary`, 64px desktop) wraps ~2 lines. Eyebrow (`mono-anchor`) → H1 → tagline (`body-lead`) → CTA row.
 - CTAs: Primary "See Projects" (`ArrowDownwardIcon`, `href="#featured"`) + Secondary "Get in Touch" (`MailIcon`, `mailto:`).
-- Portrait column (`shrink-0`, `lg:w-[460px]`, `hidden lg:block`): a fixed width keeps the portrait a stable size across the desktop range (no big→small scaling that would reopen the H1-vs-portrait balance). Two theme-specific portraits — `hero-dark.png` / `hero-light.png` — via `next/image` at **natural aspect** (`width 800 × height 1000`, `h-auto w-full`, no crop — the full figure shows, dissolving into the page on all sides). Only the active theme's image shows (`globals.css` `[data-theme]` `display:none` swap); both render in the DOM for a flash-free, JS-free swap. **No `priority`.** On mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile). Each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges: dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask. A per-theme `saturate(0.85)` + `opacity 0.9` on the `<img>` calms the full-colour portrait against the near-monochrome scheme so the H1 leads.
+- **Portrait column** (`shrink-0`, `lg:w-[460px]`, `hidden lg:block`): a fixed width keeps the portrait a stable size across the desktop range (no big→small scaling that would reopen the H1-vs-portrait balance).
+  - Two theme-specific portraits — `hero-dark.png` / `hero-light.png` — via `next/image` at **natural aspect** (`width 800 × height 1000`, `h-auto w-full`, no crop — the full figure shows, dissolving into the page on all sides). **No `priority`.**
+  - Only the active theme's image shows (`globals.css` `[data-theme]` `display:none` swap); both render in the DOM for a flash-free, JS-free swap.
+  - Fetch: on mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile).
+  - Blend treatment: each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges — dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask. A per-theme `saturate(0.85)` + `opacity 0.9` on the `<img>` calms the full-colour portrait against the near-monochrome scheme so the H1 leads.
 - **Hero blend constraint (deliberate, scoped exception to "no effects"):** `mix-blend-mode` composites against the backdrop within the element's stacking context. It sits on the `<img>` — a `filter`/`mix-blend` on the image *itself* is fine (an element's own blend still reaches its parent backdrop). What must NOT happen is a stacking context or opaque background on any **ancestor**: no `z-index`/`transform`/`opacity`/`filter`/`mask`/`isolation` on the wrapper or up to `<body>`, or the blend keys against an opaque box instead of the `BackgroundLayer` meteors. The hero is above the meteors by tree order and below the nav (`z-50`) — no explicit z-index. (`html`'s opaque `--background` is fine; meteors paint over it.) Works with or without the meteor canvas: when meteors are suppressed (reduced-motion / low-core / project pages) the blend simply drops each bake toward the flat page background.
 - Hero `<Section>` bottom padding: `{spacing.2xl}` (48px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
@@ -820,12 +824,12 @@ project-detail:
   margin: 0 auto
 
   sections-in-order:
-    - project-header      # tags, title, subtitle, links row
-    - hero-media          # 16:9, surface-sunken bg (level 4), radius-md
-    - overview            # editorial-dl layout (see below)
-    - tech-stack          # editorial-dl layout under a prose-h2
-    - mdx-deep-dive       # MDX body
-    - backlink            # "← Back to Work"
+    - project-header
+    - hero-media
+    - overview
+    - tech-stack
+    - mdx-deep-dive
+    - backlink
 ```
 
 #### Project Header `[standalone]`
@@ -833,7 +837,7 @@ project-detail:
 Page header for a project detail page; communicates project identity, tags, and links before the hero media.
 
 - Vertical stack: tags row → display title → optional subtitle → optional links row.
-- Links row renders only when the project has external links (`github`, `demo`, `paper`, `presentation`).
+- Links row renders only when the project has external links (`github`, `demo`, `paper`, `report`, `presentation`).
 - Cover metadata groups (`logos[]`, `contributors[]`) may be interactive in project detail pages when a `url` is present on the entry.
 - Each link: 16px leading type icon (brand or Material) → text label → 12px trailing `OpenInNewIcon` as external link indicator.
 
@@ -847,12 +851,12 @@ project-header:
   title:
     type: display-title
 
-  subtitle:                           # optional
+  subtitle:
     type: body-secondary
     color: on-surface-muted
 
-  links-row:                          # optional, renders if links exist
-    layout: flex-wrap, gap sm
+  links-row:
+    layout: flex-wrap, gap lg
     link: LinkPill (external) — soft-filled pill with trailing open-in-new icon (see Components → Actions & Interactive → LinkPill)
 ```
 
@@ -878,34 +882,17 @@ project-header:
 
 #### Section Progress Nav `[standalone]`
 
-Desktop-only sticky TOC derived from H2 headings in the MDX body; highlights the active section as the user scrolls.
+Desktop-only sticky TOC derived from the article's H2 headings (Overview, Tech Stack, and the MDX body); highlights the active section as the user scrolls.
 
-- Fixed to the right side of the viewport; hidden below `md` breakpoint.
-- Appears after the hero scrolls out of view.
+- Fixed to the left side of the viewport, vertically centered; shown at `xl` only (hidden below 1280).
+- Rendered whenever the article has H2 sections — it does not wait for a scroll threshold.
 
 ```yaml
 section-progress-nav:
-  position: fixed, right side of viewport
-  visible: desktop only (hidden < md)
-  appears: after hero scrolls out of view
-  behavior: highlights active section as user scrolls
+  position: fixed, left side of viewport, vertically centered
+  visible: xl only (hidden < xl)
+  behavior: highlights active section as user scrolls (IntersectionObserver over article H2s)
   zIndex: sticky-content (20)
-```
-
-#### Project Section Label `[inline]`
-
-Architectural divider separating the overview block from the MDX body on project detail pages; emitted by the page template, not authored in MDX.
-
-- Section content begins below the label, separated by `spacing-xl`.
-
-```yaml
-project-section-label:
-  borderTop: 1px solid outline-variant
-  paddingTop: spacing-lg
-  label:
-    type: insight-label
-    color: on-surface-muted
-    opacity: 0.40
 ```
 
 #### Prose (MDX Deep-dive) Layout `[inline]`
@@ -913,26 +900,8 @@ project-section-label:
 Spacing and vertical rhythm for MDX long-form content; typographic treatment defined in Foundations → Typography → Prose Composition Rules.
 
 - H2s function as section anchors: `1px solid on-surface-muted` bottom border creates a thin ruled separator.
-- First H2 in `.prose-content` has `margin-top: 0` — separation is provided by the project section label above.
+- First H2 in `.prose-content` has `margin-top: 0` — separation comes from the `.prose-content` container's top margin (`{spacing.3xl}`).
 - H3s are clearly subordinate: no rule, reduced weight and margin.
-
-```yaml
-prose-h2-layout:
-  marginTop: spacing-3xl
-  borderBottom: 1px solid on-surface-muted
-  paddingBottom: spacing-md
-  marginBottom: spacing-2xl
-
-prose-h3-layout:
-  marginTop: spacing-2xl
-  marginBottom: spacing-sm
-
-prose-paragraph:
-  marginBottom: spacing-lg
-
-prose-list-item:
-  marginBottom: spacing-xs
-```
 
 #### Editorial Two-column Layout `[inline]`
 
@@ -955,12 +924,12 @@ editorial-dl:
     row-gap: spacing-md
 
   dt:
-    font: Inter 14px/600
+    font: Inter 18px/600
     color: on-surface
-    padding-top: 3px     # baseline alignment against first content line
+    padding-top: 1px
 
   dd:
-    font: body-md (16px/28px)
+    font: body-primary (18px/28px)
     color: on-surface
     margin: 0
 ```
@@ -982,7 +951,7 @@ about-intro:
   row (>= md, 768px):
     display: flex
     flexDirection: row
-    gap: "{spacing.2xl}"   # 48px
+    gap: "{spacing.2xl}"
     alignItems: start
 
     headshot-panel:
@@ -992,13 +961,10 @@ about-intro:
       filter: grayscale(100%)
       objectFit: cover
 
-    content-panel:
-      flex: 1
-
   stacked (< md):
     display: flex
     flexDirection: column
-    gap: "{spacing.xl}"    # 32px
+    gap: "{spacing.xl}"
 
     headshot-panel:
       width: 100%
@@ -1008,36 +974,19 @@ about-intro:
       objectFit: cover
 ```
 
-#### About — Two-column Structured Layout `[inline]`
+#### About — Capabilities `[inline]`
 
-25/75 column layout for structured About sections (Approach, Capabilities); heading column on the left, content on the right.
+Two-column section pairing a fixed heading column with a stacked list of capability groups.
 
-- Heading column at `md+`; stacked single column below `md` (768px).
-- Each section separated by a `1px outline-variant` border-top.
+- Flex row at `md+`: fixed `200px` heading column (`heading-section`, "Capabilities") + `flex-1` content; stacked single column below `md`. Row gap `{spacing.3xl}` at `md+`.
+- Content is a `{spacing.xl}`-gapped stack of capability groups; each group: area label (`body-lead`) → optional description (`body-secondary`) → tag row (`Tag`, gap `xs`).
 
-```yaml
-about-two-col:
-  row (>= md):
-    display: grid
-    grid-template-columns: 3fr 9fr
-    gap: xl
-    paddingVertical: 3xl
-    borderTop: 1px solid outline-variant
-    
-    heading-col:
-      gridColumn: 1
-      typography: headline-md
-      color: on-surface
-    
-    content-col:
-      gridColumn: 2
-      gap: lg
-  
-  stacked (< md):
-    display: flex
-    flexDirection: column
-    gap: md
-```
+#### About — Approach `[inline]`
+
+Heading above a numbered responsive grid — structurally distinct from Capabilities (not a two-column layout).
+
+- `heading-section` H2 ("Approach") above a grid: 1 column mobile → 2 at `md` → 3 at `xl`; gap `{spacing.xl}` mobile / `{spacing.2xl}` at `md+`.
+- Each item: a `mono-anchor` index (`01`, `02`, … in a fixed `w-6`) beside a title (`body-primary`) + body (`body-secondary`).
 
 #### About — Work with Me `[inline]`
 
@@ -1082,7 +1031,7 @@ Vertically centered error page that fits within the viewport without scrolling; 
 
 - Layout: `flex flex-1 items-center` wrapper within expanded `main` — content centers vertically in remaining space after nav.
 - Copy: "404" eyebrow (`mono-anchor`) → H1 (`display-primary`, "This page doesn't exist — but my work does.") → `body-lead` paragraph. No `max-width` constraint on body copy.
-- CTAs: Primary "See Projects" (`Button` primary, `/work`, `ArrowForwardIcon` 16px) + Secondary "Go Home" (`Button` secondary, `/`, site logomark `<Image src="/cat_head_icon.svg" width={18} height={18} className="rounded-full" unoptimized />` — matches nav pill logomark pattern).
+- CTAs: Primary "See Projects" (`Button` primary, `/work`, `ArrowForwardIcon` 18px) + Secondary "Go Home" (`Button` secondary, `/`, site logomark `<Image src="/cat_head_icon.svg" width={18} height={18} className="rounded-full" unoptimized />` — matches nav pill logomark pattern).
 - No illustrations or special visual effects. `<Container>` provides horizontal rhythm.
 
 ---
@@ -1091,7 +1040,7 @@ Vertically centered error page that fits within the viewport without scrolling; 
 
 Atmospheric, secondary visual layer providing environmental depth. Must remain visually subordinate to typography and content surfaces at all times — visibility biases toward peripheral and negative-space perception rather than direct focal attention.
 
-- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/background/`. Mounted as first child of `<Providers>` in root layout, before `<Nav>`.
+- **Components:** `BackgroundLayer` (orchestrator), `AsciiField`, `MeteorShower` in `src/components/background/`. Mounted in the root layout before `<Nav>` (after the non-visual `SurfaceContext`).
 - **Layering:** fixed position, z-index 0, `isolation: isolate`, `pointer-events: none` — sits behind all page content. `<main>` carries `position: relative` to establish its stacking context above.
 - **ASCII field:** ambient structural texture, not decorative ornamentation. Static — no animation. Desktop/tablet (≥768px, all routes): masked to the outer gutters/corners — a centered band sized to the content column + buffer is cleared (short fade in) so glyphs never touch the reading column. Mobile (<768px): full-bleed but sparser + fainter on non-project pages, and omitted entirely on project detail pages (dense reading). Three opacity tiers (accent, ink, mute); light-theme values are higher to compensate for the cream background's lower contrast.
 - **Meteor layer:** conditionally mounted. Excluded when `prefers-reduced-motion` is set (canvas never mounts), below the 768px mobile breakpoint (re-checked on resize), on small touch-only devices (no hover + viewport < 1024px), on devices with fewer than 4 logical CPU cores, and on all `/work/[slug]` routes (reading focus). The 768px floor keeps the meteor and the full-bleed mobile ASCII field from ever co-rendering.
