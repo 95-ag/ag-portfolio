@@ -20,13 +20,12 @@ Motion timing, easing, and component-specific specs are defined in `docs/DESIGN.
 - Small transforms (max values in `docs/DESIGN.md` — Foundations → Motion & Interaction → Motion Principles)
 - Color transitions (border, background, text)
 - Slide-in for mobile menu
-- Pulse on the Hire Me CTA **icon only** — never the full button, stops on hover
 
 ## Prohibited
 
 - Scroll-jacking
 - Parallax
 - Per-section entrance animations on scroll
-- Continuous ambient motion on any element other than the CTA icon
+- Continuous ambient motion on any element other than the background meteor layer
 - Cursor-tracking effects
 - Page-load reveal sequences

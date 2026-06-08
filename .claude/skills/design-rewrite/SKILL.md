@@ -44,7 +44,7 @@ Every rewriter invocation produces two things:
 MOVED: "Motion → Reduced Motion" → "Foundations → Motion & Interaction → Reduced Motion"
 MERGED: "Elevation" + "Depth" → "Elevation & Depth" (duplicate definitions, confirmed)
 UNIFIED: "tonal depth" → "tonal layering" (7 occurrences)
-FLAGGED: "surface-overlay" section — possible duplicate of surface-nav notes (awaiting confirmation)
+FLAGGED: "surface-scrim" section — possible duplicate of surface-nav notes (awaiting confirmation)
 RENAMED: "## Do's and Don'ts" → "## Do's & Don'ts" (canonical title)
 ```
 

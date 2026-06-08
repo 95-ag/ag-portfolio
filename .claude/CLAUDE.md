@@ -14,7 +14,7 @@ Personal portfolio for an AI/ML engineer. Content-led, editorial, minimal, techn
 | `.claude/docs/PRODUCT.md` | What to build and why |
 | `.claude/docs/DESIGN.md` | All visual decisions — wins over PRODUCT.md on visuals |
 | `.claude/docs/CONTENT-SCHEMA.md` | MDX and frontmatter structure — wins over PRODUCT.md on content fields |
-| `.claude/docs/IMPLEMENTATION-PHASES.md` | Phase-by-phase build order and verification gates |
+| `.claude/docs/IMPLEMENTATION-PLAN.md` | Phase-by-phase build order and verification gates |
 
 Current session state → `.claude/work/session.md`.
 
@@ -35,6 +35,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 | Rule file | Covers |
 |---|---|
 | `rules/frontend.md` | Next.js, fonts, images, imports, MDX |
+| `rules/component-structure.md` | Component folder map, naming, inline-vs-extract, doc↔code bridge |
 | `rules/design-system.md` | Color tokens, typography, spacing, elevation, z-index |
 | `rules/motion.md` | Animation constraints, duration tokens, reduced-motion |
 | `rules/content.md` | Frontmatter schema, MDX body, Zod validation |
@@ -45,7 +46,7 @@ All rules live in `.claude/rules/`. Read the relevant file before any task in th
 
 ## Key Constraints
 
-- Do not skip build phases — see `IMPLEMENTATION-PHASES.md` for phase gates
+- Do not skip build phases — see `IMPLEMENTATION-PLAN.md` for phase gates
 - No client-side syntax highlighting — build-time only via Shiki
 - No animation libraries beyond Framer Motion
 - No shadows — elevation via tonal borders and surface fills only (Highlight shadow carve-out removed)

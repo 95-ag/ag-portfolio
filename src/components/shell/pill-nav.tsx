@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import type { IconProps } from "@/components/icons/icon-base";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
-import { PillThemeSelector } from "@/components/ui/theme-toggle";
+import { PillThemeSelector } from "@/components/ui/theme-selector";
 import { cn } from "@/lib/utils/cn";
 
 type NavIconComponent = (props: IconProps) => React.ReactElement;

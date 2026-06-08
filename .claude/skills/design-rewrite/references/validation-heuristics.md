@@ -33,6 +33,7 @@ Run these checks after producing the rewritten document, before reporting done. 
 - `## Domain Components` appears between `## Components` and `## Interaction Rules` — not at the end of the document.
 - Each domain component SHOULD primarily compose, specialize, or extend one or more canonical spine systems, and MAY assume a specific page context or content schema.
 - Domain Components MUST NOT contain globally reusable UI systems — those belong in `## Components`.
+- Each Domain Components leaf carries an `[inline]` (a page section composed in `src/app/**`, no separate component file) or `[standalone]` (has its own file under `src/components/`) tag — the doc↔code bridge defined in `rules/component-structure.md`. Verify every leaf is tagged and the tag matches reality; parent group headers (Home Page, Project Detail, About Layouts) carry no tag.
 
 ## Technical Conventions Scope
 
@@ -76,3 +77,5 @@ These are preferences and guidelines, not hard rules. Apply them with judgment �
 **Prose removal threshold.** Remove interpretive prose when the nearby table or spec already expresses the behavior clearly. Do not remove prose that adds framing, interpretive context, or cross-cutting rules not visible in the table itself.
 
 **Content-sufficiency language.** Do not describe sections as "thin", "underdeveloped", or "near-empty" in pass output or manifests. A short section is not a structural problem. Use `PLACEHOLDER` for empty headings; otherwise leave content-sufficiency judgments out of the manifest entirely.
+
+**Unused / reserved tokens.** A token registry should hold tokens that are in use. When a token is unused (no component or rule consumes it), prefer removing it and its documentation over labeling it "Reserved — unused" — reserved entries accrete and mislead. Carve-out: keep a token the project *intentionally* maintains as a reserved scale slot, labeled as such. "Unused" is a code claim — verify against the code and flag for confirmation before deleting; don't assume.

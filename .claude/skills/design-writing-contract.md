@@ -186,10 +186,10 @@ YAML MUST NOT:
 * replace semantic explanation
 * appear before identity/behavior description
 * restate information already sufficiently communicated in prose unless structural hierarchy or implementation precision requires it
-* carry primary semantic meaning through inline comments — explanatory semantics belong in prose or bullets above the block
+* contain inline `#` comments of any kind — value annotations and conditional/responsive specs become proper keys; all interpretive semantics belong in prose or bullets above the block
 * form a single monolithic superblock — the registry collects globally reusable tokens, not every YAML block in the document
 
-YAML blocks are spec registries: token/value mappings, structural hierarchies, and variant definitions. When inline YAML comments are carrying the primary semantic load, move the semantics to bullets above and remove the comments.
+YAML blocks are spec registries: token/value mappings, structural hierarchies, and variant definitions — with no inline `#` comments. A comment that annotates a value (`# 16px`) is redundant with the value and is deleted; a comment that smuggles a conditional or responsive spec (`right: 16px  # lg+: max(...)`) becomes a proper key (`right-lg: max(...)`); a comment that explains meaning moves to prose above the block.
 
 Exception: foundational token systems (spacing scale, motion tokens, breakpoints) must preserve a canonical YAML block even when prose explains the semantics. Prose establishes meaning; YAML is the spec registry. They serve different roles and coexist.
 
@@ -288,13 +288,18 @@ Technical prose SHOULD favor compressed semantic clusters over decomposed specif
 
 Closely related implementation details SHOULD be merged into compact semantic clusters rather than separated into mechanically isolated bullets.
 
-Preferred:
+**But cluster only low-information attributes.** When a single concept carries high information — several facts that each need their own explanation — split it into multiple bullets or nested sub-bullets rather than cramming one overloaded bullet. The trigger is visual length: once a bullet exceeds ~2 visual lines, split it. Clustering related facts and splitting loaded ones serve the same goal — bounded reading load — applied to opposite inputs.
+
+Preferred (cluster — low-info attributes):
 - Background `{surface-tag}`, text `{colors.on-surface}`, type `tag-chip`, rounded `{radius.sm}` (4px).
 
-Avoid:
+Avoid (over-decomposed):
 - Background `{surface-tag}`
 - Text `{colors.on-surface}`
 - Radius `{radius.sm}` (4px)
+
+Avoid (over-loaded — split a high-information concept into a parent + sub-bullets):
+- One bullet that bundles a component's container styling, its responsive column behavior, its hover/active states, and its loading/empty states → instead lead with the component, then sub-bullet styling, responsive behavior, and states.
 
 ### Cross-Cutting Rules Before Tables
 
@@ -361,7 +366,7 @@ Components SHOULD include contextual examples.
 Preferred:
 
 ```md
-Used for Hire Me (home CTA), project navigation, and contact actions.
+Used for the primary home CTA, project navigation, and contact actions.
 ```
 
 Preferred component format:
@@ -373,7 +378,7 @@ Primary committed action using tonal contrast rather than elevation.
 
 - Background `{colors.accent}`, text `{colors.accent-on}`.
 - Height `{height-interactive-md}` (44px), radius `{radius.sm}` (4px).
-- Used for Hire Me (home CTA), contact actions, and project navigation.
+- Used for the primary home CTA, contact actions, and project navigation.
 - Hover reduces opacity only; focus uses `{colors.focus-ring}`.
 ```
 
@@ -390,7 +395,7 @@ Reusable components SHOULD include contextual usage examples whenever practical.
 Preferred:
 
 ```md
-Used for Hire Me (home CTA), project navigation, and contact actions.
+Used for the primary home CTA, project navigation, and contact actions.
 ```
 
 Avoid:

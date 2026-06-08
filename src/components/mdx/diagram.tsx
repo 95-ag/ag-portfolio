@@ -1,13 +1,12 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 
-type FigureWidth = "default" | "narrow" | "wide" | "full";
+type FigureWidth = "default" | "narrow" | "wide";
 
 const containerClass: Record<FigureWidth, string> = {
   default: "w-full",
   narrow: "mx-auto w-full max-w-[560px]",
   wide: "w-full max-w-[960px]",
-  full: "w-full",
 };
 
 interface DiagramProps {

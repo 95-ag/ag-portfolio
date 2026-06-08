@@ -5,7 +5,7 @@ description: >
   when the user wants to make a targeted edit to a design doc — adding or removing a token, updating
   a section, propagating a terminology change, fixing a cross-reference, or adding a new component
   section. Trigger on phrases like "add a section for X to DESIGN.md", "update the radius token",
-  "rename surface-overlay", "fix the cross-reference to Foundations → Colors", "propagate the new
+  "rename a surface token", "fix the cross-reference to Foundations → Colors", "propagate the new
   term", "tighten this section", "add this token to the design doc", or any single-section or
   single-token edit. Do NOT use when the request touches more than two top-level sections, requires
   relocating content across sections, or implies a full structural overhaul — use design-rewrite

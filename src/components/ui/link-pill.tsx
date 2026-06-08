@@ -25,7 +25,7 @@ export function LinkPill({
       {icon}
       {children}
       {external && (
-        <span className="text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)]">
+        <span className="text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)] motion-reduce:group-hover:translate-x-0">
           <OpenInNewIcon size={12} />
         </span>
       )}

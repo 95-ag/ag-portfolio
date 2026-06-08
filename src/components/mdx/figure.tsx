@@ -1,16 +1,11 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 
-// Width enum per CONTENT-SCHEMA.md §5
-// "default" = constrained to reading column (~720px)
-// "wide" = up to ~960px
-// "full" = full content width
-type FigureWidth = "default" | "wide" | "full";
+type FigureWidth = "default" | "wide";
 
 const containerClass: Record<FigureWidth, string> = {
   default: "w-full",
   wide: "w-full max-w-[960px]",
-  full: "w-full",
 };
 
 interface FigureProps {

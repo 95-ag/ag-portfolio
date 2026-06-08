@@ -3,8 +3,7 @@ _portfolio.py
 Shared palette constants and style loader for portfolio matplotlib scripts.
 
 Matches portfolio design tokens (light mode).
-Note: TEXT (#2c2c2a) is intentionally lighter than CSS --on-surface (#191c1d);
-diagram text is slightly softer than UI text by design.
+Note: TEXT (#2c2c2a) tracks CSS --on-surface (#2d2d2d).
 
 Usage:
     from pathlib import Path

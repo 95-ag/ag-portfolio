@@ -54,7 +54,7 @@ export function ModelExtractionAttacksCover() {
           />
         ))}
 
-        {/* ── ARROW 1 ── (90px, was 110px) */}
+        {/* ── ARROW 1 ── (90px) */}
         <line
           x1="236"
           y1="337"
