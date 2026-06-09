@@ -7,6 +7,7 @@ import { Nav } from "@/components/shell/nav";
 import { SurfaceContext } from "@/components/shell/surface-context";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Set the reading-surface flag before first paint (no flash on direct loads of project pages);
@@ -14,7 +15,7 @@ import "./globals.css";
 const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/work\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ag-portfolio.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Aishwarya Ganesan",
     template: "%s | AG",

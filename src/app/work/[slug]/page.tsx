@@ -18,8 +18,7 @@ import {
   buildCreativeWorkSchema,
   serializeJsonLd,
 } from "@/lib/seo/jsonld";
-
-const SITE_URL = "https://ag-portfolio.vercel.app";
+import { SITE_URL } from "@/lib/site";
 
 interface Props {
   params: Promise<{ slug: string }>;

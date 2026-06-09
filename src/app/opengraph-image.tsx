@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_URL } from "@/lib/site";
 
 export const alt = "Aishwarya Ganesan — AI Engineer";
 export const size = { width: 1200, height: 630 };
@@ -59,7 +60,9 @@ export default function Image() {
           AI Systems · Machine Learning · Computer Vision
         </div>
       </div>
-      <div style={{ fontSize: 18, color: "#444" }}>ag-portfolio.vercel.app</div>
+      <div style={{ fontSize: 18, color: "#444" }}>
+        {SITE_URL.replace(/^https?:\/\//, "")}
+      </div>
     </div>,
     { ...size },
   );
