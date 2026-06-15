@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
-import { DownloadIcon } from "@/components/icons/material/download";
 import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
+import { ResumeButton } from "@/components/ui/resume-button";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -178,15 +178,7 @@ export default function AboutPage() {
                 </Button>
                 <CopyLink value={about.contactEmail} />
               </div>
-              <Button
-                variant="secondary"
-                href="/AishwaryaGanesan_Resume.pdf"
-                download
-                icon={<DownloadIcon size={18} />}
-                className="justify-center"
-              >
-                Download Resume
-              </Button>
+              <ResumeButton href="/AishwaryaGanesan_Resume.pdf" />
             </div>
           </div>
         </div>
