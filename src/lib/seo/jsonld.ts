@@ -1,7 +1,6 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
-
-const SITE_URL = "https://ag-portfolio.vercel.app";
+import { SITE_URL } from "@/lib/site";
 
 // Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
 // not escape `<`, so a value containing `</script>` would break out of the tag.

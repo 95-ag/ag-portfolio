@@ -1,9 +1,8 @@
 import { getAbout } from "@/lib/content/about";
 import { getAllProjects } from "@/lib/content/projects";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
-
-const SITE_URL = "https://ag-portfolio.vercel.app";
 
 export function GET() {
   const { frontmatter: about } = getAbout();
