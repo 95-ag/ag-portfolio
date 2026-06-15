@@ -112,7 +112,7 @@ export default function HomePage() {
 
       {/* Featured projects */}
       {featured.length > 0 && (
-        <Section id="featured" className="pt-0">
+        <Section id="featured" className="scroll-mt-[var(--spacing-3xl)] pt-0">
           <Container>
             <div className="flex flex-col gap-[var(--spacing-xl)]">
               <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">

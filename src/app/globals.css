@@ -403,6 +403,7 @@ body {
     padding-bottom: var(--spacing-md);
     margin-top: var(--spacing-3xl);
     margin-bottom: var(--spacing-2xl);
+    scroll-margin-top: var(--spacing-3xl);
   }
   .prose-content > h2:first-child {
     margin-top: 0;
