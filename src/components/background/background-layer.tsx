@@ -21,6 +21,35 @@ const PROJECT_DETAIL_PATTERN = /^\/work\/.+/;
 // 768px doesn't keep meteors over the full-bleed mobile ASCII field.
 const MOBILE_BREAKPOINT = 768;
 
+// WebGL on a software rasterizer (no GPU: SwiftShader/llvmpipe, hardware accel
+// disabled, headless) renders the full-screen meteor shader at 500–800ms/frame —
+// continuous main-thread jank and battery drain. Decline the meteor there, the same
+// way we decline on reduced-motion/touch/low-core; capable GPU users are unaffected.
+// Memoized: GPU capability is constant for the session.
+let softwareWebGL: boolean | undefined;
+function isSoftwareWebGL(): boolean {
+  if (softwareWebGL !== undefined) return softwareWebGL;
+  try {
+    const gl = document.createElement("canvas").getContext("webgl");
+    if (!gl) {
+      softwareWebGL = true; // no WebGL at all — the meteor can't run regardless
+      return softwareWebGL;
+    }
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = ext
+      ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL))
+      : "";
+    // Skip only on a POSITIVE software match — privacy browsers that mask the
+    // renderer (renderer === "") keep the meteor, as they are likely GPU-backed.
+    softwareWebGL = /swiftshader|llvmpipe|softpipe|basic render|software/i.test(
+      renderer,
+    );
+  } catch {
+    softwareWebGL = false;
+  }
+  return softwareWebGL;
+}
+
 function isMeteorCapable(): boolean {
   // Honor reduced-motion system preference — non-negotiable.
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
@@ -36,6 +65,8 @@ function isMeteorCapable(): boolean {
     navigator.hardwareConcurrency < 4
   )
     return false;
+  // Software-GL guard: the shader is GPU-cheap but CPU-brutal on a software rasterizer.
+  if (isSoftwareWebGL()) return false;
   return true;
 }
 
