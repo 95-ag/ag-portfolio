@@ -1,0 +1,215 @@
+---
+title: "Evaluating Masked Autoencoders for Computer Vision"
+subtitle: "Two of three MAE ablation trends reproduced at reduced scale — 66.85% linear-probe accuracy at 75% masking"
+summary: "Reproduced the MAE paper's masking and decoder-depth trends at reduced scale (ViT-B/16, Imagenette) — 66.85% linear-probe accuracy at 75% masking, with one honest deviation on augmentation."
+metaDescription: "Reproduced the MAE paper's masking and decoder-depth trends at reduced scale (ViT-B/16, Imagenette) — 66.85% linear-probe accuracy at 75% masking."
+projectType: academic
+publishedAt: "2022-12-16"
+order: 60
+featured: true
+heroImage: "/projects/masked-autoencoders/cover.png"
+heroAlt: "Masked autoencoder concept: an image grid with most patches masked out, the small visible subset flowing through an asymmetric encoder and a lightweight decoder that reconstructs the missing patches."
+tags:
+  - Self-Supervised Learning
+  - Vision Transformers
+  - Masked Autoencoders
+  - Representation Learning
+  - Computer Vision
+stack:
+  languages: [Python]
+  frameworks: [PyTorch]
+  libraries: [timm, torchvision, Pillow, NumPy, Matplotlib]
+  tools: [Git, TensorBoard, Jupyter, Linux]
+overview:
+  problem: |
+    The MAE paper showed self-supervised pretraining with masked patches works —
+    but at large scale. This project tested whether the recipe holds when model
+    and dataset shrink by roughly two orders of magnitude.
+  built: |
+    Reimplemented the MAE model on top of the official training harness and ran
+    three controlled ablations: masking ratio, decoder depth, and data augmentation.
+    Added Grad-CAM to inspect what the pretrained encoder learned.
+  results:
+    - "75% masking: 66.85% linear-probe accuracy, up from 32.7% baseline — sweet spot confirmed"
+    - "Decoder 1→8 blocks added 2.6 points, matching the paper's trend"
+    - "Augmentation reversed: no augmentation scored higher (68.33%) on the small dataset"
+  transferableSkills:
+    - Reproducing a published result and documenting where it holds and where it breaks
+    - Reimplementing a model from a paper on top of an existing training harness
+    - Designing controlled ablations under a fixed compute budget
+    - Using interpretability tools to sanity-check learned representations
+links:
+  github: "https://github.com/95-ag/adl-masked-autoencoders"
+  report: "/projects/masked-autoencoders/report.pdf"
+logos:
+  - src: "/projects/masked-autoencoders/kth-logo.svg"
+    alt: "KTH Royal Institute of Technology"
+---
+
+## Detailed Problem
+
+Labeled data is the bottleneck in most computer vision applications. Annotation is slow and expensive; large labeled datasets exist for benchmark tasks but are unavailable or impractical for most applied problems. Self-supervised pretraining addresses this directly: a model learns useful visual representations from unlabeled images first, then transfers those representations to a downstream task with far fewer labels than training from scratch would require.
+
+The MAE paper established that this works at scale — a large Vision Transformer pretrained on 1.4M images. Most research teams and applied practitioners do not have that compute or data. Whether the approach holds at a realistic resource constraint determines how broadly the method applies.
+
+MAE (Masked Autoencoder) is the method: hide 75% of an image's patches, train an encoder–decoder to reconstruct the missing pixels, discard the decoder, and use the encoder as a feature extractor. The paper reports three specific trends from its ablation studies: a 75% masking ratio is the optimal pretraining sweet spot, a deeper decoder improves the learned representation, and standard data augmentation helps. All three results came from a Vision Transformer — Large (ViT-L) encoder trained on 1.4M ImageNet images.
+
+The question: do those three trends hold at ViT-B scale with 13K images?
+
+Compute constraints limited the ablation scope. The augmentation protocol was not specified precisely enough in the paper to replicate directly — it required reconstruction from secondary references, which introduced uncertainty into the augmentation ablation.
+
+## Background
+
+Three concepts underpin the ablations: patch-based tokenization, the asymmetric encoder–decoder split, and linear probing as the evaluation signal. MAE applies masked-language pretraining to vision — BERT-style models learn by hiding tokens in a sequence and predicting them from context; the representations generalize well. The obstacle in vision was architecture: convolutional networks do not treat images as independent tokens, so there is no natural analogue to token masking. Vision Transformers (ViT), which process images as sequences of fixed-size patches, remove that obstacle.
+
+The core design decision is asymmetry. The encoder sees only the visible fraction of patches — masked patches are dropped entirely, not zeroed out — so it processes a short sequence at any masking ratio. A lightweight decoder handles the full patch sequence and reconstructs the missing pixels during pretraining, then is discarded. This split is what makes aggressive masking computationally viable rather than expensive.
+
+Evaluation uses **linear probing**: the pretrained encoder is frozen and a linear classifier is trained on top of its features. A good encoder produces linearly separable features; a poor one does not. This measures representation quality directly, without the confound of fine-tuning the encoder itself.
+
+## Architecture
+
+The build reimplemented the MAE model on top of the official training harness. The distinction matters for credibility: the training loop, learning-rate schedules, and data pipeline came from the existing codebase; the model itself — masking logic, asymmetric encoder–decoder forward pass, and masked-patch reconstruction loss — was implemented from the paper using `timm`'s ViT block and PatchEmbed primitives.
+
+<Diagram
+  src="/projects/masked-autoencoders/mae-architecture.svg"
+  alt="MAE architecture: an input image is split into patches, most are masked out, the visible patches pass through a ViT encoder, mask tokens are reinserted in their original positions, and a lightweight decoder reconstructs the full image."
+  caption="The asymmetric encoder–decoder. The encoder processes only visible patches; mask tokens fill in before the decoder reconstructs missing pixels. The decoder is discarded after pretraining."
+  aspect="540/184"
+  className="max-w-[640px]"
+/>
+
+The encoder is a ViT-B/16 — base-size Vision Transformer with 16×16 patches. The decoder runs at 512-dimension width with a single Transformer block by default. The forward pass:
+
+1. **Mask.** Patches are randomly shuffled; the visible fraction is kept, the rest removed.
+2. **Encode.** Visible patches pass through the ViT encoder with fixed sinusoidal positional embeddings.
+3. **Reassemble.** Encoded patches are projected to decoder width; mask tokens fill positions for removed patches; the full sequence is unshuffled to its original spatial order.
+4. **Reconstruct.** The decoder predicts pixel values for all patches; loss is MSE on the masked patches only.
+
+<Highlight heading="Why masked reconstruction teaches good representations">
+  Loss is computed only on the masked patches — the patches the encoder never saw. The only path to minimizing it is inferring missing content from visible context, which forces the encoder to learn structural relationships rather than copy what it was already shown.
+</Highlight>
+
+## Data
+
+The original paper used ImageNet-1K (1,000 classes, 1.4M images). The experiments here used **Imagenette2-320** — a 10-class ImageNet subset at the same resolution, roughly 13.3K images, split 70/30. Matching the resolution was the deciding constraint: an earlier attempt with Tiny ImageNet caused training instability and ran over twelve hours per pretraining run.
+
+## Engineering Decisions
+
+**ViT-B instead of ViT-L.** The paper uses a large encoder as its ablation baseline. The base encoder reduces compute substantially while preserving the ViT's behavioral properties. The trends being tested are architectural, not scale-specific, making this substitution defensible.
+
+**One-block decoder as default.** Decoder depth is one of the ablation variables, so the baseline needed to be minimal. A single 512-wide Transformer block is the smallest meaningful decoder; depth was varied from there.
+
+**Linear probing only.** Fine-tuning would produce higher absolute numbers but would conflate representation quality with adaptation capacity. The reproduction question is about the pretrained representation; linear probing answers it directly. Fine-tuning was excluded on compute grounds.
+
+**Three ablations, not the full paper battery.** The paper varies masking strategy, token type, normalization targets, and more. The three selected — masking ratio, decoder depth, augmentation — carry the paper's central argument. The rest were out of compute budget.
+
+**Grad-CAM for qualitative validation.** Added to inspect whether the encoder attends to semantically meaningful image regions rather than surface texture — a sanity check on representation quality that goes beyond the accuracy numbers.
+
+## Training Design
+
+Training runs in two phases: **self-supervised pretraining** (200 epochs, masked reconstruction, 75% masking ratio by default) followed by **linear probing** (100 supervised epochs on a frozen encoder, top-1 and top-5 classification accuracy).
+
+The reconstruction loss tracks training health independent of downstream accuracy. It saturated at 0.35 after 200 epochs; extending to 400 epochs moved it to 0.33. The plateau confirms the small dataset, not training duration, is the binding constraint.
+
+## Results
+
+<Callout title="Two of three ablation trends reproduced; augmentation reversed">
+  The masking sweet spot and decoder-depth gain both held at reduced scale. The augmentation result did not — removing it improved accuracy — which is the most interesting deviation and likely a small-dataset effect.
+</Callout>
+
+All absolute accuracy figures run roughly 20 points below the paper. The dataset and encoder size explain the gap; the trends are the reproduction signal.
+
+### Masking ratio
+
+<Stack gap="lg" className="my-[var(--spacing-2xl)] md:grid md:grid-cols-2 md:items-center md:gap-[var(--spacing-xl)]">
+  <Diagram
+    src="/projects/masked-autoencoders/masking-ratio.svg"
+    alt="Bar chart of Top-1 linear-probe accuracy across masking ratios: a low 32.7% no-masking baseline, then 64.28% at 50%, a peak of 66.85% at 75%, and 66.29% at 90%."
+    caption="Top-1 accuracy by masking ratio: masking lifts accuracy far above the no-masking baseline and peaks at 75% — the paper's inverted-U, reproduced at reduced scale."
+    aspect="382/245"
+    className="my-0 max-w-[380px]"
+  />
+
+| Masking ratio | Top-1 | Top-5 |
+|---|---|---|
+| Baseline (no masking) | 32.7% | — |
+| 50% | 64.28% | 94.75% |
+| 75% | **66.85%** | **95.49%** |
+| 90% | 66.29% | 95.00% |
+
+</Stack>
+
+Accuracy peaks at 75% and dips at 90%, reproducing the paper's inverted-U. The baseline without masking reaches only 32.7% — the self-supervised reconstruction task is responsible for most of the learned representation. Too little masking makes reconstruction trivially easy; too much removes the context needed. The 75% ratio holds at this scale.
+
+### Decoder depth
+
+Increasing the decoder from 1 to 8 blocks raised top-1 accuracy from 66.85% to 69.45%, a 2.6-point gain consistent with the paper. A more capable decoder lets the encoder specialize in representation rather than splitting capacity between representation and reconstruction detail.
+
+### Augmentation — the deviation
+
+The model performed **better without augmentation** (68.33%) than with random-resize-crop-and-flip (66.85%), reversing the paper's finding.
+
+| Configuration | Top-1 | Top-5 |
+|---|---|---|
+| With augmentation (default) | 66.85% | 95.49% |
+| Without augmentation | 68.33% | 95.54% |
+
+MAE generates training variety through random masking — each forward pass sees a different patch subset — so it relies less on conventional augmentation than a supervised model. On a dataset this small, additional augmentation appears to introduce noise without proportional regularization benefit. The protocol was verified against the paper and secondary references; the deviation is real, not a setup error.
+
+### Reconstruction quality
+
+<Figure
+  src="/projects/masked-autoencoders/reconstructions.png"
+  alt="Two example MAE reconstructions (a fish and a person), each shown as four panels left to right: the original image, the 75%-masked input, the model's reconstruction, and the reconstruction with the visible patches overlaid."
+  caption="Two examples from the default model. Left to right: original, 75%-masked input, reconstruction, and reconstruction with visible patches. Overall layout recovers; fine detail is soft — consistent with the saturated reconstruction loss and small dataset."
+  aspect="1387/669"
+  width="default"
+/>
+
+Reconstructions recover coarse structure but remain blurry — the visible signature of downscaling. The paper's larger encoder on full ImageNet produces sharper outputs.
+
+### What the encoder learned
+
+Grad-CAM (Gradient-weighted Class Activation Mapping) was implemented to check whether the encoder attends to semantically meaningful regions rather than surface texture. On a tench-fish example, the highest-activation regions correspond to the head, fins, and body edges — the features a human would use to identify the class — with expected leakage into surrounding areas at this scale.
+
+<DiagramRow
+  layout="2col"
+  caption="Grad-CAM on a tench-fish example: the original image beside the activation heatmap. Warm regions concentrate on the head, fins, and body edges — consistent with semantically-driven feature learning rather than texture."
+  className="mx-auto max-w-[620px]"
+>
+  <DiagramPanel
+    src="/projects/masked-autoencoders/grad-cam-original.png"
+    alt="Original image of a tench fish held in a blue net."
+    label="Original"
+    aspect="1/1"
+  />
+  <DiagramPanel
+    src="/projects/masked-autoencoders/grad-cam-heatmap.png"
+    alt="Grad-CAM heatmap over the tench fish, with warm activation concentrated on the head, fins, and body edges."
+    label="Grad-CAM"
+    aspect="1/1"
+  />
+</DiagramRow>
+
+The analysis covers one class as a qualitative sanity check. It confirms the representation direction; it does not quantify it across the dataset.
+
+## Limitations
+
+**Small dataset is the binding constraint.** Imagenette's 13K images capped absolute performance throughout. The augmentation deviation is likely a small-dataset artifact; whether it holds at ImageNet scale is an open question.
+
+**Linear probing only.** The configuration ranking is informative; the absolute accuracy ceiling is not. Fine-tuning was excluded on compute grounds and would have produced different numbers.
+
+**Grad-CAM is illustrative, not systematic.** One class on one example validates the representation direction but is not a quantitative study.
+
+**Absolute numbers are not comparable to the paper.** The 20-point gap is expected given the encoder and dataset size. Trend directions are the valid comparison point.
+
+## Next Steps
+
+The reproduction confirmed the structural claims within its compute budget. The augmentation deviation and the absolute-accuracy gap point at the most productive extensions.
+
+- **Test the augmentation deviation at larger scale.** The reversal is the most interesting result. Whether it disappears at full ImageNet scale would confirm whether it is a small-dataset artifact or something structural about MAE's interaction with augmentation.
+- **Broaden the ablations.** The paper varies masking strategy (block and grid versus random), token type, and normalization targets — none tested here. Extending the reproduction scope would cover more of the paper's claims.
+- **Add fine-tuning evaluation.** End-to-end fine-tuning alongside linear probing would separate representation quality from adaptation capacity and produce numbers directly comparable to the paper's fine-tuned results.
+- **Probe downstream transfer.** Self-supervised pretraining is only useful if representations transfer to different tasks. Evaluating the frozen encoder on a held-out task would test that claim at this scale.
+
+Two of the three central claims held at reduced scale. The one that didn't — augmentation — points at something real about how masking and augmentation interact in data-constrained settings. That is the most useful thread to pull on.

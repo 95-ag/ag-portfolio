@@ -1,0 +1,685 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   Theme: CSS custom properties
+   All semantic roles from DESIGN.md §4
+   ───────────────────────────────────────────── */
+
+/* :root = light, SHOWCASE surface (home/about/work index) — the immersive extreme (pure
+   white). Long-read project pages override the background to a softer reading tone via
+   [data-read="long"] below. Neutral (ChatGPT-like) palette; one green accent. */
+:root {
+  /* Surfaces — light depth logic: sunken is the BRIGHTEST (pure white) for image/code/diagram
+     clarity; raised lifts only gently so highlights/callouts don't over-pop; bg is the off-white
+     ground. (Dark inverts: sunken darkest, raised lighter.) */
+  --background: #fcfcfc;
+  --surface: #fcfcfc;
+  --surface-raised: #ededed;
+  --surface-sunken: #ffffff;
+  /* Floating nav/utility blur surface */
+  --surface-nav: #fcfcfcd9;
+  /* Selection state — active nav, future tabs/segmented controls */
+  --surface-selection: #e8f3ec;
+
+  /* Text — softened ink (not pure black) */
+  --on-background: #2d2d2d;
+  --on-surface: #2d2d2d;
+  --on-surface-muted: #66696f;
+
+  /* Tag surface — neutral grey, deepened so chips read as filled pills on the raised card */
+  --surface-tag: #dadce0;
+
+  /* Borders — neutral */
+  --outline: #8b9197;
+  --outline-variant: #e2e3e5;
+
+  /* Accent */
+  --accent: #006e37;
+  --accent-on: #ffffff;
+  --accent-muted: #e8f3ec;
+
+  /* Semantic */
+  --focus-ring: #006e37;
+  --selection: #006e3733;
+
+  /* Background layer RGB triples — consumed only by src/components/background/.
+     Space-separated so Three.js can parse: rgb(var(--accent-rgb)). */
+  --accent-rgb: 0 110 55;
+  --on-surface-rgb: 45 45 45;
+  --on-surface-muted-rgb: 102 105 111;
+  --outline-variant-rgb: 226 227 229;
+}
+
+/* Light, READING surface — long-read project pages get a softer off-white ground so white
+   cards lift and prose is easy on the eyes. */
+:root[data-read="long"] {
+  --background: #f8f8f9;
+  --surface: #f8f8f9;
+  --surface-nav: #f8f8f9d9;
+}
+
+/* Dark, SHOWCASE surface — deep black so the background effects feel immersive on
+   home/about/work index. Long-read pages lift to a softer charcoal via [data-read] below. */
+[data-theme="dark"] {
+  --background: #0e0e0e;
+  --surface: #0e0e0e;
+  --surface-raised: #1c1c1c;
+  --surface-sunken: #080808;
+  --surface-nav: #141414d9;
+  --surface-selection: #16271b;
+
+  /* Ink ~15:1 — softened from pure-bright (16:1) for less glare, still punchy; the antialiased
+     smoothing (below) keeps it from reading heavy/thick. */
+  --on-background: #e2e2e2;
+  --on-surface: #e2e2e2;
+  --on-surface-muted: #a1a1aa;
+
+  /* Tag surface — neutral, lighter than page + card */
+  --surface-tag: #2a2a2a;
+
+  --outline: #8a8a8a;
+  --outline-variant: #333333;
+
+  /* Accent — deepened from #35c27d to read forest, not minty */
+  --accent: #2aa566;
+  --accent-on: #06210e;
+  --accent-muted: #16271b;
+
+  --focus-ring: #2aa566;
+  --selection: #2aa56633;
+
+  /* Background layer RGB triples — dark theme */
+  --accent-rgb: 42 165 102;
+  --on-surface-rgb: 226 226 226;
+  --on-surface-muted-rgb: 161 161 170;
+  --outline-variant-rgb: 51 51 51;
+}
+
+/* Dark, READING surface — softer charcoal for comfortable long-form reading; cards lift. */
+[data-theme="dark"][data-read="long"] {
+  --background: #1a1a1a;
+  --surface: #1a1a1a;
+  --surface-raised: #292929;
+  --surface-sunken: #141414;
+  --surface-nav: #1f1f1fd9;
+}
+
+/* ─────────────────────────────────────────────
+   Tailwind v4 @theme
+   Exposes CSS vars as Tailwind utility tokens
+   ───────────────────────────────────────────── */
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-nav: var(--surface-nav);
+  --color-surface-selection: var(--surface-selection);
+  --color-surface-tag: var(--surface-tag);
+  --color-on-background: var(--on-background);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-muted: var(--on-surface-muted);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-accent: var(--accent);
+  --color-accent-on: var(--accent-on);
+  --color-accent-muted: var(--accent-muted);
+
+  /* Fonts */
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  /* Spacing — DESIGN.md §5 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+  --spacing-5xl: 128px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 64px;
+
+  /* Radius — DESIGN.md §7 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 9999px;
+
+  /* Z-index — DESIGN.md §12 */
+  --z-base: 0;
+  --z-sticky-content: 20;
+  --z-scroll-to-top: 40;
+  --z-pill-nav: 50;
+  --z-mobile-menu-overlay: 55;
+  --z-mobile-menu-panel: 60;
+
+  /* Motion — DESIGN.md §9 */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
+}
+
+/* ─────────────────────────────────────────────
+   Base styles
+   ───────────────────────────────────────────── */
+
+html {
+  background-color: var(--background);
+  color: var(--on-background);
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light text on the dark bg renders visually heavier (bloom), which flattens font-weight
+   hierarchy. Grayscale antialiasing thins it back so weight contrast reads. Dark only —
+   light already renders with clear hierarchy. */
+[data-theme="dark"] body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme-aware hero portraits — show only the active theme's image. Both render in
+   the DOM for a flash-free, JS-free swap driven by data-theme; the inactive one
+   stays display:none so it is never fetched (lazy + never in viewport). The visible
+   one's mix-blend-mode (set in page.tsx) drops its baked bg over the meteor layer. */
+[data-theme="dark"] .hero-light,
+[data-theme="light"] .hero-dark {
+  display: none;
+}
+
+::selection {
+  background-color: var(--selection);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Reduced-motion: Framer Motion components handle this individually via useReducedMotion().
+   Global override avoided here — !important fights with component-level transitions. */
+
+/* ─────────────────────────────────────────────
+   Type scale — DESIGN.md §3
+   Applied as utility classes, not inline styles
+   ───────────────────────────────────────────── */
+
+@layer components {
+  /* ── Semantic typography tokens ── */
+
+  /* Display — page-title tier (home / about / work / 404) */
+  .display-primary {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 70px;
+    letter-spacing: -0.025em;
+    color: var(--on-surface);
+  }
+
+  /* Display — project-title tier: smaller so long titles stay controlled */
+  .display-title {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: -0.025em;
+    color: var(--on-surface);
+  }
+
+  /* Editorial display tier */
+  .heading-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 44px;
+    letter-spacing: -0.015em;
+    color: var(--on-surface);
+  }
+
+  /* Headings */
+  .heading-section {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: -0.015em;
+    color: var(--on-surface);
+  }
+  .heading-component {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.01em;
+    color: var(--on-surface);
+  }
+  .heading-narrative {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  /* Body — lead tier */
+  .body-lead {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 34px;
+    /* Full ink — a large lead paragraph in muted grey reads dull/low-presence; ink gives it
+       the standing the hero passage + capability labels need (matches body-primary clarity). */
+    color: var(--on-surface);
+  }
+
+  /* Body */
+  .body-primary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--on-surface);
+  }
+  .body-secondary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--on-surface-muted);
+  }
+  .body-caption {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--on-surface-muted);
+  }
+  .body-emphasis {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+    color: var(--on-surface);
+  }
+  .callout-title {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--accent);
+  }
+
+  /* Interactive */
+  .interactive-label {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  .nav-link {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  /* Structural mono */
+  .mono-anchor {
+    font-family: var(--font-mono), monospace;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+  }
+  .tag-chip {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface);
+  }
+  .insight-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+  }
+  .mono-code {
+    font-family: var(--font-mono), monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--on-surface-muted);
+  }
+
+  /* Support / navigation meta */
+  .support-meta {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--on-surface-muted);
+  }
+
+  /* ── Prose composition rules — .prose-content ──
+     Headings compose from semantic tokens; spacing/border are layout rules.
+     h2 → mono-anchor  |  h3 → heading-component  |  h4 → heading-narrative
+     p/li → body-primary  |  blockquote → body-secondary  |  table → body-caption
+     code → mono-code  |  strong → body-primary + weight-600
+  */
+
+  .prose-content h2 {
+    /* mono-anchor values + structural border */
+    font-family: var(--font-mono), monospace;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-surface-muted);
+    border-bottom: 1px solid var(--on-surface-muted);
+    padding-bottom: var(--spacing-md);
+    margin-top: var(--spacing-3xl);
+    margin-bottom: var(--spacing-2xl);
+    scroll-margin-top: var(--spacing-3xl);
+  }
+  .prose-content > h2:first-child {
+    margin-top: 0;
+  }
+  .prose-content h3 {
+    /* heading-component values */
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.01em;
+    color: var(--on-surface);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-sm);
+  }
+  .prose-content h4 {
+    /* heading-narrative values */
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+    /* gap ABOVE a heading > gap BELOW: detaches from the previous block, binds to its own body */
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-xs);
+  }
+  .prose-content p {
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--on-surface);
+    margin-bottom: var(--spacing-lg);
+  }
+  .prose-content ul {
+    list-style-type: disc;
+    padding-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  .prose-content ul > li::marker {
+    color: var(--outline-variant);
+  }
+  .prose-content ol {
+    list-style-type: decimal;
+    padding-left: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  .prose-content li {
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--on-surface);
+    margin-bottom: var(--spacing-xs);
+  }
+  .prose-content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-content a[href^="#"] {
+    color: var(--on-surface);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: var(--outline-variant);
+    transition:
+      color var(--duration-fast),
+      text-decoration-color var(--duration-fast);
+  }
+  .prose-content a[href^="#"]:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+  .prose-content strong {
+    /* body-primary + semibold weight */
+    font-weight: 600;
+    color: var(--on-surface);
+  }
+  .prose-content blockquote {
+    /* body-secondary values + accent left border + raised fill */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    border-left: 2px solid var(--accent);
+    background: var(--surface-raised);
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--on-surface-muted);
+    font-style: italic;
+    margin: var(--spacing-lg) 0;
+  }
+  .prose-content hr {
+    border: none;
+    border-top: 1px solid var(--outline-variant);
+    margin: var(--spacing-xl) 0;
+  }
+  .prose-content table {
+    width: 100%;
+    border-collapse: collapse;
+    /* body-caption size */
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: var(--spacing-md);
+  }
+  .prose-content th,
+  .prose-content td {
+    /* editorial table: ink text on horizontal rules only — no grid, no header fill */
+    border: none;
+    border-bottom: 1px solid var(--outline-variant);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    color: var(--on-surface);
+  }
+  .prose-content th {
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+  }
+  .prose-content code:not(pre code) {
+    /* mono-code metrics + accent token treatment (Notion-like): accent text on a
+       faint accent tint, hairline accent border — reads as code without the muted
+       gray that washed out against the sunken surface */
+    font-family: var(--font-mono), monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+  }
+  /* Shiki dual-theme. defaultColor:false emits only CSS vars (no inline token
+     colors), so the cascade swaps light→dark with no !important. Build-time
+     highlighting — no client highlighter ships. */
+  .prose-content .shiki,
+  .prose-content .shiki span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+  }
+  [data-theme="dark"] .prose-content .shiki,
+  [data-theme="dark"] .prose-content .shiki span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+  }
+
+  /* Highlight panel — editorial pull-quote; elevation via border + raised fill only */
+
+  /* Editorial two-column DL layout for Overview + Tech Stack */
+  .editorial-dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md) 0;
+  }
+  @media (min-width: 768px) {
+    .editorial-dl {
+      grid-template-columns: 180px 1fr;
+      column-gap: var(--spacing-2xl);
+      row-gap: var(--spacing-lg);
+    }
+  }
+  .editorial-dl dt {
+    /* body-primary + semibold for term label */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    color: var(--on-surface);
+    padding-top: 1px;
+  }
+  .editorial-dl dd {
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--on-surface);
+    margin: 0;
+  }
+  .editorial-dl dd > p {
+    margin: 0;
+  }
+  .editorial-dl dd > ul {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .editorial-dl dd > ul > li {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    /* body-primary values */
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--on-surface);
+  }
+
+  /* Mid-tier overrides (tablet / small-desktop — 769–1279) */
+  @media (max-width: 1279px) {
+    .display-primary {
+      font-size: 52px;
+      line-height: 58px;
+    }
+    .display-title {
+      font-size: 46px;
+      line-height: 54px;
+    }
+    .heading-display {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .heading-section {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .body-lead {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  /* Mobile overrides (≤768) */
+  @media (max-width: 768px) {
+    .display-primary {
+      font-size: 40px;
+      line-height: 48px;
+    }
+    .display-title {
+      font-size: 36px;
+      line-height: 44px;
+    }
+    .heading-display {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .heading-section {
+      font-size: 22px;
+      line-height: 30px;
+    }
+    .body-lead {
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Background layer — ASCII glyph tiers
+   Classes assigned imperatively in AsciiField.tsx
+   Light values are raised: light bg has lower contrast so glyphs
+   need more opacity to register without becoming textural noise.
+   ───────────────────────────────────────────── */
+
+.ascii-bg-glyph-accent {
+  color: var(--accent);
+  opacity: 0.72;
+}
+.ascii-bg-glyph-ink {
+  color: var(--on-surface);
+  opacity: 0.45;
+}
+.ascii-bg-glyph-mute {
+  color: var(--on-surface-muted);
+  opacity: 0.34;
+}
+[data-theme="dark"] .ascii-bg-glyph-accent {
+  opacity: 0.5;
+}
+[data-theme="dark"] .ascii-bg-glyph-ink {
+  opacity: 0.26;
+}
+[data-theme="dark"] .ascii-bg-glyph-mute {
+  opacity: 0.2;
+}

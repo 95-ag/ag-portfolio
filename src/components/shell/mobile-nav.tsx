@@ -1,0 +1,186 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import type { IconProps } from "@/components/icons/icon-base";
+import { CloseIcon } from "@/components/icons/material/close";
+import { FingerprintIcon } from "@/components/icons/material/fingerprint";
+import { FolderCodeIcon } from "@/components/icons/material/folder-code";
+import { MenuIcon } from "@/components/icons/material/menu";
+import { InlineThemeSelector } from "@/components/ui/theme-selector";
+import { cn } from "@/lib/utils/cn";
+import { useFocusTrap } from "@/lib/utils/focus-trap";
+
+type NavIconComponent = (props: IconProps) => React.ReactElement;
+
+const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
+  { href: "/about", label: "About", Icon: FingerprintIcon },
+  { href: "/work", label: "Work", Icon: FolderCodeIcon },
+];
+
+export function MobileNav() {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const shouldReduceMotion = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useFocusTrap(panelRef, open);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, setOpen is stable
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  useEffect(() => {
+    function onResize() {
+      if (window.innerWidth >= 768) setOpen(false);
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const panelVariants = {
+    hidden: { x: shouldReduceMotion ? 0 : "100%", opacity: 1 },
+    visible: { x: 0, opacity: 1 },
+  };
+
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
+  return (
+    <>
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Open navigation menu"
+        aria-expanded={open}
+        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+      >
+        <MenuIcon size={18} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              key="overlay"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={overlayVariants}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
+              onClick={() => setOpen(false)}
+              aria-hidden="true"
+              className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-[var(--on-background)]/30"
+            />
+
+            {/* Panel */}
+            <motion.div
+              key="panel"
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={panelVariants}
+              transition={{
+                duration: shouldReduceMotion ? 0 : 0.3,
+                ease: [0.3, 0, 0, 1],
+              }}
+              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] flex h-full w-[min(280px,80vw)] flex-col bg-[var(--surface-nav)] p-[var(--spacing-lg)] backdrop-blur-[12px]"
+            >
+              {/* Header: logomark + close */}
+              <div className="flex items-center justify-between">
+                <Link
+                  href="/"
+                  aria-label="Home"
+                  aria-current={pathname === "/" ? "page" : undefined}
+                  className="flex h-11 w-11 items-center justify-center"
+                >
+                  <Image
+                    src="/cat_head_icon.svg"
+                    alt=""
+                    width={32}
+                    height={32}
+                    className={cn(
+                      "rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
+                      pathname === "/" && "outline-2 outline-[var(--accent)]",
+                    )}
+                    unoptimized
+                  />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close navigation menu"
+                  className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]"
+                >
+                  <CloseIcon size={18} />
+                </button>
+              </div>
+
+              {/* Nav items */}
+              <nav
+                aria-label="Primary"
+                className="mt-[var(--spacing-xl)] flex flex-col gap-[var(--spacing-xs)]"
+              >
+                {NAV_ITEMS.map(({ href, label, Icon }) => {
+                  const isActive = pathname.startsWith(href);
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
+                        isActive
+                          ? "bg-[var(--surface-selection)] text-[var(--on-surface)]"
+                          : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
+                      )}
+                    >
+                      <Icon
+                        size={16}
+                        className={isActive ? "text-[var(--accent)]" : ""}
+                      />
+                      {label}
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              <div className="flex-1" />
+
+              {/* Theme selector */}
+              <InlineThemeSelector />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

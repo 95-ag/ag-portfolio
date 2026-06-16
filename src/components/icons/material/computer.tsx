@@ -1,0 +1,10 @@
+import { IconBase, type IconProps } from "@/components/icons/icon-base";
+
+export function ComputerIcon(props: IconProps) {
+  return (
+    <IconBase
+      {...props}
+      path="M40-120v-60h880v60H40Zm100-120q-24 0-42-18t-18-42v-480q0-24 18-42t42-18h680q24 0 42 18t18 42v480q0 24-18 42t-42 18H140Zm0-60h680v-480H140v480Zm0 0v-480 480Z"
+    />
+  );
+}
