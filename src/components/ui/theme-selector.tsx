@@ -117,7 +117,7 @@ export function InlineThemeSelector({ className }: { className?: string }) {
             aria-label={`Set ${LABEL[mode]} theme`}
             aria-pressed={isSelected}
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-[var(--radius-pill)]",
+              "flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)]",
               "transition-colors duration-[var(--duration-fast)]",
               isSelected
                 ? "bg-[var(--accent-muted)] text-[var(--accent)]"

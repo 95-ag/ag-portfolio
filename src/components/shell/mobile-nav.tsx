@@ -120,17 +120,17 @@ export function MobileNav() {
                   href="/"
                   aria-label="Home"
                   aria-current={pathname === "/" ? "page" : undefined}
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
-                    pathname === "/" && "outline-2 outline-[var(--accent)]",
-                  )}
+                  className="flex h-11 w-11 items-center justify-center"
                 >
                   <Image
                     src="/cat_head_icon.svg"
                     alt=""
                     width={32}
                     height={32}
-                    className="rounded-full"
+                    className={cn(
+                      "rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
+                      pathname === "/" && "outline-2 outline-[var(--accent)]",
+                    )}
                     unoptimized
                   />
                 </Link>
@@ -138,7 +138,7 @@ export function MobileNav() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close navigation menu"
-                  className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-pill)] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]"
+                  className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]"
                 >
                   <CloseIcon size={18} />
                 </button>
@@ -157,7 +157,7 @@ export function MobileNav() {
                       href={href}
                       aria-current={isActive ? "page" : undefined}
                       className={cn(
-                        "nav-link flex h-10 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
+                        "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
                         isActive
                           ? "bg-[var(--surface-selection)] text-[var(--on-surface)]"
                           : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",

@@ -403,6 +403,7 @@ body {
     padding-bottom: var(--spacing-md);
     margin-top: var(--spacing-3xl);
     margin-bottom: var(--spacing-2xl);
+    scroll-margin-top: var(--spacing-3xl);
   }
   .prose-content > h2:first-child {
     margin-top: 0;
@@ -640,8 +641,8 @@ body {
       line-height: 44px;
     }
     .heading-display {
-      font-size: 28px;
-      line-height: 36px;
+      font-size: 32px;
+      line-height: 40px;
     }
     .heading-section {
       font-size: 22px;
