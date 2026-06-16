@@ -32,16 +32,17 @@ Run from the primary `main` checkout. The worktree is created as a sibling direc
 # 1. Make sure main is current
 git checkout main && git pull
 
-# 2. Create an isolated worktree for production work
-git worktree add ../ag-portfolio-production
+# 2. Create an isolated worktree (detached → no stray branch). Main checkout untouched.
+git worktree add --detach ../ag-portfolio-production
 
 # 3. In the worktree, start production as an orphan branch
 cd ../ag-portfolio-production
 git checkout --orphan production
-git rm -rf .            # clear the orphan index/worktree
 
-# 4. Curate the first snapshot from main
-./release.sh            # stages the allowlist; does NOT commit
+# 4. Curate the first snapshot from main. Run main's release.sh by absolute path — it
+#    self-clears the worktree (git rm -rf .) then stages only the allowlist. Do NOT run a
+#    manual `git rm` first; that would delete release.sh before it runs.
+bash ~/projects/ag-portfolio/release.sh
 
 # 5. Verify, then commit + push the first release
 git status
@@ -49,22 +50,23 @@ git commit -m "Release v1"
 git push -u origin production
 ```
 
-> `release.sh` is `main`-only and is not part of the allowlist, so it will not be present after a snapshot
-> overwrites the worktree. The orphan checkout in step 3 still has it before the first `release.sh` run; for
-> later releases, invoke it by path from the main checkout (e.g. `bash ../ag-portfolio/release.sh`).
+> `release.sh` is `main`-only (not in the allowlist), so it is absent from the snapshot itself — always
+> invoke it by its path in the main checkout (`bash ~/projects/ag-portfolio/release.sh`), never as
+> `./release.sh` from inside the worktree.
 
 ## Per-release procedure (snapshot `vN`)
 
 ```bash
-# From the production worktree:
+# 1. Update main in its own checkout (NOT via `git fetch origin main:main` — that
+#    fails while main is checked out in the main worktree).
+cd ~/projects/ag-portfolio && git checkout main && git pull
+
+# 2. Re-curate in the production worktree from the updated main.
+cd ~/projects/ag-portfolio-production
 git checkout production
-git fetch origin && git pull          # if production moved remotely
+bash ~/projects/ag-portfolio/release.sh   # re-stage the allowlist from main
 
-# Fast-forward the local main ref so release.sh curates the latest:
-git fetch origin main:main
-bash ../ag-portfolio/release.sh       # re-stage the allowlist from main
-
-git status                            # review the diff
+git status                                # review the diff
 git commit -m "Release vN"
 git push
 ```
