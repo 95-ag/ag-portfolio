@@ -4,7 +4,7 @@
 
 - main is always stable, buildable, and deployable
 - No large architectural or UI work directly on main — branch first
-- On main, undo via `git revert` only — never `reset --hard` or force-push
+- On main, undo via `git revert` only (user-run) — never `reset --hard` or force-push
 
 ## Branches
 
@@ -85,18 +85,67 @@ Skipping this gate is a process violation, not a shortcut. Recovery (`git reset 
 - Working branch is deleted after squash merge — expected, not a loss
 - Verify before opening the PR: `npm run build` succeeds, lint passes, typecheck passes, no hydration errors, responsive sanity check at 375px / 768px / 1280px
 
+## Branch & remote autonomy — Claude does not execute
+
+Claude never performs operations that change repository topology, branch ownership, remote state, or pull
+request state.
+
+This includes, but is not limited to:
+
+- Branch creation, deletion, renaming, switching, or restoration.
+- Merge, rebase, cherry-pick, squash, reset, revert, or history-rewrite operations.
+- Remote creation, modification, removal, fetch-spec changes, or remote URL changes.
+- Pushes of any kind (`git push`, force-push, tag push, mirror push).
+- Worktree creation, removal, or reassignment.
+- Tag creation, deletion, movement, or publication.
+- Pull request creation, update, merge, closure, reopening, review submission, or approval.
+- Default-branch changes or repository settings changes.
+
+Examples include (non-exhaustive): `git checkout -b`, `git switch -c`, `git branch -m`,
+`git branch -d`, `git merge`, `git rebase`, `git cherry-pick`, `git reset`, `git push`,
+`git worktree add`, `git worktree remove`, `git tag`, and any `gh pr *` command.
+
+These actions are always user-owned operations.
+
+Claude may run read-only git commands such as:
+
+- `git status`
+- `git log`
+- `git diff`
+- `git show`
+- `git fetch`
+- `git branch --show-current`
+
+Claude may also run `git add` and `git commit` only when:
+
+- The user has already created and checked out the target branch.
+- The approval gate defined above has been satisfied.
+- No branch, remote, PR, worktree, tag, or history operation is required.
+
+When work requires any prohibited operation, Claude stops and provides the exact commands for the user to
+execute.
+
+The release-snapshot workflow follows the same boundary. See `rules/release.md`.
+
 ## PR closure — Claude does not execute
 
-Claude never runs `gh pr create`, `gh pr merge`, `git merge`, or `git branch -d` for the working branch. Closure is the user's action.
+PR creation, review, approval, merge, closure, reopening, and post-merge cleanup are user actions
+(the prohibited operations are enumerated in "Branch & remote autonomy" above).
 
-When the working branch is ready to PR, Claude provides:
+Claude may prepare:
 
-1. **PR title** — single line, copy-paste ready
-2. **PR body** — markdown, copy-paste ready, structured as: Summary · Changes · Verification · Notes
-3. **Next-branch instructions** — exact commands for the user to run after merge:
-   ```
-   git checkout main && git pull && git checkout -b <next-branch-name>
-   ```
+- PR title
+- PR body (structured as: Summary · Changes · Verification · Notes)
+- Review / merge summaries
+- Release notes
+- Verification checklists
+- Next-step instructions — the exact commands for the user to run after merge:
+
+  ```
+  git checkout main && git pull && git checkout -b <next-branch-name>
+  ```
+
+Claude never executes the PR operation itself.
 
 ## Public repo hygiene
 
