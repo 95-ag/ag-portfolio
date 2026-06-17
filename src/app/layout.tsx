@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { caveat, inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
@@ -65,6 +67,8 @@ export default function RootLayout({
           </main>
           <Footer />
           <ScrollToTop />
+          <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
