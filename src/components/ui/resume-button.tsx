@@ -23,7 +23,7 @@ export function ResumeButton({ href }: { href: string }) {
       icon={<DownloadIcon size={18} />}
       className="justify-center"
     >
-      Résumé
+      Resume
     </Button>
   );
 }
