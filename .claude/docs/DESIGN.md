@@ -147,7 +147,7 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 | `display-primary` | Manrope | 64 / 52 / 40px | 600 | 70 / 58 / 48px | -0.025em | — (Ink, applied by component) | Hero headline, page H1 (Home, Work, About, 404) |
 | `display-title` | Manrope | 56 / 46 / 36px | 600 | 64 / 54 / 44px | -0.025em | — (Ink, applied by component) | Project-page H1 — one tier below `display-primary` so long titles stay controlled |
 | `heading-display` | Manrope | 36 / 32 / 32px | 600 | 44 / 40 / 40px | -0.015em | — (Ink) | Editorial deck / tagline immediately under a page H1; page-level statement that bridges display and section heading tiers |
-| `heading-section` | Manrope | 26 / 24 / 22px | 600 | 34 / 32 / 30px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
+| `heading-section` | Manrope | 26 / 24 / 24px | 600 | 34 / 32 / 32px | -0.015em | — (Ink) | Major section headings on editorial pages (About, essay); more prominent than UI panel headings |
 | `heading-component` | Manrope | 22px | 600 | 30px | -0.01em | — (Ink, applied by component) | Card titles, section headings in UI |
 | `heading-narrative` | Manrope | 20px | 600 | 28px | -0.01em | `accent` | H4 in prose, editorial subheads that need warmth |
 | `body-lead` | Inter | 24 / 20 / 18px | 400 | 34 / 30 / 28px | — | `on-surface` | Principal narrative paragraph(s) where prose is the centerpiece — About bio, editorial lead copy; also capability group labels. Ink (not muted) — a large lead in grey reads dull/low-presence |
@@ -171,7 +171,7 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 
 | Element | Semantic token | Composition additions |
 |---|---|---|
-| `h2` | `mono-anchor` values | `border-bottom: 1px solid {on-surface-muted}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.2xl}` |
+| `h2` | `mono-anchor` values | `border-bottom: 1px solid {on-surface-muted}`, `padding-bottom: {spacing.md}`, `margin-top: {spacing.3xl}`, `margin-bottom: {spacing.2xl}`, `scroll-margin-top: {spacing.3xl}` (jump-anchor clearance below the pill nav) |
 | `h3` | `heading-component` values | `margin-top: {spacing.2xl}`, `margin-bottom: {spacing.sm}` |
 | `h4` | `heading-narrative` values | `margin-top: {spacing.xl}`, `margin-bottom: {spacing.xs}` |
 | `p`, `li` | `body-primary` values (18px) | `p`: `margin-bottom: {spacing.lg}` · `li`: `margin-bottom: {spacing.xs}`, lists indent `padding-left: {spacing.xl}`, marker `{outline-variant}` |
@@ -188,7 +188,7 @@ Four families, each with a distinct semantic role. All self-hosted via `next/fon
 ### Spacing
 
 - Strict 4px base. Used for padding, margins, gaps, and rhythm.
-- Major section gaps: `{spacing.3xl}` (64px) mobile and md+; editorial pages (About) escalate to `{spacing.5xl}` (128px) at xl.
+- Major section gaps: `{spacing.4xl}` (96px) mobile and md on showcase pages (Home, About); editorial About escalates to `{spacing.5xl}` (128px) at xl.
 - Section page-edge padding: `pt-xl / pb-xl` (32px each) mobile; `pt-3xl / pb-2xl` (64px / 48px) desktop. Top is asymmetric at desktop — calibrated for pill-nav clearance. Mobile uses less top padding because the slide-out trigger occupies less vertical real estate than the pill nav.
 - Prose paragraph and list rhythm is owned by Typography → Prose Composition Rules.
 - Callout/panel internal padding: `{spacing.lg}` (24px). Component-specific card padding is documented with the component.
@@ -451,11 +451,12 @@ Utility button fixed to the bottom-right corner; appears after 400px of scroll a
 - At `xl+`, size increases to 48×48px — icon only, no label.
 - Fades in on scroll threshold; hover shifts to `outline` border and `on-surface` color.
 - Hidden when the mobile slide-out menu is open.
+- Rests `{spacing.lg}` (24px) above the viewport bottom and lifts dynamically (rAF, on scroll/resize) to stay `{spacing.md}` (16px) clear of the footer once it scrolls into view — never overlaps the footer.
 
 ```yaml
 scroll-to-top:
   position: fixed
-  bottom: 80px
+  bottom: 24px        # resting; lifts to clear footer (16px gap)
   right: 16px
   right-lg: max(1rem, calc(50vw - 36rem))
   size: 44px x 44px
@@ -521,6 +522,15 @@ button-icon-leading:
   iconSize: 18px
   gap-icon-label: 8px
 ```
+
+#### ResumeButton
+
+Specialized client wrapper over `Button` (secondary) for the résumé action; a single click both previews and downloads the file. Lives in `ui/`, used in About → Work with Me.
+
+- `'use client'` island — extracted so its click handler doesn't force the host page (About, a server component) to become a client component.
+- One action, two effects: opens the PDF in a new tab (read-only preview) and triggers a download (synthesized `<a download>` click) in the same handler — a plain `<a download>` cannot do both.
+- Inherits the `Button` `secondary` visual spec exactly (no bespoke styling); leading `DownloadIcon` (18px), centered label "Resume".
+- `href` is the only prop — the public résumé path (`/AishwaryaGanesan_Resume.pdf`).
 
 #### CopyableCode
 
@@ -788,7 +798,7 @@ Two-column desktop layout: content left, portrait right. Single-column on mobile
   - Fetch: on mobile the whole column is `hidden` → neither portrait is fetched (mobile 4G/LCP budget untouched); on desktop both fetch (a `display:none` `next/image` whose ancestors are visible still downloads — one extra optimized portrait, acceptable since the budget targets mobile).
   - Blend treatment: each drops its baked background via `mix-blend-mode` so the fixed meteor layer shows through the dissolved edges — dark `#080808` → `screen`, light `#fcfcfc` → `multiply`. A per-theme `contrast()` on the `<img>` (dark `1.07` / light `1.03`) snaps the near-pure field to true `#000` / `#fff` so the bake fully vanishes (screen/multiply only drop PURE black/white) — without it a faint lifted rectangle shows where meteors are absent. No mask. A per-theme `saturate(0.85)` + `opacity 0.9` on the `<img>` calms the full-colour portrait against the near-monochrome scheme so the H1 leads.
 - **Hero blend constraint (deliberate, scoped exception to "no effects"):** `mix-blend-mode` composites against the backdrop within the element's stacking context. It sits on the `<img>` — a `filter`/`mix-blend` on the image *itself* is fine (an element's own blend still reaches its parent backdrop). What must NOT happen is a stacking context or opaque background on any **ancestor**: no `z-index`/`transform`/`opacity`/`filter`/`mask`/`isolation` on the wrapper or up to `<body>`, or the blend keys against an opaque box instead of the `BackgroundLayer` meteors. The hero is above the meteors by tree order and below the nav (`z-50`) — no explicit z-index. (`html`'s opaque `--background` is fine; meteors paint over it.) Works with or without the meteor canvas: when meteors are suppressed (reduced-motion / low-core / project pages) the blend simply drops each bake toward the flat page background.
-- Hero `<Section>` bottom padding: `{spacing.3xl}` (64px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
+- Hero `<Section>` bottom padding: `{spacing.4xl}` (96px) mobile, `{spacing.lg}` (24px) desktop — tighter at desktop to pull the featured grid closer.
 
 #### Featured Projects Grid `[inline]`
 
@@ -932,7 +942,7 @@ editorial-dl:
 
 ### About Layouts
 
-- Inter-section gap (top-level flex container): `{spacing.3xl}` (64px) mobile and mid → `{spacing.5xl}` (128px) desktop (≥1280). Breakpoints align with layout transitions: portrait+intro and capabilities go row at `md`; Approach 3-col grid at `xl`.
+- Inter-section gap (top-level flex container): `{spacing.4xl}` (96px) mobile and mid → `{spacing.5xl}` (128px) desktop (≥1280). Breakpoints align with layout transitions: portrait+intro and capabilities go row at `md`; Approach 3-col grid at `xl`.
 
 #### About — Two-panel Intro `[inline]`
 
@@ -986,12 +996,12 @@ Heading above a numbered responsive grid — structurally distinct from Capabili
 
 #### About — Work with Me `[inline]`
 
-Contact and resume section at the bottom of the About page. Two actions side by side on small viewports and wider: primary opens a mailto link, secondary downloads the resume PDF.
+Contact and resume section at the bottom of the About page. Two actions side by side on small viewports and wider: primary opens a mailto link, secondary (`ResumeButton`) opens the résumé PDF in a new tab and triggers a download in a single action.
 
 - Flat elevation — no card border or surface fill, matching the rest of the About section stack.
 - Two-action grid: single column on mobile, `sm:grid-cols-2 sm:w-fit` on small viewports and wider. Gap `{spacing.md}`.
 - Primary action: `Button` (primary variant, email mailto). A copyable email text link (`body-caption`, `on-surface-muted`, underline) sits below as a low-friction alternative.
-- Secondary action: `Button` (secondary variant, resume download — `/AishwaryaGanesan_Resume.pdf`).
+- Secondary action: `ResumeButton` `[standalone]` — a `'use client'` wrapper over `Button` (secondary variant) whose single click opens `/AishwaryaGanesan_Resume.pdf` in a new tab (read-only view) and triggers a download. Extracted as a client island so the About page stays a server component.
 
 ```yaml
 about-work-with-me:
@@ -1017,7 +1027,7 @@ about-work-with-me:
       - CopyLink below: body-caption, on-surface-muted, underline
 
     secondary-action:
-      - Button (secondary, resume download)
+      - ResumeButton [standalone] (client wrapper over Button secondary): open-in-new-tab + download
       - src: /AishwaryaGanesan_Resume.pdf
 ```
 
@@ -1100,7 +1110,7 @@ No loading states are defined in v1 — all pages are statically generated; no a
 - Minimum 44×44px tappable area for all interactive elements on mobile — enforced even when visual size is smaller.
 - Visual size and tappable area are distinct: icon buttons use transparent padding to reach the 44px target without enlarging the visual footprint.
 - Pill nav items, mobile menu trigger, and scroll-to-top button all meet the 44px minimum through padding, not by increasing icon or label size.
-- Footer links and inline editorial links prioritize reading-flow spacing over individual target inflation — vertical rhythm provides sufficient separation at comfortable reading densities.
+- Footer social icon buttons meet the 44×44 target (transparent padding); inline editorial/footer text links instead rely on reading-flow spacing over individual target inflation — vertical rhythm provides sufficient separation at comfortable reading densities.
 - Dense editorial UI (tag chips, back-links, metadata rows) relies on spatial separation rather than individual target inflation — do not introduce outsized tap areas that break layout rhythm.
 
 #### Collapsing Strategy
@@ -1189,4 +1199,4 @@ None.
 
 ### Known Gaps
 
-- **Touch targets below 44px:** several mobile tappables fall short of the 44×44 minimum in Accessibility Rules — mobile slide-out nav items (40px), the close button (36px), and `LinkPill` (36px). The mobile trigger, scroll-to-top, CopyableCode (44px) and Buttons (56px) comply; pill-nav items are 32px but desktop-only, where the touch rule doesn't apply.
+- **Touch targets below 44px:** `LinkPill` (36px — About socials + project-header links) is the remaining mobile tappable below the 44×44 minimum. The mobile trigger, slide-out nav items, close button, footer social icons, scroll-to-top, CopyableCode (44px) and Buttons (56px) comply; pill-nav items are 32px but desktop-only, where the touch rule doesn't apply.
