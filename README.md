@@ -14,7 +14,7 @@ A personal portfolio presenting AI/ML engineering work as in-depth case studies 
 - **Language:** TypeScript (strict)
 - **Styling:** Tailwind CSS v4
 - **Animation:** Framer Motion
-- **Content:** MDX via next-mdx-remote/rsc, frontmatter via gray-matter
+- **Content:** MDX via next-mdx-remote/rsc, frontmatter via `yaml`
 - **Validation:** Zod (build-time frontmatter validation)
 - **Linting/Formatting:** Biome
 

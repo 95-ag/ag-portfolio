@@ -41,7 +41,7 @@ export default function HomePage() {
       {/* Hero */}
       <Section
         as="header"
-        className="pb-[var(--spacing-3xl)] lg:pb-[var(--spacing-lg)] overflow-hidden"
+        className="pb-[var(--spacing-4xl)] lg:pb-[var(--spacing-lg)] overflow-hidden"
       >
         <Container>
           <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center">
