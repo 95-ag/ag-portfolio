@@ -24,7 +24,7 @@ Current session state → `.claude/work/session.md`.
 - **Language:** TypeScript strict mode
 - **Styling:** Tailwind CSS v4
 - **Animation:** Framer Motion — used sparingly, always gated by `prefers-reduced-motion`
-- **Content:** MDX via gray-matter + next-mdx-remote
+- **Content:** MDX via next-mdx-remote; frontmatter via `yaml`
 - **Validation:** Zod — all frontmatter validated at build time
 - **Tooling:** Biome for format + lint
 

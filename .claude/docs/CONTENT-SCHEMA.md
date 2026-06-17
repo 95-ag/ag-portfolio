@@ -633,7 +633,7 @@ export const ProjectFrontmatterSchema = z.object({
 
 **Build script flow:**
 1. Read every `.mdx` file under `/content/projects/`.
-2. Parse frontmatter with `gray-matter`.
+2. Parse frontmatter with the in-repo `parseFrontmatter` helper (built on `yaml`).
 3. Validate against `ProjectFrontmatterSchema`.
 4. Validate cross-project rules (featured count, related-project slugs).
 5. Fail with file-and-field-specific error messages on any violation.

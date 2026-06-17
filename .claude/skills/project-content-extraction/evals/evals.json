@@ -11,7 +11,7 @@
       "assertions": [
         {
           "name": "frontmatter_is_schema_valid",
-          "description": "Frontmatter passes Zod schema validation (next build succeeds or gray-matter + zod parse succeeds)"
+          "description": "Frontmatter passes Zod schema validation (next build succeeds or yaml + zod parse succeeds)"
         },
         {
           "name": "no_slug_field_in_frontmatter",

@@ -52,7 +52,7 @@ Two audiences with distinct scanning patterns. Both reach the same homepage.
 | Styling | Tailwind CSS | Single design-token config drives light/dark/system |
 | Animation | Framer Motion | Used sparingly — see → UX / Design Direction → Motion |
 | Content | MDX | Project content; blog — v2 |
-| Frontmatter | gray-matter | Parses YAML metadata from MDX |
+| Frontmatter | yaml | Parses YAML metadata from MDX |
 | Tooling | Biome | Format + lint |
 
 No CMS in v1. No analytics decision in v1.
