@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
 import {
   type ProjectFrontmatter,
   ProjectFrontmatterSchema,
 } from "@/lib/schemas/project";
+import { parseFrontmatter } from "./frontmatter";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "projects");
 
@@ -24,7 +24,7 @@ function parseProject(filename: string): Project {
   const slug = filename.replace(/\.mdx$/, "");
   const filepath = path.join(CONTENT_DIR, filename);
   const raw = fs.readFileSync(filepath, "utf-8");
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
 
   const result = ProjectFrontmatterSchema.safeParse(data);
   if (!result.success) {
