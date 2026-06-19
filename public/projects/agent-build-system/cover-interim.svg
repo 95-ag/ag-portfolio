@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Interim cover for the agent-build-system case study.">
+  <defs>
+    <linearGradient id="surface" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1f27"/>
+      <stop offset="1" stop-color="#2b313d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#surface)"/>
+  <g transform="translate(800 432)" fill="none" stroke="#8b94a7" stroke-width="2" stroke-opacity="0.5">
+    <rect x="-430" y="-160" width="860" height="64" rx="8"/>
+    <rect x="-362" y="-78" width="724" height="64" rx="8"/>
+    <rect x="-294" y="4" width="588" height="64" rx="8"/>
+    <rect x="-226" y="86" width="452" height="64" rx="8"/>
+    <rect x="-158" y="168" width="316" height="64" rx="8"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#7c8597">
+    <text x="80" y="816" font-size="30" letter-spacing="2">agent-build-system</text>
+    <text x="80" y="852" font-size="22" fill="#5f6878" letter-spacing="3">COVER · INTERIM</text>
+  </g>
+</svg>
