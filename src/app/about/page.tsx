@@ -8,9 +8,9 @@ import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
+import { DownloadButton } from "@/components/ui/download-button";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
-import { ResumeButton } from "@/components/ui/resume-button";
 import { Tag } from "@/components/ui/tag";
 import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -178,7 +178,9 @@ export default function AboutPage() {
                 </Button>
                 <CopyLink value={about.contactEmail} />
               </div>
-              <ResumeButton href="/AishwaryaGanesan_Resume.pdf" />
+              <DownloadButton href="/AishwaryaGanesan_Resume.pdf">
+                Resume
+              </DownloadButton>
             </div>
           </div>
         </div>
