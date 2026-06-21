@@ -8,7 +8,8 @@
 /* :root = light, SHOWCASE surface (home/about/work index) — the immersive extreme (pure
    white). Long-read project pages override the background to a softer reading tone via
    [data-read="long"] below. Neutral (ChatGPT-like) palette; one green accent. */
-:root {
+:root,
+[data-theme="light"] {
   /* Surfaces — light depth logic: sunken is the BRIGHTEST (pure white) for image/code/diagram
      clarity; raised lifts only gently so highlights/callouts don't over-pop; bg is the off-white
      ground. (Dark inverts: sunken darkest, raised lighter.) */
