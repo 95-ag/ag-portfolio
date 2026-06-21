@@ -5,6 +5,10 @@ import type { NextConfig } from "next";
 // scripts (self.__next_f) that cannot be hashed, and the nonce alternative forces dynamic
 // rendering. 'unsafe-inline' for script/style is the accepted tradeoff; the high-value
 // directives below stay strict, and the only injection sink (JSON-LD) is escaped at source.
+// 'unsafe-eval' is needed only in dev — React/Turbopack use eval() for debugging
+// (callstacks, fast refresh). Production never uses it, so the prod CSP stays strict.
+const isDev = process.env.NODE_ENV !== "production";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -13,7 +17,7 @@ const contentSecurityPolicy = [
   "frame-src 'none'",
   "form-action 'self'",
   // Next RSC bootstrap + theme pre-paint script + next-themes + ld+json (all inline).
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   // Inline style attributes from framer-motion and the WebGL background.
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
