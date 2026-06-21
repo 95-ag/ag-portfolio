@@ -21,7 +21,6 @@ import { MenuIcon } from "@/components/icons/material/menu";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { Container } from "@/components/layout/container";
-import { Divider } from "@/components/layout/divider";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Callout } from "@/components/mdx/callout";
@@ -36,16 +35,17 @@ import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectCard } from "@/components/project/project-card";
 import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
+import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { CopyableCode } from "@/components/ui/copyable-code";
+import { DownloadButton } from "@/components/ui/download-button";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
-import { ResumeButton } from "@/components/ui/resume-button";
 import { Tag } from "@/components/ui/tag";
 import { InlineThemeSelector } from "@/components/ui/theme-selector";
-import { getAllProjects } from "@/lib/content/projects";
+import type { Project } from "@/lib/content/projects";
 import backgroundDark from "../../../public/design-system/background-dark.png";
 import backgroundLight from "../../../public/design-system/background-light.png";
 import footerDark from "../../../public/design-system/footer-dark.png";
@@ -61,7 +61,6 @@ import sectionProgressLight from "../../../public/design-system/section-progress
 import { Card, GallerySection, Specimen } from "./_gallery/section";
 import { StaticShot } from "./_gallery/static-shot";
 import { DemoFrame, ThemePair } from "./_gallery/theme-pair";
-import { GalleryToc } from "./_gallery/toc";
 import {
   ColorTokenGrid,
   DepthSpecimen,
@@ -74,9 +73,9 @@ import {
 } from "./_gallery/tokens";
 
 // Dev-only component gallery. Renders every real component grouped to mirror
-// rules/web-frontend/component-structure.md, with numbered sections + per-section
-// rationale, token cards, and side-by-side light/dark previews (patterns borrowed
-// from getdesign.md, rendered in our own tokens). The route and its screenshot
+// rules/web-frontend/component-structure.md, styled like a project detail page
+// (prose h2 headings + SectionProgressNav rail) with numbered sections, per-section
+// rationale, and side-by-side light/dark previews. The route and its screenshot
 // assets are pruned from the production snapshot (release.sh) — they never ship.
 export const metadata: Metadata = {
   title: "Design System",
@@ -112,56 +111,105 @@ const BRAND_ICONS: IconEntry[] = [
   { name: "LinkedIn", Icon: LinkedInIcon },
 ];
 
-const TOC = [
-  { id: "foundations", label: "01 · Foundations" },
-  { id: "ui", label: "02 · UI" },
-  { id: "layout", label: "03 · Layout" },
-  { id: "mdx", label: "04 · MDX" },
-  { id: "icons", label: "05 · Icons" },
-  { id: "shell", label: "06 · Shell" },
-  { id: "background", label: "07 · Background" },
-  { id: "project", label: "08 · Project" },
-];
-
 const SAMPLE_CODE = `export function add(a: number, b: number) {
   return a + b;
 }`;
 
+// Descriptor placeholder data so the domain components read as schema demos, not a
+// real project. The cover image reuses a real slug (images may be reused).
+const demoProject: Project = {
+  slug: "model-extraction-attacks",
+  body: "",
+  frontmatter: {
+    title: "Project Title",
+    subtitle: "A one-line subtitle describing the project",
+    summary:
+      "A short project summary shown on the card — two or three lines describing the work and the outcome it produced.",
+    projectType: "personal",
+    publishedAt: "2026-01-01",
+    order: 0,
+    heroAlt: "Project cover",
+    heroVideoLoop: true,
+    featured: false,
+    tags: ["tag-one", "tag-two", "tag-three"],
+    stack: {
+      languages: ["Language"],
+      frameworks: ["Framework"],
+      libraries: ["Library A", "Library B"],
+      tools: ["Tool"],
+    },
+    overview: {
+      problem: "The problem this project solves, stated in a sentence or two.",
+      built: "What was built — the system, model, or tool, described briefly.",
+      results: ["A measurable result", "Another concrete outcome"],
+      learnings: ["A transferable learning", "Another takeaway"],
+    },
+    links: { github: "https://github.com", demo: "https://example.com" },
+  },
+};
+
 export default function DesignSystemPage() {
-  const sample = getAllProjects()[0];
+  const buttonVariants = [
+    {
+      token: "primary",
+      spec: "bg accent · text accent-on · radius-sm · 56px tall",
+      render: <Button variant="primary">Primary</Button>,
+    },
+    {
+      token: "secondary",
+      spec: "1px outline · transparent · hover accent tint",
+      render: <Button variant="secondary">Secondary</Button>,
+    },
+    {
+      token: "primary + icon",
+      spec: "leading icon (18px) + label",
+      render: (
+        <Button variant="primary" icon={<MailIcon size={18} />}>
+          Email me
+        </Button>
+      ),
+    },
+    {
+      token: "as link",
+      spec: "renders an <a> when href is set",
+      render: (
+        <Button href="#ui-button" variant="secondary">
+          As link
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <Section>
       <Container>
-        <div className="flex flex-col gap-[var(--spacing-xl)]">
-          {/* Header */}
-          <header className="flex flex-col gap-[var(--spacing-lg)]">
-            <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-              [00] Reference
-            </span>
-            <Heading level={1} type="display-title">
-              Design System
-            </Heading>
-            <p className="body-lead max-w-[70ch]">
-              Every component, rendered live and grouped to mirror the component
-              folder map. Token-driven pieces show light and dark side by side.
-            </p>
-            <p className="body-caption max-w-[70ch]">
-              Dev-only reference — excluded from the production build. Site
-              chrome (nav, footer, background, scroll-to-top) is live around
-              this page; a few fixed or full-viewport components are shown as
-              static captures.
-            </p>
-          </header>
+        <SectionProgressNav />
+        <header className="mb-[var(--spacing-3xl)] flex flex-col gap-[var(--spacing-lg)]">
+          <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
+            [00] Reference
+          </span>
+          <Heading level={1} type="display-title">
+            Design System
+          </Heading>
+          <p className="body-lead max-w-[70ch]">
+            Every component, rendered live and grouped to mirror the component
+            folder map. Token-driven pieces show light and dark side by side.
+          </p>
+          <div className="body-caption">
+            Dev-only reference — excluded from the production build. Site chrome
+            (nav, footer, background, scroll-to-top) is live around this page; a
+            few fixed or full-viewport components are shown as static captures.
+          </div>
+        </header>
 
-          <GalleryToc items={TOC} />
-
+        <article className="flex flex-col gap-[var(--spacing-4xl)]">
           {/* ── [01] Foundations ── */}
           <GallerySection
             id="foundations"
             number="01"
             title="Foundations"
-            rationale="The design tokens every component composes from. globals.css is the single source of truth; values here echo it."
+            intro="The design tokens every component composes from — globals.css is the single source of truth."
+            mapsTo="Foundations"
           >
             <Specimen
               id="foundations-color"
@@ -178,7 +226,7 @@ export default function DesignSystemPage() {
               id="foundations-type"
               name="Typography scale"
               source="globals.css → @layer components"
-              description="19 semantic type tokens — family, size, weight, and line-height beside a live specimen."
+              description="19 semantic type tokens — family, size, weight, line-height, and sample text in each token's real role."
             >
               <DemoFrame>
                 <TypeScaleSpecimen />
@@ -218,13 +266,13 @@ export default function DesignSystemPage() {
 
             <Specimen
               id="foundations-responsive"
-              name="Responsive zones"
+              name="Responsive"
               source="DESIGN.md → Layout"
-              description="Sanity-check breakpoints and what changes across them."
+              description="Breakpoint zones, touch targets, and the collapse strategy."
             >
-              <DemoFrame>
+              <div className="prose-content">
                 <ResponsiveSpecimen />
-              </DemoFrame>
+              </div>
             </Specimen>
 
             <Specimen
@@ -232,9 +280,9 @@ export default function DesignSystemPage() {
               name="Motion tokens"
               source="--duration-* / --ease-*"
             >
-              <DemoFrame>
+              <div className="prose-content">
                 <MotionTokenTable />
-              </DemoFrame>
+              </div>
             </Specimen>
 
             <Specimen
@@ -242,37 +290,41 @@ export default function DesignSystemPage() {
               name="Z-index scale"
               source="--z-*"
             >
-              <DemoFrame>
+              <div className="prose-content">
                 <ZIndexTokenTable />
-              </DemoFrame>
+              </div>
             </Specimen>
           </GallerySection>
-
-          <Divider />
 
           {/* ── [02] Components · UI ── */}
           <GallerySection
             id="ui"
             number="02"
             title="Components · UI"
-            rationale="Reusable-everywhere primitives — no page, route, or schema assumptions."
+            intro="Reusable-everywhere primitives — no page, route, or schema assumptions."
+            mapsTo="Components"
           >
             <Specimen
               id="ui-button"
               name="Button"
               source="@/components/ui/button"
-              spec="variants: primary · secondary · ±icon · renders as button or link"
             >
               <ThemePair>
-                <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
-                  <Button variant="primary">Primary</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="primary" icon={<MailIcon size={18} />}>
-                    With icon
-                  </Button>
-                  <Button href="#ui-button" variant="secondary">
-                    As link
-                  </Button>
+                <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:grid-cols-2">
+                  {buttonVariants.map((v) => (
+                    <div
+                      key={v.token}
+                      className="flex flex-col gap-[var(--spacing-xs)]"
+                    >
+                      <div className="flex min-h-[96px] items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]">
+                        {v.render}
+                      </div>
+                      <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+                        button · {v.token}
+                      </span>
+                      <span className="body-caption">{v.spec}</span>
+                    </div>
+                  ))}
                 </div>
               </ThemePair>
             </Specimen>
@@ -296,7 +348,7 @@ export default function DesignSystemPage() {
               id="ui-heading"
               name="Heading"
               source="@/components/ui/heading"
-              description="Maps level (h1–h6) to a semantic type token. All six type values appear in Foundations → Typography; demoed at level 4 here."
+              description="Maps a heading level (h1–h6) to a semantic type token, keeping level (a11y) and visual style decoupled. Used by the page headers on home, about, work, and 404. The six type values are in Foundations → Typography; demoed at level 4 below."
             >
               <DemoFrame>
                 <div className="flex flex-col gap-[var(--spacing-md)]">
@@ -358,12 +410,15 @@ export default function DesignSystemPage() {
             </Specimen>
 
             <Specimen
-              id="ui-resume-button"
-              name="ResumeButton"
-              source="@/components/ui/resume-button"
+              id="ui-download-button"
+              name="DownloadButton"
+              source="@/components/ui/download-button"
+              description="Generic secondary button that opens a file in a new tab and triggers a download (the résumé action on About, bound to no specific asset)."
             >
               <ThemePair>
-                <ResumeButton href="#ui-resume-button" />
+                <DownloadButton href="#ui-download-button">
+                  Resume
+                </DownloadButton>
               </ThemePair>
             </Specimen>
 
@@ -382,7 +437,7 @@ export default function DesignSystemPage() {
               id="ui-scroll-to-top"
               name="ScrollToTop"
               source="@/components/ui/scroll-to-top"
-              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Live on this page — scroll down to see it. Captured here because it's fixed-position and scroll-driven."
+              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Live on this page — scroll down to see it. Fixed-position + scroll-driven, so captured here."
             >
               <StaticShot
                 light={scrollToTopLight}
@@ -393,14 +448,13 @@ export default function DesignSystemPage() {
             </Specimen>
           </GallerySection>
 
-          <Divider />
-
           {/* ── [03] Components · Layout ── */}
           <GallerySection
             id="layout"
             number="03"
             title="Components · Layout"
-            rationale="Structural and spacing primitives. The outlines below are gallery guides, not part of the components."
+            intro="Structural and spacing primitives. The outlines below are gallery guides, not part of the components."
+            mapsTo="Foundations → Layout"
           >
             <Specimen
               id="layout-stack"
@@ -410,13 +464,13 @@ export default function DesignSystemPage() {
             >
               <DemoFrame>
                 <Stack gap="md">
-                  <div className="rounded-[var(--radius-sm)] bg-[var(--surface-raised)] p-[var(--spacing-sm)] body-caption">
+                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
                     gap=&quot;md&quot; — item one
                   </div>
-                  <div className="rounded-[var(--radius-sm)] bg-[var(--surface-raised)] p-[var(--spacing-sm)] body-caption">
+                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
                     item two
                   </div>
-                  <div className="rounded-[var(--radius-sm)] bg-[var(--surface-raised)] p-[var(--spacing-sm)] body-caption">
+                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
                     item three
                   </div>
                 </Stack>
@@ -424,37 +478,22 @@ export default function DesignSystemPage() {
             </Specimen>
 
             <Specimen
-              id="layout-divider"
-              name="Divider"
-              source="@/components/layout/divider"
-            >
-              <DemoFrame>
-                <div className="flex flex-col gap-[var(--spacing-md)]">
-                  <span className="body-caption">above</span>
-                  <Divider />
-                  <span className="body-caption">below</span>
-                </div>
-              </DemoFrame>
-            </Specimen>
-
-            <Specimen
               id="layout-scaffold"
-              name="Container · Section · Grid · Sticky"
+              name="Container · Section · Grid · Divider · Sticky"
               source="@/components/layout/*"
-              description="Page-scaffold primitives — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Grid (4/8/12 cols), Sticky (scroll-pinned). They shape this very page; isolated outlines would misrepresent them."
+              description="Page-scaffold primitives — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Grid (4/8/12 cols), Divider (hairline), Sticky (scroll-pinned). They shape this very page; isolated outlines would misrepresent them."
             >
               <DemoFrame note="Structural primitives — best seen in context (this page is wrapped in Section › Container). See about/page.tsx and work pages for Grid/Sticky." />
             </Specimen>
           </GallerySection>
-
-          <Divider />
 
           {/* ── [04] Components · MDX ── */}
           <GallerySection
             id="mdx"
             number="04"
             title="Components · MDX"
-            rationale="Components available inside MDX content bodies only."
+            intro="Components available inside MDX content bodies only."
+            mapsTo="Components (MDX)"
           >
             <Specimen
               id="mdx-callout"
@@ -501,8 +540,8 @@ export default function DesignSystemPage() {
             >
               <DemoFrame>
                 <Figure
-                  src="/projects/masked-autoencoders/reconstructions.png"
-                  alt="Masked-autoencoder reconstruction samples"
+                  src="/design-system/samples/figure.svg"
+                  alt="Neutral sample image"
                   caption="Figure — object-cover in a bordered, radius-md frame"
                 />
               </DemoFrame>
@@ -516,8 +555,8 @@ export default function DesignSystemPage() {
             >
               <DemoFrame>
                 <Diagram
-                  src="/projects/model-extraction-attacks/extraction-pipeline.svg"
-                  alt="Model extraction attack pipeline diagram"
+                  src="/design-system/samples/diagram.svg"
+                  alt="Neutral sample input–model–output diagram"
                   caption="Diagram — object-contain on a neutral field"
                 />
               </DemoFrame>
@@ -532,28 +571,27 @@ export default function DesignSystemPage() {
               <DemoFrame>
                 <DiagramRow caption="DiagramRow — two labelled panels">
                   <DiagramPanel
-                    src="/projects/masked-autoencoders/grad-cam-original.png"
-                    alt="Original input image"
-                    label="Original"
+                    src="/design-system/samples/panel-a.svg"
+                    alt="Neutral sample panel A"
+                    label="Before"
                   />
                   <DiagramPanel
-                    src="/projects/masked-autoencoders/grad-cam-heatmap.png"
-                    alt="Grad-CAM attention heatmap"
-                    label="Grad-CAM"
+                    src="/design-system/samples/panel-b.svg"
+                    alt="Neutral sample panel B"
+                    label="After"
                   />
                 </DiagramRow>
               </DemoFrame>
             </Specimen>
           </GallerySection>
 
-          <Divider />
-
           {/* ── [05] Components · Icons ── */}
           <GallerySection
             id="icons"
             number="05"
             title="Components · Icons"
-            rationale="The icon set — all inherit currentColor at the requested size."
+            intro="The icon set — all inherit currentColor at the requested size."
+            mapsTo="Components"
           >
             <Specimen
               id="icons-material"
@@ -561,11 +599,11 @@ export default function DesignSystemPage() {
               source="@/components/icons/material/*"
             >
               <DemoFrame>
-                <div className="grid grid-cols-3 gap-[var(--spacing-lg)] sm:grid-cols-4 md:grid-cols-6">
+                <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--on-surface)] sm:grid-cols-4 md:grid-cols-6">
                   {MATERIAL_ICONS.map(({ name, Icon }) => (
                     <div
                       key={name}
-                      className="flex flex-col items-center gap-[var(--spacing-xs)] text-[var(--on-surface)]"
+                      className="flex flex-col items-center gap-[var(--spacing-xs)]"
                     >
                       <Icon size={24} />
                       <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
@@ -600,14 +638,13 @@ export default function DesignSystemPage() {
             </Specimen>
           </GallerySection>
 
-          <Divider />
-
           {/* ── [06] App frame · Shell ── */}
           <GallerySection
             id="shell"
             number="06"
             title="App frame · Shell"
-            rationale="Site-wide chrome mounted once in the root layout — live around this page. Fixed/route-aware, so shown as captures."
+            intro="Site-wide chrome mounted once in the root layout — live around this page. Fixed/route-aware, so shown as captures with breathing room."
+            mapsTo="Domain Components → Shell"
           >
             <Specimen
               id="shell-nav"
@@ -643,111 +680,86 @@ export default function DesignSystemPage() {
             </Specimen>
           </GallerySection>
 
-          <Divider />
-
           {/* ── [07] Background ── */}
           <GallerySection
             id="background"
             number="07"
             title="Background subsystem"
-            rationale="The ambient layer — fixed behind every non-project page, including this one. AsciiField (gutter-masked glyphs) + MeteorShower (WebGL, honors reduced-motion)."
+            intro="The ambient layer — fixed behind every non-project page, including this one."
+            mapsTo="Background subsystem"
           >
             <Specimen
               id="background-layer"
               name="BackgroundLayer · AsciiField · MeteorShower"
               source="@/components/background/*"
-              description="WebGL reads the global theme (can't be wrapper-forced) and the ascii field is gutter-masked to the page edges, so this is captured in each theme rather than rendered inline."
+              description="WebGL reads the global theme (can't be wrapper-forced) and the ascii field is gutter-masked to the page edges, so each is captured close-up in both themes rather than rendered inline."
             >
               <StaticShot
                 light={backgroundLight}
                 dark={backgroundDark}
                 alt="Ambient background — ascii field and meteor shower"
-                note="full-viewport ambient layer, captured from the home hero"
+                note="full-viewport ambient layer"
               />
             </Specimen>
           </GallerySection>
-
-          <Divider />
 
           {/* ── [08] Domain · Project ── */}
           <GallerySection
             id="project"
             number="08"
             title="Domain · Project"
-            rationale="Page/route/schema-bound compositions, fed a real project from the content library."
+            intro="Page/route/schema-bound compositions, shown with placeholder content (images reuse a real cover)."
+            mapsTo="Domain Components → Project"
           >
-            {sample ? (
-              <>
-                <Specimen
-                  id="project-card"
-                  name="ProjectCard"
-                  source="@/components/project/project-card"
-                  description={`Card link for /work/${sample.slug}.`}
-                >
-                  <ThemePair>
-                    <div className="max-w-[420px]">
-                      <ProjectCard project={sample} />
-                    </div>
-                  </ThemePair>
-                </Specimen>
+            <Specimen
+              id="project-card"
+              name="ProjectCard"
+              source="@/components/project/project-card"
+              description="Card link to a project page — hero cover, title, summary, up to three tags."
+            >
+              <ThemePair>
+                <div className="mx-auto max-w-[420px]">
+                  <ProjectCard project={demoProject} />
+                </div>
+              </ThemePair>
+            </Specimen>
 
-                <Specimen
-                  id="project-header"
-                  name="ProjectHeader"
-                  source="@/components/project/project-header"
-                >
-                  <DemoFrame>
-                    <ProjectHeader frontmatter={sample.frontmatter} />
-                  </DemoFrame>
-                </Specimen>
+            <Specimen
+              id="project-header"
+              name="ProjectHeader"
+              source="@/components/project/project-header"
+            >
+              <DemoFrame>
+                <ProjectHeader frontmatter={demoProject.frontmatter} />
+              </DemoFrame>
+            </Specimen>
 
-                <Specimen
-                  id="project-overview"
-                  name="ProjectOverview"
-                  source="@/components/project/project-overview"
-                >
-                  <DemoFrame>
-                    <ProjectOverview overview={sample.frontmatter.overview} />
-                  </DemoFrame>
-                </Specimen>
+            <Specimen
+              id="project-overview"
+              name="ProjectOverview"
+              source="@/components/project/project-overview"
+            >
+              <DemoFrame>
+                <ProjectOverview overview={demoProject.frontmatter.overview} />
+              </DemoFrame>
+            </Specimen>
 
-                <Specimen
-                  id="project-tech-stack"
-                  name="TechStack"
-                  source="@/components/project/tech-stack"
-                >
-                  <DemoFrame>
-                    <div className="prose-content">
-                      <TechStack stack={sample.frontmatter.stack} />
-                    </div>
-                  </DemoFrame>
-                </Specimen>
-
-                <Specimen
-                  id="project-hero-media"
-                  name="HeroMedia · HeroMetaOverlay"
-                  source="@/components/project/hero-media"
-                  description="Dispatches to a live cover component, video, or image by slug. The overlay renders logos/contributors when the project provides them."
-                >
-                  <DemoFrame>
-                    <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
-                      <HeroMedia
-                        slug={sample.slug}
-                        src={sample.frontmatter.heroImage}
-                        alt={sample.frontmatter.heroAlt}
-                        poster={sample.frontmatter.heroPoster}
-                      />
-                      <HeroMetaOverlay
-                        logos={sample.frontmatter.logos}
-                        contributors={sample.frontmatter.contributors}
-                      />
-                    </div>
-                  </DemoFrame>
-                </Specimen>
-              </>
-            ) : (
-              <DemoFrame note="No projects found in the content library on this branch." />
-            )}
+            <Specimen
+              id="project-hero-media"
+              name="HeroMedia · HeroMetaOverlay"
+              source="@/components/project/hero-media"
+              description="Dispatches to a live cover component, video, or image by slug. The overlay renders logos/contributors when the project provides them."
+            >
+              <DemoFrame>
+                <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
+                  <HeroMedia slug={demoProject.slug} alt="Project cover" />
+                  <HeroMetaOverlay
+                    logos={demoProject.frontmatter.logos}
+                    contributors={demoProject.frontmatter.contributors}
+                  />
+                </div>
+              </DemoFrame>
+            </Specimen>
 
             <Specimen
               id="project-covers"
@@ -759,7 +771,7 @@ export default function DesignSystemPage() {
                 <div className="grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-3">
                   {Object.entries(coverComponents).map(([slug, Cover]) => (
                     <Card key={slug} label={slug} className="aspect-video p-0">
-                      <div className="relative h-full w-full overflow-hidden rounded-[var(--radius-md)]">
+                      <div className="relative h-full w-full overflow-hidden">
                         <Cover />
                       </div>
                     </Card>
@@ -772,7 +784,7 @@ export default function DesignSystemPage() {
               id="project-section-progress"
               name="SectionProgressNav"
               source="@/components/project/section-progress-nav"
-              description="Fixed left-rail TOC that scrapes <h2>s from a project <article> via IntersectionObserver. Needs a /work/* page, so it's captured there."
+              description="Fixed left-rail TOC that scrapes <h2>s from a project <article> via IntersectionObserver — the same rail shown on this page (xl+)."
             >
               <StaticShot
                 light={sectionProgressLight}
@@ -782,6 +794,23 @@ export default function DesignSystemPage() {
               />
             </Specimen>
           </GallerySection>
+        </article>
+
+        {/* TechStack renders its own <h2>; kept outside the <article> so it doesn't
+            pollute the SectionProgressNav rail. Reads as the final Project demo. */}
+        <div className="mt-[var(--spacing-4xl)]">
+          <Specimen
+            id="project-tech-stack"
+            name="TechStack"
+            source="@/components/project/tech-stack"
+            description="Renders its own 'Tech Stack' h2 — shown outside the gallery's article so it stays out of the section rail."
+          >
+            <DemoFrame>
+              <div className="prose-content">
+                <TechStack stack={demoProject.frontmatter.stack} />
+              </div>
+            </DemoFrame>
+          </Specimen>
         </div>
       </Container>
     </Section>

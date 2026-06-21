@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Neutral sample panel A">
+  <rect width="240" height="180" fill="#f1f1f1"/>
+  <g fill="#b8b8b8">
+    <circle cx="60" cy="60" r="10"/><circle cx="120" cy="60" r="10"/><circle cx="180" cy="60" r="10"/>
+    <circle cx="60" cy="120" r="10"/><circle cx="120" cy="120" r="10"/><circle cx="180" cy="120" r="10"/>
+  </g>
+  <rect x="0.5" y="0.5" width="239" height="179" fill="none" stroke="#bdbdbd"/>
+</svg>

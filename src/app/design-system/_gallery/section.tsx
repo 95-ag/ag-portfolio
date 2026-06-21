@@ -1,40 +1,47 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-// Dev-only gallery helpers. Section/specimen carry stable ids so a blog post can
-// deep-link any component (e.g. /design-system#ui-button). Numbered-section +
-// rationale + card patterns mirror getdesign.md, rendered in our own tokens.
+// Dev-only gallery helpers. The page body is wrapped in `.prose-content`, so the
+// h2/h3 here inherit the exact project-detail-page heading styles (and SectionProgressNav
+// scrapes these h2s for the left-rail TOC). Body text uses <div>/<span> (which
+// prose-content does not restyle) to keep specimen captions controlled. Section/specimen
+// ids stay stable so a blog post can deep-link any component.
 
 export function GallerySection({
   id,
   number,
   title,
-  rationale,
+  intro,
+  mapsTo,
   children,
 }: {
   id: string;
   /** Two-digit section number, e.g. "01". */
   number: string;
   title: string;
-  rationale?: string;
+  /** One-line intro, like the reference's per-section blurb. */
+  intro: string;
+  /** Which DESIGN.md section this maps to, e.g. "Foundations → Colors". */
+  mapsTo: string;
   children: ReactNode;
 }) {
   return (
     <section
       id={id}
-      aria-labelledby={`${id}-heading`}
-      className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-xl)]"
+      aria-label={title}
+      className="scroll-mt-[var(--spacing-4xl)]"
     >
-      <div className="flex flex-col gap-[var(--spacing-sm)]">
-        <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-          [{number}] {title}
+      {/* Scoped prose-content so the h2 reuses the exact project-page heading style
+          (mono rule) without prose restyling the component demos below. The h2 has no
+          id — SectionProgressNav assigns a slugified one and links to it. */}
+      <div className="prose-content">
+        <h2>{`[${number}] ${title}`}</h2>
+      </div>
+      <div className="mb-[var(--spacing-2xl)] flex flex-col gap-[var(--spacing-xs)]">
+        <div className="body-secondary max-w-[70ch]">{intro}</div>
+        <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
+          → DESIGN.md → {mapsTo}
         </span>
-        <h2 id={`${id}-heading`} className="heading-section">
-          {title}
-        </h2>
-        {rationale && (
-          <p className="body-secondary max-w-[70ch]">{rationale}</p>
-        )}
       </div>
       <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
     </section>
@@ -51,40 +58,35 @@ export function Specimen({
 }: {
   id: string;
   name: string;
-  /** Import path or export name, shown in mono. */
   source?: string;
-  /** One-line spec, e.g. "variants: primary · secondary". */
   spec?: string;
   description?: string;
   children: ReactNode;
 }) {
   return (
-    <div
-      id={id}
-      className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
-    >
-      <div className="flex flex-col gap-[2px]">
-        <h3 className="heading-component">{name}</h3>
+    <div id={id} className="scroll-mt-[var(--spacing-4xl)]">
+      <h3 className="heading-component">{name}</h3>
+      <div className="mb-[var(--spacing-md)] flex flex-col gap-[2px]">
         {source && (
           <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
             {source}
           </span>
         )}
         {description && (
-          <p className="body-caption max-w-[70ch]">{description}</p>
+          <span className="body-caption max-w-[70ch]">{description}</span>
         )}
       </div>
       {children}
       {spec && (
-        <p className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+        <div className="mt-[var(--spacing-sm)] font-mono text-[12px] text-[var(--on-surface-muted)]">
           {spec}
-        </p>
+        </div>
       )}
     </div>
   );
 }
 
-/** Bordered cell — the live component sits inside, optional mono token label below. */
+/** Bordered cell matching the ProjectCard treatment (sharp corners, hairline border). */
 export function Card({
   children,
   label,
@@ -98,7 +100,7 @@ export function Card({
     <div className="flex flex-col gap-[var(--spacing-xs)]">
       <div
         className={cn(
-          "flex min-h-[64px] items-center justify-center rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]",
+          "flex min-h-[64px] items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]",
           className,
         )}
       >
