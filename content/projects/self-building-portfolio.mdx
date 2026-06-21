@@ -1,0 +1,160 @@
+---
+title: "The agent that writes, illustrates, and ships this portfolio"
+subtitle: "Built by an AI engineer with a no-slop bar: every claim grounded in the real source, every asset generated from the design system, and engineered to survive a redesign."
+summary: "The agent system behind this site, built to an AI engineer's no-slop bar: each project's deep-dive grounded in its real repo, cohesive with the design system, and built to survive redesigns."
+metaDescription: "The agent system behind this site, built to a no-slop bar: every project deep-dive grounded in its real repo and cohesive with the design system."
+projectType: personal
+publishedAt: "2026-06-19"
+order: 30
+featured: true
+heroImage: "/projects/self-building-portfolio/cover-interim.svg"
+heroAlt: "A narrowing stack of five layered bands on a neutral slate surface."
+tags:
+  - AI Engineering
+  - Agent Orchestration
+  - LLM
+  - Next.js
+  - Design Systems
+  - Developer Tooling
+stack:
+  languages: [TypeScript, Python]
+  frameworks: [Next.js, React]
+  libraries: [Tailwind CSS, Zod, MDX, Shiki, Three.js, Framer Motion, next-themes, matplotlib]
+  tools: [Claude Code, Git, Vercel, Biome, Playwright]
+overview:
+  problem: |
+    A resume and a LinkedIn profile flatten technical depth; what actually demonstrates
+    it is a deep, honest write-up of each project. Producing those (structured, factual,
+    well-designed) for every project by hand doesn't scale, and the obvious shortcut
+    turns them into generic AI output.
+  built: |
+    Designed and operated an agent system that writes, illustrates, and ships each
+    project's deep-dive (copy, diagrams, and a design-cohesive cover) with a human
+    directing narrative and style and the agent executing, grounded in real sources with
+    nothing invented. Its outputs derive from the site's design tokens, so they survive
+    redesigns and adapt to light and dark.
+  results:
+    - "A 100 desktop Lighthouse performance score, on fully static, prerendered output"
+    - "WCAG AA contrast in both light and dark themes, enforced at the design-token level"
+    - "Diagrams and covers regenerate from tracked sources and the site's tokens, reproducible and theme-adaptive, not baked one-offs"
+  learnings:
+    - "Orchestrating coding agents to ship production work without AI slop"
+    - "Designing spec-as-contract systems that keep agent output grounded and cohesive"
+    - "Engineering reproducible, theme-adaptive design systems that survive redesigns"
+    - "Practicing verification-first delivery: every claim traceable, every change gated"
+links:
+  github: "https://github.com/95-ag/ag-portfolio"
+  demo: "https://aishwaryaganesan.vercel.app"
+---
+
+## Detailed Problem
+
+A resume gives a recruiter thirty seconds of keywords; a LinkedIn profile gives a job title and a blurb. Neither shows the thing that actually separates engineers: how they reason through a hard problem, what they chose not to do, where they were honest about what didn't work. That lives in the work itself, and surfacing it means writing a real deep-dive for each project: structured, technically honest, clearly presented, and styled well enough that someone wants to read it.
+
+Writing that by hand for every project is slow, and the obvious shortcut makes it worse. Handing a model a repository and asking for "a case study" produces fluent, generic, lightly-hallucinated filler. For an AI engineer, shipping that as a portfolio of one's own engineering would be self-refuting: the work is supposed to be evidence that you use these tools well, not evidence of the opposite.
+
+So the goal was a portfolio built the way the work itself is done: with an agent, but held to an engineering bar. Every claim traceable to a real source, every page deliberately structured and styled, the whole thing maintainable rather than a one-time push. And the system that produced it had to be reusable, not welded to a single site.
+
+The hard part is not getting an agent to generate text. It is keeping a few hundred edits' worth of output consistent, grounded, and trustworthy. Agents drift from intent, pad, and report success without evidence. A system that ships a public artifact under your own name has to hold a quality bar, keep the work reviewable, and make every claim verifiable. And it has to do all of that while staying faster than doing the work by hand.
+
+## Approach
+
+The organizing idea is that the agent is fast but unanchored, and the specification is what anchors it. You don't prompt your way to consistency; you write down what to build, how it must be built, and the capabilities to build it with, and let the agent execute against that contract.
+
+Each capability targets a job that is necessary but that nobody wants to do by hand for every project. A rigorous write-up needs structure, hard facts, and a consistent voice, so the human sets the narrative and style, and the agent drafts it from the actual repository and report, inventing nothing. Diagrams make a project faster to understand, so they are generated, not hand-drawn. Every project needs a clean, cohesive cover, so it is composed from the site's own design tokens rather than commissioned or, worse, image-generated into something that never quite fits.
+
+The system is deliberately not autonomous: direction, style, and the bar for good enough stay with the engineer, and the agent works inside them. That is not a constraint waiting to be removed; it is the design. The agent is one tool in a system of judgment, and the judgment is the part that doesn't get delegated.
+
+<Highlight heading="The human brings judgment; the agent brings labor">
+  Direction, taste, and the call on what is good enough stay with the engineer; drafting, drawing, and assembling are delegated to the agent — grounded in the real source, never inventing to fill a gap.
+</Highlight>
+
+## Architecture
+
+The contract is a layered set of files the agent reads before it acts, and the website is what those layers produce.
+
+- **Documentation** is the specification: product intent, the content schema, and the design system. The design system is load-bearing, not decorative: every color is a role-based token (`surface`, `on-surface-muted`, a single `accent`), defined once per theme, so a redesign is a change in one place instead of a sweep through components.
+- **Rules** constrain how the agent works: engineering and git discipline, accessibility and design-system constraints, and the verification required before anything is called done. They are tiered (stack-agnostic, then web, framework, and this project) so the agent loads only what is relevant to the file it is touching.
+- **Skills** are the repeatable capabilities, each self-contained: `project-content-extraction`, `project-assets-generation`, `project-cover-generation`, `project-review`, all kept in [claude-field-kit](https://github.com/95-ag/claude-field-kit).
+- **Pipelines** compose skills into a fixed order for a unit of work.
+- **Gates** decide what passes: plan approval, build-time validation, automated checks, and human sign-off.
+
+<Diagram
+  src="/projects/self-building-portfolio/architecture.svg"
+  alt="Layered architecture: documentation (product, content schema, design tokens) defines the specification; rules constrain how the agent works; skills are the capabilities; pipelines sequence them; gates decide what passes. The website is generated from these layers."
+  caption="The system as layers, from specification to enforcement, grounded in the design tokens the whole site and its assets are built from."
+  aspect="760/440"
+  className="max-w-[700px]"
+/>
+
+The separation is the point. What to build, how to build it, what the agent can do, in what order, and what is allowed to pass are five different concerns, each owned by one layer, so a change to any one of them touches one place, not the whole tree. The website those layers build is a statically generated Next.js site: every page is prerendered to HTML, its content lives in MDX, and its frontmatter is validated at build time, so a broken page cannot ship.
+
+## Workflow
+
+Architecture is the structure; the workflow is how a project page actually gets made. Four skills run in a fixed order, each ending at a human gate.
+
+**Content:** `project-content-extraction` reads the real repository and any report and drafts the deep-dive. The engineer sets the narrative direction and the writing style; the agent produces the structured prose and fills the schema; nothing absent from the source reaches the page. How much steering this takes varies, from roughly one to three hours of direction per project. This one needed more than most: no existing report to work from, and a specific voice to hit.
+
+**Assets:** `project-assets-generation` works out which figures genuinely aid understanding, then generates each from a tracked Python source against a shared theme. The production SVG is a build output, never hand-edited; it carries a `prefers-color-scheme` block so it adapts to dark mode natively, and because it is script-reproducible it survives a palette change.
+
+**Cover:** `project-cover-generation` builds the hero as a live component whose colors are all design tokens, which makes it theme-adaptive, deterministic, and grounded enough that the project's core tension is legible from the cover alone. Composing from tokens rather than generating an image is what keeps every cover cohesive and redesign-proof.
+
+**Review:** `project-review` runs two cold passes as independent agents that never see each other's notes: a non-technical recruiter and a metric-tracing senior engineer, both judging the rendered page, not the source. Where they disagree, the conflict is surfaced for the human to settle rather than quietly resolved.
+
+## Engineering Decisions
+
+### Generate from design tokens, not images
+
+The covers and diagrams could have been static images: drawn once, or produced by an image model. Both were rejected. A static image goes stale the moment the site's colors change and has to be remade by hand; an image-model cover reads as generic, never quite matches the design system, and needs endless fine-tuning to not look like stock AI art. Instead every cover is a live component and every diagram an SVG, both built from the same design tokens as the site. The cost is that covers are clean and systematic rather than richly illustrated, a deliberate trade given the alternative is incoherence. The payoff is that a theme switch or a full redesign carries through every asset for free.
+
+### Content as MDX, on a stack that can grow
+
+Project pages are MDX: not a CMS, not bespoke React. The reason is operational: content is plain text in git, so it is diffable, reviewable, and self-hosted, and publishing a project is adding a single file. The slug and route derive from the filename, with nothing else to wire up. The framework underneath is heavier than the static HTML most portfolios use, and that is deliberate: a statically generated Next.js app can absorb a blog, a newsletter, or accounts later without a rebuild, so the early choice does not become a ceiling.
+
+### Ground everything, invent nothing
+
+The rule the whole content pipeline is built around is that no claim reaches a page without a traceable source: a file, a build output, a measurement re-run live. A metric that cannot be grounded is cut, not guessed. This is the line between using AI as leverage and shipping AI slop, and it is enforced rather than merely intended: a content guard blocks filler and stand-in language, and the build fails on invalid or incomplete data.
+
+### Review cold, in two passes
+
+A page is read by two agents that share no context: one a recruiter with no machine-learning background, one a senior engineer tracing every number. An author cannot see their own blind spots, and a reviewer who has seen the author's reasoning inherits them. Keeping the passes independent is what makes the review adversarial instead of confirmatory; the disagreements between them are often the most useful output.
+
+## Outcomes
+
+The original problem had two halves: produce a grounded deep-dive for each project without writing it by hand, and put it somewhere a recruiter will actually read. The system answers the first, the site the second.
+
+### The system
+
+The main outcome is the system that produces the deep-dives:
+
+- **A working, gated pipeline.** Four skills write, illustrate, and review each project's deep-dive, grounded in the real repository with nothing invented and checked at every gate.
+- **Consistent documentation.** Because every run answers to the same skills and rules, its output is consistent in structure and voice rather than a pile of one-off write-ups.
+- **A reusable core.** The spec-as-contract discipline, the gated pipeline, and the cold review are not welded to this site. They live in [claude-field-kit](https://github.com/95-ag/claude-field-kit): a curated, tiered library of reusable Claude Code assets (rules, hooks, skills, agents) improved in one place and reused across projects rather than installed as a framework. The docs-rules-skills structure described here is in that repository too.
+
+### The site
+
+The parallel outcome is the site you are reading. Success for it was never "it looks nice": a portfolio a recruiter opens on a phone is held to the same bar as any product site, and that bar is what the design and engineering decisions above were made to hit. The site meets it.
+
+- **Fast, on a phone.** Most recruiters open a link on mobile, and a slow first paint loses them before the writing can. Every page is prerendered to static HTML, so the content arrives in the initial response with no server or client fetch in its path, and the same static output scores 100 on desktop Lighthouse.
+- **Accessible.** A portfolio some people can't read is a broken portfolio. Text meets WCAG AA contrast in both themes, structure is semantic, focus is visible, touch targets are sized, and motion is gated by `prefers-reduced-motion`. Because contrast lives in the design tokens, accessibility survives a redesign instead of quietly regressing.
+- **Distraction-free on a long read.** Reading pages soften the background and cut motion and color; the ambient background pulls to the margins, and on a phone (where the prose is densest) it is dropped entirely. The theme follows the same intent: it opens in the visitor's system preference (a technical audience tends to like dark), remembers a manual toggle, and never flashes the wrong one on load.
+- **Readable by people and by agents.** Search increasingly surfaces AI-generated answers rather than raw links, so the site is built to be parsed as cleanly by a crawler or an agent as by a person: semantic HTML, JSON-LD structured data, a sitemap and robots policy, and an `llms.txt` summary, all generated from the same content source as the pages so they never drift.
+- **Hardened.** A strict Content Security Policy and the standard security headers, set in one place and applied to every route, with no per-page gaps to drift.
+
+Those bars hold together because of the token discipline: the contrast and theme behavior carry into the diagrams and covers automatically, and stay correct through a redesign. This was also a first web build, held to the standards a non-creative product site faces, without cutting a corner just because no one would check.
+
+## Limitations
+
+<Callout title="The grounding is only as strong as the source">
+  With a complete source (a finished repository, a report, a build to measure), the pipeline has what it needs. With a partial one (an early brief, a few initial documents, or a confidential client project on an inaccessible codebase, with nothing in it that can be handed to a model), there is less to ground against, and the write-up can be only as honest as its inputs allow. The discipline holds; it cannot manufacture what the source won't give it.
+</Callout>
+
+And the system has only been run on one kind of thing: technical project case studies, directed by the engineer who built it. Whether the same contract holds for other content, other voices, or another operator's judgment is untested. The pipeline encodes one person's bar, which is exactly why the output stays cohesive, and also the edge of what it has so far been asked to do.
+
+## Next Steps
+
+The most concrete: the same content pipeline that writes a grounded project deep-dive could write a technical or learning-focused blog. Same no-invention rule and style discipline, a different format. What changes when the source is a topic and a set of references rather than a single repository? How much of the "ground everything" guarantee survives when there is no one artifact to trace a claim back to?
+
+The harder questions are about the boundary itself. Where should the line between human judgment and agent labor actually sit, and does it move as the system earns trust? And how far does the no-slop bar scale before holding it costs more than the work it saves?
+
+Both the website and the system are real outputs: the site you're reading, and the system that built it. The open question is how far that way of working, AI as leverage without lowering the bar, extends past a single site. This page is one answer so far, written, illustrated, and reviewed by the system it describes, its history in the repository's commits.
