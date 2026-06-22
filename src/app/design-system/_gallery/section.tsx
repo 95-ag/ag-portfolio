@@ -1,11 +1,9 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-// Dev-only gallery helpers. The page body is wrapped in `.prose-content`, so the
-// h2/h3 here inherit the exact project-detail-page heading styles (and SectionProgressNav
-// scrapes these h2s for the left-rail TOC). Body text uses <div>/<span> (which
-// prose-content does not restyle) to keep specimen captions controlled. Section/specimen
-// ids stay stable so a blog post can deep-link any component.
+// Dev-only gallery scaffolding. The section h2 sits in a scoped .prose-content div to reuse the
+// project-page heading style (SectionProgressNav scrapes the h2s); captions use <div>/<span> so
+// prose-content doesn't restyle them. Ids stay stable so a blog post can deep-link a component.
 
 export function GallerySection({
   id,
@@ -16,7 +14,6 @@ export function GallerySection({
 }: {
   id: string;
   title: string;
-  /** One-line intro blurb for the section. */
   intro: string;
   /** Which DESIGN.md section this maps to, e.g. "Foundations → Colors". */
   mapsTo: string;
@@ -26,16 +23,14 @@ export function GallerySection({
     <section
       id={id}
       aria-label={title}
-      className="scroll-mt-[var(--spacing-4xl)]"
+      className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-2xl)]"
     >
-      {/* Scoped prose-content so the h2 reuses the exact project-page heading style
-          (mono rule) without prose restyling the component demos below. The h2 has no
-          id — SectionProgressNav assigns a slugified one and links to it. The DESIGN.md
-          pointer sits immediately after the heading (uniform across every section). */}
-      <div className="prose-content">
-        <h2>{title}</h2>
-      </div>
-      <div className="mb-[var(--spacing-2xl)] flex flex-col gap-[var(--spacing-xs)]">
+      {/* The h2's prose margin-bottom is zeroed ([&_h2]:mb-0) so the section's flex gap governs the
+          rhythm instead. SectionProgressNav assigns the h2 id. */}
+      <div className="flex flex-col gap-[var(--spacing-md)]">
+        <div className="prose-content [&_h2]:mb-0">
+          <h2>{title}</h2>
+        </div>
         <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
           → DESIGN.md → {mapsTo}
         </span>
@@ -64,23 +59,24 @@ export function Specimen({
   children: ReactNode;
 }) {
   return (
-    <div id={id} className="scroll-mt-[var(--spacing-4xl)]">
+    <div
+      id={id}
+      className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
+    >
       <h3 className="heading-component">{name}</h3>
-      <div className="mb-[var(--spacing-md)] flex flex-col gap-[2px]">
-        {source && (
-          <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
-            {source}
-          </span>
-        )}
-        {description && (
-          <span className="body-caption text-[var(--on-background)]">
-            {description}
-          </span>
-        )}
-      </div>
+      {source && (
+        <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
+          {source}
+        </span>
+      )}
+      {description && (
+        <span className="body-caption text-[var(--on-background)]">
+          {description}
+        </span>
+      )}
       {children}
       {spec && (
-        <div className="mt-[var(--spacing-sm)] font-mono text-[12px] text-[var(--on-surface-muted)]">
+        <div className="font-mono text-[12px] text-[var(--on-surface-muted)]">
           {spec}
         </div>
       )}

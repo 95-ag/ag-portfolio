@@ -4,10 +4,9 @@ import type { ReactNode } from "react";
 import { DownloadIcon } from "@/components/icons/material/download";
 import { Button } from "@/components/ui/button";
 
-// "View or save": one click opens the file in a new tab AND triggers a download. The dual action
-// needs a client onClick (a declarative <a download> cancels the new-tab navigation, so it can't do
-// both) — which is why this can't be inlined on the server About page. Co-located here as About's
-// only client island; named by behaviour so another page could reuse the same affordance.
+// "View or save": one click opens the file in a new tab AND downloads it. The dual action needs a
+// client onClick (a declarative <a download> cancels the new-tab navigation), so it can't be inlined
+// on the server About page — hence this small co-located client island.
 export function ViewDownloadButton({
   href,
   children,

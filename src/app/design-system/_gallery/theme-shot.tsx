@@ -1,11 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 
-// Dev-only theme-swap specimen: shows a committed light + dark screenshot pair, displaying only
-// the one matching the current page theme (JS-free CSS swap on data-theme, mirroring the
-// .hero-light / .hero-dark pattern in globals.css). Used for the full-viewport background layers,
-// which can't render live in a bounded frame without the WebGL meteor hanging the page on software
-// WebGL (see lessons.md). Assets live under public/design-system/ and are pruned from the
-// production snapshot; regenerate with the capture tooling.
+// Background layers shown as committed light/dark screenshots — they can't render live without the
+// WebGL meteor hanging on software WebGL (see lessons.md). `.ds-shot-*` reveals only the active theme.
 export function ThemeShot({
   light,
   dark,
@@ -15,9 +11,7 @@ export function ThemeShot({
   dark: StaticImageData;
   alt: string;
 }) {
-  // Render at the capture's native size (the frame hugs it); never upscale — only scale down to fit
-  // a narrow viewport. `w-fit` sizes the border to the visible shot; the inactive theme's shot is
-  // display:none and contributes no width.
+  // Render at native capture size — `w-fit` hugs the border to the visible shot, never upscaling.
   return (
     <div className="w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]">
       <Image
