@@ -4,9 +4,11 @@ import type { ReactNode } from "react";
 import { DownloadIcon } from "@/components/icons/material/download";
 import { Button } from "@/components/ui/button";
 
-// Generic download affordance: opens a file in a new tab AND triggers a download
-// ("view or save"). Not bound to any one asset — pass the file href and a label.
-export function DownloadButton({
+// "View or save": one click opens the file in a new tab AND triggers a download. The dual action
+// needs a client onClick (a declarative <a download> cancels the new-tab navigation, so it can't do
+// both) — which is why this can't be inlined on the server About page. Co-located here as About's
+// only client island; named by behaviour so another page could reuse the same affordance.
+export function ViewDownloadButton({
   href,
   children,
 }: {

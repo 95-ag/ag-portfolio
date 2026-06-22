@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { ViewDownloadButton } from "@/components/about/view-download-button";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { MailIcon } from "@/components/icons/material/mail";
@@ -8,7 +9,6 @@ import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
-import { DownloadButton } from "@/components/ui/download-button";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
 import { Tag } from "@/components/ui/tag";
@@ -178,9 +178,9 @@ export default function AboutPage() {
                 </Button>
                 <CopyLink value={about.contactEmail} />
               </div>
-              <DownloadButton href="/AishwaryaGanesan_Resume.pdf">
+              <ViewDownloadButton href="/AishwaryaGanesan_Resume.pdf">
                 Resume
-              </DownloadButton>
+              </ViewDownloadButton>
             </div>
           </div>
         </div>
