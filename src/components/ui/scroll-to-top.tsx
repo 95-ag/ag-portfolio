@@ -7,18 +7,28 @@ import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
 const REST_BOTTOM = 24; // px — resting offset from the viewport bottom
 const FOOTER_GAP = 16; // px — clearance kept above the footer
 
-export function ScrollToTop() {
+// `forceVisible` pins the FAB visible at its resting position regardless of scroll — used by the
+// dev design-system gallery to preview it in a bounded frame. Production callers omit it.
+export function ScrollToTop({
+  forceVisible = false,
+}: {
+  forceVisible?: boolean;
+} = {}) {
   const [visible, setVisible] = useState(false);
   const [bottom, setBottom] = useState(REST_BOTTOM);
   const prefersReduced = useReducedMotion();
 
   useEffect(() => {
+    if (forceVisible) return; // demo: pinned visible at rest; skip scroll/footer tracking
     let frame = 0;
     const update = () => {
       frame = 0;
       setVisible(window.scrollY > 400);
-      // Lift the button so it never overlaps the footer once it scrolls in.
-      const footer = document.querySelector("footer");
+      // Lift the button so it never overlaps the footer once it scrolls in. Use the LAST footer:
+      // the page's real footer is always last in the DOM, so this stays correct even when another
+      // <footer> appears earlier (e.g. the dev design-system gallery rendering a Footer specimen).
+      const footers = document.querySelectorAll("footer");
+      const footer = footers[footers.length - 1];
       const footerTop = footer?.getBoundingClientRect().top ?? Infinity;
       const lift = window.innerHeight - footerTop + FOOTER_GAP;
       setBottom(Math.max(REST_BOTTOM, lift));
@@ -34,9 +44,9 @@ export function ScrollToTop() {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [forceVisible]);
 
-  if (!visible) return null;
+  if (!forceVisible && !visible) return null;
 
   return (
     <button
