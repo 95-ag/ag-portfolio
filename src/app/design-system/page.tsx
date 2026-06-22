@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewDownloadButton } from "@/components/about/view-download-button";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
@@ -40,6 +41,7 @@ import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { Footer } from "@/components/shell/footer";
+import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/button";
@@ -70,12 +72,8 @@ import {
   ZIndexTokenTable,
 } from "./_gallery/tokens";
 
-// Dev-only component gallery. Renders every real component ONCE under one global theme (a header
-// toggle previews the other), grouped to mirror rules/web-frontend/component-structure.md and laid
-// out like a work-detail page (prose h2 headings + SectionProgressNav rail) on the page
-// --background. Fixed/route-aware chrome + the ambient background render live in bounded
-// ChromeFrames. A click guard keeps demos view-only. The route is pruned from the production
-// snapshot (release.sh) — it never ships.
+// Dev-only component gallery — pruned from the production snapshot, never ships. Grouped to mirror
+// rules/web-frontend/component-structure.md (the component folder map).
 export const metadata: Metadata = {
   title: "Design System",
   robots: { index: false, follow: false },
@@ -179,20 +177,6 @@ export default function DesignSystemPage() {
         </Button>
       ),
     },
-    {
-      token: "download link",
-      spec: "href + download attr → <a download> (the resume action on About)",
-      render: (
-        <Button
-          href="#ui-button"
-          download
-          variant="secondary"
-          icon={<DownloadIcon size={18} />}
-        >
-          Resume
-        </Button>
-      ),
-    },
   ];
 
   return (
@@ -290,7 +274,7 @@ export default function DesignSystemPage() {
               source="--duration-* / --ease-*"
               description="Three durations and two easing curves. Motion is sparing and every animation is gated on prefers-reduced-motion."
             >
-              <div className="prose-content mx-auto w-full max-w-[480px]">
+              <div className="prose-content w-full max-w-[480px]">
                 <MotionTokenTable />
               </div>
             </Specimen>
@@ -301,7 +285,7 @@ export default function DesignSystemPage() {
               source="--z-*"
               description="An ordered layering scale — base content up through the sticky rail, scroll-to-top, the floating pill nav, and the mobile menu overlay and panel."
             >
-              <div className="prose-content mx-auto w-full max-w-[480px]">
+              <div className="prose-content w-full max-w-[480px]">
                 <ZIndexTokenTable />
               </div>
             </Specimen>
@@ -492,9 +476,56 @@ export default function DesignSystemPage() {
           <GallerySection
             id="mdx"
             title="Components · MDX"
-            intro="Components available inside MDX content bodies only — shown on the page background, as they appear in a work page."
+            intro="MDX body rendering — the base .prose-content prose styling, plus the components available inside content bodies, shown on the page background as in a work page."
             mapsTo="Components (MDX)"
           >
+            <Specimen
+              id="mdx-prose"
+              name="Prose content"
+              source="globals.css → .prose-content"
+              description="Base editorial styling for rendered MDX bodies — headings, paragraphs, lists, links, inline code, blockquote, tables, and rules. The components below compose into this prose."
+            >
+              <div className="prose-content [&>*:first-child]:mt-0">
+                <h3>A heading in prose</h3>
+                <p>
+                  Body copy with a <a href="#mdx-prose">link</a>, some{" "}
+                  <strong>strong emphasis</strong>, and <code>inline code</code>
+                  . Paragraphs hold the reading-column measure and rhythm.
+                </p>
+                <ul>
+                  <li>An unordered list item with an accent marker.</li>
+                  <li>A second item.</li>
+                </ul>
+                <ol>
+                  <li>An ordered list item.</li>
+                  <li>A second ordered item.</li>
+                </ol>
+                <blockquote>
+                  A blockquote — an aside set off from the body copy.
+                </blockquote>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Row label</td>
+                      <td>A cell value</td>
+                    </tr>
+                    <tr>
+                      <td>Another row</td>
+                      <td>A second value</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr />
+                <p>Body text following a horizontal rule.</p>
+              </div>
+            </Specimen>
+
             <Specimen
               id="mdx-callout"
               name="Callout"
@@ -643,20 +674,30 @@ export default function DesignSystemPage() {
               id="shell-mobile-nav"
               name="MobileNav"
               source="@/components/shell/mobile-nav"
-              description="Mobile hamburger drawer (below md). It is live on this page at mobile widths — resize below 768px and tap the menu to open the slide-out drawer."
+              description="Mobile hamburger drawer (below md) — logomark, nav links, and theme selector, sliding in from the right. Shown open and inert (the MobileNavPanel sub-component); the live drawer is on this page at mobile widths — resize below 768px and tap the menu."
             >
-              <p className="body-caption text-[var(--on-background)]">
-                Live below 768px — resize the window and open the menu to see
-                the slide-out drawer.
-              </p>
+              <InertDemo>
+                <ChromeFrame height={420}>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-[var(--on-background)]/30"
+                  />
+                  <div className="absolute top-0 right-0 h-full w-[min(280px,80%)]">
+                    <MobileNavPanel pathname="/about" />
+                  </div>
+                </ChromeFrame>
+              </InertDemo>
             </Specimen>
 
             <Specimen
               id="shell-footer"
               name="Footer"
               source="@/components/shell/footer"
+              description="Site-wide footer — copyright, repo link, social icons. Full-width, in document flow; shown in a cosmetic frame for consistency with the other chrome."
             >
-              <Footer />
+              <ChromeFrame>
+                <Footer />
+              </ChromeFrame>
             </Specimen>
 
             <Specimen
@@ -703,6 +744,80 @@ export default function DesignSystemPage() {
                 dark={backgroundMeteorDark}
                 alt="MeteorShower background"
               />
+            </Specimen>
+          </GallerySection>
+
+          {/* ── Domain · Home ── */}
+          <GallerySection
+            id="home"
+            title="Domain · Home"
+            intro="Home-page compositions, built inline in src/app/page.tsx."
+            mapsTo="Domain Components → Home"
+          >
+            <Specimen
+              id="home-inline"
+              name="Inline sections"
+              source="src/app/page.tsx — DESIGN.md [inline]"
+              description="Page-bound compositions, not standalone components — listed, not previewed. See them on the home page."
+            >
+              <ul className="prose-content [&>*:first-child]:mt-0">
+                <li>Hero</li>
+                <li>Featured Projects Grid</li>
+              </ul>
+            </Specimen>
+          </GallerySection>
+
+          {/* ── Domain · Work ── */}
+          <GallerySection
+            id="work"
+            title="Domain · Work"
+            intro="Work-index composition, built inline in src/app/work."
+            mapsTo="Domain Components → Work Index"
+          >
+            <Specimen
+              id="work-inline"
+              name="Inline sections"
+              source="src/app/work/page.tsx — DESIGN.md [inline]"
+              description="Page-bound composition, not a standalone component — listed, not previewed. See it on the work index."
+            >
+              <ul className="prose-content [&>*:first-child]:mt-0">
+                <li>Work Index (listing grid)</li>
+              </ul>
+            </Specimen>
+          </GallerySection>
+
+          {/* ── Domain · About ── */}
+          <GallerySection
+            id="about"
+            title="Domain · About"
+            intro="Page/route/schema-bound compositions for the About page."
+            mapsTo="Domain Components → About Layouts"
+          >
+            <Specimen
+              id="about-view-download"
+              name="ViewDownloadButton"
+              source="@/components/about/view-download-button"
+              description="The resume action on About — one click opens the PDF in a new tab AND downloads it (view or save). A small client island; shown inert here."
+            >
+              <InertDemo className="flex">
+                <ViewDownloadButton href="/AishwaryaGanesan_Resume.pdf">
+                  Resume
+                </ViewDownloadButton>
+              </InertDemo>
+            </Specimen>
+
+            <Specimen
+              id="about-inline"
+              name="Inline sections"
+              source="src/app/about/page.tsx — DESIGN.md [inline]"
+              description="Page-bound compositions, not standalone components — listed, not previewed. See them on the About page."
+            >
+              <ul className="prose-content [&>*:first-child]:mt-0">
+                <li>Two-panel Intro</li>
+                <li>Capabilities</li>
+                <li>Approach</li>
+                <li>Work with Me</li>
+              </ul>
             </Specimen>
           </GallerySection>
 
@@ -796,6 +911,38 @@ export default function DesignSystemPage() {
                 ← Live as the left-rail TOC on this page (xl+), tracking the
                 sections above.
               </p>
+            </Specimen>
+
+            <Specimen
+              id="project-inline"
+              name="Inline sections"
+              source="src/app/work/[slug]/page.tsx — DESIGN.md [inline]"
+              description="Page-bound compositions, not standalone components — listed, not previewed. See them on a project page."
+            >
+              <ul className="prose-content [&>*:first-child]:mt-0">
+                <li>Project Detail layout</li>
+                <li>Prose (MDX deep-dive) layout</li>
+                <li>Editorial two-column layout</li>
+              </ul>
+            </Specimen>
+          </GallerySection>
+
+          {/* ── Domain · 404 ── */}
+          <GallerySection
+            id="not-found"
+            title="Domain · 404"
+            intro="The not-found page, built inline in src/app/not-found.tsx."
+            mapsTo="Domain Components → 404 Not Found"
+          >
+            <Specimen
+              id="notfound-inline"
+              name="Inline sections"
+              source="src/app/not-found.tsx — DESIGN.md [inline]"
+              description="Page-bound composition, not a standalone component — listed, not previewed."
+            >
+              <ul className="prose-content [&>*:first-child]:mt-0">
+                <li>404 Not Found</li>
+              </ul>
             </Specimen>
           </GallerySection>
         </DemoViewOnly>

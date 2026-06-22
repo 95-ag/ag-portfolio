@@ -1,8 +1,5 @@
-// Dev-only Foundations renderers for /design-system. Token names + usage mirror
-// globals.css / DESIGN.md (the single source of truth). Tables render bare so the
-// page's .prose-content wrapper gives them the editorial table style. Cards use the
-// ProjectCard treatment (sharp corners, hairline border). Color tokens are theme-
-// dependent, so each card shows the token name + a live swatch that re-scopes per theme.
+// Foundations renderers for /design-system. Tables render bare so the page's .prose-content wrapper
+// applies the editorial table style. Token values mirror globals.css.
 
 type ColorToken = { token: string; name: string; usage: string };
 
@@ -132,7 +129,9 @@ function ColorCard({ token, name, usage }: ColorToken) {
         <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
           {token}
         </span>
-        <span className="body-caption">{usage}</span>
+        <span className="body-caption text-[var(--on-background)]">
+          {usage}
+        </span>
       </div>
     </div>
   );
@@ -164,6 +163,9 @@ type TypeToken = {
   weight: number;
   lh: number;
   sample: string;
+  // Responsive font-size steps from globals.css media overrides (md = 769–1279px, mobile = ≤768px);
+  // only display/heading/lead tokens resize — the rest hold across breakpoints.
+  responsive?: { md: number; mobile: number };
 };
 
 // Each sample is self-descriptive — it states the token's own role, set in that token's
@@ -176,6 +178,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 70,
     sample: "The hero display line — the single largest statement on a page.",
+    responsive: { md: 52, mobile: 40 },
   },
   {
     token: "display-title",
@@ -184,6 +187,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 64,
     sample: "Page titles for project and listing pages, set at display scale.",
+    responsive: { md: 46, mobile: 36 },
   },
   {
     token: "heading-display",
@@ -192,6 +196,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 44,
     sample: "Major section headers across the home and work pages.",
+    responsive: { md: 32, mobile: 32 },
   },
   {
     token: "heading-section",
@@ -200,6 +205,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 34,
     sample: "Secondary section headings within a page.",
+    responsive: { md: 24, mobile: 24 },
   },
   {
     token: "heading-component",
@@ -224,6 +230,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 400,
     lh: 34,
     sample: "Lead paragraph that opens a section at a larger reading size.",
+    responsive: { md: 20, mobile: 18 },
   },
   {
     token: "body-primary",
@@ -340,6 +347,12 @@ export function TypeScaleSpecimen() {
             <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
               {t.family} · {t.size}px / {t.weight} / lh {t.lh}
             </span>
+            {t.responsive && (
+              <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
+                ↘ {t.size} → {t.responsive.md} → {t.responsive.mobile}px (xl ·
+                md · mobile)
+              </span>
+            )}
           </div>
           <div className={`${t.token} min-w-0`}>{t.sample}</div>
         </div>
@@ -421,7 +434,7 @@ export function RadiusScaleSpecimen() {
         >
           <span
             aria-hidden="true"
-            className="h-16 w-16 border border-[var(--outline)] bg-[var(--surface-raised)]"
+            className="h-16 w-16 border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
             style={{ borderRadius: radius }}
           />
           <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
@@ -476,10 +489,7 @@ export function DepthSpecimen() {
   );
 }
 
-// Responsive behaviour table — Name · Width · Key Changes, one zone per cluster (getdesign.md
-// "Responsive Behavior" layout). Our zones carry several changes each, so the name + width rowSpan
-// the cluster and each individual change is its own short row (the one thing kept from the prior
-// pass). Real layout switches: md = 768px (pill nav ↔ hamburger; grid 4→8), xl = 1280px (grid 8→12).
+// Layout switches: md = 768px (pill nav ↔ hamburger; grid 4→8), xl = 1280px (grid 8→12).
 const ZONES: { name: string; width: string; changes: string[] }[] = [
   {
     name: "Desktop",
@@ -514,9 +524,8 @@ const ZONES: { name: string; width: string; changes: string[] }[] = [
   },
 ];
 
-// Zone-width ruler — the canonical getdesign.md "Responsive Behavior" diagram, replicated verbatim
-// (same numbers, names, and bottom-aligned growing-box dims 48×96 → 220×150). A fixed reference
-// scale, identical across projects.
+// A fixed reference ruler — the box dims are an intentional standard (replicating the getdesign.md
+// "Responsive Behavior" diagram), not derived from our breakpoints.
 const ZONE_BARS: { w: number; label: string; boxW: number; boxH: number }[] = [
   { w: 375, label: "mobile", boxW: 48, boxH: 96 },
   { w: 640, label: "mobile", boxW: 64, boxH: 120 },
