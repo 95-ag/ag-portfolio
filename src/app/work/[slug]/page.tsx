@@ -110,6 +110,7 @@ export default async function ProjectPage({ params }: Props) {
               <h2>Overview</h2>
               <ProjectOverview overview={fm.overview} />
 
+              <h2>Tech Stack</h2>
               <TechStack stack={fm.stack} />
 
               <MDXRemote
