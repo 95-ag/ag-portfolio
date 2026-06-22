@@ -41,12 +41,12 @@ import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { Footer } from "@/components/shell/footer";
 import { PillNav } from "@/components/shell/pill-nav";
+import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { CopyableCode } from "@/components/ui/copyable-code";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
-import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { Tag } from "@/components/ui/tag";
 import { InlineThemeSelector } from "@/components/ui/theme-selector";
 import type { Project } from "@/lib/content/projects";
@@ -415,19 +415,6 @@ export default function DesignSystemPage() {
                 <InlineThemeSelector />
               </InertDemo>
             </Specimen>
-
-            <Specimen
-              id="ui-scroll-to-top"
-              name="ScrollToTop"
-              source="@/components/ui/scroll-to-top"
-              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Shown forced-visible in a bounded frame (look + hover only, inert); the working instance is live on this page — scroll down to see it."
-            >
-              <InertDemo>
-                <ChromeFrame height={160}>
-                  <ScrollToTop forceVisible />
-                </ChromeFrame>
-              </InertDemo>
-            </Specimen>
           </GallerySection>
 
           {/* ── Components · Layout ── */}
@@ -670,6 +657,19 @@ export default function DesignSystemPage() {
               source="@/components/shell/footer"
             >
               <Footer />
+            </Specimen>
+
+            <Specimen
+              id="shell-scroll-to-top"
+              name="ScrollToTop"
+              source="@/components/shell/scroll-to-top"
+              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Mounted once in the root layout. Shown forced-visible in a bounded frame (look + hover only, inert); the working instance is live on this page — scroll down to see it."
+            >
+              <InertDemo>
+                <ChromeFrame height={160}>
+                  <ScrollToTop forceVisible />
+                </ChromeFrame>
+              </InertDemo>
             </Specimen>
           </GallerySection>
 
