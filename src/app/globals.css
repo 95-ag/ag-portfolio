@@ -6,10 +6,11 @@
    ───────────────────────────────────────────── */
 
 /* :root = light, SHOWCASE surface (home/about/work index) — the immersive extreme (pure
-   white). Long-read project pages override the background to a softer reading tone via
+   white). Light is the default: next-themes writes data-theme="light" on <html>, which :root
+   already covers, and nothing forces a light subtree — so :root alone is the single source
+   (dark overrides via [data-theme="dark"]). Long-read project pages soften the background via
    [data-read="long"] below. Neutral (ChatGPT-like) palette; one green accent. */
-:root,
-[data-theme="light"] {
+:root {
   /* Surfaces — light depth logic: sunken is the BRIGHTEST (pure white) for image/code/diagram
      clarity; raised lifts only gently so highlights/callouts don't over-pop; bg is the off-white
      ground. (Dark inverts: sunken darkest, raised lighter.) */
@@ -198,6 +199,13 @@ body {
    one's mix-blend-mode (set in page.tsx) drops its baked bg over the meteor layer. */
 [data-theme="dark"] .hero-light,
 [data-theme="light"] .hero-dark {
+  display: none;
+}
+
+/* Dev-only design-system gallery: same JS-free theme swap for committed screenshot pairs
+   (background layers shown as static captures). Only the active theme's shot is displayed. */
+[data-theme="dark"] .ds-shot-light,
+[data-theme="light"] .ds-shot-dark {
   display: none;
 }
 

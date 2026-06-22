@@ -21,6 +21,8 @@ import { MenuIcon } from "@/components/icons/material/menu";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { Container } from "@/components/layout/container";
+import { Divider } from "@/components/layout/divider";
+import { Grid } from "@/components/layout/grid";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Callout } from "@/components/mdx/callout";
@@ -37,30 +39,26 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
+import { Footer } from "@/components/shell/footer";
+import { PillNav } from "@/components/shell/pill-nav";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { CopyableCode } from "@/components/ui/copyable-code";
-import { DownloadButton } from "@/components/ui/download-button";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { Tag } from "@/components/ui/tag";
 import { InlineThemeSelector } from "@/components/ui/theme-selector";
 import type { Project } from "@/lib/content/projects";
-import backgroundDark from "../../../public/design-system/background-dark.png";
-import backgroundLight from "../../../public/design-system/background-light.png";
-import footerDark from "../../../public/design-system/footer-dark.png";
-import footerLight from "../../../public/design-system/footer-light.png";
-import navMobileDark from "../../../public/design-system/nav-mobile-dark.png";
-import navMobileLight from "../../../public/design-system/nav-mobile-light.png";
-import navPillDark from "../../../public/design-system/nav-pill-dark.png";
-import navPillLight from "../../../public/design-system/nav-pill-light.png";
-import scrollToTopDark from "../../../public/design-system/scroll-to-top-dark.png";
-import scrollToTopLight from "../../../public/design-system/scroll-to-top-light.png";
-import sectionProgressDark from "../../../public/design-system/section-progress-dark.png";
-import sectionProgressLight from "../../../public/design-system/section-progress-light.png";
+import backgroundAsciiDark from "../../../public/design-system/background-ascii-dark.png";
+import backgroundAsciiLight from "../../../public/design-system/background-ascii-light.png";
+import backgroundMeteorDark from "../../../public/design-system/background-meteor-dark.png";
+import backgroundMeteorLight from "../../../public/design-system/background-meteor-light.png";
+import { ChromeFrame } from "./_gallery/chrome-frame";
+import { DemoViewOnly } from "./_gallery/demo-view-only";
+import { InertDemo } from "./_gallery/inert-demo";
 import { Card, GallerySection, Specimen } from "./_gallery/section";
-import { StaticShot } from "./_gallery/static-shot";
-import { DemoFrame, ThemePair } from "./_gallery/theme-pair";
+import { ThemeShot } from "./_gallery/theme-shot";
 import {
   ColorTokenGrid,
   DepthSpecimen,
@@ -72,11 +70,12 @@ import {
   ZIndexTokenTable,
 } from "./_gallery/tokens";
 
-// Dev-only component gallery. Renders every real component grouped to mirror
-// rules/web-frontend/component-structure.md, styled like a project detail page
-// (prose h2 headings + SectionProgressNav rail) with numbered sections, per-section
-// rationale, and side-by-side light/dark previews. The route and its screenshot
-// assets are pruned from the production snapshot (release.sh) — they never ship.
+// Dev-only component gallery. Renders every real component ONCE under one global theme (a header
+// toggle previews the other), grouped to mirror rules/web-frontend/component-structure.md and laid
+// out like a work-detail page (prose h2 headings + SectionProgressNav rail) on the page
+// --background. Fixed/route-aware chrome + the ambient background render live in bounded
+// ChromeFrames. A click guard keeps demos view-only. The route is pruned from the production
+// snapshot (release.sh) — it never ships.
 export const metadata: Metadata = {
   title: "Design System",
   robots: { index: false, follow: false },
@@ -114,6 +113,8 @@ const BRAND_ICONS: IconEntry[] = [
 const SAMPLE_CODE = `export function add(a: number, b: number) {
   return a + b;
 }`;
+
+const GRID_CELLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 // Descriptor placeholder data so the domain components read as schema demos, not a
 // real project. The cover image reuses a real slug (images may be reused).
@@ -178,6 +179,20 @@ export default function DesignSystemPage() {
         </Button>
       ),
     },
+    {
+      token: "download link",
+      spec: "href + download attr → <a download> (the resume action on About)",
+      render: (
+        <Button
+          href="#ui-button"
+          download
+          variant="secondary"
+          icon={<DownloadIcon size={18} />}
+        >
+          Resume
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -185,28 +200,30 @@ export default function DesignSystemPage() {
       <Container>
         <SectionProgressNav />
         <header className="mb-[var(--spacing-3xl)] flex flex-col gap-[var(--spacing-lg)]">
-          <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-            [00] Reference
-          </span>
           <Heading level={1} type="display-title">
             Design System
           </Heading>
-          <p className="body-lead max-w-[70ch]">
-            Every component, rendered live and grouped to mirror the component
-            folder map. Token-driven pieces show light and dark side by side.
+          <p className="body-lead">
+            Every component, rendered live under one theme and grouped to mirror
+            the component folder map. Toggle to preview the other theme.
           </p>
-          <div className="body-caption">
-            Dev-only reference — excluded from the production build. Site chrome
-            (nav, footer, background, scroll-to-top) is live around this page; a
-            few fixed or full-viewport components are shown as static captures.
+          {/* The dedicated theme control for this page — the real InlineThemeSelector, OUTSIDE the
+              view-only article below so it works. The UI catalog points here rather than duplicating it. */}
+          <div className="flex items-center gap-[var(--spacing-sm)]">
+            <span className="insight-label">Theme</span>
+            <InlineThemeSelector />
+          </div>
+          <div className="body-caption text-[var(--on-background)]">
+            Dev-only reference — excluded from the production build. Components
+            render on the page background; fixed and route-aware chrome render
+            live in bounded frames.
           </div>
         </header>
 
-        <article className="flex flex-col gap-[var(--spacing-4xl)]">
-          {/* ── [01] Foundations ── */}
+        <DemoViewOnly className="flex flex-col gap-[var(--spacing-4xl)]">
+          {/* ── Foundations ── */}
           <GallerySection
             id="foundations"
-            number="01"
             title="Foundations"
             intro="The design tokens every component composes from — globals.css is the single source of truth."
             mapsTo="Foundations"
@@ -215,42 +232,36 @@ export default function DesignSystemPage() {
               id="foundations-color"
               name="Color tokens"
               source="globals.css → :root / [data-theme]"
-              description="Semantic surfaces, text, borders, accent, and state colors — each card's swatch re-scopes per theme."
+              description="Semantic surfaces, text, borders, accent, and state colors — each swatch reflects the current page theme."
             >
-              <ThemePair>
-                <ColorTokenGrid />
-              </ThemePair>
+              <ColorTokenGrid />
             </Specimen>
 
             <Specimen
               id="foundations-type"
               name="Typography scale"
               source="globals.css → @layer components"
-              description="19 semantic type tokens — family, size, weight, line-height, and sample text in each token's real role."
+              description="19 semantic type tokens — family, size, weight, line-height, and a self-descriptive sample in each token's real style."
             >
-              <DemoFrame>
-                <TypeScaleSpecimen />
-              </DemoFrame>
+              <TypeScaleSpecimen />
             </Specimen>
 
             <Specimen
               id="foundations-spacing"
               name="Spacing scale"
               source="--spacing-*"
+              description="Strict 4px base — every padding, margin, gap, and section rhythm steps geometrically from 4px to 128px."
             >
-              <DemoFrame>
-                <SpacingScaleSpecimen />
-              </DemoFrame>
+              <SpacingScaleSpecimen />
             </Specimen>
 
             <Specimen
               id="foundations-radius"
               name="Radius scale"
               source="--radius-*"
+              description="Four surface categories, each a fixed radius — sharp structural containers, 4px controls, 8px media surfaces, and a full pill for floating and link controls."
             >
-              <DemoFrame>
-                <RadiusScaleSpecimen />
-              </DemoFrame>
+              <RadiusScaleSpecimen />
             </Specimen>
 
             <Specimen
@@ -259,16 +270,14 @@ export default function DesignSystemPage() {
               source="DESIGN.md → Elevation"
               description="No box-shadow. Depth comes from hairline borders and tonal surface layering."
             >
-              <ThemePair>
-                <DepthSpecimen />
-              </ThemePair>
+              <DepthSpecimen />
             </Specimen>
 
             <Specimen
               id="foundations-responsive"
               name="Responsive"
               source="DESIGN.md → Layout"
-              description="Breakpoint zones, touch targets, and the collapse strategy."
+              description="Breakpoint zones (name, width, key changes — clustered one change per row), a zone-width ruler, touch targets, and the collapse strategy."
             >
               <div className="prose-content">
                 <ResponsiveSpecimen />
@@ -279,8 +288,9 @@ export default function DesignSystemPage() {
               id="foundations-motion"
               name="Motion tokens"
               source="--duration-* / --ease-*"
+              description="Three durations and two easing curves. Motion is sparing and every animation is gated on prefers-reduced-motion."
             >
-              <div className="prose-content">
+              <div className="prose-content mx-auto w-full max-w-[480px]">
                 <MotionTokenTable />
               </div>
             </Specimen>
@@ -289,17 +299,17 @@ export default function DesignSystemPage() {
               id="foundations-zindex"
               name="Z-index scale"
               source="--z-*"
+              description="An ordered layering scale — base content up through the sticky rail, scroll-to-top, the floating pill nav, and the mobile menu overlay and panel."
             >
-              <div className="prose-content">
+              <div className="prose-content mx-auto w-full max-w-[480px]">
                 <ZIndexTokenTable />
               </div>
             </Specimen>
           </GallerySection>
 
-          {/* ── [02] Components · UI ── */}
+          {/* ── Components · UI ── */}
           <GallerySection
             id="ui"
-            number="02"
             title="Components · UI"
             intro="Reusable-everywhere primitives — no page, route, or schema assumptions."
             mapsTo="Components"
@@ -309,24 +319,20 @@ export default function DesignSystemPage() {
               name="Button"
               source="@/components/ui/button"
             >
-              <ThemePair>
-                <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:grid-cols-2">
-                  {buttonVariants.map((v) => (
-                    <div
-                      key={v.token}
-                      className="flex flex-col gap-[var(--spacing-xs)]"
-                    >
-                      <div className="flex min-h-[96px] items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]">
-                        {v.render}
-                      </div>
-                      <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-                        button · {v.token}
-                      </span>
-                      <span className="body-caption">{v.spec}</span>
-                    </div>
-                  ))}
-                </div>
-              </ThemePair>
+              <div className="grid grid-cols-1 gap-[var(--spacing-xl)] sm:grid-cols-2">
+                {buttonVariants.map((v) => (
+                  <div
+                    key={v.token}
+                    className="flex flex-col items-start gap-[var(--spacing-sm)]"
+                  >
+                    <div className="py-[var(--spacing-xs)]">{v.render}</div>
+                    <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+                      button · {v.token}
+                    </span>
+                    <span className="body-caption">{v.spec}</span>
+                  </div>
+                ))}
+              </div>
             </Specimen>
 
             <Specimen
@@ -335,13 +341,11 @@ export default function DesignSystemPage() {
               source="@/components/ui/tag"
               spec="mono uppercase chip · surface-tag · radius-sm"
             >
-              <ThemePair>
-                <div className="flex flex-wrap gap-[var(--spacing-xs)]">
-                  <Tag>PyTorch</Tag>
-                  <Tag>Next.js</Tag>
-                  <Tag>Computer Vision</Tag>
-                </div>
-              </ThemePair>
+              <div className="flex flex-wrap gap-[var(--spacing-xs)]">
+                <Tag>PyTorch</Tag>
+                <Tag>Next.js</Tag>
+                <Tag>Computer Vision</Tag>
+              </div>
             </Specimen>
 
             <Specimen
@@ -350,19 +354,17 @@ export default function DesignSystemPage() {
               source="@/components/ui/heading"
               description="Maps a heading level (h1–h6) to a semantic type token, keeping level (a11y) and visual style decoupled. Used by the page headers on home, about, work, and 404. The six type values are in Foundations → Typography; demoed at level 4 below."
             >
-              <DemoFrame>
-                <div className="flex flex-col gap-[var(--spacing-md)]">
-                  <Heading level={4} type="heading-display">
-                    heading-display
-                  </Heading>
-                  <Heading level={4} type="heading-section">
-                    heading-section
-                  </Heading>
-                  <Heading level={4} type="heading-component">
-                    heading-component
-                  </Heading>
-                </div>
-              </DemoFrame>
+              <div className="flex flex-col gap-[var(--spacing-md)]">
+                <Heading level={4} type="heading-display">
+                  heading-display
+                </Heading>
+                <Heading level={4} type="heading-section">
+                  heading-section
+                </Heading>
+                <Heading level={4} type="heading-component">
+                  heading-component
+                </Heading>
+              </div>
             </Specimen>
 
             <Specimen
@@ -370,20 +372,18 @@ export default function DesignSystemPage() {
               name="LinkPill"
               source="@/components/ui/link-pill"
             >
-              <ThemePair>
-                <div className="flex flex-wrap gap-[var(--spacing-sm)]">
-                  <LinkPill
-                    href="#ui-link-pill"
-                    icon={<GitHubIcon size={16} />}
-                    external
-                  >
-                    GitHub
-                  </LinkPill>
-                  <LinkPill href="#ui-link-pill" icon={<MailIcon size={16} />}>
-                    Email
-                  </LinkPill>
-                </div>
-              </ThemePair>
+              <div className="flex flex-wrap gap-[var(--spacing-sm)]">
+                <LinkPill
+                  href="#ui-link-pill"
+                  icon={<GitHubIcon size={16} />}
+                  external
+                >
+                  GitHub
+                </LinkPill>
+                <LinkPill href="#ui-link-pill" icon={<MailIcon size={16} />}>
+                  Email
+                </LinkPill>
+              </div>
             </Specimen>
 
             <Specimen
@@ -391,9 +391,7 @@ export default function DesignSystemPage() {
               name="CopyLink"
               source="@/components/ui/copy-link"
             >
-              <ThemePair>
-                <CopyLink value="hello@example.com" />
-              </ThemePair>
+              <CopyLink value="hello@example.com" />
             </Specimen>
 
             <Specimen
@@ -401,59 +399,42 @@ export default function DesignSystemPage() {
               name="CopyableCode"
               source="@/components/ui/copyable-code"
             >
-              <ThemePair>
-                <CopyableCode
-                  value="npm install"
-                  ariaLabel="Copy install command"
-                />
-              </ThemePair>
-            </Specimen>
-
-            <Specimen
-              id="ui-download-button"
-              name="DownloadButton"
-              source="@/components/ui/download-button"
-              description="Generic secondary button that opens a file in a new tab and triggers a download (the résumé action on About, bound to no specific asset)."
-            >
-              <ThemePair>
-                <DownloadButton href="#ui-download-button">
-                  Resume
-                </DownloadButton>
-              </ThemePair>
+              <CopyableCode
+                value="npm install"
+                ariaLabel="Copy install command"
+              />
             </Specimen>
 
             <Specimen
               id="ui-theme-selector"
               name="InlineThemeSelector"
               source="@/components/ui/theme-selector"
-              description="Controls the page's GLOBAL theme — clicking flips the whole site, and the active state reflects the global theme, not the forced frame."
+              description="The page-theme control — three segments (system / light / dark) reflecting the active theme. Shown here as an inert reconstruction (look + hover only); the working instance is the toggle in the page header above."
             >
-              <ThemePair>
+              <InertDemo className="flex">
                 <InlineThemeSelector />
-              </ThemePair>
+              </InertDemo>
             </Specimen>
 
             <Specimen
               id="ui-scroll-to-top"
               name="ScrollToTop"
               source="@/components/ui/scroll-to-top"
-              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Live on this page — scroll down to see it. Fixed-position + scroll-driven, so captured here."
+              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Shown forced-visible in a bounded frame (look + hover only, inert); the working instance is live on this page — scroll down to see it."
             >
-              <StaticShot
-                light={scrollToTopLight}
-                dark={scrollToTopDark}
-                alt="ScrollToTop floating button"
-                note="fixed-position FAB, captured after scrolling past 400px"
-              />
+              <InertDemo>
+                <ChromeFrame height={160}>
+                  <ScrollToTop forceVisible />
+                </ChromeFrame>
+              </InertDemo>
             </Specimen>
           </GallerySection>
 
-          {/* ── [03] Components · Layout ── */}
+          {/* ── Components · Layout ── */}
           <GallerySection
             id="layout"
-            number="03"
             title="Components · Layout"
-            intro="Structural and spacing primitives. The outlines below are gallery guides, not part of the components."
+            intro="Structural and spacing primitives. Stack, Grid, and Divider render live; the page-shaping wrappers (Container, Section, Sticky) shape this very page rather than a boxed demo."
             mapsTo="Foundations → Layout"
           >
             <Specimen
@@ -462,37 +443,69 @@ export default function DesignSystemPage() {
               source="@/components/layout/stack"
               spec="vertical flex column · gap token xs–3xl"
             >
-              <DemoFrame>
-                <Stack gap="md">
-                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
-                    gap=&quot;md&quot; — item one
+              <Stack gap="md">
+                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                  gap=&quot;md&quot; — item one
+                </div>
+                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                  item two
+                </div>
+                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                  item three
+                </div>
+              </Stack>
+            </Specimen>
+
+            <Specimen
+              id="layout-grid"
+              name="Grid"
+              source="@/components/layout/grid"
+              description="Responsive column grid — 4 columns on mobile, 8 at md, 12 at xl. Resize the window to watch it reflow."
+            >
+              <Grid>
+                {GRID_CELLS.map((n) => (
+                  <div
+                    key={n}
+                    className="body-caption flex h-12 items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
+                  >
+                    {n}
                   </div>
-                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
-                    item two
-                  </div>
-                  <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
-                    item three
-                  </div>
-                </Stack>
-              </DemoFrame>
+                ))}
+              </Grid>
+            </Specimen>
+
+            <Specimen
+              id="layout-divider"
+              name="Divider"
+              source="@/components/layout/divider"
+              description="Hairline rule in --outline-variant — horizontal or vertical."
+            >
+              <div className="flex flex-col gap-[var(--spacing-md)]">
+                <span className="body-caption">above the rule</span>
+                <Divider />
+                <span className="body-caption">below the rule</span>
+              </div>
             </Specimen>
 
             <Specimen
               id="layout-scaffold"
-              name="Container · Section · Grid · Divider · Sticky"
+              name="Container · Section · Sticky"
               source="@/components/layout/*"
-              description="Page-scaffold primitives — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Grid (4/8/12 cols), Divider (hairline), Sticky (scroll-pinned). They shape this very page; isolated outlines would misrepresent them."
+              description="Page-scaffold wrappers — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Sticky (scroll-pinned). They shape this very page; an isolated box would misrepresent them."
             >
-              <DemoFrame note="Structural primitives — best seen in context (this page is wrapped in Section › Container). See about/page.tsx and work pages for Grid/Sticky." />
+              <p className="body-caption text-[var(--on-surface-muted)]">
+                Structural wrappers — best seen in context. This page is wrapped
+                in Section › Container; Sticky pins the section-progress rail on
+                /work pages.
+              </p>
             </Specimen>
           </GallerySection>
 
-          {/* ── [04] Components · MDX ── */}
+          {/* ── Components · MDX (render on the page --background, as in a work page) ── */}
           <GallerySection
             id="mdx"
-            number="04"
             title="Components · MDX"
-            intro="Components available inside MDX content bodies only."
+            intro="Components available inside MDX content bodies only — shown on the page background, as they appear in a work page."
             mapsTo="Components (MDX)"
           >
             <Specimen
@@ -500,11 +513,9 @@ export default function DesignSystemPage() {
               name="Callout"
               source="@/components/mdx/callout"
             >
-              <ThemePair>
-                <Callout title="Note">
-                  A short aside with an accent left-border and raised fill.
-                </Callout>
-              </ThemePair>
+              <Callout title="Note">
+                A short aside with an accent left-border and raised fill.
+              </Callout>
             </Specimen>
 
             <Specimen
@@ -512,12 +523,10 @@ export default function DesignSystemPage() {
               name="Highlight"
               source="@/components/mdx/highlight"
             >
-              <ThemePair>
-                <Highlight heading="Key insight">
-                  An editorial pull-quote panel — elevation via border and
-                  raised fill, no shadow.
-                </Highlight>
-              </ThemePair>
+              <Highlight heading="Key insight">
+                An editorial pull-quote panel — elevation via border and raised
+                fill, no shadow.
+              </Highlight>
             </Specimen>
 
             <Specimen
@@ -525,11 +534,9 @@ export default function DesignSystemPage() {
               name="CodeBlock"
               source="@/components/mdx/code-block"
             >
-              <ThemePair>
-                <CodeBlock>
-                  <code>{SAMPLE_CODE}</code>
-                </CodeBlock>
-              </ThemePair>
+              <CodeBlock>
+                <code>{SAMPLE_CODE}</code>
+              </CodeBlock>
             </Specimen>
 
             <Specimen
@@ -538,13 +545,11 @@ export default function DesignSystemPage() {
               source="@/components/mdx/figure"
               description="Bordered image with object-cover and an optional caption."
             >
-              <DemoFrame>
-                <Figure
-                  src="/design-system/samples/figure.svg"
-                  alt="Neutral sample image"
-                  caption="Figure — object-cover in a bordered, radius-md frame"
-                />
-              </DemoFrame>
+              <Figure
+                src="/design-system/samples/figure.svg"
+                alt="Neutral sample image"
+                caption="Figure — object-cover in a bordered, radius-md frame"
+              />
             </Specimen>
 
             <Specimen
@@ -553,13 +558,11 @@ export default function DesignSystemPage() {
               source="@/components/mdx/diagram"
               description="Like Figure but object-contain on a sunken surface — for technical diagrams."
             >
-              <DemoFrame>
-                <Diagram
-                  src="/design-system/samples/diagram.svg"
-                  alt="Neutral sample input–model–output diagram"
-                  caption="Diagram — object-contain on a neutral field"
-                />
-              </DemoFrame>
+              <Diagram
+                src="/design-system/samples/diagram.svg"
+                alt="Neutral sample input–model–output diagram"
+                caption="Diagram — object-contain on a neutral field"
+              />
             </Specimen>
 
             <Specimen
@@ -568,27 +571,24 @@ export default function DesignSystemPage() {
               source="@/components/mdx/diagram-row"
               description="Two or three labelled panels in a row."
             >
-              <DemoFrame>
-                <DiagramRow caption="DiagramRow — two labelled panels">
-                  <DiagramPanel
-                    src="/design-system/samples/panel-a.svg"
-                    alt="Neutral sample panel A"
-                    label="Before"
-                  />
-                  <DiagramPanel
-                    src="/design-system/samples/panel-b.svg"
-                    alt="Neutral sample panel B"
-                    label="After"
-                  />
-                </DiagramRow>
-              </DemoFrame>
+              <DiagramRow caption="DiagramRow — two labelled panels">
+                <DiagramPanel
+                  src="/design-system/samples/panel-a.svg"
+                  alt="Neutral sample panel A"
+                  label="Before"
+                />
+                <DiagramPanel
+                  src="/design-system/samples/panel-b.svg"
+                  alt="Neutral sample panel B"
+                  label="After"
+                />
+              </DiagramRow>
             </Specimen>
           </GallerySection>
 
-          {/* ── [05] Components · Icons ── */}
+          {/* ── Components · Icons ── */}
           <GallerySection
             id="icons"
-            number="05"
             title="Components · Icons"
             intro="The icon set — all inherit currentColor at the requested size."
             mapsTo="Components"
@@ -598,21 +598,19 @@ export default function DesignSystemPage() {
               name="Material icons"
               source="@/components/icons/material/*"
             >
-              <DemoFrame>
-                <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--on-surface)] sm:grid-cols-4 md:grid-cols-6">
-                  {MATERIAL_ICONS.map(({ name, Icon }) => (
-                    <div
-                      key={name}
-                      className="flex flex-col items-center gap-[var(--spacing-xs)]"
-                    >
-                      <Icon size={24} />
-                      <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-                        {name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </DemoFrame>
+              <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--on-surface)] sm:grid-cols-4 md:grid-cols-6">
+                {MATERIAL_ICONS.map(({ name, Icon }) => (
+                  <div
+                    key={name}
+                    className="flex flex-col items-center gap-[var(--spacing-xs)]"
+                  >
+                    <Icon size={24} />
+                    <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
+                      {name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </Specimen>
 
             <Specimen
@@ -620,50 +618,50 @@ export default function DesignSystemPage() {
               name="Brand icons"
               source="@/components/icons/brands/*"
             >
-              <DemoFrame>
-                <div className="flex flex-wrap gap-[var(--spacing-2xl)] text-[var(--on-surface)]">
-                  {BRAND_ICONS.map(({ name, Icon }) => (
-                    <div
-                      key={name}
-                      className="flex flex-col items-center gap-[var(--spacing-xs)]"
-                    >
-                      <Icon size={24} />
-                      <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-                        {name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </DemoFrame>
+              <div className="flex flex-wrap gap-[var(--spacing-2xl)] text-[var(--on-surface)]">
+                {BRAND_ICONS.map(({ name, Icon }) => (
+                  <div
+                    key={name}
+                    className="flex flex-col items-center gap-[var(--spacing-xs)]"
+                  >
+                    <Icon size={24} />
+                    <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
+                      {name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </Specimen>
           </GallerySection>
 
-          {/* ── [06] App frame · Shell ── */}
+          {/* ── App frame · Shell (live in bounded frames) ── */}
           <GallerySection
             id="shell"
-            number="06"
             title="App frame · Shell"
-            intro="Site-wide chrome mounted once in the root layout — live around this page. Fixed/route-aware, so shown as captures with breathing room."
+            intro="Site-wide chrome mounted once in the root layout — live around this page and shown live in bounded frames here."
             mapsTo="Domain Components → Shell"
           >
             <Specimen
               id="shell-nav"
-              name="Nav · PillNav · MobileNav"
-              source="@/components/shell/*"
-              description="Floating pill nav (md+) and mobile hamburger drawer (below md), with routing-aware active state."
+              name="PillNav"
+              source="@/components/shell/pill-nav"
+              description="Floating pill nav (md+), with routing-aware active state. Fixed positioning is bounded to the frame."
             >
-              <StaticShot
-                light={navPillLight}
-                dark={navPillDark}
-                alt="Desktop pill navigation"
-                note="md+ floating pill nav"
-              />
-              <StaticShot
-                light={navMobileLight}
-                dark={navMobileDark}
-                alt="Mobile navigation drawer (open)"
-                note="below md, slide-out drawer"
-              />
+              <ChromeFrame height={120}>
+                <PillNav />
+              </ChromeFrame>
+            </Specimen>
+
+            <Specimen
+              id="shell-mobile-nav"
+              name="MobileNav"
+              source="@/components/shell/mobile-nav"
+              description="Mobile hamburger drawer (below md). It is live on this page at mobile widths — resize below 768px and tap the menu to open the slide-out drawer."
+            >
+              <p className="body-caption text-[var(--on-background)]">
+                Live below 768px — resize the window and open the menu to see
+                the slide-out drawer.
+              </p>
             </Specimen>
 
             <Specimen
@@ -671,42 +669,46 @@ export default function DesignSystemPage() {
               name="Footer"
               source="@/components/shell/footer"
             >
-              <StaticShot
-                light={footerLight}
-                dark={footerDark}
-                alt="Site footer"
-                note="live at the bottom of every page"
-              />
+              <Footer />
             </Specimen>
           </GallerySection>
 
-          {/* ── [07] Background ── */}
+          {/* ── Background (static captures — the live WebGL meteor is GPU-only) ── */}
           <GallerySection
             id="background"
-            number="07"
-            title="Background subsystem"
-            intro="The ambient layer — fixed behind every non-project page, including this one."
+            title="Background"
+            intro="The ambient layer composited by BackgroundLayer. Both layers are full-viewport, so they're shown as committed static captures — the WebGL meteor is GPU-only and brutal on software WebGL, so it isn't rendered live in the gallery."
             mapsTo="Background subsystem"
           >
             <Specimen
-              id="background-layer"
-              name="BackgroundLayer · AsciiField · MeteorShower"
-              source="@/components/background/*"
-              description="WebGL reads the global theme (can't be wrapper-forced) and the ascii field is gutter-masked to the page edges, so each is captured close-up in both themes rather than rendered inline."
+              id="ascii-field"
+              name="AsciiField"
+              source="@/components/background/ascii-field"
+              description="Seeded glyph field in the page gutters — three tonal tiers (accent, ink, mute). Also live behind this page; shown here as a static capture."
             >
-              <StaticShot
-                light={backgroundLight}
-                dark={backgroundDark}
-                alt="Ambient background — ascii field and meteor shower"
-                note="full-viewport ambient layer"
+              <ThemeShot
+                light={backgroundAsciiLight}
+                dark={backgroundAsciiDark}
+                alt="AsciiField glyph background"
+              />
+            </Specimen>
+            <Specimen
+              id="meteor-shower"
+              name="MeteorShower"
+              source="@/components/background/meteor-shower"
+              description="Three.js shader — additive neon streaks in dark, inverted ink streaks in light. GPU-gated (CPU-brutal on software WebGL); shown as a static capture."
+            >
+              <ThemeShot
+                light={backgroundMeteorLight}
+                dark={backgroundMeteorDark}
+                alt="MeteorShower background"
               />
             </Specimen>
           </GallerySection>
 
-          {/* ── [08] Domain · Project ── */}
+          {/* ── Domain · Project ── */}
           <GallerySection
             id="project"
-            number="08"
             title="Domain · Project"
             intro="Page/route/schema-bound compositions, shown with placeholder content (images reuse a real cover)."
             mapsTo="Domain Components → Project"
@@ -717,11 +719,10 @@ export default function DesignSystemPage() {
               source="@/components/project/project-card"
               description="Card link to a project page — hero cover, title, summary, up to three tags."
             >
-              <ThemePair>
-                <div className="mx-auto max-w-[420px]">
-                  <ProjectCard project={demoProject} />
-                </div>
-              </ThemePair>
+              {/* Constrained to a natural card width, left-aligned (not centred, not full-bleed). */}
+              <div className="max-w-[420px]">
+                <ProjectCard project={demoProject} />
+              </div>
             </Specimen>
 
             <Specimen
@@ -729,19 +730,7 @@ export default function DesignSystemPage() {
               name="ProjectHeader"
               source="@/components/project/project-header"
             >
-              <DemoFrame>
-                <ProjectHeader frontmatter={demoProject.frontmatter} />
-              </DemoFrame>
-            </Specimen>
-
-            <Specimen
-              id="project-overview"
-              name="ProjectOverview"
-              source="@/components/project/project-overview"
-            >
-              <DemoFrame>
-                <ProjectOverview overview={demoProject.frontmatter.overview} />
-              </DemoFrame>
+              <ProjectHeader frontmatter={demoProject.frontmatter} />
             </Specimen>
 
             <Specimen
@@ -750,15 +739,13 @@ export default function DesignSystemPage() {
               source="@/components/project/hero-media"
               description="Dispatches to a live cover component, video, or image by slug. The overlay renders logos/contributors when the project provides them."
             >
-              <DemoFrame>
-                <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
-                  <HeroMedia slug={demoProject.slug} alt="Project cover" />
-                  <HeroMetaOverlay
-                    logos={demoProject.frontmatter.logos}
-                    contributors={demoProject.frontmatter.contributors}
-                  />
-                </div>
-              </DemoFrame>
+              <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
+                <HeroMedia slug={demoProject.slug} alt="Project cover" />
+                <HeroMetaOverlay
+                  logos={demoProject.frontmatter.logos}
+                  contributors={demoProject.frontmatter.contributors}
+                />
+              </div>
             </Specimen>
 
             <Specimen
@@ -767,51 +754,51 @@ export default function DesignSystemPage() {
               source="@/components/project/covers"
               description="Self-contained illustrated SVG covers, keyed by slug."
             >
-              <DemoFrame>
-                <div className="grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-3">
-                  {Object.entries(coverComponents).map(([slug, Cover]) => (
-                    <Card key={slug} label={slug} className="aspect-video p-0">
-                      <div className="relative h-full w-full overflow-hidden">
-                        <Cover />
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </DemoFrame>
+              <div className="grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-3">
+                {Object.entries(coverComponents).map(([slug, Cover]) => (
+                  <Card key={slug} label={slug} className="aspect-video p-0">
+                    <div className="relative h-full w-full overflow-hidden">
+                      <Cover />
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </Specimen>
+
+            <Specimen
+              id="project-overview"
+              name="ProjectOverview"
+              source="@/components/project/project-overview"
+            >
+              <div className="prose-content">
+                <ProjectOverview overview={demoProject.frontmatter.overview} />
+              </div>
+            </Specimen>
+
+            <Specimen
+              id="project-tech-stack"
+              name="TechStack"
+              source="@/components/project/tech-stack"
+              description="Definition list of the project's stack. The 'Tech Stack' heading is owned by the page (like Overview), so the component is heading-less and no longer pollutes the section rail."
+            >
+              <div className="prose-content">
+                <TechStack stack={demoProject.frontmatter.stack} />
+              </div>
             </Specimen>
 
             <Specimen
               id="project-section-progress"
               name="SectionProgressNav"
               source="@/components/project/section-progress-nav"
-              description="Fixed left-rail TOC that scrapes <h2>s from a project <article> via IntersectionObserver — the same rail shown on this page (xl+)."
+              description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. It is live on this page — the rail at the left edge (xl+) is this component, tracking these sections."
             >
-              <StaticShot
-                light={sectionProgressLight}
-                dark={sectionProgressDark}
-                alt="Section progress left-rail navigation"
-                note="left rail on /work/* pages (desktop)"
-              />
+              <p className="body-caption text-[var(--on-background)]">
+                ← Live as the left-rail TOC on this page (xl+), tracking the
+                sections above.
+              </p>
             </Specimen>
           </GallerySection>
-        </article>
-
-        {/* TechStack renders its own <h2>; kept outside the <article> so it doesn't
-            pollute the SectionProgressNav rail. Reads as the final Project demo. */}
-        <div className="mt-[var(--spacing-4xl)]">
-          <Specimen
-            id="project-tech-stack"
-            name="TechStack"
-            source="@/components/project/tech-stack"
-            description="Renders its own 'Tech Stack' h2 — shown outside the gallery's article so it stays out of the section rail."
-          >
-            <DemoFrame>
-              <div className="prose-content">
-                <TechStack stack={demoProject.frontmatter.stack} />
-              </div>
-            </DemoFrame>
-          </Specimen>
-        </div>
+        </DemoViewOnly>
       </Container>
     </Section>
   );

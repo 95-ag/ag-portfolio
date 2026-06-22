@@ -127,9 +127,9 @@ function ColorCard({ token, name, usage }: ColorToken) {
         className="h-20 w-full border-b border-[var(--outline-variant)]"
         style={{ background: `var(${token})` }}
       />
-      <div className="flex flex-col gap-[2px] p-[var(--spacing-md)]">
+      <div className="flex flex-col gap-[2px] p-[var(--spacing-sm)]">
         <span className="body-emphasis">{name}</span>
-        <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+        <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
           {token}
         </span>
         <span className="body-caption">{usage}</span>
@@ -144,9 +144,9 @@ export function ColorTokenGrid() {
       {COLOR_GROUPS.map(({ group, tokens }) => (
         <div key={group} className="flex flex-col gap-[var(--spacing-md)]">
           <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-            [+] {group}
+            {group}
           </span>
-          <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-[var(--spacing-sm)] md:grid-cols-3 xl:grid-cols-4">
             {tokens.map((t) => (
               <ColorCard key={t.token} {...t} />
             ))}
@@ -166,7 +166,8 @@ type TypeToken = {
   sample: string;
 };
 
-// Sample text reflects how each token is actually used on the site.
+// Each sample is self-descriptive — it states the token's own role, set in that token's
+// real style — so the scale reads as a usage guide, not arbitrary specimen text.
 const TYPE_TOKENS: TypeToken[] = [
   {
     token: "display-primary",
@@ -174,7 +175,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 64,
     weight: 600,
     lh: 70,
-    sample: "I build for production",
+    sample: "The hero display line — the single largest statement on a page.",
   },
   {
     token: "display-title",
@@ -182,7 +183,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 56,
     weight: 600,
     lh: 64,
-    sample: "Model Extraction Attacks",
+    sample: "Page titles for project and listing pages, set at display scale.",
   },
   {
     token: "heading-display",
@@ -190,7 +191,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 36,
     weight: 600,
     lh: 44,
-    sample: "Selected work",
+    sample: "Major section headers across the home and work pages.",
   },
   {
     token: "heading-section",
@@ -198,7 +199,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 26,
     weight: 600,
     lh: 34,
-    sample: "Capabilities",
+    sample: "Secondary section headings within a page.",
   },
   {
     token: "heading-component",
@@ -206,7 +207,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 22,
     weight: 600,
     lh: 30,
-    sample: "Project card title",
+    sample: "Component-level titles, such as project card headings.",
   },
   {
     token: "heading-narrative",
@@ -214,7 +215,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 20,
     weight: 600,
     lh: 28,
-    sample: "What I built",
+    sample: "Narrative sub-headings inside long-form deep dives.",
   },
   {
     token: "body-lead",
@@ -222,8 +223,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 24,
     weight: 400,
     lh: 34,
-    sample:
-      "AI prototypes are easy — building systems that survive real users is the harder part.",
+    sample: "Lead paragraph that opens a section at a larger reading size.",
   },
   {
     token: "body-primary",
@@ -240,7 +240,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 18,
     weight: 400,
     lh: 28,
-    sample: "Supporting and muted descriptive copy.",
+    sample: "Supporting, muted copy for descriptions and secondary detail.",
   },
   {
     token: "body-emphasis",
@@ -248,7 +248,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 18,
     weight: 500,
     lh: 28,
-    sample: "Emphasised line inside a callout or highlight.",
+    sample: "Emphasised body line for callouts and highlighted statements.",
   },
   {
     token: "body-caption",
@@ -256,7 +256,8 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 14,
     weight: 400,
     lh: 20,
-    sample: "Figure caption · metadata · small print",
+    sample:
+      "Caption and metadata text for figures, footnotes, and small print.",
   },
   {
     token: "callout-title",
@@ -264,7 +265,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 16,
     weight: 600,
     lh: 20,
-    sample: "Note",
+    sample: "The bold title that opens a callout or aside.",
   },
   {
     token: "interactive-label",
@@ -272,7 +273,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 14,
     weight: 500,
     lh: 20,
-    sample: "View projects",
+    sample: "Button and link labels on interactive controls.",
   },
   {
     token: "nav-link",
@@ -280,7 +281,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 14,
     weight: 500,
     lh: 20,
-    sample: "About",
+    sample: "Navigation links in the pill nav and mobile menu.",
   },
   {
     token: "support-meta",
@@ -288,7 +289,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 13,
     weight: 400,
     lh: 20,
-    sample: "Designed & developed by me.",
+    sample: "Supporting metadata such as footer notes and rail labels.",
   },
   {
     token: "mono-anchor",
@@ -296,7 +297,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 15,
     weight: 500,
     lh: 20,
-    sample: "Tech stack",
+    sample: "Mono anchor for section indices and structural markers.",
   },
   {
     token: "insight-label",
@@ -304,7 +305,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 13,
     weight: 500,
     lh: 16,
-    sample: "Key insight",
+    sample: "Mono label that tags a key insight or pull-quote.",
   },
   {
     token: "tag-chip",
@@ -312,7 +313,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 12,
     weight: 500,
     lh: 16,
-    sample: "PyTorch",
+    sample: "Mono uppercase text inside tags and chips.",
   },
   {
     token: "mono-code",
@@ -320,7 +321,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 16,
     weight: 400,
     lh: 24,
-    sample: "const accuracy = 0.97",
+    sample: "Monospaced code for inline snippets and code blocks.",
   },
 ];
 
@@ -475,29 +476,53 @@ export function DepthSpecimen() {
   );
 }
 
-const BREAKPOINTS: { zone: string; width: string; changes: string }[] = [
+// Responsive behaviour table — Name · Width · Key Changes, one zone per cluster (getdesign.md
+// "Responsive Behavior" layout). Our zones carry several changes each, so the name + width rowSpan
+// the cluster and each individual change is its own short row (the one thing kept from the prior
+// pass). Real layout switches: md = 768px (pill nav ↔ hamburger; grid 4→8), xl = 1280px (grid 8→12).
+const ZONES: { name: string; width: string; changes: string[] }[] = [
   {
-    zone: "mobile",
-    width: "≤ 768px",
-    changes:
-      "Single column; pill nav → hamburger drawer; type scales down; full-bleed ascii field",
-  },
-  {
-    zone: "tablet / desktop",
-    width: "769 – 1279px",
-    changes: "Mid-tier type; multi-column grids; horizontal pill nav",
-  },
-  {
-    zone: "desktop-large",
+    name: "Desktop",
     width: "1280px +",
-    changes: "Full layout; 1200px max content column; meteor layer active",
+    changes: [
+      "1200px max content column",
+      "12-column grid",
+      "Section-progress rail",
+      "Meteor layer active",
+      "Type at full scale",
+    ],
+  },
+  {
+    name: "Tablet",
+    width: "768–1279px",
+    changes: [
+      "8-column grid",
+      "Horizontal pill nav",
+      "No meteor layer",
+      "Display / heading type steps down",
+    ],
+  },
+  {
+    name: "Mobile",
+    width: "≤ 767px",
+    changes: [
+      "Single reading column; 4-column grid",
+      "Hamburger drawer nav",
+      "Full-bleed ascii field",
+      "Type at smallest step",
+    ],
   },
 ];
 
-const ZONE_CARDS = [
-  { w: 375, label: "mobile" },
-  { w: 768, label: "md / nav switch" },
-  { w: 1280, label: "xl / desktop-large" },
+// Zone-width ruler — the canonical getdesign.md "Responsive Behavior" diagram, replicated verbatim
+// (same numbers, names, and bottom-aligned growing-box dims 48×96 → 220×150). A fixed reference
+// scale, identical across projects.
+const ZONE_BARS: { w: number; label: string; boxW: number; boxH: number }[] = [
+  { w: 375, label: "mobile", boxW: 48, boxH: 96 },
+  { w: 640, label: "mobile", boxW: 64, boxH: 120 },
+  { w: 768, label: "tablet-narrow", boxW: 100, boxH: 150 },
+  { w: 1024, label: "desktop", boxW: 160, boxH: 130 },
+  { w: 1280, label: "desktop-large", boxW: 220, boxH: 150 },
 ];
 
 export function ResponsiveSpecimen() {
@@ -506,47 +531,58 @@ export function ResponsiveSpecimen() {
       <table>
         <thead>
           <tr>
-            <th>Zone</th>
+            <th>Name</th>
             <th>Width</th>
-            <th>Key changes</th>
+            <th>Key Changes</th>
           </tr>
         </thead>
         <tbody>
-          {BREAKPOINTS.map((b) => (
-            <tr key={b.zone}>
-              <td className="font-mono text-[13px] whitespace-nowrap">
-                {b.zone}
-              </td>
-              <td className="font-mono text-[13px] whitespace-nowrap">
-                {b.width}
-              </td>
-              <td>{b.changes}</td>
-            </tr>
-          ))}
+          {ZONES.flatMap((z) =>
+            z.changes.map((change, i) => (
+              <tr key={`${z.name}-${change}`}>
+                {i === 0 && (
+                  <>
+                    <td
+                      rowSpan={z.changes.length}
+                      className="font-mono text-[13px] whitespace-nowrap align-top"
+                    >
+                      {z.name}
+                    </td>
+                    <td
+                      rowSpan={z.changes.length}
+                      className="font-mono text-[13px] whitespace-nowrap align-top"
+                    >
+                      {z.width}
+                    </td>
+                  </>
+                )}
+                <td>{change}</td>
+              </tr>
+            )),
+          )}
         </tbody>
       </table>
 
-      <div className="flex flex-wrap items-end gap-[var(--spacing-md)]">
-        {ZONE_CARDS.map(({ w, label }) => (
-          <div key={w} className="flex flex-col gap-[var(--spacing-xs)]">
-            <span
-              aria-hidden="true"
-              className="h-16 border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
-              style={{ width: `${Math.round(w / 8)}px` }}
-            />
-            <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+      <div className="flex items-end gap-[var(--spacing-md)] overflow-x-auto pb-[var(--spacing-xs)]">
+        {ZONE_BARS.map(({ w, label, boxW, boxH }) => (
+          <div
+            key={w}
+            className="flex shrink-0 flex-col items-center justify-end gap-[2px] border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]"
+            style={{ width: `${boxW}px`, height: `${boxH}px` }}
+          >
+            <span className="font-mono text-[13px] font-medium text-[var(--on-surface)]">
               {w}
             </span>
-            <span className="body-caption">{label}</span>
+            <span className="font-mono text-[10px] leading-tight text-center text-[var(--on-surface-muted)]">
+              {label}
+            </span>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-[var(--spacing-xl)] md:grid-cols-2">
-        <div>
-          <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-            [+] Touch targets
-          </span>
+      <div className="flex flex-col gap-[var(--spacing-xl)]">
+        <div className="flex flex-col gap-[var(--spacing-xs)]">
+          <p className="body-emphasis">Touch targets</p>
           <ul>
             <li>
               Minimum 44×44px for every interactive element on touch devices.
@@ -561,10 +597,8 @@ export function ResponsiveSpecimen() {
             </li>
           </ul>
         </div>
-        <div>
-          <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-            [+] Collapsing strategy
-          </span>
+        <div className="flex flex-col gap-[var(--spacing-xs)]">
+          <p className="body-emphasis">Collapsing strategy</p>
           <ul>
             <li>
               Primary nav: horizontal pill (md+) → mobile hamburger drawer
