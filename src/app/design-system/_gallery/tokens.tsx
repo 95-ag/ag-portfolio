@@ -70,7 +70,7 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
       {
         token: "--outline",
         name: "Outline",
-        usage: "Strong borders — buttons, h2 rule",
+        usage: "Default borders & dividers (stronger than hairline)",
       },
       {
         token: "--outline-variant",
@@ -163,9 +163,9 @@ type TypeToken = {
   weight: number;
   lh: number;
   sample: string;
-  // Responsive font-size steps from globals.css media overrides (md = 769–1279px, mobile = ≤768px);
+  // Responsive font-size steps from globals.css media overrides (tablet = 769–1279px, mobile = ≤768px);
   // only display/heading/lead tokens resize — the rest hold across breakpoints.
-  responsive?: { md: number; mobile: number };
+  responsive?: { tablet: number; mobile: number };
 };
 
 // Each sample is self-descriptive — it states the token's own role, set in that token's
@@ -178,7 +178,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 70,
     sample: "The hero display line — the single largest statement on a page.",
-    responsive: { md: 52, mobile: 40 },
+    responsive: { tablet: 52, mobile: 40 },
   },
   {
     token: "display-title",
@@ -187,7 +187,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 64,
     sample: "Page titles for project and listing pages, set at display scale.",
-    responsive: { md: 46, mobile: 36 },
+    responsive: { tablet: 46, mobile: 36 },
   },
   {
     token: "heading-display",
@@ -196,7 +196,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 44,
     sample: "Major section headers across the home and work pages.",
-    responsive: { md: 32, mobile: 32 },
+    responsive: { tablet: 32, mobile: 32 },
   },
   {
     token: "heading-section",
@@ -205,7 +205,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 600,
     lh: 34,
     sample: "Secondary section headings within a page.",
-    responsive: { md: 24, mobile: 24 },
+    responsive: { tablet: 24, mobile: 24 },
   },
   {
     token: "heading-component",
@@ -230,7 +230,7 @@ const TYPE_TOKENS: TypeToken[] = [
     weight: 400,
     lh: 34,
     sample: "Lead paragraph that opens a section at a larger reading size.",
-    responsive: { md: 20, mobile: 18 },
+    responsive: { tablet: 20, mobile: 18 },
   },
   {
     token: "body-primary",
@@ -349,8 +349,8 @@ export function TypeScaleSpecimen() {
             </span>
             {t.responsive && (
               <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-                ↘ {t.size} → {t.responsive.md} → {t.responsive.mobile}px (xl ·
-                md · mobile)
+                ↘ desktop: {t.size}px → tablet: {t.responsive.tablet}px →
+                mobile: {t.responsive.mobile}px
               </span>
             )}
           </div>
@@ -400,8 +400,8 @@ const RADIUS_TOKENS: {
 }[] = [
   {
     token: "none",
-    radius: "0",
-    value: "0",
+    radius: "var(--radius-none)",
+    value: "0px",
     usage: "Cards, sections, nav, footer",
   },
   {
@@ -447,42 +447,70 @@ export function RadiusScaleSpecimen() {
   );
 }
 
-const DEPTH_LEVELS: { name: string; spec: string; className: string }[] = [
+const DEPTH_LEVELS: {
+  name: string;
+  spec: string;
+  className: string;
+  usage: string;
+}[] = [
   {
     name: "Level 0 — Flat",
-    spec: "no border / no shadow",
+    spec: "no border, no fill",
     className: "bg-[var(--surface)]",
+    usage: "Page sections, hero regions, footer",
   },
   {
-    name: "Level 1 — Hairline",
-    spec: "1px --outline-variant",
+    name: "Level 1 — Border only",
+    spec: "1px outline-variant",
     className: "bg-[var(--surface)] border border-[var(--outline-variant)]",
+    usage: "Figure frame, prose hr, table cells",
   },
   {
-    name: "Level 2 — Outline",
-    spec: "1px --outline",
-    className: "bg-[var(--surface)] border border-[var(--outline)]",
+    name: "Level 2 — Border + blur",
+    spec: "backdrop-blur(12px) + surface-nav + 1px outline-variant",
+    className:
+      "bg-[var(--surface-nav)] border border-[var(--outline-variant)] [backdrop-filter:blur(12px)]",
+    usage: "Pill nav, mobile trigger, scroll-to-top",
   },
   {
-    name: "Level 3 — Raised fill",
-    spec: "--surface-raised + hairline",
+    name: "Level 3 — Border + raised",
+    spec: "surface-raised + 1px outline-variant",
     className:
       "bg-[var(--surface-raised)] border border-[var(--outline-variant)]",
+    usage: "Project cards, <Highlight>",
+  },
+  {
+    name: "Level 4 — Sunken inset",
+    spec: "surface-sunken + 1px outline-variant",
+    className:
+      "bg-[var(--surface-sunken)] border border-[var(--outline-variant)]",
+    usage: "<Diagram> / <DiagramRow>, card media well",
+  },
+  {
+    name: "Level 5 — Accent left + raised",
+    spec: "2px accent (left) + surface-raised",
+    className: "bg-[var(--surface-raised)] border-l-2 border-[var(--accent)]",
+    usage: "<Callout>, prose blockquote",
   },
 ];
 
 export function DepthSpecimen() {
   return (
-    <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:grid-cols-2 xl:grid-cols-4">
-      {DEPTH_LEVELS.map(({ name, spec, className }) => (
+    <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:grid-cols-2 xl:grid-cols-3">
+      {DEPTH_LEVELS.map(({ name, spec, className, usage }) => (
         <div
           key={name}
           className={`flex min-h-[120px] flex-col justify-between p-[var(--spacing-md)] ${className}`}
         >
           <span className="body-emphasis">{name}</span>
-          <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-            {spec}
-          </span>
+          <div className="flex flex-col gap-[2px]">
+            <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+              {spec}
+            </span>
+            <span className="body-caption text-[var(--on-surface-muted)]">
+              {usage}
+            </span>
+          </div>
         </div>
       ))}
     </div>
@@ -492,7 +520,7 @@ export function DepthSpecimen() {
 // Layout switches: md = 768px (pill nav ↔ hamburger; grid 4→8), xl = 1280px (grid 8→12).
 const ZONES: { name: string; width: string; changes: string[] }[] = [
   {
-    name: "Desktop",
+    name: "Desktop (xl)",
     width: "1280px +",
     changes: [
       "1200px max content column",
@@ -503,7 +531,7 @@ const ZONES: { name: string; width: string; changes: string[] }[] = [
     ],
   },
   {
-    name: "Tablet",
+    name: "Tablet (md)",
     width: "768–1279px",
     changes: [
       "8-column grid",
@@ -513,7 +541,7 @@ const ZONES: { name: string; width: string; changes: string[] }[] = [
     ],
   },
   {
-    name: "Mobile",
+    name: "Mobile (base)",
     width: "≤ 767px",
     changes: [
       "Single reading column; 4-column grid",
@@ -524,14 +552,43 @@ const ZONES: { name: string; width: string; changes: string[] }[] = [
   },
 ];
 
-// A fixed reference ruler — the box dims are an intentional standard (replicating the getdesign.md
-// "Responsive Behavior" diagram), not derived from our breakpoints.
-const ZONE_BARS: { w: number; label: string; boxW: number; boxH: number }[] = [
-  { w: 375, label: "mobile", boxW: 48, boxH: 96 },
-  { w: 640, label: "mobile", boxW: 64, boxH: 120 },
-  { w: 768, label: "tablet-narrow", boxW: 100, boxH: 150 },
-  { w: 1024, label: "desktop", boxW: 160, boxH: 130 },
-  { w: 1280, label: "desktop-large", boxW: 220, boxH: 150 },
+// Fixed canonical breakpoint ruler (Tailwind v4 defaults). Device names label only the breakpoints
+// this project uses; `used` flags them. `base` is the mobile-first default, not a breakpoint.
+const ZONE_BARS: {
+  px: string;
+  device: string | null;
+  token: string;
+  used: boolean;
+  boxW: number;
+  boxH: number;
+}[] = [
+  {
+    px: "base",
+    device: "Mobile",
+    token: "base",
+    used: true,
+    boxW: 48,
+    boxH: 80,
+  },
+  { px: "640", device: null, token: "sm", used: false, boxW: 64, boxH: 100 },
+  {
+    px: "768",
+    device: "Tablet",
+    token: "md",
+    used: true,
+    boxW: 100,
+    boxH: 120,
+  },
+  { px: "1024", device: null, token: "lg", used: false, boxW: 140, boxH: 130 },
+  {
+    px: "1280",
+    device: "Desktop",
+    token: "xl",
+    used: true,
+    boxW: 180,
+    boxH: 150,
+  },
+  { px: "1536", device: null, token: "2xl", used: false, boxW: 220, boxH: 160 },
 ];
 
 export function ResponsiveSpecimen() {
@@ -573,17 +630,26 @@ export function ResponsiveSpecimen() {
       </table>
 
       <div className="flex items-end gap-[var(--spacing-md)] overflow-x-auto pb-[var(--spacing-xs)]">
-        {ZONE_BARS.map(({ w, label, boxW, boxH }) => (
+        {ZONE_BARS.map(({ px, device, token, used, boxW, boxH }) => (
           <div
-            key={w}
-            className="flex shrink-0 flex-col items-center justify-end gap-[2px] border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]"
+            key={token}
+            className={`flex shrink-0 flex-col items-center justify-end gap-[2px] bg-[var(--surface-raised)] p-[var(--spacing-sm)] ${
+              used
+                ? "border border-[var(--accent)]"
+                : "border border-[var(--outline-variant)] opacity-60"
+            }`}
             style={{ width: `${boxW}px`, height: `${boxH}px` }}
           >
             <span className="font-mono text-[13px] font-medium text-[var(--on-surface)]">
-              {w}
+              {px}
             </span>
-            <span className="font-mono text-[10px] leading-tight text-center text-[var(--on-surface-muted)]">
-              {label}
+            {device && (
+              <span className="font-mono text-[10px] leading-tight text-center text-[var(--on-surface)]">
+                {device}
+              </span>
+            )}
+            <span className="font-mono text-[10px] leading-tight text-[var(--on-surface-muted)]">
+              {token} {used ? "●" : "○"}
             </span>
           </div>
         ))}
@@ -626,6 +692,77 @@ export function ResponsiveSpecimen() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Reading-mode token overrides (globals.css :root[data-read="long"] / [data-theme="dark"][data-read="long"]).
+// Root-scoped, so shown as values not live swatches. Applies on /work/[slug]. Mirror globals.css.
+const READING_MODE_TOKENS: {
+  token: string;
+  light: string;
+  dark: string;
+}[] = [
+  { token: "--background", light: "#f8f8f9", dark: "#1a1a1a" },
+  { token: "--surface", light: "#f8f8f9", dark: "#1a1a1a" },
+  { token: "--surface-raised", light: "— (unchanged)", dark: "#292929" },
+  { token: "--surface-sunken", light: "— (unchanged)", dark: "#141414" },
+  { token: "--surface-nav", light: "#f8f8f9d9 (85%)", dark: "#1f1f1fd9 (85%)" },
+];
+
+export function ReadingModeColors() {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Light (reading)</th>
+          <th>Dark (reading)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {READING_MODE_TOKENS.map(({ token, light, dark }) => (
+          <tr key={token}>
+            <td className="font-mono text-[13px]">{token}</td>
+            <td className="font-mono text-[13px]">{light}</td>
+            <td className="font-mono text-[13px]">{dark}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+const ICON_SIZES: { size: string; context: string }[] = [
+  {
+    size: "20px",
+    context: "Standalone icon-only controls (footer social, scroll-to-top)",
+  },
+  { size: "18px", context: "Buttons; mobile-nav trigger & close" },
+  {
+    size: "16px",
+    context: "Nav items, LinkPill icons, project-card chevron",
+  },
+  { size: "12–14px", context: "Inline indicators (copy, external-link)" },
+];
+
+export function IconSizeTable() {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Context</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ICON_SIZES.map(({ size, context }) => (
+          <tr key={size}>
+            <td className="font-mono text-[13px] whitespace-nowrap">{size}</td>
+            <td>{context}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
