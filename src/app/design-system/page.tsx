@@ -64,8 +64,10 @@ import { ThemeShot } from "./_gallery/theme-shot";
 import {
   ColorTokenGrid,
   DepthSpecimen,
+  IconSizeTable,
   MotionTokenTable,
   RadiusScaleSpecimen,
+  ReadingModeColors,
   ResponsiveSpecimen,
   SpacingScaleSpecimen,
   TypeScaleSpecimen,
@@ -216,16 +218,27 @@ export default function DesignSystemPage() {
               id="foundations-color"
               name="Color tokens"
               source="globals.css → :root / [data-theme]"
-              description="Semantic surfaces, text, borders, accent, and state colors — each swatch reflects the current page theme."
+              description="Semantic surfaces, text, borders, accent, and state colors — each swatch reflects the current page theme. accent-strong is intentionally absent — one accent only (DESIGN.md → Foundations → Colors). Interaction states (hover/focus/active/selected) derive from tokens — DESIGN.md → Interaction."
             >
               <ColorTokenGrid />
+            </Specimen>
+
+            <Specimen
+              id="foundations-reading-mode"
+              name="Reading-mode colors"
+              source="globals.css → [data-read]"
+              description="Long-read pages (/work/[slug], data-read=&quot;long&quot;) soften the ground so cards lift and prose is easy on the eyes. These tokens shift; all others hold."
+            >
+              <div className="prose-content w-full">
+                <ReadingModeColors />
+              </div>
             </Specimen>
 
             <Specimen
               id="foundations-type"
               name="Typography scale"
               source="globals.css → @layer components"
-              description="19 semantic type tokens — family, size, weight, line-height, and a self-descriptive sample in each token's real style."
+              description="19 semantic type tokens — family, size, weight, line-height, and a self-descriptive sample in each token's real style. Dark theme applies grayscale font-smoothing so weight hierarchy holds (DESIGN.md → Font Smoothing)."
             >
               <TypeScaleSpecimen />
             </Specimen>
@@ -393,7 +406,7 @@ export default function DesignSystemPage() {
               id="ui-theme-selector"
               name="InlineThemeSelector"
               source="@/components/ui/theme-selector"
-              description="The page-theme control — three segments (system / light / dark) reflecting the active theme. Shown here as an inert reconstruction (look + hover only); the working instance is the toggle in the page header above."
+              description="The page-theme control — three segments (system / light / dark) reflecting the active theme. Shown here as an inert reconstruction (look + hover only); the working instance is the toggle in the page header above. Categorized under DESIGN.md → Components → Navigation → Theme Selector."
             >
               <InertDemo className="flex">
                 <InlineThemeSelector />
@@ -612,6 +625,17 @@ export default function DesignSystemPage() {
             mapsTo="Components"
           >
             <Specimen
+              id="icons-sizes"
+              name="Icon sizes"
+              source="DESIGN.md → Iconography"
+              description="Four contextual sizes — each tied to a specific UI role."
+            >
+              <div className="prose-content w-full max-w-[480px]">
+                <IconSizeTable />
+              </div>
+            </Specimen>
+
+            <Specimen
               id="icons-material"
               name="Material icons"
               source="@/components/icons/material/*"
@@ -657,7 +681,7 @@ export default function DesignSystemPage() {
             id="shell"
             title="App frame · Shell"
             intro="Site-wide chrome mounted once in the root layout — live around this page and shown live in bounded frames here."
-            mapsTo="Domain Components → Shell"
+            mapsTo="Components → Navigation / Footer"
           >
             <Specimen
               id="shell-nav"
