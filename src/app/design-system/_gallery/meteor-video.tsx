@@ -31,7 +31,7 @@ export function MeteorVideo({
   const video = isLight ? lightVideo : darkVideo;
 
   const frame =
-    "w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]";
+    "w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]";
 
   // Pre-hydration and reduced-motion: still poster only, no autoplay.
   if (!mounted || reduce) {

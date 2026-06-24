@@ -36,7 +36,7 @@ export function Figure({
     >
       <div
         style={{ aspectRatio: aspect }}
-        className="relative w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)]"
+        className="relative w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)]"
       >
         <Image
           src={src}

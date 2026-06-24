@@ -13,7 +13,7 @@ export function ThemeShot({
 }) {
   // Render at native capture size — `w-fit` hugs the border to the visible shot, never upscaling.
   return (
-    <div className="w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]">
+    <div className="w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
       <Image
         src={light}
         alt={`${alt} (light theme)`}

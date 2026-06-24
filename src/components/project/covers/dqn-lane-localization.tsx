@@ -91,13 +91,13 @@ export function DqnLaneLocalizationCover() {
   // Ghost trail — 3 echoes to the RIGHT of each predicted dot (away from the lane),
   // packed close so the dot reads as having moved leftward toward the lane. Distinct
   // grey SHADES (not opacity) that recede toward the page in each theme: the base
-  // (--outline-variant) is light in light mode and dark in dark mode, and each step
+  // (--hairline) is light in light mode and dark in dark mode, and each step
   // mixes further into --surface, so echoes get lighter-in-light / darker-in-dark.
   const GHOST_STEPS = [0.22, 0.46, 0.72]; // rightward offset past the predicted dot
   const GHOST_SHADES = [
-    "var(--outline-variant)",
-    "color-mix(in srgb, var(--outline-variant) 65%, var(--surface))",
-    "color-mix(in srgb, var(--outline-variant) 35%, var(--surface))",
+    "var(--hairline)",
+    "color-mix(in srgb, var(--hairline) 65%, var(--surface))",
+    "color-mix(in srgb, var(--hairline) 35%, var(--surface))",
   ];
   const ghosts = predicted.flatMap((p, i) => {
     const gap = p.x - truth[i].x;
@@ -119,15 +119,15 @@ export function DqnLaneLocalizationCover() {
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* ── Scene bands (neutral surface tokens) ── */}
-        {/* Sky — tag tone nudged toward --on-surface (near-neutral, theme-flipping):
-            darker than the card (--surface-raised) in light, lighter than it in dark,
+        {/* Sky — tag tone nudged toward --ink (near-neutral, theme-flipping):
+            darker than the card (--surface-elevated) in light, lighter than it in dark,
             and distinct from the --surface-tag ground band — without a green cast. */}
         <rect
           x="0"
           y="0"
           width="1200"
           height={VP_Y}
-          fill="color-mix(in srgb, var(--surface-tag) 90%, var(--on-surface))"
+          fill="color-mix(in srgb, var(--surface-tag) 90%, var(--ink))"
         />
         {/* Roadside ground */}
         <rect
@@ -138,7 +138,7 @@ export function DqnLaneLocalizationCover() {
           fill="var(--surface-tag)"
         />
         {/* Road surface — borderless; the fill contrast carries the road edge */}
-        <path d={roadPath()} fill="var(--surface-sunken)" />
+        <path d={roadPath()} fill="var(--surface-deep)" />
 
         {/* Lane dividers (solid grey, perspective) */}
         {DIVIDER_FRACS.map((frac) => (
@@ -146,7 +146,7 @@ export function DqnLaneLocalizationCover() {
             key={`div-${frac}`}
             d={lanePath(frac)}
             fill="none"
-            stroke="var(--outline-variant)"
+            stroke="var(--hairline)"
             strokeWidth="1.25"
           />
         ))}
@@ -159,7 +159,7 @@ export function DqnLaneLocalizationCover() {
             cy={p.y}
             r={CIRCLE_R}
             fill="none"
-            stroke="var(--on-surface)"
+            stroke="var(--ink)"
             strokeWidth="1.5"
           />
         ))}

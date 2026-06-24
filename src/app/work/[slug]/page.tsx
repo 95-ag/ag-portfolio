@@ -91,7 +91,7 @@ export default async function ProjectPage({ params }: Props) {
             <ProjectHeader frontmatter={fm} />
 
             {/* Hero */}
-            <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
+            <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
               <HeroMedia
                 src={fm.heroImage}
                 alt={fm.heroAlt}
@@ -139,10 +139,10 @@ export default async function ProjectPage({ params }: Props) {
             </div>
 
             {/* Back link */}
-            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--outline-variant)] pt-[var(--spacing-lg)]">
+            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
               <Link
                 href="/work"
-                className="interactive-label text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 ← Back to Work
               </Link>

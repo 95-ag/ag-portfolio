@@ -153,12 +153,12 @@ export default function DesignSystemPage() {
   const buttonVariants = [
     {
       token: "primary",
-      spec: "bg accent · text accent-on · radius-sm · 56px tall",
+      spec: "bg accent · text ink-deep · radius-sm · 56px tall",
       render: <Button variant="primary">Primary</Button>,
     },
     {
       token: "secondary",
-      spec: "1px outline · transparent · hover accent tint",
+      spec: "1px hairline-strong · transparent · hover accent tint",
       render: <Button variant="secondary">Secondary</Button>,
     },
     {
@@ -201,7 +201,7 @@ export default function DesignSystemPage() {
             <span className="mono-anchor">Theme</span>
             <InlineThemeSelector />
           </div>
-          <div className="body-caption text-[var(--on-background)]">
+          <div className="body-caption text-[var(--ink)]">
             Dev-only reference — excluded from the production build. Components
             render on the page background; fixed and route-aware chrome render
             live in bounded frames.
@@ -417,13 +417,13 @@ export default function DesignSystemPage() {
               spec="vertical flex column · gap token xs–3xl"
             >
               <Stack gap="md">
-                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
                   gap=&quot;md&quot; — item one
                 </div>
-                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
                   item two
                 </div>
-                <div className="body-caption border border-[var(--outline-variant)] bg-[var(--surface-raised)] p-[var(--spacing-sm)]">
+                <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
                   item three
                 </div>
               </Stack>
@@ -439,7 +439,7 @@ export default function DesignSystemPage() {
                 {GRID_CELLS.map((n) => (
                   <div
                     key={n}
-                    className="body-caption flex h-12 items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
+                    className="body-caption flex h-12 items-center justify-center border border-[var(--hairline)] bg-[var(--surface-elevated)]"
                   >
                     {n}
                   </div>
@@ -451,7 +451,7 @@ export default function DesignSystemPage() {
               id="layout-divider"
               name="Divider"
               source="@/components/layout/divider"
-              description="Hairline rule in --outline-variant — horizontal or vertical."
+              description="Hairline rule in --hairline — horizontal or vertical."
             >
               <div className="flex flex-col gap-[var(--spacing-md)]">
                 <span className="body-caption">above the rule</span>
@@ -466,7 +466,7 @@ export default function DesignSystemPage() {
               source="@/components/layout/*"
               description="Page-scaffold wrappers — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Sticky (scroll-pinned). They shape this page directly."
             >
-              <p className="body-caption text-[var(--on-surface-muted)]">
+              <p className="body-caption text-[var(--ink-muted)]">
                 Structural wrappers — best seen in context. This page is wrapped
                 in Section › Container; Sticky pins the section-progress rail on
                 /work pages.
@@ -474,7 +474,7 @@ export default function DesignSystemPage() {
             </Specimen>
           </GallerySection>
 
-          {/* ── Components · MDX (render on the page --background, as in a work page) ── */}
+          {/* ── Components · MDX (render on the page --surface, as in a work page) ── */}
           <GallerySection
             id="mdx"
             title="Components · MDX"
@@ -619,7 +619,7 @@ export default function DesignSystemPage() {
               source="@/components/icons/material/*"
               description="UI / system icons — Material Symbols Outlined, inline SVG inheriting currentColor."
             >
-              <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--on-surface)] sm:grid-cols-4 md:grid-cols-6">
+              <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--ink)] sm:grid-cols-4 md:grid-cols-6">
                 {MATERIAL_ICONS.map(({ name, Icon }) => (
                   <div
                     key={name}
@@ -638,7 +638,7 @@ export default function DesignSystemPage() {
               source="@/components/icons/brands/*"
               description="Brand & platform marks — official monochrome SVGs, kept distinct from the Material style."
             >
-              <div className="flex flex-wrap gap-[var(--spacing-2xl)] text-[var(--on-surface)]">
+              <div className="flex flex-wrap gap-[var(--spacing-2xl)] text-[var(--ink)]">
                 {BRAND_ICONS.map(({ name, Icon }) => (
                   <div
                     key={name}
@@ -685,7 +685,7 @@ export default function DesignSystemPage() {
                     key={label}
                     className="flex flex-col items-start gap-[var(--spacing-sm)]"
                   >
-                    <div className="flex h-8 items-center text-[var(--on-surface)]">
+                    <div className="flex h-8 items-center text-[var(--ink)]">
                       <ArrowForwardIcon size={px} />
                     </div>
                     <span className="mono-anchor">icon · {label}</span>
@@ -724,7 +724,7 @@ export default function DesignSystemPage() {
                 <ChromeFrame height={420}>
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-[var(--on-background)]/30"
+                    className="absolute inset-0 bg-[var(--ink)]/30"
                   />
                   <div className="absolute top-0 right-0 h-full w-[min(280px,80%)]">
                     <MobileNavPanel pathname="/about" />
@@ -806,7 +806,7 @@ export default function DesignSystemPage() {
               source="src/app/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on the home page."
             >
-              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--hairline)] [&>*:first-child]:mt-0">
                 <li>Hero</li>
                 <li>Featured Projects Grid</li>
               </ul>
@@ -826,7 +826,7 @@ export default function DesignSystemPage() {
               source="src/app/work/page.tsx — DESIGN.md [inline]"
               description="Page-bound composition, not a standalone component — listed, not previewed. See it on the work index."
             >
-              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--hairline)] [&>*:first-child]:mt-0">
                 <li>Work Index (listing grid)</li>
               </ul>
             </Specimen>
@@ -858,7 +858,7 @@ export default function DesignSystemPage() {
               source="src/app/about/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on the About page."
             >
-              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--hairline)] [&>*:first-child]:mt-0">
                 <li>Two-panel Intro</li>
                 <li>Capabilities</li>
                 <li>Approach</li>
@@ -900,7 +900,7 @@ export default function DesignSystemPage() {
               source="@/components/project/hero-media"
               description="Dispatches to a live cover component, video, or image by slug. The overlay renders logos/contributors when the project provides them."
             >
-              <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)]">
+              <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
                 <HeroMedia slug={demoProject.slug} alt="Project cover" />
                 <HeroMetaOverlay
                   logos={demoProject.frontmatter.logos}
@@ -953,7 +953,7 @@ export default function DesignSystemPage() {
               source="@/components/project/section-progress-nav"
               description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. Live on this page — the rail at the left edge (xl+) tracks these sections."
             >
-              <p className="body-caption text-[var(--on-background)]">
+              <p className="body-caption text-[var(--ink)]">
                 ← Live as the left-rail TOC on this page (xl+), tracking the
                 sections above.
               </p>
@@ -965,7 +965,7 @@ export default function DesignSystemPage() {
               source="src/app/work/[slug]/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on a project page."
             >
-              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--hairline)] [&>*:first-child]:mt-0">
                 <li>Project Detail layout</li>
                 <li>Prose (MDX deep-dive) layout</li>
                 <li>Editorial two-column layout</li>
@@ -986,7 +986,7 @@ export default function DesignSystemPage() {
               source="src/app/not-found.tsx — DESIGN.md [inline]"
               description="Page-bound composition, not a standalone component — listed, not previewed."
             >
-              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--hairline)] [&>*:first-child]:mt-0">
                 <li>404 Not Found</li>
               </ul>
             </Specimen>

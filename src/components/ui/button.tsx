@@ -23,12 +23,12 @@ const buttonClass = (variant: "primary" | "secondary", className?: string) =>
   cn(
     "interactive-label inline-flex h-14 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] px-[var(--spacing-2xl)] transition-all duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
     variant === "primary" && [
-      "bg-[var(--accent)] text-[var(--accent-on)]",
-      "hover:bg-[var(--on-surface)] hover:text-[var(--surface)]",
+      "bg-[var(--accent)] text-[var(--ink-deep)]",
+      "hover:bg-[var(--ink)] hover:text-[var(--surface)]",
     ],
     variant === "secondary" && [
-      "border border-[var(--outline)] bg-transparent text-[var(--on-surface)]",
-      "hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)]",
+      "border border-[var(--hairline-strong)] bg-transparent text-[var(--ink)]",
+      "hover:border-[var(--accent)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)]",
     ],
     className,
   );

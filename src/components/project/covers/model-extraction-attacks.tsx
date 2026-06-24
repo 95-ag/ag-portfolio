@@ -5,12 +5,12 @@ export function ModelExtractionAttacksCover() {
     fontFamily: "var(--font-jetbrains-mono)",
     fontSize: 20,
     letterSpacing: "0.05em",
-    fill: "var(--on-surface)",
+    fill: "var(--ink)",
   };
 
   const mutedStyle: React.CSSProperties = {
     ...labelStyle,
-    fill: "var(--background)",
+    fill: "var(--surface)",
   };
 
   const dotCols = 4;
@@ -50,7 +50,7 @@ export function ModelExtractionAttacksCover() {
             cx={matrixOriginX + col * dotGap}
             cy={matrixOriginY + row * dotGap}
             r={isAccent ? 9 : dotRadius}
-            fill={isAccent ? "var(--accent)" : "var(--on-surface)"}
+            fill={isAccent ? "var(--accent)" : "var(--ink)"}
           />
         ))}
 
@@ -60,13 +60,13 @@ export function ModelExtractionAttacksCover() {
           y1="337"
           x2="326"
           y2="337"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
         />
         <polyline
           points="318,329 326,337 318,345"
           fill="none"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
           strokeLinejoin="round"
         />
@@ -77,7 +77,7 @@ export function ModelExtractionAttacksCover() {
           y="247"
           width="240"
           height="180"
-          fill="var(--on-surface)"
+          fill="var(--ink)"
           opacity="0.9"
           rx="2"
         />
@@ -94,13 +94,13 @@ export function ModelExtractionAttacksCover() {
           y1="337"
           x2="676"
           y2="337"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
         />
         <polyline
           points="668,329 676,337 668,345"
           fill="none"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
           strokeLinejoin="round"
         />
@@ -116,7 +116,7 @@ export function ModelExtractionAttacksCover() {
           y="272"
           width="120"
           height="14"
-          fill="var(--on-surface)"
+          fill="var(--ink)"
           rx="2"
         />
         <rect
@@ -124,7 +124,7 @@ export function ModelExtractionAttacksCover() {
           y="296"
           width="78"
           height="14"
-          fill="var(--on-surface)"
+          fill="var(--ink)"
           rx="2"
           opacity="0.65"
         />
@@ -133,7 +133,7 @@ export function ModelExtractionAttacksCover() {
           y="320"
           width="38"
           height="14"
-          fill="var(--on-surface)"
+          fill="var(--ink)"
           rx="2"
           opacity="0.35"
         />
@@ -144,13 +144,13 @@ export function ModelExtractionAttacksCover() {
           y1="337"
           x2="926"
           y2="337"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
         />
         <polyline
           points="918,329 926,337 918,345"
           fill="none"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
           strokeLinejoin="round"
         />
@@ -162,7 +162,7 @@ export function ModelExtractionAttacksCover() {
           width="160"
           height="180"
           fill="none"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="3"
           rx="2"
         />

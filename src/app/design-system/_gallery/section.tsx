@@ -32,7 +32,7 @@ export function GallerySection({
           <h2>{title}</h2>
         </div>
         <span className="mono-anchor">→ DESIGN.md → {mapsTo}</span>
-        <div className="body-primary text-[var(--on-background)]">{intro}</div>
+        <div className="body-primary text-[var(--ink)]">{intro}</div>
       </div>
       <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
     </section>
@@ -62,9 +62,7 @@ export function Specimen({
       <h3 className="heading-component">{name}</h3>
       {source && <span className="mono-code">{source}</span>}
       {description && (
-        <span className="body-caption text-[var(--on-background)]">
-          {description}
-        </span>
+        <span className="body-caption text-[var(--ink)]">{description}</span>
       )}
       {children}
       {spec && <div className="mono-anchor">{spec}</div>}
@@ -86,7 +84,7 @@ export function Card({
     <div className="flex flex-col gap-[var(--spacing-xs)]">
       <div
         className={cn(
-          "flex min-h-[64px] items-center justify-center border border-[var(--outline-variant)] bg-[var(--surface-sunken)] p-[var(--spacing-lg)]",
+          "flex min-h-[64px] items-center justify-center border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-lg)]",
           className,
         )}
       >

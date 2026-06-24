@@ -34,7 +34,7 @@ export function HeroMetaOverlay({
           {logos.map((logo) => (
             <div
               key={logo.src}
-              className="relative h-8 w-8 overflow-hidden rounded-full border border-[var(--outline-variant)] bg-white md:h-10 md:w-10"
+              className="relative h-8 w-8 overflow-hidden rounded-full border border-[var(--hairline)] bg-white md:h-10 md:w-10"
             >
               <Image
                 src={logo.src}
@@ -61,7 +61,7 @@ export function HeroMetaOverlay({
                 alt={c.name}
                 width={24}
                 height={24}
-                className="h-5 w-5 rounded-full border border-[var(--outline-variant)] object-cover md:h-6 md:w-6"
+                className="h-5 w-5 rounded-full border border-[var(--hairline)] object-cover md:h-6 md:w-6"
                 style={{ marginLeft: i > 0 ? "-6px" : undefined }}
                 unoptimized={c.avatar.endsWith(".svg")}
               />

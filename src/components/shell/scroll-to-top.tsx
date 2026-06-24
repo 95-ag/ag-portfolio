@@ -58,7 +58,7 @@ export function ScrollToTop({
           behavior: prefersReduced ? "auto" : "smooth",
         })
       }
-      className="fixed right-4 lg:right-[max(1rem,calc(50vw-36rem))] flex items-center justify-center h-11 w-11 xl:h-12 xl:w-12 rounded-full border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)] hover:border-[var(--outline)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+      className="fixed right-4 lg:right-[max(1rem,calc(50vw-36rem))] flex items-center justify-center h-11 w-11 xl:h-12 xl:w-12 rounded-full border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] hover:border-[var(--hairline-strong)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       style={{ zIndex: "var(--z-scroll-to-top)", bottom: `${bottom}px` }}
     >
       <ArrowUpwardIcon size={20} />

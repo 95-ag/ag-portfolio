@@ -35,11 +35,11 @@ const CELLS = Array.from({ length: ROWS }, (_, row) =>
 ).flat();
 
 // Masked cells need a faint neutral that stays visible against the page surface in both
-// themes — surface-sunken collapses into the background — so the full grid reads as
+// themes — surface-deep collapses into the surface — so the full grid reads as
 // "75% blanked", not scattered patches. Graded color-mix steps keep it theme-aware.
-const MASKED_FILL = "color-mix(in srgb, var(--on-surface) 16%, var(--surface))";
-const RECON_FILL = "color-mix(in srgb, var(--on-surface) 38%, var(--surface))";
-const ENCODER_FILL = "color-mix(in srgb, var(--on-surface) 8%, var(--surface))";
+const MASKED_FILL = "color-mix(in srgb, var(--ink) 16%, var(--surface))";
+const RECON_FILL = "color-mix(in srgb, var(--ink) 38%, var(--surface))";
+const ENCODER_FILL = "color-mix(in srgb, var(--ink) 8%, var(--surface))";
 
 // Encoder/decoder funnel (autoencoder iconography). Encoder narrows L→R toward the
 // latent; the smaller decoder widens L→R toward the reconstruction.
@@ -51,7 +51,7 @@ export function MaskedAutoencodersCover() {
     fontFamily: "var(--font-jetbrains-mono)",
     fontSize: 18,
     letterSpacing: "0.08em",
-    fill: "var(--on-surface)",
+    fill: "var(--ink)",
   };
 
   const caveatStyle: React.CSSProperties = {
@@ -67,13 +67,13 @@ export function MaskedAutoencodersCover() {
         y1={AXIS_Y}
         x2={x2}
         y2={AXIS_Y}
-        stroke="var(--on-surface)"
+        stroke="var(--ink)"
         strokeWidth="2"
       />
       <polyline
         points={`${x2 - 8},${AXIS_Y - 8} ${x2},${AXIS_Y} ${x2 - 8},${AXIS_Y + 8}`}
         fill="none"
-        stroke="var(--on-surface)"
+        stroke="var(--ink)"
         strokeWidth="2"
         strokeLinejoin="round"
       />
@@ -115,7 +115,7 @@ export function MaskedAutoencodersCover() {
         <polygon
           points={ENCODER_POINTS}
           fill={ENCODER_FILL}
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2.5"
           strokeLinejoin="round"
         />
@@ -130,7 +130,7 @@ export function MaskedAutoencodersCover() {
         <polygon
           points={DECODER_POINTS}
           fill="none"
-          stroke="var(--on-surface)"
+          stroke="var(--ink)"
           strokeWidth="2"
           strokeLinejoin="round"
           strokeDasharray="6 5"

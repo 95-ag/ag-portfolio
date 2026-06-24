@@ -10,33 +10,28 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
     group: "Surfaces",
     tokens: [
       {
-        token: "--background",
-        name: "Background",
-        usage: "Page ground, behind all content",
-      },
-      {
         token: "--surface",
         name: "Surface",
-        usage: "Default content surface (= background)",
+        usage: "Page ground & default content surface",
       },
       {
-        token: "--surface-raised",
-        name: "Surface Raised",
+        token: "--surface-elevated",
+        name: "Surface Elevated",
         usage: "One step up — cards, callouts, highlights",
       },
       {
-        token: "--surface-sunken",
-        name: "Surface Sunken",
+        token: "--surface-deep",
+        name: "Surface Deep",
         usage: "Diagram regions, card media well, hero — brightest in light",
       },
       {
-        token: "--surface-nav",
-        name: "Surface Nav",
+        token: "--surface-floating",
+        name: "Surface Floating",
         usage: "Floating nav + utility blur surfaces",
       },
       {
-        token: "--surface-selection",
-        name: "Surface Selection",
+        token: "--surface-active",
+        name: "Surface Active",
         usage: "Active nav item / selected fill",
       },
       {
@@ -50,19 +45,19 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
     group: "Text",
     tokens: [
       {
-        token: "--on-background",
-        name: "On Background",
-        usage: "Body text on the page ground",
+        token: "--ink",
+        name: "Ink",
+        usage: "Primary text & headings (on page & surfaces)",
       },
       {
-        token: "--on-surface",
-        name: "On Surface",
-        usage: "Primary text & headings",
-      },
-      {
-        token: "--on-surface-muted",
-        name: "On Surface Muted",
+        token: "--ink-muted",
+        name: "Ink Muted",
         usage: "Secondary text, metadata, captions",
+      },
+      {
+        token: "--ink-deep",
+        name: "Ink Deep",
+        usage: "Text / icon on an accent fill",
       },
     ],
   },
@@ -70,13 +65,13 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
     group: "Borders",
     tokens: [
       {
-        token: "--outline",
-        name: "Outline",
+        token: "--hairline-strong",
+        name: "Hairline Strong",
         usage: "Default borders & dividers (stronger than hairline)",
       },
       {
-        token: "--outline-variant",
-        name: "Outline Variant",
+        token: "--hairline",
+        name: "Hairline",
         usage: "Hairline dividers & card borders",
       },
     ],
@@ -90,13 +85,8 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
         usage: "Links, primary action, active state",
       },
       {
-        token: "--accent-on",
-        name: "Accent On",
-        usage: "Text / icon on an accent fill",
-      },
-      {
-        token: "--accent-muted",
-        name: "Accent Muted",
+        token: "--accent-tint",
+        name: "Accent Tint",
         usage: "Hover backgrounds, accent-tinted surfaces",
       },
     ],
@@ -110,8 +100,8 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
         usage: "Keyboard :focus-visible ring",
       },
       {
-        token: "--selection",
-        name: "Selection",
+        token: "--text-selection",
+        name: "Text Selection",
         usage: "Text-selection highlight",
       },
     ],
@@ -126,19 +116,17 @@ function ColorCard({
 }: ColorToken & { className?: string }) {
   return (
     <div
-      className={`flex flex-col overflow-hidden border border-[var(--outline-variant)] ${className}`}
+      className={`flex flex-col overflow-hidden border border-[var(--hairline)] ${className}`}
     >
       <span
         aria-hidden="true"
-        className="h-20 w-full border-b border-[var(--outline-variant)]"
+        className="h-20 w-full border-b border-[var(--hairline)]"
         style={{ background: `var(${token})` }}
       />
       <div className="flex flex-col gap-[2px] p-[var(--spacing-sm)]">
         <span className="body-emphasis">{name}</span>
         <span className="mono-code">{token}</span>
-        <span className="body-caption text-[var(--on-background)]">
-          {usage}
-        </span>
+        <span className="body-caption text-[var(--ink)]">{usage}</span>
       </div>
     </div>
   );
@@ -148,30 +136,25 @@ function ColorCard({
 // ColorCards inside the .ds-reading scope so they preview live + theme-adaptive, same as the showcase grid.
 const READING_SURFACES: (ColorToken & { darkOnly?: boolean })[] = [
   {
-    token: "--background",
-    name: "Background",
+    token: "--surface",
+    name: "Surface",
     usage: "Reading ground — softer than the showcase default",
   },
   {
-    token: "--surface",
-    name: "Surface",
-    usage: "Reading surface (tracks background)",
-  },
-  {
-    token: "--surface-raised",
-    name: "Surface Raised",
-    usage: "Lighter than background in dark reading",
+    token: "--surface-elevated",
+    name: "Surface Elevated",
+    usage: "Lighter than surface in dark reading",
     darkOnly: true,
   },
   {
-    token: "--surface-sunken",
-    name: "Surface Sunken",
-    usage: "Darker than raised in dark reading",
+    token: "--surface-deep",
+    name: "Surface Deep",
+    usage: "Darker than elevated in dark reading",
     darkOnly: true,
   },
   {
-    token: "--surface-nav",
-    name: "Surface Nav",
+    token: "--surface-floating",
+    name: "Surface Floating",
     usage: "Reading nav / menu blur surface",
   },
 ];
@@ -180,7 +163,7 @@ function ReadingModeGroup() {
   return (
     <div className="flex flex-col gap-[var(--spacing-md)]">
       <span className="mono-anchor">Surfaces · reading mode</span>
-      <p className="body-caption text-[var(--on-surface-muted)]">
+      <p className="body-caption text-[var(--ink-muted)]">
         Long-read pages (<span className="font-mono">/work/[slug]</span>,{" "}
         <span className="font-mono">data-read=&quot;long&quot;</span>) soften
         the surface values for easier reading. Only changed tokens are shown —
@@ -401,7 +384,7 @@ export function TypeScaleSpecimen() {
       {TYPE_TOKENS.map((t) => (
         <div
           key={t.token}
-          className="grid grid-cols-1 gap-[var(--spacing-sm)] border-b border-[var(--outline-variant)] py-[var(--spacing-md)] last:border-b-0 md:grid-cols-[280px_1fr] md:items-baseline md:gap-[var(--spacing-xl)]"
+          className="grid grid-cols-1 gap-[var(--spacing-sm)] border-b border-[var(--hairline)] py-[var(--spacing-md)] last:border-b-0 md:grid-cols-[280px_1fr] md:items-baseline md:gap-[var(--spacing-xl)]"
         >
           <div className="flex flex-col gap-[2px]">
             <span className="mono-code">.{t.token}</span>
@@ -495,7 +478,7 @@ export function RadiusScaleSpecimen() {
         >
           <span
             aria-hidden="true"
-            className="h-16 w-16 border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
+            className="h-16 w-16 border border-[var(--hairline)] bg-[var(--surface-elevated)]"
             style={{ borderRadius: radius }}
           />
           <span className="mono-anchor">
@@ -522,35 +505,33 @@ const DEPTH_LEVELS: {
   },
   {
     name: "Level 1 — Border only",
-    spec: "1px outline-variant",
-    className: "bg-[var(--surface)] border border-[var(--outline-variant)]",
+    spec: "1px hairline",
+    className: "bg-[var(--surface)] border border-[var(--hairline)]",
     usage: "Figure frame, prose hr, table cells",
   },
   {
     name: "Level 2 — Border + blur",
-    spec: "backdrop-blur(12px) + surface-nav + 1px outline-variant",
+    spec: "backdrop-blur(12px) + surface-floating + 1px hairline",
     className:
-      "bg-[var(--surface-nav)] border border-[var(--outline-variant)] [backdrop-filter:blur(12px)]",
+      "bg-[var(--surface-floating)] border border-[var(--hairline)] [backdrop-filter:blur(12px)]",
     usage: "Pill nav, mobile trigger, scroll-to-top",
   },
   {
     name: "Level 3 — Border + raised",
-    spec: "surface-raised + 1px outline-variant",
-    className:
-      "bg-[var(--surface-raised)] border border-[var(--outline-variant)]",
+    spec: "surface-elevated + 1px hairline",
+    className: "bg-[var(--surface-elevated)] border border-[var(--hairline)]",
     usage: "Project cards, <Highlight>",
   },
   {
     name: "Level 4 — Sunken inset",
-    spec: "surface-sunken + 1px outline-variant",
-    className:
-      "bg-[var(--surface-sunken)] border border-[var(--outline-variant)]",
+    spec: "surface-deep + 1px hairline",
+    className: "bg-[var(--surface-deep)] border border-[var(--hairline)]",
     usage: "<Diagram> / <DiagramRow>, card media well",
   },
   {
     name: "Level 5 — Accent left + raised",
-    spec: "2px accent (left) + surface-raised",
-    className: "bg-[var(--surface-raised)] border-l-2 border-[var(--accent)]",
+    spec: "2px accent (left) + surface-elevated",
+    className: "bg-[var(--surface-elevated)] border-l-2 border-[var(--accent)]",
     usage: "<Callout>, prose blockquote",
   },
 ];
@@ -566,7 +547,7 @@ export function DepthSpecimen() {
           <span className="body-emphasis">{name}</span>
           <div className="flex flex-col gap-[2px]">
             <span className="mono-anchor">{spec}</span>
-            <span className="body-caption text-[var(--on-surface-muted)]">
+            <span className="body-caption text-[var(--ink-muted)]">
               {usage}
             </span>
           </div>
@@ -717,8 +698,8 @@ export function ResponsiveSpecimen() {
         {ZONE_BARS.map(({ px, device, token, used, boxW, boxH }) => (
           <div
             key={token}
-            className={`flex shrink-0 flex-col items-center justify-end gap-[2px] border border-[var(--outline-variant)] p-[var(--spacing-sm)] ${
-              used ? "bg-[var(--surface-sunken)]" : "bg-[var(--surface-raised)]"
+            className={`flex shrink-0 flex-col items-center justify-end gap-[2px] border border-[var(--hairline)] p-[var(--spacing-sm)] ${
+              used ? "bg-[var(--surface-deep)]" : "bg-[var(--surface-elevated)]"
             }`}
             style={{ width: `${boxW}px`, height: `${boxH}px` }}
           >

@@ -13,16 +13,14 @@
    globals.css) so the color cards can preview reading mode live and theme-adaptive. Keep in sync with
    those blocks. Light leaves raised/sunken at showcase (unchanged). */
 .ds-reading {
-  --background: #f8f8f9;
   --surface: #f8f8f9;
-  --surface-nav: #f8f8f9d9;
+  --surface-floating: #f8f8f9d9;
 }
 [data-theme="dark"] .ds-reading {
-  --background: #1a1a1a;
   --surface: #1a1a1a;
-  --surface-raised: #292929;
-  --surface-sunken: #141414;
-  --surface-nav: #1f1f1fd9;
+  --surface-elevated: #292929;
+  --surface-deep: #141414;
+  --surface-floating: #1f1f1fd9;
 }
 /* Reading cards that only differ from showcase in dark — hide them in light, where they hold. */
 [data-theme="light"] .ds-reading-darkonly {

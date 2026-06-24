@@ -11,7 +11,7 @@ export function Callout({ children, title, className }: CalloutProps) {
     <aside
       role="note"
       className={cn(
-        "my-[var(--spacing-xl)] border-l-[2px] border-l-[var(--accent)] bg-[var(--surface-raised)] p-[var(--spacing-lg)]",
+        "my-[var(--spacing-xl)] border-l-[2px] border-l-[var(--accent)] bg-[var(--surface-elevated)] p-[var(--spacing-lg)]",
         className,
       )}
     >
@@ -20,7 +20,7 @@ export function Callout({ children, title, className }: CalloutProps) {
           {title}
         </p>
       )}
-      <div className="body-emphasis text-[var(--on-surface)]">{children}</div>
+      <div className="body-emphasis text-[var(--ink)]">{children}</div>
     </aside>
   );
 }

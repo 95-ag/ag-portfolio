@@ -17,7 +17,7 @@ export function ChromeFrame({
   return (
     <div
       className={cn(
-        "relative overflow-hidden border border-[var(--outline-variant)] bg-[var(--background)]",
+        "relative overflow-hidden border border-[var(--hairline)] bg-[var(--surface)]",
         className,
       )}
       style={{ transform: "translateZ(0)", height, width, maxWidth: "100%" }}
