@@ -1,37 +1,26 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────
-   Theme: CSS custom properties
-   All semantic roles from DESIGN.md §4
+   Theme tokens — DESIGN.md → Foundations → Colors
    ───────────────────────────────────────────── */
 
-/* :root = light, SHOWCASE surface (home/about/work index) — the immersive extreme (pure
-   white). Light is the default: next-themes writes data-theme="light" on <html>, which :root
-   already covers, and nothing forces a light subtree — so :root alone is the single source
-   (dark overrides via [data-theme="dark"]). Long-read project pages soften the background via
-   [data-read="long"] below. Neutral (ChatGPT-like) palette; one green accent. */
+/* :root = light (default); [data-theme="dark"] overrides; [data-read="long"] softens the ground. */
 :root {
-  /* Surfaces — light depth logic: sunken is the BRIGHTEST (pure white) for image/code/diagram
-     clarity; raised lifts only gently so highlights/callouts don't over-pop; bg is the off-white
-     ground. (Dark inverts: sunken darkest, raised lighter.) */
+  /* Surfaces */
   --background: #fcfcfc;
   --surface: #fcfcfc;
   --surface-raised: #ededed;
   --surface-sunken: #ffffff;
-  /* Floating nav/utility blur surface */
   --surface-nav: #fcfcfcd9;
-  /* Selection state — active nav, future tabs/segmented controls */
   --surface-selection: #e8f3ec;
+  --surface-tag: #dadce0;
 
-  /* Text — softened ink (not pure black) */
+  /* Text */
   --on-background: #2d2d2d;
   --on-surface: #2d2d2d;
   --on-surface-muted: #66696f;
 
-  /* Tag surface — neutral grey, deepened so chips read as filled pills on the raised card */
-  --surface-tag: #dadce0;
-
-  /* Borders — neutral */
+  /* Borders */
   --outline: #8b9197;
   --outline-variant: #e2e3e5;
 
@@ -40,64 +29,58 @@
   --accent-on: #ffffff;
   --accent-muted: #e8f3ec;
 
-  /* Semantic */
+  /* State */
   --focus-ring: #006e37;
   --selection: #006e3733;
 
-  /* Background layer RGB triples — consumed only by src/components/background/.
-     Space-separated so Three.js can parse: rgb(var(--accent-rgb)). */
+  /* Background-layer RGB triples (WebGL only) */
   --accent-rgb: 0 110 55;
   --on-surface-rgb: 45 45 45;
   --on-surface-muted-rgb: 102 105 111;
   --outline-variant-rgb: 226 227 229;
 }
 
-/* Light, READING surface — long-read project pages get a softer off-white ground so white
-   cards lift and prose is easy on the eyes. */
 :root[data-read="long"] {
   --background: #f8f8f9;
   --surface: #f8f8f9;
   --surface-nav: #f8f8f9d9;
 }
 
-/* Dark, SHOWCASE surface — deep black so the background effects feel immersive on
-   home/about/work index. Long-read pages lift to a softer charcoal via [data-read] below. */
 [data-theme="dark"] {
+  /* Surfaces */
   --background: #0e0e0e;
   --surface: #0e0e0e;
   --surface-raised: #1c1c1c;
   --surface-sunken: #080808;
   --surface-nav: #141414d9;
   --surface-selection: #16271b;
+  --surface-tag: #2a2a2a;
 
-  /* Ink ~15:1 — softened from pure-bright (16:1) for less glare, still punchy; the antialiased
-     smoothing (below) keeps it from reading heavy/thick. */
+  /* Text */
   --on-background: #e2e2e2;
   --on-surface: #e2e2e2;
   --on-surface-muted: #a1a1aa;
 
-  /* Tag surface — neutral, lighter than page + card */
-  --surface-tag: #2a2a2a;
-
+  /* Borders */
   --outline: #8a8a8a;
   --outline-variant: #333333;
 
-  /* Accent — deepened from #35c27d to read forest, not minty */
+  /* Accent */
   --accent: #2aa566;
-  --accent-on: #06210e;
+  --accent-on: #000000;
   --accent-muted: #16271b;
 
+  /* State */
   --focus-ring: #2aa566;
   --selection: #2aa56633;
 
-  /* Background layer RGB triples — dark theme */
+  /* Background-layer RGB triples (WebGL only) */
   --accent-rgb: 42 165 102;
   --on-surface-rgb: 226 226 226;
   --on-surface-muted-rgb: 161 161 170;
   --outline-variant-rgb: 51 51 51;
 }
 
-/* Dark, READING surface — softer charcoal for comfortable long-form reading; cards lift. */
 [data-theme="dark"][data-read="long"] {
   --background: #1a1a1a;
   --surface: #1a1a1a;
@@ -134,7 +117,7 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains);
 
-  /* Spacing — DESIGN.md §5 */
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -148,13 +131,13 @@
   --spacing-margin-mobile: 16px;
   --spacing-margin-desktop: 64px;
 
-  /* Radius — DESIGN.md §7 */
+  /* Radius */
   --radius-none: 0;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-pill: 9999px;
 
-  /* Z-index — DESIGN.md §12 */
+  /* Z-index */
   --z-base: 0;
   --z-sticky-content: 20;
   --z-scroll-to-top: 40;
@@ -162,7 +145,7 @@
   --z-mobile-menu-overlay: 55;
   --z-mobile-menu-panel: 60;
 
-  /* Motion — DESIGN.md §9 */
+  /* Motion */
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 300ms;
@@ -216,8 +199,7 @@ body {
    Global override avoided here — !important fights with component-level transitions. */
 
 /* ─────────────────────────────────────────────
-   Type scale — DESIGN.md §3
-   Applied as utility classes, not inline styles
+   Type scale — utility classes (DESIGN.md → Foundations → Typography)
    ───────────────────────────────────────────── */
 
 @layer components {
@@ -233,7 +215,7 @@ body {
     color: var(--on-surface);
   }
 
-  /* Display — project-title tier: smaller so long titles stay controlled */
+  /* Display — project-title tier */
   .display-title {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 56px;
@@ -285,8 +267,6 @@ body {
     font-size: 24px;
     font-weight: 400;
     line-height: 34px;
-    /* Full ink — a large lead paragraph in muted grey reads dull/low-presence; ink gives it
-       the standing the hero passage + capability labels need (matches body-primary clarity). */
     color: var(--on-surface);
   }
 
@@ -386,12 +366,7 @@ body {
     color: var(--on-surface-muted);
   }
 
-  /* ── Prose composition rules — .prose-content ──
-     Headings compose from semantic tokens; spacing/border are layout rules.
-     h2 → mono-anchor  |  h3 → heading-component  |  h4 → heading-narrative
-     p/li → body-primary  |  blockquote → body-secondary  |  table → body-caption
-     code → mono-code  |  strong → body-primary + weight-600
-  */
+  /* Prose — .prose-content; each rule mirrors a semantic token's values (keep in sync) */
 
   .prose-content h2 {
     /* mono-anchor values + structural border */
@@ -513,7 +488,6 @@ body {
   }
   .prose-content th,
   .prose-content td {
-    /* editorial table: ink text on horizontal rules only — no grid, no header fill */
     border: none;
     border-bottom: 1px solid var(--outline-variant);
     padding: var(--spacing-sm) var(--spacing-md);
@@ -525,9 +499,7 @@ body {
     border-bottom: 2px solid var(--accent);
   }
   .prose-content code:not(pre code) {
-    /* mono-code metrics + accent token treatment (Notion-like): accent text on a
-       faint accent tint, hairline accent border — reads as code without the muted
-       gray that washed out against the sunken surface */
+    /* inline code — mono-code metrics, accent text on a faint accent tint */
     font-family: var(--font-mono), monospace;
     font-size: 16px;
     font-weight: 400;
@@ -557,8 +529,6 @@ body {
     font-weight: var(--shiki-dark-font-weight);
     text-decoration: var(--shiki-dark-text-decoration);
   }
-
-  /* Highlight panel — editorial pull-quote; elevation via border + raised fill only */
 
   /* Editorial two-column DL layout for Overview + Tech Stack */
   .editorial-dl {
@@ -609,7 +579,7 @@ body {
     color: var(--on-surface);
   }
 
-  /* Mid-tier overrides (tablet / small-desktop — 769–1279) */
+  /* Mid-tier overrides (769–1279) */
   @media (max-width: 1279px) {
     .display-primary {
       font-size: 52px;
@@ -659,10 +629,8 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   Background layer — ASCII glyph tiers
-   Classes assigned imperatively in AsciiField.tsx
-   Light values are raised: light bg has lower contrast so glyphs
-   need more opacity to register without becoming textural noise.
+   Background layer — ASCII glyph tiers (classes assigned in AsciiField.tsx)
+   Light opacities are higher — lower light-bg contrast needs more to register.
    ───────────────────────────────────────────── */
 
 .ascii-bg-glyph-accent {
