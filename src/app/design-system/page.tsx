@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ViewDownloadButton } from "@/components/about/view-download-button";
+import "./gallery.css";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
@@ -54,20 +55,19 @@ import { InlineThemeSelector } from "@/components/ui/theme-selector";
 import type { Project } from "@/lib/content/projects";
 import backgroundAsciiDark from "../../../public/design-system/background-ascii-dark.png";
 import backgroundAsciiLight from "../../../public/design-system/background-ascii-light.png";
-import backgroundMeteorDark from "../../../public/design-system/background-meteor-dark.png";
-import backgroundMeteorLight from "../../../public/design-system/background-meteor-light.png";
+import meteorDarkPoster from "../../../public/design-system/meteor-dark-poster.jpg";
+import meteorLightPoster from "../../../public/design-system/meteor-light-poster.jpg";
 import { ChromeFrame } from "./_gallery/chrome-frame";
 import { DemoViewOnly } from "./_gallery/demo-view-only";
 import { InertDemo } from "./_gallery/inert-demo";
+import { MeteorVideo } from "./_gallery/meteor-video";
 import { Card, GallerySection, Specimen } from "./_gallery/section";
 import { ThemeShot } from "./_gallery/theme-shot";
 import {
   ColorTokenGrid,
   DepthSpecimen,
-  IconSizeTable,
   MotionTokenTable,
   RadiusScaleSpecimen,
-  ReadingModeColors,
   ResponsiveSpecimen,
   SpacingScaleSpecimen,
   TypeScaleSpecimen,
@@ -190,13 +190,15 @@ export default function DesignSystemPage() {
             Design System
           </Heading>
           <p className="body-lead">
-            Every component, rendered live under one theme and grouped to mirror
-            the component folder map. Toggle to preview the other theme.
+            Components and tokens rendered live, grouped to mirror the component
+            folder map. Inline page sections are listed, not previewed;
+            background layers are static captures. Switch themes with the Theme
+            control above.
           </p>
           {/* The dedicated theme control for this page — the real InlineThemeSelector, OUTSIDE the
               view-only article below so it works. The UI catalog points here rather than duplicating it. */}
           <div className="flex items-center gap-[var(--spacing-sm)]">
-            <span className="insight-label">Theme</span>
+            <span className="mono-anchor">Theme</span>
             <InlineThemeSelector />
           </div>
           <div className="body-caption text-[var(--on-background)]">
@@ -221,17 +223,6 @@ export default function DesignSystemPage() {
               description="Semantic surfaces, text, borders, accent, and state colors — each swatch reflects the current page theme. accent-strong is intentionally absent — one accent only (DESIGN.md → Foundations → Colors). Interaction states (hover/focus/active/selected) derive from tokens — DESIGN.md → Interaction."
             >
               <ColorTokenGrid />
-            </Specimen>
-
-            <Specimen
-              id="foundations-reading-mode"
-              name="Reading-mode colors"
-              source="globals.css → [data-read]"
-              description="Long-read pages (/work/[slug], data-read=&quot;long&quot;) soften the ground so cards lift and prose is easy on the eyes. These tokens shift; all others hold."
-            >
-              <div className="prose-content w-full">
-                <ReadingModeColors />
-              </div>
             </Specimen>
 
             <Specimen
@@ -265,7 +256,7 @@ export default function DesignSystemPage() {
               id="foundations-depth"
               name="Elevation & depth"
               source="DESIGN.md → Elevation"
-              description="No box-shadow. Depth comes from hairline borders and tonal surface layering."
+              description="No box-shadow. Depth comes from tonal surface layering and subtle borders."
             >
               <DepthSpecimen />
             </Specimen>
@@ -323,9 +314,7 @@ export default function DesignSystemPage() {
                     className="flex flex-col items-start gap-[var(--spacing-sm)]"
                   >
                     <div className="py-[var(--spacing-xs)]">{v.render}</div>
-                    <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-                      button · {v.token}
-                    </span>
+                    <span className="mono-anchor">button · {v.token}</span>
                     <span className="body-caption">{v.spec}</span>
                   </div>
                 ))}
@@ -406,7 +395,7 @@ export default function DesignSystemPage() {
               id="ui-theme-selector"
               name="InlineThemeSelector"
               source="@/components/ui/theme-selector"
-              description="The page-theme control — three segments (system / light / dark) reflecting the active theme. Shown here as an inert reconstruction (look + hover only); the working instance is the toggle in the page header above. Categorized under DESIGN.md → Components → Navigation → Theme Selector."
+              description="The page-theme control — three segments (system / light / dark) reflecting the active theme. The working instance is the toggle in the page header. Categorized under DESIGN.md → Components → Navigation → Theme Selector."
             >
               <InertDemo className="flex">
                 <InlineThemeSelector />
@@ -418,7 +407,7 @@ export default function DesignSystemPage() {
           <GallerySection
             id="layout"
             title="Components · Layout"
-            intro="Structural and spacing primitives. Stack, Grid, and Divider render live; the page-shaping wrappers (Container, Section, Sticky) shape this very page rather than a boxed demo."
+            intro="Structural and spacing primitives. Stack, Grid, and Divider render live; the page-shaping wrappers (Container, Section, Sticky) shape this page directly."
             mapsTo="Foundations → Layout"
           >
             <Specimen
@@ -475,7 +464,7 @@ export default function DesignSystemPage() {
               id="layout-scaffold"
               name="Container · Section · Sticky"
               source="@/components/layout/*"
-              description="Page-scaffold wrappers — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Sticky (scroll-pinned). They shape this very page; an isolated box would misrepresent them."
+              description="Page-scaffold wrappers — Container (max-w 1200px + responsive padding), Section (vertical rhythm), Sticky (scroll-pinned). They shape this page directly."
             >
               <p className="body-caption text-[var(--on-surface-muted)]">
                 Structural wrappers — best seen in context. This page is wrapped
@@ -621,24 +610,14 @@ export default function DesignSystemPage() {
           <GallerySection
             id="icons"
             title="Components · Icons"
-            intro="The icon set — all inherit currentColor at the requested size."
+            intro="Two icon families — Material Symbols for system actions, monochrome marks for brands. All inherit currentColor at the requested size."
             mapsTo="Components"
           >
-            <Specimen
-              id="icons-sizes"
-              name="Icon sizes"
-              source="DESIGN.md → Iconography"
-              description="Four contextual sizes — each tied to a specific UI role."
-            >
-              <div className="prose-content w-full max-w-[480px]">
-                <IconSizeTable />
-              </div>
-            </Specimen>
-
             <Specimen
               id="icons-material"
               name="Material icons"
               source="@/components/icons/material/*"
+              description="UI / system icons — Material Symbols Outlined, inline SVG inheriting currentColor."
             >
               <div className="grid grid-cols-3 gap-[var(--spacing-lg)] text-[var(--on-surface)] sm:grid-cols-4 md:grid-cols-6">
                 {MATERIAL_ICONS.map(({ name, Icon }) => (
@@ -647,9 +626,7 @@ export default function DesignSystemPage() {
                     className="flex flex-col items-center gap-[var(--spacing-xs)]"
                   >
                     <Icon size={24} />
-                    <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-                      {name}
-                    </span>
+                    <span className="mono-code">{name}</span>
                   </div>
                 ))}
               </div>
@@ -659,6 +636,7 @@ export default function DesignSystemPage() {
               id="icons-brand"
               name="Brand icons"
               source="@/components/icons/brands/*"
+              description="Brand & platform marks — official monochrome SVGs, kept distinct from the Material style."
             >
               <div className="flex flex-wrap gap-[var(--spacing-2xl)] text-[var(--on-surface)]">
                 {BRAND_ICONS.map(({ name, Icon }) => (
@@ -667,9 +645,51 @@ export default function DesignSystemPage() {
                     className="flex flex-col items-center gap-[var(--spacing-xs)]"
                   >
                     <Icon size={24} />
-                    <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-                      {name}
-                    </span>
+                    <span className="mono-code">{name}</span>
+                  </div>
+                ))}
+              </div>
+            </Specimen>
+
+            <Specimen
+              id="icons-sizes"
+              name="Icon sizes"
+              source="DESIGN.md → Iconography"
+              description="Four contextual sizes — each tied to a specific UI role; shown at actual size."
+            >
+              <div className="grid grid-cols-1 gap-[var(--spacing-xl)] sm:grid-cols-2">
+                {[
+                  {
+                    px: 20,
+                    label: "20px",
+                    context:
+                      "Standalone icon-only controls (footer social, scroll-to-top)",
+                  },
+                  {
+                    px: 18,
+                    label: "18px",
+                    context: "Buttons; mobile-nav trigger & close",
+                  },
+                  {
+                    px: 16,
+                    label: "16px",
+                    context: "Nav items, LinkPill icons, project-card chevron",
+                  },
+                  {
+                    px: 14,
+                    label: "12–14px",
+                    context: "Inline indicators (copy, external-link)",
+                  },
+                ].map(({ px, label, context }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col items-start gap-[var(--spacing-sm)]"
+                  >
+                    <div className="flex h-8 items-center text-[var(--on-surface)]">
+                      <ArrowForwardIcon size={px} />
+                    </div>
+                    <span className="mono-anchor">icon · {label}</span>
+                    <span className="body-caption">{context}</span>
                   </div>
                 ))}
               </div>
@@ -687,7 +707,7 @@ export default function DesignSystemPage() {
               id="shell-nav"
               name="PillNav"
               source="@/components/shell/pill-nav"
-              description="Floating pill nav (md+), with routing-aware active state. Fixed positioning is bounded to the frame."
+              description="Floating pill nav (md+), with routing-aware active state."
             >
               <ChromeFrame height={120}>
                 <PillNav />
@@ -698,7 +718,7 @@ export default function DesignSystemPage() {
               id="shell-mobile-nav"
               name="MobileNav"
               source="@/components/shell/mobile-nav"
-              description="Mobile hamburger drawer (below md) — logomark, nav links, and theme selector, sliding in from the right. Shown open and inert (the MobileNavPanel sub-component); the live drawer is on this page at mobile widths — resize below 768px and tap the menu."
+              description="Mobile hamburger drawer (below md) — logomark, nav links, and theme selector, sliding in from the right. The live drawer is on this page at mobile widths — resize below 768px and tap the menu."
             >
               <InertDemo>
                 <ChromeFrame height={420}>
@@ -717,7 +737,7 @@ export default function DesignSystemPage() {
               id="shell-footer"
               name="Footer"
               source="@/components/shell/footer"
-              description="Site-wide footer — copyright, repo link, social icons. Full-width, in document flow; shown in a cosmetic frame for consistency with the other chrome."
+              description="Site-wide footer — copyright, repo link, social icons. Full-width, in document flow."
             >
               <ChromeFrame>
                 <Footer />
@@ -728,7 +748,7 @@ export default function DesignSystemPage() {
               id="shell-scroll-to-top"
               name="ScrollToTop"
               source="@/components/shell/scroll-to-top"
-              description="Floating FAB that appears after 400px of scroll and lifts above the footer. Mounted once in the root layout. Shown forced-visible in a bounded frame (look + hover only, inert); the working instance is live on this page — scroll down to see it."
+              description="Floating button that appears after 400px of scroll and sits above the footer. Mounted once in the root layout. The live instance is on this page — scroll down to see it."
             >
               <InertDemo>
                 <ChromeFrame height={160}>
@@ -738,11 +758,11 @@ export default function DesignSystemPage() {
             </Specimen>
           </GallerySection>
 
-          {/* ── Background (static captures — the live WebGL meteor is GPU-only) ── */}
+          {/* ── Background ── */}
           <GallerySection
             id="background"
             title="Background"
-            intro="The ambient layer composited by BackgroundLayer. Both layers are full-viewport, so they're shown as committed static captures — the WebGL meteor is GPU-only and brutal on software WebGL, so it isn't rendered live in the gallery."
+            intro="The ambient background — an ASCII glyph field plus a Three.js meteor shader, both full-viewport; the meteor shown as a short looping clip, the ASCII field as a static capture."
             mapsTo="Background subsystem"
           >
             <Specimen
@@ -761,11 +781,13 @@ export default function DesignSystemPage() {
               id="meteor-shower"
               name="MeteorShower"
               source="@/components/background/meteor-shower"
-              description="Three.js shader — additive neon streaks in dark, inverted ink streaks in light. GPU-gated (CPU-brutal on software WebGL); shown as a static capture."
+              description="Three.js shader — additive neon streaks in dark, inverted ink streaks in light; shown as a short looping clip (a dense segment of the effect)."
             >
-              <ThemeShot
-                light={backgroundMeteorLight}
-                dark={backgroundMeteorDark}
+              <MeteorVideo
+                lightVideo="/design-system/meteor-light.mp4"
+                darkVideo="/design-system/meteor-dark.mp4"
+                lightPoster={meteorLightPoster}
+                darkPoster={meteorDarkPoster}
                 alt="MeteorShower background"
               />
             </Specimen>
@@ -784,7 +806,7 @@ export default function DesignSystemPage() {
               source="src/app/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on the home page."
             >
-              <ul className="prose-content [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
                 <li>Hero</li>
                 <li>Featured Projects Grid</li>
               </ul>
@@ -804,7 +826,7 @@ export default function DesignSystemPage() {
               source="src/app/work/page.tsx — DESIGN.md [inline]"
               description="Page-bound composition, not a standalone component — listed, not previewed. See it on the work index."
             >
-              <ul className="prose-content [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
                 <li>Work Index (listing grid)</li>
               </ul>
             </Specimen>
@@ -836,7 +858,7 @@ export default function DesignSystemPage() {
               source="src/app/about/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on the About page."
             >
-              <ul className="prose-content [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
                 <li>Two-panel Intro</li>
                 <li>Capabilities</li>
                 <li>Approach</li>
@@ -918,7 +940,7 @@ export default function DesignSystemPage() {
               id="project-tech-stack"
               name="TechStack"
               source="@/components/project/tech-stack"
-              description="Definition list of the project's stack. The 'Tech Stack' heading is owned by the page (like Overview), so the component is heading-less and no longer pollutes the section rail."
+              description="Definition list of the project's stack. Heading-less — the page owns the 'Tech Stack' heading (like Overview)."
             >
               <div className="prose-content">
                 <TechStack stack={demoProject.frontmatter.stack} />
@@ -929,7 +951,7 @@ export default function DesignSystemPage() {
               id="project-section-progress"
               name="SectionProgressNav"
               source="@/components/project/section-progress-nav"
-              description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. It is live on this page — the rail at the left edge (xl+) is this component, tracking these sections."
+              description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. Live on this page — the rail at the left edge (xl+) tracks these sections."
             >
               <p className="body-caption text-[var(--on-background)]">
                 ← Live as the left-rail TOC on this page (xl+), tracking the
@@ -943,7 +965,7 @@ export default function DesignSystemPage() {
               source="src/app/work/[slug]/page.tsx — DESIGN.md [inline]"
               description="Page-bound compositions, not standalone components — listed, not previewed. See them on a project page."
             >
-              <ul className="prose-content [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
                 <li>Project Detail layout</li>
                 <li>Prose (MDX deep-dive) layout</li>
                 <li>Editorial two-column layout</li>
@@ -964,7 +986,7 @@ export default function DesignSystemPage() {
               source="src/app/not-found.tsx — DESIGN.md [inline]"
               description="Page-bound composition, not a standalone component — listed, not previewed."
             >
-              <ul className="prose-content [&>*:first-child]:mt-0">
+              <ul className="prose-content list-disc pl-[var(--spacing-xl)] marker:text-[var(--outline-variant)] [&>*:first-child]:mt-0">
                 <li>404 Not Found</li>
               </ul>
             </Specimen>

@@ -1,6 +1,8 @@
 // Foundations renderers for /design-system. Tables render bare so the page's .prose-content wrapper
 // applies the editorial table style. Token values mirror globals.css.
 
+import { Fragment } from "react";
+
 type ColorToken = { token: string; name: string; usage: string };
 
 const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
@@ -15,7 +17,7 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
       {
         token: "--surface",
         name: "Surface",
-        usage: "Default block / section fill",
+        usage: "Default content surface (= background)",
       },
       {
         token: "--surface-raised",
@@ -25,12 +27,12 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
       {
         token: "--surface-sunken",
         name: "Surface Sunken",
-        usage: "Brightest layer — images, code, diagrams",
+        usage: "Diagram regions, card media well, hero — brightest in light",
       },
       {
         token: "--surface-nav",
         name: "Surface Nav",
-        usage: "Floating nav / menu blur surface",
+        usage: "Floating nav + utility blur surfaces",
       },
       {
         token: "--surface-selection",
@@ -95,7 +97,7 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
       {
         token: "--accent-muted",
         name: "Accent Muted",
-        usage: "Accent tint — hovers & selection",
+        usage: "Hover backgrounds, accent-tinted surfaces",
       },
     ],
   },
@@ -116,9 +118,16 @@ const COLOR_GROUPS: { group: string; tokens: ColorToken[] }[] = [
   },
 ];
 
-function ColorCard({ token, name, usage }: ColorToken) {
+function ColorCard({
+  token,
+  name,
+  usage,
+  className = "",
+}: ColorToken & { className?: string }) {
   return (
-    <div className="flex flex-col overflow-hidden border border-[var(--outline-variant)]">
+    <div
+      className={`flex flex-col overflow-hidden border border-[var(--outline-variant)] ${className}`}
+    >
       <span
         aria-hidden="true"
         className="h-20 w-full border-b border-[var(--outline-variant)]"
@@ -126,12 +135,65 @@ function ColorCard({ token, name, usage }: ColorToken) {
       />
       <div className="flex flex-col gap-[2px] p-[var(--spacing-sm)]">
         <span className="body-emphasis">{name}</span>
-        <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
-          {token}
-        </span>
+        <span className="mono-code">{token}</span>
         <span className="body-caption text-[var(--on-background)]">
           {usage}
         </span>
+      </div>
+    </div>
+  );
+}
+
+// Reading-mode surfaces — the only tokens that change under data-read="long" (globals.css). Rendered as
+// ColorCards inside the .ds-reading scope so they preview live + theme-adaptive, same as the showcase grid.
+const READING_SURFACES: (ColorToken & { darkOnly?: boolean })[] = [
+  {
+    token: "--background",
+    name: "Background",
+    usage: "Reading ground — softer than the showcase default",
+  },
+  {
+    token: "--surface",
+    name: "Surface",
+    usage: "Reading surface (tracks background)",
+  },
+  {
+    token: "--surface-raised",
+    name: "Surface Raised",
+    usage: "Lighter than background in dark reading",
+    darkOnly: true,
+  },
+  {
+    token: "--surface-sunken",
+    name: "Surface Sunken",
+    usage: "Darker than raised in dark reading",
+    darkOnly: true,
+  },
+  {
+    token: "--surface-nav",
+    name: "Surface Nav",
+    usage: "Reading nav / menu blur surface",
+  },
+];
+
+function ReadingModeGroup() {
+  return (
+    <div className="flex flex-col gap-[var(--spacing-md)]">
+      <span className="mono-anchor">Surfaces · reading mode</span>
+      <p className="body-caption text-[var(--on-surface-muted)]">
+        Long-read pages (<span className="font-mono">/work/[slug]</span>,{" "}
+        <span className="font-mono">data-read=&quot;long&quot;</span>) soften
+        the surface values for easier reading. Only changed tokens are shown —
+        light keeps raised and sunken, so fewer cards appear.
+      </p>
+      <div className="ds-reading grid grid-cols-2 gap-[var(--spacing-sm)] md:grid-cols-3 xl:grid-cols-4">
+        {READING_SURFACES.map(({ darkOnly, ...t }) => (
+          <ColorCard
+            key={t.token}
+            {...t}
+            className={darkOnly ? "ds-reading-darkonly" : undefined}
+          />
+        ))}
       </div>
     </div>
   );
@@ -141,16 +203,17 @@ export function ColorTokenGrid() {
   return (
     <div className="flex flex-col gap-[var(--spacing-xl)]">
       {COLOR_GROUPS.map(({ group, tokens }) => (
-        <div key={group} className="flex flex-col gap-[var(--spacing-md)]">
-          <span className="font-mono text-[13px] uppercase tracking-[0.05em] text-[var(--on-surface-muted)]">
-            {group}
-          </span>
-          <div className="grid grid-cols-2 gap-[var(--spacing-sm)] md:grid-cols-3 xl:grid-cols-4">
-            {tokens.map((t) => (
-              <ColorCard key={t.token} {...t} />
-            ))}
+        <Fragment key={group}>
+          <div className="flex flex-col gap-[var(--spacing-md)]">
+            <span className="mono-anchor">{group}</span>
+            <div className="grid grid-cols-2 gap-[var(--spacing-sm)] md:grid-cols-3 xl:grid-cols-4">
+              {tokens.map((t) => (
+                <ColorCard key={t.token} {...t} />
+              ))}
+            </div>
           </div>
-        </div>
+          {group === "Surfaces" && <ReadingModeGroup />}
+        </Fragment>
       ))}
     </div>
   );
@@ -338,17 +401,15 @@ export function TypeScaleSpecimen() {
       {TYPE_TOKENS.map((t) => (
         <div
           key={t.token}
-          className="grid grid-cols-1 gap-[var(--spacing-sm)] border-b border-[var(--outline-variant)] py-[var(--spacing-md)] last:border-b-0 md:grid-cols-[200px_1fr] md:items-baseline md:gap-[var(--spacing-xl)]"
+          className="grid grid-cols-1 gap-[var(--spacing-sm)] border-b border-[var(--outline-variant)] py-[var(--spacing-md)] last:border-b-0 md:grid-cols-[280px_1fr] md:items-baseline md:gap-[var(--spacing-xl)]"
         >
           <div className="flex flex-col gap-[2px]">
-            <span className="font-mono text-[13px] text-[var(--on-surface)]">
-              .{t.token}
-            </span>
-            <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+            <span className="mono-code">.{t.token}</span>
+            <span className="mono-anchor">
               {t.family} · {t.size}px / {t.weight} / lh {t.lh}
             </span>
             {t.responsive && (
-              <span className="font-mono text-[11px] text-[var(--on-surface-muted)]">
+              <span className="body-caption">
                 ↘ desktop: {t.size}px → tablet: {t.responsive.tablet}px →
                 mobile: {t.responsive.mobile}px
               </span>
@@ -375,17 +436,17 @@ const SPACING_TOKENS: { token: string; px: number }[] = [
 
 export function SpacingScaleSpecimen() {
   return (
-    <div className="flex flex-wrap items-end gap-[var(--spacing-lg)]">
+    <div className="flex flex-col gap-[var(--spacing-sm)]">
       {SPACING_TOKENS.map(({ token, px }) => (
-        <div key={token} className="flex flex-col gap-[var(--spacing-xs)]">
-          <span
-            aria-hidden="true"
-            className="h-7 bg-[var(--accent)]"
-            style={{ width: `var(--spacing-${token})` }}
-          />
-          <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+        <div key={token} className="flex items-center gap-[var(--spacing-md)]">
+          <span className="mono-anchor w-[112px] shrink-0">
             {token} · {px}
           </span>
+          <span
+            aria-hidden="true"
+            className="h-5 shrink-0 bg-[var(--accent)]"
+            style={{ width: `var(--spacing-${token})` }}
+          />
         </div>
       ))}
     </div>
@@ -402,7 +463,7 @@ const RADIUS_TOKENS: {
     token: "none",
     radius: "var(--radius-none)",
     value: "0px",
-    usage: "Cards, sections, nav, footer",
+    usage: "Cards, code blocks, callouts — sharp containers",
   },
   {
     token: "sm",
@@ -420,7 +481,7 @@ const RADIUS_TOKENS: {
     token: "pill",
     radius: "var(--radius-pill)",
     value: "9999px",
-    usage: "Pill nav, link pills, FAB",
+    usage: "Pill nav, link pills, scroll-to-top, theme selector",
   },
 ];
 
@@ -437,7 +498,7 @@ export function RadiusScaleSpecimen() {
             className="h-16 w-16 border border-[var(--outline-variant)] bg-[var(--surface-raised)]"
             style={{ borderRadius: radius }}
           />
-          <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
+          <span className="mono-anchor">
             {token} · {value}
           </span>
           <span className="body-caption text-center">{usage}</span>
@@ -504,9 +565,7 @@ export function DepthSpecimen() {
         >
           <span className="body-emphasis">{name}</span>
           <div className="flex flex-col gap-[2px]">
-            <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-              {spec}
-            </span>
+            <span className="mono-anchor">{spec}</span>
             <span className="body-caption text-[var(--on-surface-muted)]">
               {usage}
             </span>
@@ -552,43 +611,68 @@ const ZONES: { name: string; width: string; changes: string[] }[] = [
   },
 ];
 
-// Fixed canonical breakpoint ruler (Tailwind v4 defaults). Device names label only the breakpoints
-// this project uses; `used` flags them. `base` is the mobile-first default, not a breakpoint.
+// Fixed canonical breakpoint ruler (Tailwind v4 defaults). Every stop carries a device name; `px` is the
+// min-width floor (base = 0). `used` flags the breakpoints this project actually uses — drawn as a deeper
+// sunken box (elevation Level 4) against a raised box (Level 3) for the unused standard stops.
 const ZONE_BARS: {
   px: string;
-  device: string | null;
+  device: string;
   token: string;
   used: boolean;
   boxW: number;
   boxH: number;
 }[] = [
+  // Aspect ratios mirror real device viewports — portrait phones (tall, narrow) widening through to
+  // landscape desktops (wide, short), with the tablet the tallest. Width grows monotonically with the
+  // breakpoint; text sits inside, and the device name uses body-caption so it doesn't crowd the small shapes.
   {
-    px: "base",
+    px: "0",
     device: "Mobile",
     token: "base",
     used: true,
-    boxW: 48,
-    boxH: 80,
+    boxW: 64,
+    boxH: 128,
   },
-  { px: "640", device: null, token: "sm", used: false, boxW: 64, boxH: 100 },
+  {
+    px: "640",
+    device: "Large mobile",
+    token: "sm",
+    used: false,
+    boxW: 76,
+    boxH: 138,
+  },
   {
     px: "768",
     device: "Tablet",
     token: "md",
     used: true,
-    boxW: 100,
-    boxH: 120,
+    boxW: 104,
+    boxH: 162,
   },
-  { px: "1024", device: null, token: "lg", used: false, boxW: 140, boxH: 130 },
+  {
+    px: "1024",
+    device: "Laptop",
+    token: "lg",
+    used: false,
+    boxW: 168,
+    boxH: 140,
+  },
   {
     px: "1280",
     device: "Desktop",
     token: "xl",
     used: true,
-    boxW: 180,
+    boxW: 210,
     boxH: 150,
   },
-  { px: "1536", device: null, token: "2xl", used: false, boxW: 220, boxH: 160 },
+  {
+    px: "1536",
+    device: "Ultra wide",
+    token: "2xl",
+    used: false,
+    boxW: 264,
+    boxH: 152,
+  },
 ];
 
 export function ResponsiveSpecimen() {
@@ -610,13 +694,13 @@ export function ResponsiveSpecimen() {
                   <>
                     <td
                       rowSpan={z.changes.length}
-                      className="font-mono text-[13px] whitespace-nowrap align-top"
+                      className="mono-anchor whitespace-nowrap align-top"
                     >
                       {z.name}
                     </td>
                     <td
                       rowSpan={z.changes.length}
-                      className="font-mono text-[13px] whitespace-nowrap align-top"
+                      className="mono-anchor whitespace-nowrap align-top"
                     >
                       {z.width}
                     </td>
@@ -633,24 +717,16 @@ export function ResponsiveSpecimen() {
         {ZONE_BARS.map(({ px, device, token, used, boxW, boxH }) => (
           <div
             key={token}
-            className={`flex shrink-0 flex-col items-center justify-end gap-[2px] bg-[var(--surface-raised)] p-[var(--spacing-sm)] ${
-              used
-                ? "border border-[var(--accent)]"
-                : "border border-[var(--outline-variant)] opacity-60"
+            className={`flex shrink-0 flex-col items-center justify-end gap-[2px] border border-[var(--outline-variant)] p-[var(--spacing-sm)] ${
+              used ? "bg-[var(--surface-sunken)]" : "bg-[var(--surface-raised)]"
             }`}
             style={{ width: `${boxW}px`, height: `${boxH}px` }}
           >
-            <span className="font-mono text-[13px] font-medium text-[var(--on-surface)]">
-              {px}
+            <span className="mono-code">{px}</span>
+            <span className="body-caption text-center leading-tight">
+              {device}
             </span>
-            {device && (
-              <span className="font-mono text-[10px] leading-tight text-center text-[var(--on-surface)]">
-                {device}
-              </span>
-            )}
-            <span className="font-mono text-[10px] leading-tight text-[var(--on-surface-muted)]">
-              {token} {used ? "●" : "○"}
-            </span>
+            <span className="mono-code leading-tight">{token}</span>
           </div>
         ))}
       </div>
@@ -663,8 +739,8 @@ export function ResponsiveSpecimen() {
               Minimum 44×44px for every interactive element on touch devices.
             </li>
             <li>
-              Buttons stand 56px tall; link pills 36px with full-width tap
-              padding.
+              Buttons stand 56px tall; LinkPill is the one known exception at
+              36px (below the 44px minimum).
             </li>
             <li>
               Icon-only controls (theme, scroll-to-top, menu) sit in a ≥44px hit
@@ -695,77 +771,6 @@ export function ResponsiveSpecimen() {
   );
 }
 
-// Reading-mode token overrides (globals.css :root[data-read="long"] / [data-theme="dark"][data-read="long"]).
-// Root-scoped, so shown as values not live swatches. Applies on /work/[slug]. Mirror globals.css.
-const READING_MODE_TOKENS: {
-  token: string;
-  light: string;
-  dark: string;
-}[] = [
-  { token: "--background", light: "#f8f8f9", dark: "#1a1a1a" },
-  { token: "--surface", light: "#f8f8f9", dark: "#1a1a1a" },
-  { token: "--surface-raised", light: "— (unchanged)", dark: "#292929" },
-  { token: "--surface-sunken", light: "— (unchanged)", dark: "#141414" },
-  { token: "--surface-nav", light: "#f8f8f9d9 (85%)", dark: "#1f1f1fd9 (85%)" },
-];
-
-export function ReadingModeColors() {
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Token</th>
-          <th>Light (reading)</th>
-          <th>Dark (reading)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {READING_MODE_TOKENS.map(({ token, light, dark }) => (
-          <tr key={token}>
-            <td className="font-mono text-[13px]">{token}</td>
-            <td className="font-mono text-[13px]">{light}</td>
-            <td className="font-mono text-[13px]">{dark}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-const ICON_SIZES: { size: string; context: string }[] = [
-  {
-    size: "20px",
-    context: "Standalone icon-only controls (footer social, scroll-to-top)",
-  },
-  { size: "18px", context: "Buttons; mobile-nav trigger & close" },
-  {
-    size: "16px",
-    context: "Nav items, LinkPill icons, project-card chevron",
-  },
-  { size: "12–14px", context: "Inline indicators (copy, external-link)" },
-];
-
-export function IconSizeTable() {
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Size</th>
-          <th>Context</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ICON_SIZES.map(({ size, context }) => (
-          <tr key={size}>
-            <td className="font-mono text-[13px] whitespace-nowrap">{size}</td>
-            <td>{context}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
 export function MotionTokenTable() {
   return (
     <table>
@@ -777,23 +782,23 @@ export function MotionTokenTable() {
       </thead>
       <tbody>
         <tr>
-          <td className="font-mono text-[13px]">--duration-fast</td>
+          <td className="mono-code">--duration-fast</td>
           <td>150ms</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--duration-base</td>
+          <td className="mono-code">--duration-base</td>
           <td>200ms</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--duration-slow</td>
+          <td className="mono-code">--duration-slow</td>
           <td>300ms</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--ease-standard</td>
+          <td className="mono-code">--ease-standard</td>
           <td>cubic-bezier(0.2, 0, 0, 1)</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--ease-emphasis</td>
+          <td className="mono-code">--ease-emphasis</td>
           <td>cubic-bezier(0.3, 0, 0, 1)</td>
         </tr>
       </tbody>
@@ -812,27 +817,27 @@ export function ZIndexTokenTable() {
       </thead>
       <tbody>
         <tr>
-          <td className="font-mono text-[13px]">--z-base</td>
+          <td className="mono-code">--z-base</td>
           <td>0</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--z-sticky-content</td>
+          <td className="mono-code">--z-sticky-content</td>
           <td>20</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--z-scroll-to-top</td>
+          <td className="mono-code">--z-scroll-to-top</td>
           <td>40</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--z-pill-nav</td>
+          <td className="mono-code">--z-pill-nav</td>
           <td>50</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--z-mobile-menu-overlay</td>
+          <td className="mono-code">--z-mobile-menu-overlay</td>
           <td>55</td>
         </tr>
         <tr>
-          <td className="font-mono text-[13px]">--z-mobile-menu-panel</td>
+          <td className="mono-code">--z-mobile-menu-panel</td>
           <td>60</td>
         </tr>
       </tbody>

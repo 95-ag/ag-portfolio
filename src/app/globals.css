@@ -203,13 +203,6 @@ body {
   display: none;
 }
 
-/* Dev-only design-system gallery: same JS-free theme swap for committed screenshot pairs
-   (background layers shown as static captures). Only the active theme's shot is displayed. */
-[data-theme="dark"] .ds-shot-light,
-[data-theme="light"] .ds-shot-dark {
-  display: none;
-}
-
 ::selection {
   background-color: var(--selection);
 }

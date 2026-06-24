@@ -31,12 +31,8 @@ export function GallerySection({
         <div className="prose-content [&_h2]:mb-0">
           <h2>{title}</h2>
         </div>
-        <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
-          → DESIGN.md → {mapsTo}
-        </span>
-        <div className="body-secondary text-[var(--on-background)]">
-          {intro}
-        </div>
+        <span className="mono-anchor">→ DESIGN.md → {mapsTo}</span>
+        <div className="body-primary text-[var(--on-background)]">{intro}</div>
       </div>
       <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
     </section>
@@ -64,22 +60,14 @@ export function Specimen({
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
     >
       <h3 className="heading-component">{name}</h3>
-      {source && (
-        <span className="font-mono text-[13px] text-[var(--on-surface-muted)]">
-          {source}
-        </span>
-      )}
+      {source && <span className="mono-code">{source}</span>}
       {description && (
         <span className="body-caption text-[var(--on-background)]">
           {description}
         </span>
       )}
       {children}
-      {spec && (
-        <div className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-          {spec}
-        </div>
-      )}
+      {spec && <div className="mono-anchor">{spec}</div>}
     </div>
   );
 }
@@ -104,11 +92,7 @@ export function Card({
       >
         {children}
       </div>
-      {label && (
-        <span className="font-mono text-[12px] text-[var(--on-surface-muted)]">
-          {label}
-        </span>
-      )}
+      {label && <span className="mono-code">{label}</span>}
     </div>
   );
 }
