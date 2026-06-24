@@ -565,7 +565,7 @@ body {
     color: var(--ink);
   }
 
-  /* Mid-tier overrides (769–1279) */
+  /* Tablet overrides (769–1279) */
   @media (max-width: 1279px) {
     .display-primary {
       font-size: 52px;
