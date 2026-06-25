@@ -31,8 +31,8 @@ import {
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
 
-// Rendered through the real MDX + Shiki pipeline (build-time, dual-theme) so the gallery shows true
-// highlighting, exactly as a content code fence does.
+// Rendered through the real MDX + Shiki pipeline (not hand-fed) so the highlighting matches a real
+// content code fence.
 const SAMPLE_CODE_MDX = `\`\`\`ts
 export function add(a: number, b: number) {
   return a + b;
@@ -359,27 +359,31 @@ export function ComponentsSections() {
             description="Build-time Shiki highlighting (dual-theme, vitesse) via the same MDX pipeline as content — the pre maps to CodeBlock."
             headingLevel={4}
           >
-            <MDXRemote
-              source={SAMPLE_CODE_MDX}
-              components={mdxComponents}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [
-                    [
-                      rehypeShiki,
-                      {
-                        themes: {
-                          light: "vitesse-light",
-                          dark: "vitesse-dark",
+            {/* Wrapped in prose-content: the Shiki dual-theme colouring CSS that maps the
+                emitted --shiki-light/dark vars to actual colours is scoped to .prose-content. */}
+            <div className="prose-content">
+              <MDXRemote
+                source={SAMPLE_CODE_MDX}
+                components={mdxComponents}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                    rehypePlugins: [
+                      [
+                        rehypeShiki,
+                        {
+                          themes: {
+                            light: "vitesse-light",
+                            dark: "vitesse-dark",
+                          },
+                          defaultColor: false,
                         },
-                        defaultColor: false,
-                      },
+                      ],
                     ],
-                  ],
-                },
-              }}
-            />
+                  },
+                }}
+              />
+            </div>
           </Specimen>
         </SpecimenGroup>
       </GallerySection>
