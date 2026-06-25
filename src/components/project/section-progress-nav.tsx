@@ -107,10 +107,14 @@ export function SectionProgressNav() {
 
   if (sections.length === 0) return null;
 
+  // Shown at 2xl only: below that the left gutter is too small and the rail would overflow into the content.
+  // The label max-width is fluid — a 140px floor that grows with the gutter (content is capped at 1200px, so
+  // the gutter is (100vw-1200)/2; reserve 56px for the left offset + padding + a breathing gap) so wide and
+  // ultrawide screens show full labels without truncation while the rail still clears the content column.
   return (
     <nav
       aria-label="Page sections"
-      className="group fixed left-6 top-1/2 hidden max-h-[60vh] -translate-y-1/2 xl:block"
+      className="group fixed left-6 top-1/2 hidden max-h-[60vh] -translate-y-1/2 2xl:block"
       style={{ zIndex: "var(--z-sticky-content)" }}
     >
       {thumb.show && (
@@ -139,7 +143,7 @@ export function SectionProgressNav() {
                   block: "start",
                 });
               }}
-              className="support-meta max-w-[140px] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="support-meta max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               style={{
                 color: isActive ? "var(--ink)" : "var(--ink-muted)",
                 fontWeight: isActive ? 600 : 400,

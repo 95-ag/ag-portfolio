@@ -182,10 +182,10 @@ export function DomainSections() {
           id="project-section-progress"
           name="SectionProgressNav"
           source="@/components/project/section-progress-nav"
-          description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. Live on this page; the rail at the left edge (xl+) tracks these sections."
+          description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. Live on this page; the rail at the left edge (2xl+) tracks these sections."
         >
           <p className="body-caption">
-            ← Live as the left-rail TOC on this page (xl+), tracking the
+            ← Live as the left-rail TOC on this page (2xl+), tracking the
             sections above.
           </p>
         </Specimen>
