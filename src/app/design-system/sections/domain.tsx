@@ -5,9 +5,11 @@ import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectCard } from "@/components/project/project-card";
 import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
+import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import type { Project } from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
+import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
 
 // Placeholder data so the domain components read as schema demos. The cover reuses a real slug, since
@@ -43,17 +45,18 @@ const demoProject: Project = {
   },
 };
 
-// Sample overlay data so HeroMetaOverlay renders (the demo project has no logos/contributors).
+// Dedicated logo/avatar samples (not the diagram/figure ones) — fixed colours, since logos sit on a
+// white badge and avatars are cover-cropped into a small circle.
 const demoLogos = [
-  { src: "/design-system/samples/figure.svg", alt: "Sample logo A" },
-  { src: "/design-system/samples/panel-a.svg", alt: "Sample logo B" },
+  { src: "/design-system/samples/logo-a.svg", alt: "Sample logo A" },
+  { src: "/design-system/samples/logo-b.svg", alt: "Sample logo B" },
 ];
 const demoContributors = [
-  { name: "Sample One", avatar: "/design-system/samples/diagram.svg" },
-  { name: "Sample Two", avatar: "/design-system/samples/panel-b.svg" },
+  { name: "Sample One", avatar: "/design-system/samples/avatar-a.svg" },
+  { name: "Sample Two", avatar: "/design-system/samples/avatar-b.svg" },
 ];
 
-// Page-bound [inline] sections are listed, not previewed. prose-content owns the list styling.
+// prose-content owns the list styling for these listed [inline] sections.
 function InlineList({ items }: { items: string[] }) {
   return (
     <div className="prose-content">
@@ -101,7 +104,6 @@ export function DomainSections() {
           source="@/components/project/project-card"
           description="Card link to a project page: hero cover, title, summary, up to three tags."
         >
-          {/* Natural card width, left-aligned (not centred, not full-bleed). */}
           <div className="max-w-[420px]">
             <ProjectCard project={demoProject} />
           </div>
@@ -182,12 +184,26 @@ export function DomainSections() {
           id="project-section-progress"
           name="SectionProgressNav"
           source="@/components/project/section-progress-nav"
-          description="Fixed left-rail TOC that scrapes an article's <h2>s via IntersectionObserver. Live on this page; the rail at the left edge (2xl+) tracks these sections."
+          description="Fixed left-rail table of contents of the article's section headings; highlights the active section as you scroll. Shown at 2xl+ where the gutter clears it. Previewed live below with a long sample list so it caps and scrolls — hover the rail to reveal the scroll indicator. The production rail also runs on this page at 2xl+."
         >
-          <p className="body-caption">
-            ← Live as the left-rail TOC on this page (2xl+), tracking the
-            sections above.
-          </p>
+          <ChromeFrame height={260} ariaHidden>
+            <SectionProgressNav
+              demoSections={[
+                { id: "ds-rail-overview", label: "Overview" },
+                { id: "ds-rail-background", label: "Background" },
+                { id: "ds-rail-approach", label: "Approach" },
+                { id: "ds-rail-architecture", label: "Architecture" },
+                { id: "ds-rail-data", label: "Data Pipeline" },
+                { id: "ds-rail-implementation", label: "Implementation" },
+                { id: "ds-rail-training", label: "Training" },
+                { id: "ds-rail-evaluation", label: "Evaluation" },
+                { id: "ds-rail-results", label: "Results" },
+                { id: "ds-rail-limitations", label: "Limitations" },
+                { id: "ds-rail-lessons", label: "Lessons" },
+                { id: "ds-rail-references", label: "References" },
+              ]}
+            />
+          </ChromeFrame>
         </Specimen>
 
         <Specimen
