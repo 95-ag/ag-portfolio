@@ -1,0 +1,212 @@
+@layer components {
+  /* ── Semantic typography tokens ── */
+
+  /* Display — page-title tier (home / about / work / 404) */
+  .display-primary {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 70px;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+
+  /* Display — project-title tier */
+  .display-title {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 64px;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+
+  /* Editorial display tier */
+  .heading-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 44px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  /* Headings */
+  .heading-section {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .heading-component {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .heading-narrative {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  /* Body — lead tier */
+  .body-lead {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 34px;
+    color: var(--ink);
+  }
+
+  /* Body */
+  .body-primary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--ink);
+  }
+  .body-secondary {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    color: var(--ink-muted);
+  }
+  .body-caption {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--ink-muted);
+  }
+  .body-emphasis {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+    color: var(--ink);
+  }
+  .callout-title {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--accent);
+  }
+
+  /* Interactive */
+  .interactive-label {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  .nav-link {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  /* Structural mono */
+  .mono-anchor {
+    font-family: var(--font-mono), monospace;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .tag-chip {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .insight-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .mono-code {
+    font-family: var(--font-mono), monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: var(--ink-muted);
+  }
+
+  /* Support / navigation meta */
+  .support-meta {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--ink-muted);
+  }
+
+  /* Tablet overrides (769–1279) */
+  @media (max-width: 1279px) {
+    .display-primary {
+      font-size: 52px;
+      line-height: 58px;
+    }
+    .display-title {
+      font-size: 46px;
+      line-height: 54px;
+    }
+    .heading-display {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .heading-section {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .body-lead {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  /* Mobile overrides (≤768) */
+  @media (max-width: 768px) {
+    .display-primary {
+      font-size: 40px;
+      line-height: 48px;
+    }
+    .display-title {
+      font-size: 36px;
+      line-height: 44px;
+    }
+    .heading-display {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    .heading-section {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .body-lead {
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+}

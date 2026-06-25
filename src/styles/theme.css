@@ -1,0 +1,140 @@
+/* ─────────────────────────────────────────────
+   Theme tokens — DESIGN.md → Foundations → Colors
+   ───────────────────────────────────────────── */
+
+/* :root = light (default); [data-theme="dark"] overrides; [data-read="long"] softens the ground. */
+:root {
+  /* Surfaces */
+  --surface: #fcfcfc;
+  --surface-elevated: #ededed;
+  --surface-deep: #ffffff;
+  --surface-floating: #fcfcfcd9;
+  --surface-active: #e8f3ec;
+  --surface-tag: #dadce0;
+
+  /* Text */
+  --ink: #2d2d2d;
+  --ink-muted: #66696f;
+  --ink-deep: #ffffff;
+
+  /* Borders */
+  --hairline-strong: #8b9197;
+  --hairline: #e2e3e5;
+
+  /* Accent */
+  --accent: #006e37;
+  --accent-tint: #e8f3ec;
+
+  /* State */
+  --focus-ring: #006e37;
+  --text-selection: #006e3733;
+
+  /* Meteor shader particle colors — raw RGB triples the WebGL shader reads live */
+  --meteor-accent-rgb: 0 110 55;
+  --meteor-secondary-rgb: 48 89 179;
+}
+
+:root[data-read="long"] {
+  --surface: #f8f8f9;
+  --surface-floating: #f8f8f9d9;
+}
+
+[data-theme="dark"] {
+  /* Surfaces */
+  --surface: #0e0e0e;
+  --surface-elevated: #1c1c1c;
+  --surface-deep: #080808;
+  --surface-floating: #141414d9;
+  --surface-active: #16271b;
+  --surface-tag: #2a2a2a;
+
+  /* Text */
+  --ink: #e2e2e2;
+  --ink-muted: #a1a1aa;
+  --ink-deep: #000000;
+
+  /* Borders */
+  --hairline-strong: #8a8a8a;
+  --hairline: #333333;
+
+  /* Accent */
+  --accent: #2aa566;
+  --accent-tint: #16271b;
+
+  /* State */
+  --focus-ring: #2aa566;
+  --text-selection: #2aa56633;
+
+  /* Meteor shader particle colors */
+  --meteor-accent-rgb: 42 165 102;
+  --meteor-secondary-rgb: 89 140 217;
+}
+
+[data-theme="dark"][data-read="long"] {
+  --surface: #1a1a1a;
+  --surface-elevated: #292929;
+  --surface-deep: #141414;
+  --surface-floating: #1f1f1fd9;
+}
+
+/* ─────────────────────────────────────────────
+   Tailwind v4 @theme
+   Exposes CSS vars as Tailwind utility tokens
+   ───────────────────────────────────────────── */
+
+@theme inline {
+  /* Colors */
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-deep: var(--surface-deep);
+  --color-surface-floating: var(--surface-floating);
+  --color-surface-active: var(--surface-active);
+  --color-surface-tag: var(--surface-tag);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-deep: var(--ink-deep);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-hairline: var(--hairline);
+  --color-accent: var(--accent);
+  --color-accent-tint: var(--accent-tint);
+
+  /* Fonts */
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+  --spacing-5xl: 128px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 64px;
+
+  /* Radius */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 9999px;
+
+  /* Z-index */
+  --z-base: 0;
+  --z-sticky-content: 20;
+  --z-scroll-to-top: 40;
+  --z-pill-nav: 50;
+  --z-mobile-menu-overlay: 55;
+  --z-mobile-menu-panel: 60;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
+}
