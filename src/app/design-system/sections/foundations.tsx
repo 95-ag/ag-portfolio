@@ -45,7 +45,7 @@ import {
   type TypeToken,
 } from "../visualizer-kit";
 
-// Token data mirrors src/styles/theme.css + typography.css (the single source of truth).
+// Token data mirrors src/styles/theme.css + typography.css — keep in sync.
 
 const COLOR_GROUPS: SwatchGroup[] = [
   {
@@ -189,8 +189,8 @@ const COLOR_GROUPS: SwatchGroup[] = [
   },
 ];
 
-// Each sample states the token's own role in that token's real style. Responsive steps mirror the
-// typography.css media overrides (tablet = 769–1279px, mobile = ≤768px); only display/heading/lead resize.
+// Responsive steps mirror the typography.css media overrides (tablet = 769–1279px, mobile = ≤768px);
+// only display/heading/lead resize.
 const TYPE_TOKENS: TypeToken[] = [
   {
     token: "display-primary",
@@ -365,7 +365,7 @@ const SPACING_TOKENS: BarItem[] = [
   { token: "5xl", px: 128 },
 ];
 
-// Layout-specific spacing tokens (page gutter + responsive page margins), separate from the geometric scale.
+// Layout-specific spacing (gutter + responsive page margins) — not part of the geometric xs–5xl scale.
 const LAYOUT_SPACING_TOKENS: BarItem[] = [
   { token: "gutter", px: 24 },
   { token: "margin-mobile", px: 16 },
@@ -498,7 +498,7 @@ const ICON_SIZES = [
   },
 ];
 
-// System icon size for the catalog grids: the largest contextual size in the scale.
+// Largest size in the scale; used for the catalog grids (icons not in a button/nav context).
 const ICON_GRID_SIZE = 20;
 
 const GRID_CELLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

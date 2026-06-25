@@ -1,7 +1,6 @@
 export type LayerItem = { token: string; value: string; role: string };
 
-// Elevation Levels 0–3 (DESIGN.md). Each plane steps up one level from back to front, so the cascade
-// dogfoods the depth scale while showing z order. Level 4 (sunken inset) is excluded — it reads as a
+// Elevation Levels 0–3 (DESIGN.md), back to front. Level 4 (sunken inset) is excluded — it reads as a
 // recessed well, not a raised layer. Level 2 carries the sanctioned backdrop-blur.
 const DEPTH_CLASS = [
   "bg-[var(--surface)]",

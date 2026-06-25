@@ -12,8 +12,8 @@ import { createPortal } from "react-dom";
 const SUPPRESSED_MESSAGE =
   "Interactions are disabled in the design-system preview.";
 
-// A brief tooltip at the pointer whenever a guard cancels a click, so the demo's inertness is explained
-// rather than silent. Portaled to <body> so a ChromeFrame's transform containing-block can't trap it.
+// Tooltip at the pointer when a guard cancels a click. Portaled to <body> so a ChromeFrame's
+// transform containing-block can't trap it.
 function useSuppressionTip() {
   const [tip, setTip] = useState<{ x: number; y: number } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);

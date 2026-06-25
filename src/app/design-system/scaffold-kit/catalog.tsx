@@ -26,7 +26,7 @@ export function GallerySection({
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-2xl)]"
     >
       <div className="flex flex-col gap-[var(--spacing-md)]">
-        {/* [&_h2]:mb-0 hands rhythm to the section's flex gap; the rail assigns the h2 id. */}
+        {/* [&_h2]:mb-0 — spacing comes from the flex gap; the rail assigns the h2 id. */}
         <div className="prose-content [&_h2]:mb-0">
           <h2>{title}</h2>
         </div>
@@ -39,8 +39,7 @@ export function GallerySection({
   );
 }
 
-/** A named sub-group inside a section: an h3 eyebrow above its specimens, which render at h4.
- *  Mirrors a DESIGN.md `####` sub-group. */
+/** Mirrors a DESIGN.md `####` sub-group: an h3 eyebrow; its specimens render at h4. */
 export function SpecimenGroup({
   title,
   children,
@@ -89,7 +88,7 @@ export function Specimen({
   );
 }
 
-/** Bordered cell matching the ProjectCard treatment (sharp corners, hairline border). */
+/** Bordered cell matching the ProjectCard treatment. */
 export function Card({
   children,
   label,

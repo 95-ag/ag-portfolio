@@ -12,8 +12,7 @@ import { DomainSections } from "./sections/domain";
 import { FoundationsSections } from "./sections/foundations";
 import { TechnicalSections } from "./sections/technical";
 
-// Dev-only component gallery, pruned from the production snapshot. Each <h2> maps to one DESIGN.md
-// sub-section; the rail scrapes those h2s.
+// Each <h2> maps to one DESIGN.md sub-section; the SectionProgressNav rail scrapes those h2s.
 export const metadata: Metadata = {
   title: "Design System",
   robots: { index: false, follow: false },

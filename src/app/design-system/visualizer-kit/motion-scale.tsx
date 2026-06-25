@@ -1,7 +1,7 @@
 export type DurationToken = { token: string; ms: number };
 
-// Each bar is a full 0 → max track (so lengths are comparable) with the duration anchored at the fill
-// tip and 0 at the start; the slowest token fills the track, marking the max.
+// Each bar is a full 0 → max track (so lengths are comparable); the duration sits at the fill tip and
+// the slowest token fills the track (the scale max).
 export function DurationScale({
   items,
   maxBarPx = 280,
@@ -57,8 +57,8 @@ export type EasingToken = {
   curve: [number, number, number, number];
 };
 
-// Easing plotted on a unit square (x = time, y = value): the curve's slope encodes acceleration,
-// dashed diagonal is the linear reference, hairline handles mark the control points.
+// Easing on a unit square (x = time, y = value): dashed diagonal is the linear reference, hairline
+// handles mark the control points.
 function EasingPlot({
   token,
   curve,

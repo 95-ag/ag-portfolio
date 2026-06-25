@@ -43,8 +43,8 @@ const ZONES: SpanZone[] = [
   },
 ];
 
-// Fixed canonical breakpoint ruler (Tailwind v4 defaults). Aspect ratios mirror real viewports; `used`
-// flags the breakpoints this project actually uses (a deeper sunken box vs a raised one).
+// Tailwind v4 canonical breakpoints. Aspect ratios approximate real viewports; `used` flags the
+// breakpoints this project actually activates (deeper sunken box vs raised).
 const ZONE_BARS: RulerStop[] = [
   { px: "0", device: "Mobile", token: "base", used: true, boxW: 64, boxH: 128 },
   {

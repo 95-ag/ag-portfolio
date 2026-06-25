@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 const FRAME =
   "w-fit max-w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]";
 
-// Theme-swapped static screenshot pair for full-viewport background layers that can't render live
-// (the WebGL meteor hangs on software WebGL). .ds-shot-* reveals only the active theme.
+// Theme-swapped static screenshot pair for full-viewport background layers that can't render live in
+// the gallery. .ds-shot-* reveals only the active theme.
 export function ThemeShot({
   light,
   dark,
@@ -35,8 +35,8 @@ export function ThemeShot({
   );
 }
 
-// Theme-swapped looping clip. Loads only the ACTIVE theme's clip, never both, so one tiny video loads.
-// Falls back to the still poster before hydration and under prefers-reduced-motion.
+// Theme-swapped looping clip; loads only the ACTIVE theme's clip, never both. Falls back to the still
+// poster before hydration and under prefers-reduced-motion.
 export function ThemeVideo({
   lightVideo,
   darkVideo,

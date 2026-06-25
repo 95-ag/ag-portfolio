@@ -15,7 +15,6 @@ export type SwatchToken = {
 export type SwatchGroup = {
   label: string;
   tokens: SwatchToken[];
-  /** Optional caption rendered under the group label. */
   note?: ReactNode;
   /** Wraps the grid to re-scope tokens (e.g. a reading-mode override class). */
   scopeClassName?: string;
