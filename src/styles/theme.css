@@ -15,7 +15,7 @@
   /* Text */
   --ink: #2d2d2d;
   --ink-muted: #66696f;
-  --ink-deep: #ffffff;
+  --ink-on-accent: #ffffff;
 
   /* Borders */
   --hairline-strong: #8b9197;
@@ -51,7 +51,7 @@
   /* Text */
   --ink: #e2e2e2;
   --ink-muted: #a1a1aa;
-  --ink-deep: #000000;
+  --ink-on-accent: #000000;
 
   /* Borders */
   --hairline-strong: #8a8a8a;
@@ -92,7 +92,7 @@
   --color-surface-tag: var(--surface-tag);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
-  --color-ink-deep: var(--ink-deep);
+  --color-ink-on-accent: var(--ink-on-accent);
   --color-hairline-strong: var(--hairline-strong);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
