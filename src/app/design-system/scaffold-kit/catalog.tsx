@@ -1,15 +1,12 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-// Dev-only gallery scaffolding. The section h2 sits in a scoped .prose-content div to reuse the
-// project-page heading style (SectionProgressNav scrapes the h2s); captions use <div>/<span> so
-// prose-content doesn't restyle them. Ids stay stable so a blog post can deep-link a component.
-
 export function GallerySection({
   id,
   title,
   intro,
   mapsTo,
+  source,
   children,
 }: {
   id: string;
@@ -17,25 +14,45 @@ export function GallerySection({
   intro: string;
   /** Which DESIGN.md section this maps to, e.g. "Foundations → Colors". */
   mapsTo: string;
+  /** Optional source path/selector, shown when the section is a single specimen with no inner Specimen. */
+  source?: string;
   children: ReactNode;
 }) {
   return (
+    // Namespaced id (ds-*) so it never collides with the text-derived h2 id SectionProgressNav assigns.
+    // No aria-label: the visible h2 carries the section's accessible structure (avoids a redundant region landmark).
     <section
-      id={id}
-      aria-label={title}
+      id={`ds-${id}`}
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-2xl)]"
     >
-      {/* The h2's prose margin-bottom is zeroed ([&_h2]:mb-0) so the section's flex gap governs the
-          rhythm instead. SectionProgressNav assigns the h2 id. */}
       <div className="flex flex-col gap-[var(--spacing-md)]">
+        {/* [&_h2]:mb-0 hands rhythm to the section's flex gap; the rail assigns the h2 id. */}
         <div className="prose-content [&_h2]:mb-0">
           <h2>{title}</h2>
         </div>
         <span className="mono-anchor">→ DESIGN.md → {mapsTo}</span>
-        <div className="body-primary text-[var(--ink)]">{intro}</div>
+        {source && <span className="mono-code">{source}</span>}
+        <div className="body-primary">{intro}</div>
       </div>
       <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
     </section>
+  );
+}
+
+/** A named sub-group inside a section: an h3 eyebrow above its specimens, which render at h4.
+ *  Mirrors a DESIGN.md `####` sub-group. */
+export function SpecimenGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-[var(--spacing-xl)]">
+      <h3 className="mono-anchor">{title}</h3>
+      <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
+    </div>
   );
 }
 
@@ -45,6 +62,7 @@ export function Specimen({
   source,
   spec,
   description,
+  headingLevel = 3,
   children,
 }: {
   id: string;
@@ -52,18 +70,19 @@ export function Specimen({
   source?: string;
   spec?: string;
   description?: string;
+  /** 3 at section level, 4 when nested in a SpecimenGroup. */
+  headingLevel?: 3 | 4;
   children: ReactNode;
 }) {
+  const Heading = headingLevel === 4 ? "h4" : "h3";
   return (
     <div
       id={id}
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
     >
-      <h3 className="heading-component">{name}</h3>
+      <Heading className="heading-component">{name}</Heading>
       {source && <span className="mono-code">{source}</span>}
-      {description && (
-        <span className="body-caption text-[var(--ink)]">{description}</span>
-      )}
+      {description && <span className="body-primary">{description}</span>}
       {children}
       {spec && <div className="mono-anchor">{spec}</div>}
     </div>
@@ -84,7 +103,7 @@ export function Card({
     <div className="flex flex-col gap-[var(--spacing-xs)]">
       <div
         className={cn(
-          "flex min-h-[64px] items-center justify-center border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-lg)]",
+          "flex min-h-[var(--spacing-3xl)] items-center justify-center border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-lg)]",
           className,
         )}
       >

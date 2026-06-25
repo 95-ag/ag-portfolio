@@ -8,14 +8,18 @@ export function ChromeFrame({
   height,
   width,
   className,
+  ariaHidden,
 }: {
   children: ReactNode;
   height?: number;
   width?: number;
   className?: string;
+  /** Hide the framed chrome from assistive tech when it duplicates a live landmark on the page. */
+  ariaHidden?: boolean;
 }) {
   return (
     <div
+      aria-hidden={ariaHidden}
       className={cn(
         "relative overflow-hidden border border-[var(--hairline)] bg-[var(--surface)]",
         className,
