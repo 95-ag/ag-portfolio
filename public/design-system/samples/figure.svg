@@ -1,7 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="Neutral sample figure">
-  <rect width="320" height="180" fill="#f1f1f1"/>
-  <circle cx="232" cy="64" r="46" fill="#dcdcdc"/>
-  <path d="M0 150 L70 104 L120 132 L188 78 L256 116 L320 70 L320 180 L0 180 Z" fill="#cfcfcf"/>
-  <path d="M0 162 L84 128 L150 150 L226 110 L300 140 L320 128 L320 180 L0 180 Z" fill="#2aa566" opacity="0.5"/>
-  <rect x="0.5" y="0.5" width="319" height="179" fill="none" stroke="#bdbdbd"/>
+<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neutral sample figure">
+  <style>
+    .bg { fill: #eef0f1; }
+    .sun { fill: #cfd5d6; }
+    .hill { fill: #dfe3e4; }
+    .area { fill: #006e37; opacity: 0.35; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #161616; }
+      .sun { fill: #2f3438; }
+      .hill { fill: #23262a; }
+      .area { fill: #2aa566; opacity: 0.4; }
+    }
+  </style>
+  <rect class="bg" width="320" height="180"/>
+  <circle class="sun" cx="232" cy="60" r="42"/>
+  <path class="hill" d="M0 150 L70 104 L120 132 L188 78 L256 116 L320 70 L320 180 L0 180 Z"/>
+  <path class="area" d="M0 162 L84 128 L150 150 L226 110 L300 140 L320 128 L320 180 L0 180 Z"/>
 </svg>
