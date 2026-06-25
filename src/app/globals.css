@@ -31,8 +31,9 @@
   --focus-ring: #006e37;
   --text-selection: #006e3733;
 
-  /* Accent RGB triple — WebGL meteor shader uniform */
-  --accent-rgb: 0 110 55;
+  /* Meteor shader particle colors — raw RGB triples the WebGL shader reads live */
+  --meteor-accent-rgb: 0 110 55;
+  --meteor-secondary-rgb: 48 89 179;
 }
 
 :root[data-read="long"] {
@@ -66,8 +67,9 @@
   --focus-ring: #2aa566;
   --text-selection: #2aa56633;
 
-  /* Accent RGB triple — WebGL meteor shader uniform */
-  --accent-rgb: 42 165 102;
+  /* Meteor shader particle colors */
+  --meteor-accent-rgb: 42 165 102;
+  --meteor-secondary-rgb: 89 140 217;
 }
 
 [data-theme="dark"][data-read="long"] {
