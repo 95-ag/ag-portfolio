@@ -29,7 +29,8 @@ export function HeroMedia({
     return <CoverComponent />;
   }
 
-  // No live cover → a heroImage is guaranteed by the content loader's hero check.
+  // No live cover → render the heroImage; if absent (allowed in dev), render nothing.
+  // The production release gate (getAllProjects, VERCEL_ENV=production) blocks shipping heroless.
   if (!src) return null;
 
   if (isVideo(src)) {

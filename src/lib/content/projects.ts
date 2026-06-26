@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { coverComponents } from "@/components/project/covers";
 import {
   type ProjectFrontmatter,
   ProjectFrontmatterSchema,
@@ -57,6 +58,25 @@ export function getAllProjects(): Project[] {
           `relatedProjects in "${project.slug}" references unknown slug: "${related}"`,
         );
       }
+    }
+  }
+
+  // Production release gate: a published project must have a hero — a registered live
+  // cover OR a heroImage. Dev/preview builds stay permissive (the hero may be empty until
+  // the cover stage); only the live production build (VERCEL_ENV=production) fails, so a
+  // heroless project can never reach production.
+  if (process.env.VERCEL_ENV === "production") {
+    const heroless = projects.filter(
+      (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
+    );
+    if (heroless.length > 0) {
+      throw new Error(
+        `Production release: project(s) have no hero (no live cover and no heroImage): ${heroless
+          .map((p) => p.slug)
+          .join(
+            ", ",
+          )}. Add a heroImage or register a live cover before releasing.`,
+      );
     }
   }
 

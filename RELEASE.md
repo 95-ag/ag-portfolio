@@ -75,7 +75,7 @@ git push
 
 A production snapshot must contain every `next build` input. Before pushing:
 
-1. **Build the snapshot:** `npm ci && npm run build` from the production worktree — must succeed (static routes generate).
+1. **Build the snapshot:** `npm ci && VERCEL_ENV=production npm run build` from the production worktree — must succeed (static routes generate). `VERCEL_ENV=production` runs the **hero gate**: a project with neither a registered live cover nor a `heroImage` fails the build here by design (matching the live Vercel production build), so nothing heroless can ship.
 2. **Prove zero leakage:** confirm none of the stripped paths slipped in:
 
    ```bash

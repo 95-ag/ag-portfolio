@@ -49,8 +49,9 @@ export const ProjectFrontmatterSchema = z
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     order: z.number(),
     // Hero is satisfied by EITHER a registered live cover component (preferred) OR a
-    // static heroImage (image or video). heroImage is optional here; the content loader
-    // fails the build if a project has neither a live cover nor a heroImage.
+    // static heroImage (image or video). Optional: heroless builds pass in dev/preview
+    // (empty hero until the cover stage); the production build (VERCEL_ENV=production)
+    // fails if a project has neither a live cover nor a heroImage — see getAllProjects.
     heroImage: z.string().startsWith("/").optional(),
     heroAlt: z.string().min(1),
     heroPoster: z.string().startsWith("/").optional(),
