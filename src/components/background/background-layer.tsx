@@ -12,9 +12,12 @@ const MeteorShower = dynamic(
   { ssr: false, loading: () => null },
 );
 
-// Project detail pages — dense reading. The WebGL meteor layer is suppressed
-// here, and the ASCII field is dropped entirely on mobile (see AsciiField).
-const PROJECT_DETAIL_PATTERN = /^\/work\/.+/;
+// Dense-reading pages — the WebGL meteor layer is suppressed and the ASCII field uses the
+// quiet, gutter-masked treatment (dropped entirely on mobile, see AsciiField). Covers project
+// detail pages AND the dev-only /design-system gallery, which previews components against the
+// work-page backdrop. The /design-system route is pruned from production, so that branch is
+// inert there.
+const READING_PAGE_PATTERN = /^\/(work\/.+|design-system)$/;
 
 // Mobile/desktop divider — matches AsciiField's MIN_WIDTH. The meteor must honor
 // the same floor (and re-check on resize) so a hover-capable laptop dragged below
@@ -72,14 +75,14 @@ function isMeteorCapable(): boolean {
 
 export function BackgroundLayer() {
   const pathname = usePathname();
-  const isProjectDetail = PROJECT_DETAIL_PATTERN.test(pathname);
+  const isReadingPage = READING_PAGE_PATTERN.test(pathname);
   const [mountMeteor, setMountMeteor] = useState(false);
 
   useEffect(() => {
     let t: number | undefined;
     const evaluate = () => {
       setMountMeteor(
-        !isProjectDetail &&
+        !isReadingPage &&
           window.innerWidth >= MOBILE_BREAKPOINT &&
           isMeteorCapable(),
       );
@@ -94,7 +97,7 @@ export function BackgroundLayer() {
       window.removeEventListener("resize", onResize);
       if (t) window.clearTimeout(t);
     };
-  }, [isProjectDetail]);
+  }, [isReadingPage]);
 
   return (
     <div
@@ -108,7 +111,7 @@ export function BackgroundLayer() {
         isolation: "isolate",
       }}
     >
-      <AsciiField isProjectDetail={isProjectDetail} />
+      <AsciiField isProjectDetail={isReadingPage} />
       {mountMeteor && <MeteorShower opacity={0.42} />}
     </div>
   );

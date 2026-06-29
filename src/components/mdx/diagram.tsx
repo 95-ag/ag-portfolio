@@ -34,7 +34,7 @@ export function Diagram({
         className,
       )}
     >
-      <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)]">
+      <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
         <div style={{ aspectRatio: aspect }} className="relative w-full">
           <Image
             src={src}

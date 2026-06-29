@@ -1,0 +1,5 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sample logo A">
+  <!-- Fixed colours: the overlay renders logos on a forced-white badge, so theming would hide the mark. -->
+  <rect x="4" y="4" width="24" height="24" rx="6" fill="#006e37"/>
+  <path d="M13 11 L22 16 L13 21 Z" fill="#ffffff"/>
+</svg>

@@ -42,6 +42,13 @@ git rm -rf --quiet . >/dev/null
 echo "Staging allowlisted paths from main..."
 git checkout main -- "${ALLOWLIST[@]}"
 
+# Prune dev-only paths that ship inside allowlisted dirs (src/, public/) but must
+# not reach production. The design-system component gallery (/design-system) and its
+# screenshot assets are a local reference only; drop them from both the index and the
+# worktree so the snapshot never includes them. Promote by deleting these lines when
+# the route is intentionally made public.
+git rm -rf --quiet src/app/design-system public/design-system >/dev/null
+
 echo
 echo "Staged snapshot (production = curated main):"
 git status --short

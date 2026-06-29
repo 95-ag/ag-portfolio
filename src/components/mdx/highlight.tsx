@@ -5,13 +5,13 @@ interface HighlightProps {
 
 export function Highlight({ heading, children }: HighlightProps) {
   return (
-    <figure className="highlight-panel my-[var(--spacing-2xl)] rounded-[var(--radius-md)] border border-[var(--outline-variant)] bg-[var(--surface-raised)] px-[var(--spacing-2xl)] py-[var(--spacing-xl)]">
+    <figure className="highlight-panel my-[var(--spacing-2xl)] rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-2xl)] py-[var(--spacing-xl)]">
       {heading && (
         <figcaption className="insight-label mb-[var(--spacing-lg)]">
           {heading}
         </figcaption>
       )}
-      <div className="body-emphasis text-[var(--on-surface)] leading-relaxed">
+      <div className="body-emphasis text-[var(--ink)] leading-relaxed">
         {children}
       </div>
     </figure>

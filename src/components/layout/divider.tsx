@@ -13,7 +13,7 @@ export function Divider({
     <div
       aria-hidden="true"
       className={cn(
-        "bg-[var(--outline-variant)]",
+        "bg-[var(--hairline)]",
         orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
         className,
       )}

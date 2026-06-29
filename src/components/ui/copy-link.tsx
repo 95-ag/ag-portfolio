@@ -23,7 +23,7 @@ export function CopyLink({ value, className }: CopyLinkProps) {
       type="button"
       onClick={handleCopy}
       className={cn(
-        "body-caption cursor-pointer text-left text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)]",
+        "body-caption cursor-pointer text-left text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)]",
         copied ? "no-underline" : "underline underline-offset-2",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
         className,

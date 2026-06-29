@@ -20,12 +20,12 @@ export function LinkPill({
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] bg-[var(--surface-raised)] px-[var(--spacing-md)] interactive-label text-[var(--on-surface)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)] active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+      className="group inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)] active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
     >
       {icon}
       {children}
       {external && (
-        <span className="text-[var(--on-surface-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)] motion-reduce:group-hover:translate-x-0">
+        <span className="text-[var(--ink-muted)] transition-all duration-[var(--duration-fast)] group-hover:translate-x-[2px] group-hover:text-[var(--accent)] motion-reduce:group-hover:translate-x-0">
           <OpenInNewIcon size={12} />
         </span>
       )}

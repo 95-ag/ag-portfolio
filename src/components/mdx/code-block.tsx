@@ -10,7 +10,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
     <pre
       {...props}
       className={cn(
-        "mono-code my-[var(--spacing-2xl)] overflow-x-auto border border-[var(--outline-variant)] px-[var(--spacing-xl)] py-[var(--spacing-md)]",
+        "mono-code my-[var(--spacing-2xl)] overflow-x-auto border border-[var(--hairline)] px-[var(--spacing-xl)] py-[var(--spacing-md)]",
         className,
       )}
     >

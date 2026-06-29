@@ -1,0 +1,6 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sample avatar Two">
+  <!-- Fixed colours: avatar imagery is cover-cropped into a small circle, not themed. -->
+  <rect width="48" height="48" fill="#73808f"/>
+  <circle cx="24" cy="18" r="9" fill="#ffffff"/>
+  <path d="M10 46 Q10 30 24 30 Q38 30 38 46 Z" fill="#ffffff"/>
+</svg>

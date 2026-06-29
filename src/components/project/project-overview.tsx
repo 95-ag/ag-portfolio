@@ -11,7 +11,7 @@ function BulletList({ items }: { items: string[] }) {
         <li key={item}>
           <span
             aria-hidden="true"
-            className="mt-[10px] h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--outline-variant)]"
+            className="mt-[10px] h-[5px] w-[5px] shrink-0 rounded-full bg-[var(--hairline)]"
           />
           <span>{item}</span>
         </li>
