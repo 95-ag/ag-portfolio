@@ -82,8 +82,11 @@ export function BackgroundSection() {
         <div className="prose-content">
           <ul>
             <li>
-              BackgroundLayer: mounts the subsystem behind page content and
-              gates the meteor by device capability and route.
+              BackgroundLayer: mounts the subsystem behind page content. Meteor
+              excluded under reduced-motion, below the 768px breakpoint, on
+              low-CPU / small touch devices, and on project-detail routes; the
+              ASCII field is masked to the gutters on desktop, sparser
+              full-bleed on mobile, and omitted on project-detail pages.
             </li>
             <li>
               SurfaceContext: communicates the active surface tone so the

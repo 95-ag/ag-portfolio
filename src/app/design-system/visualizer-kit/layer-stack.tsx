@@ -1,25 +1,21 @@
 export type LayerItem = { token: string; value: string; role: string };
 
-// Elevation Levels 0–3 (DESIGN.md), back to front. Level 4 (sunken inset) is excluded — it reads as a
-// recessed well, not a raised layer. Level 2 carries the sanctioned backdrop-blur.
-const DEPTH_CLASS = [
-  "bg-[var(--surface)]",
-  "bg-[var(--surface)] border border-[var(--hairline)]",
-  "bg-[var(--surface-floating)] border border-[var(--hairline)] [backdrop-filter:blur(12px)]",
-  "bg-[var(--surface-elevated)] border border-[var(--hairline)]",
-];
+// Fill maps to the z-index sign, not order: negative = sunken, 0 = flat, positive = raised.
+function depthClass(value: string) {
+  const z = Number(value);
+  if (z < 0) return "bg-[var(--surface-deep)] border border-[var(--hairline)]";
+  if (z === 0) return "bg-[var(--surface)]";
+  return "bg-[var(--surface-elevated)] border border-[var(--hairline)]";
+}
 
-// Diagonal stacking diagram (after the MDN z-index illustration): each plane is offset down-right from
-// the layer below it, overlapping so the cascade reads as depth. Lowest z sits at the back (top-left),
-// highest at the front (bottom-right); each plane's label stays in its exposed top band. Planes span the
-// full width (minus the cumulative offset) so labels have room; a min-width keeps them legible while the
-// container scrolls horizontally on narrow viewports.
+// Diagonal cascade (after the MDN z-index illustration): each plane is offset down-right over the one
+// below, lowest z at the back. Overlap (planeHeight − dy) reads as depth; dy ≈ the 3-line label band so
+// each plane's label clears the next.
 export function LayerStack({ items }: { items: LayerItem[] }) {
   const ordered = [...items].sort((a, b) => Number(a.value) - Number(b.value));
   const count = ordered.length;
   const dx = 44;
-  // dy must clear the 3-line label band so each layer's label stays readable above the next plane.
-  const dy = 88;
+  const dy = 104;
   const planeHeight = 150;
   return (
     <div className="overflow-x-auto pb-[var(--spacing-xs)]">
@@ -30,15 +26,16 @@ export function LayerStack({ items }: { items: LayerItem[] }) {
         {ordered.map((item, i) => (
           <div
             key={item.token}
-            className={`absolute flex flex-col gap-[var(--spacing-xs)] overflow-hidden rounded-[var(--radius-none)] p-[var(--spacing-md)] ${DEPTH_CLASS[Math.min(i, 3)]}`}
+            className={`absolute flex flex-col gap-[var(--spacing-xs)] overflow-hidden rounded-[var(--radius-none)] p-[var(--spacing-md)] ${depthClass(item.value)}`}
             style={{
               top: i * dy,
               left: i * dx,
               width: `calc(100% - ${(count - 1) * dx}px)`,
+              minHeight: planeHeight,
               zIndex: i,
             }}
           >
-            <span className="body-caption">{item.role}</span>
+            <span className="body-primary">{item.role}</span>
             <span className="mono-code">{item.token}</span>
             <span className="mono-anchor">{item.value}</span>
           </div>

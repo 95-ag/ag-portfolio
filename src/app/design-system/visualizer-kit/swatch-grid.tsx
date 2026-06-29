@@ -41,7 +41,7 @@ function ColorCard({
         className="h-20 w-full border-b border-[var(--hairline)]"
         style={{ background: swatchValue ?? `var(${token})` }}
       />
-      <div className="flex flex-col gap-[var(--spacing-xs)] p-[var(--spacing-sm)]">
+      <div className="flex flex-1 flex-col gap-[var(--spacing-xs)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
         <span className="body-emphasis">{name}</span>
         <span className="mono-code">{token}</span>
         <span className="body-caption">{usage}</span>

@@ -145,6 +145,7 @@ export function ComponentsSections() {
             id="ui-button"
             name="Button"
             source="@/components/ui/button"
+            description="Primary action and link control; used for CTAs and actions across the site."
             headingLevel={4}
           >
             <InertDemo>
@@ -192,6 +193,7 @@ export function ComponentsSections() {
             id="ui-link-pill"
             name="LinkPill"
             source="@/components/ui/link-pill"
+            description="Compact pill link with a leading icon; used for external and social links."
             headingLevel={4}
           >
             <div className="flex flex-wrap gap-[var(--spacing-sm)]">
@@ -212,6 +214,7 @@ export function ComponentsSections() {
             id="ui-copy-link"
             name="CopyLink"
             source="@/components/ui/copy-link"
+            description="Inline value with a copy-to-clipboard affordance; used for the contact email."
             headingLevel={4}
           >
             <CopyLink value="hello@example.com" />
@@ -243,6 +246,7 @@ export function ComponentsSections() {
             id="ui-tag"
             name="Tag"
             source="@/components/ui/tag"
+            description="Mono uppercase metadata chip; labels stack and topic tags on cards and project pages."
             spec="mono uppercase chip · surface-tag · radius-sm"
             headingLevel={4}
           >
@@ -257,6 +261,7 @@ export function ComponentsSections() {
             id="ui-copyable-code"
             name="CopyableCode"
             source="@/components/ui/copyable-code"
+            description="Inline code with a copy button; used for shell and install commands."
             headingLevel={4}
           >
             <CopyableCode
@@ -278,6 +283,7 @@ export function ComponentsSections() {
             id="mdx-callout"
             name="Callout"
             source="@/components/mdx/callout"
+            description="Accent-bordered aside for notes inside MDX deep-dives."
             headingLevel={4}
           >
             <Callout title="Note">
@@ -289,6 +295,7 @@ export function ComponentsSections() {
             id="mdx-highlight"
             name="Highlight"
             source="@/components/mdx/highlight"
+            description="Editorial pull-quote panel for a key insight inside MDX content."
             headingLevel={4}
           >
             <Highlight heading="Key insight">

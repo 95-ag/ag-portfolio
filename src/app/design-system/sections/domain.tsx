@@ -113,6 +113,7 @@ export function DomainSections() {
           id="project-header"
           name="ProjectHeader"
           source="@/components/project/project-header"
+          description="The project-detail page header: title, subtitle, tags, and links."
         >
           <ProjectHeader frontmatter={demoProject.frontmatter} />
         </Specimen>
@@ -163,6 +164,7 @@ export function DomainSections() {
           id="project-overview"
           name="ProjectOverview"
           source="@/components/project/project-overview"
+          description="The structured overview block (problem, built, results, learnings) on a project page."
         >
           <div className="prose-content">
             <ProjectOverview overview={demoProject.frontmatter.overview} />

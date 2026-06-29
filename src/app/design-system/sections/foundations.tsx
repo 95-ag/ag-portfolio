@@ -535,6 +535,7 @@ export function FoundationsSections() {
       >
         <div className="prose-content [&>*:first-child]:mt-0">
           <h3>A heading in prose</h3>
+          <h4>A narrative subhead</h4>
           <p>
             Body copy with a <a href="#ds-prose">link</a>, some{" "}
             <strong>strong emphasis</strong>, and <code>inline code</code>.
@@ -638,13 +639,13 @@ export function FoundationsSections() {
           spec="vertical flex column · gap token xs–3xl"
         >
           <Stack gap="md">
-            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
+            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-sm)]">
               gap=&quot;md&quot;, item one
             </div>
-            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
+            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-sm)]">
               item two
             </div>
-            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-elevated)] p-[var(--spacing-sm)]">
+            <div className="body-caption border border-[var(--hairline)] bg-[var(--surface-deep)] p-[var(--spacing-sm)]">
               item three
             </div>
           </Stack>
@@ -660,7 +661,7 @@ export function FoundationsSections() {
             {GRID_CELLS.map((n) => (
               <div
                 key={n}
-                className="body-caption flex h-12 items-center justify-center border border-[var(--hairline)] bg-[var(--surface-elevated)]"
+                className="body-caption flex h-12 items-center justify-center border border-[var(--hairline)] bg-[var(--surface-deep)]"
               >
                 {n}
               </div>
@@ -715,10 +716,30 @@ export function FoundationsSections() {
         intro="Imagery treatment and diagram tooling: rules rather than components, listed here for completeness."
       >
         <div className="prose-content">
+          <p className="body-emphasis">Photography</p>
           <ul>
-            <li>Photography: monochrome / muted, restrained, editorial.</li>
             <li>
-              Diagrams: hand-authored SVG, matplotlib charts, tldraw fallback.
+              Monochrome or muted, restrained saturation, editorial composition.
+            </li>
+            <li>Supports understanding — never decorative or dominant.</li>
+            <li>
+              Avoid stock imagery, oversaturated visuals, and oversized heroes
+              without context.
+            </li>
+          </ul>
+          <p className="body-emphasis">Diagrams</p>
+          <ul>
+            <li>
+              Hand-authored SVG (shared theme) — primary tool for flows,
+              pipelines, and architecture.
+            </li>
+            <li>
+              matplotlib → SVG/PNG — charts where source data exists;
+              script-reproducible.
+            </li>
+            <li>
+              tldraw → SVG — fallback only for layouts the SVG theme cannot
+              express.
             </li>
           </ul>
         </div>
@@ -730,6 +751,14 @@ export function FoundationsSections() {
         mapsTo="Foundations → Iconography"
         intro="Two icon families: Material Symbols for system actions, monochrome marks for brands. All inherit currentColor at the requested size."
       >
+        <div className="prose-content">
+          <ul>
+            <li>Icons communicate function, not decoration.</li>
+            <li>Navigation pairs an icon with a text label.</li>
+            <li>Buttons use a leading icon.</li>
+          </ul>
+        </div>
+
         <Specimen
           id="icons-material"
           name="Material icons"
