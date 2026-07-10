@@ -55,6 +55,16 @@ Writing that by hand for every project is slow, and the obvious shortcut makes i
 
 So the goal was a portfolio built the way the work itself is done: with an agent, but held to an engineering bar. Every claim traceable to a real source, every page deliberately structured and styled, the whole thing maintainable rather than a one-time push. And the system that produced it had to be reusable, not welded to a single site.
 
+The three ways to produce those write-ups line up on the two axes that decide whether the result is any good: whether it stays grounded in the real work, and whether it scales past a single project. Each shortcut clears one and fails the other.
+
+<Diagram
+  src="/projects/self-building-portfolio/problem-quadrant.svg"
+  alt="A quadrant map on two axes — grounded in the real source (vertical) and scales across projects (horizontal). Writing by hand is grounded but doesn't scale; handing a repo to a model scales but isn't grounded; this system is alone in the top-right quadrant, both grounded and scaling."
+  caption="Writing by hand stays grounded but doesn't scale; handing a repo to a model scales but drifts from the truth. Only a system held to both lands in the top-right."
+  aspect="388/292"
+  className="mx-auto max-w-[460px]"
+/>
+
 The hard part is not getting an agent to generate text. It is keeping a few hundred edits' worth of output consistent, grounded, and trustworthy. Agents drift from intent, pad, and report success without evidence. A system that ships a public artifact under your own name has to hold a quality bar, keep the work reviewable, and make every claim verifiable. And it has to do all of that while staying faster than doing the work by hand.
 
 ## Approach
@@ -81,10 +91,10 @@ The contract is a layered set of files the agent reads before it acts, and the w
 
 <Diagram
   src="/projects/self-building-portfolio/architecture.svg"
-  alt="Layered architecture: documentation (product, content schema, design tokens) defines the specification; rules constrain how the agent works; skills are the capabilities; pipelines sequence them; gates decide what passes. The website is generated from these layers."
-  caption="The system as layers, from specification to enforcement, grounded in the design tokens the whole site and its assets are built from."
-  aspect="760/440"
-  className="max-w-[700px]"
+  alt="Five stacked layers the agent reads before it acts — documentation, rules, skills, pipelines, gates — with an arrow from the stack down to a Website node, showing the layers together produce the site."
+  caption="The spec-as-contract as layers, from specification down to enforcement; the website is what they produce."
+  aspect="332/362"
+  className="mx-auto max-w-[380px]"
 />
 
 The separation is the point. What to build, how to build it, what the agent can do, in what order, and what is allowed to pass are five different concerns, each owned by one layer, so a change to any one of them touches one place, not the whole tree. The website those layers build is a statically generated Next.js site: every page is prerendered to HTML, its content lives in MDX, and its frontmatter is validated at build time, so a broken page cannot ship.
@@ -93,15 +103,32 @@ The separation is the point. What to build, how to build it, what the agent can 
 
 Architecture is the structure; the workflow is how a project page actually gets made. Four skills run in a fixed order, each ending at a human gate.
 
+<Diagram
+  src="/projects/self-building-portfolio/pipeline.svg"
+  alt="Four stages assembling a project page. Content fills a page with prose; Assets lands figures and tables in it; Cover adds a hero band at the top; Review marks it signed off with a check. A small human gate sits between each stage."
+  caption="Each skill adds to the page in turn — prose, then figures, then the hero, then sign-off — with a human gate between every stage."
+  aspect="512/198"
+  className="mx-auto max-w-[720px]"
+/>
+
 **Content:** `project-content-extraction` reads the real repository and any report and drafts the deep-dive. The engineer sets the narrative direction and the writing style; the agent produces the structured prose and fills the schema; nothing absent from the source reaches the page. How much steering this takes varies, from roughly one to three hours of direction per project. This one needed more than most: no existing report to work from, and a specific voice to hit.
 
-**Assets:** `project-assets-generation` works out which figures genuinely aid understanding, then generates each from a tracked Python source against a shared theme. The production SVG is a build output, never hand-edited; it carries a `prefers-color-scheme` block so it adapts to dark mode natively, and because it is script-reproducible it survives a palette change.
+**Assets:** `project-assets-generation` works out how each part of the write-up is best represented — promoted to a table or callout in the prose, or generated as a diagram or chart — then builds each visual from a tracked Python source against a shared theme. The production SVG is a build output, never hand-edited; it carries a `prefers-color-scheme` block so it adapts to dark mode natively, and because it is script-reproducible it survives a palette change.
 
 **Cover:** `project-cover-generation` builds the hero as a live component whose colors are all design tokens, which makes it theme-adaptive, deterministic, and grounded enough that the project's core tension is legible from the cover alone. Composing from tokens rather than generating an image is what keeps every cover cohesive and redesign-proof.
 
 **Review:** `project-review` runs two cold passes as independent agents that never see each other's notes: a non-technical recruiter and a metric-tracing senior engineer, both judging the rendered page, not the source. Where they disagree, the conflict is surfaced for the human to settle rather than quietly resolved.
 
 ## Engineering Decisions
+
+Four decisions shaped the build. Each turned down a tempting shortcut for a property that had to survive a few hundred edits — in brief here, then each one in full below.
+
+| Decision | Alternative rejected | Payoff |
+|---|---|---|
+| Generate covers and diagrams from design tokens | Static images, or image-model art | A theme switch or full redesign carries through every asset for free |
+| Content as MDX on a static Next.js app | A CMS, or plain static HTML | Diffable plain-text content; room to add a blog or accounts without a rebuild |
+| Ground every claim in a real source | Trusting fluent model output | No slop — a metric that can't be traced is cut, enforced at build |
+| Review cold, in two independent passes | One reviewer who has seen the author's reasoning | Adversarial review that surfaces the author's blind spots |
 
 ### Generate from design tokens, not images
 
@@ -125,21 +152,46 @@ The original problem had two halves: produce a grounded deep-dive for each proje
 
 ### The system
 
-The main outcome is the system that produces the deep-dives:
+The main outcome is the system that produces the deep-dives — and the point is that it is a *system*, not a one-time push.
 
-- **A working, gated pipeline.** Four skills write, illustrate, and review each project's deep-dive, grounded in the real repository with nothing invented and checked at every gate.
-- **Consistent documentation.** Because every run answers to the same skills and rules, its output is consistent in structure and voice rather than a pile of one-off write-ups.
-- **A reusable core.** The spec-as-contract discipline, the gated pipeline, and the cold review are not welded to this site. They live in [claude-field-kit](https://github.com/95-ag/claude-field-kit): a curated, tiered library of reusable Claude Code assets (rules, hooks, skills, agents) improved in one place and reused across projects rather than installed as a framework. The docs-rules-skills structure described here is in that repository too.
+Four skills write, illustrate, and review each project's deep-dive: grounded in the real repository with nothing invented, and checked at every gate. Because every run answers to the same skills and the same rules, the result is consistent in structure and voice — a coherent set of documents rather than a pile of one-off write-ups.
+
+<Callout title="A reusable core, not a one-off">
+  The spec-as-contract discipline, the gated pipeline, and the cold review aren't welded to this site. They live in [claude-field-kit](https://github.com/95-ag/claude-field-kit): a curated, tiered library of reusable Claude Code assets — rules, hooks, skills, agents — improved in one place and reused across projects rather than installed as a framework. The docs-rules-skills structure described here lives there too.
+</Callout>
 
 ### The site
 
 The parallel outcome is the site you are reading. Success for it was never "it looks nice": a portfolio a recruiter opens on a phone is held to the same bar as any product site, and that bar is what the design and engineering decisions above were made to hit. The site meets it.
 
-- **Fast, on a phone.** Most recruiters open a link on mobile, and a slow first paint loses them before the writing can. Every page is prerendered to static HTML, so the content arrives in the initial response with no server or client fetch in its path, and the same static output scores 100 on desktop Lighthouse.
-- **Accessible.** A portfolio some people can't read is a broken portfolio. Text meets WCAG AA contrast in both themes, structure is semantic, focus is visible, touch targets are sized, and motion is gated by `prefers-reduced-motion`. Because contrast lives in the design tokens, accessibility survives a redesign instead of quietly regressing.
-- **Distraction-free on a long read.** Reading pages soften the background and cut motion and color; the ambient background pulls to the margins, and on a phone (where the prose is densest) it is dropped entirely. The theme follows the same intent: it opens in the visitor's system preference (a technical audience tends to like dark), remembers a manual toggle, and never flashes the wrong one on load.
-- **Readable by people and by agents.** Search increasingly surfaces AI-generated answers rather than raw links, so the site is built to be parsed as cleanly by a crawler or an agent as by a person: semantic HTML, JSON-LD structured data, a sitemap and robots policy, and an `llms.txt` summary, all generated from the same content source as the pages so they never drift.
-- **Hardened.** A strict Content Security Policy and the standard security headers, set in one place and applied to every route, with no per-page gaps to drift.
+It holds up the same in either theme. Take this project's live cover: every color in it is a role-based design token defined once per theme — the handwritten annotations included — so it re-themes along with the rest of the page, contrast held to WCAG AA in both, and a full redesign would carry through for free.
+
+<DiagramRow caption="The same live cover in light and dark — re-themed from the same design tokens, contrast held in both.">
+  <DiagramPanel
+    src="/projects/self-building-portfolio/theme-adaptive-light.webp"
+    alt="A live SVG project cover in the light theme: a masked-input grid with dark-green accent cells, an encoder and dashed decoder, a reconstruction grid, and handwritten annotations, on a light surface."
+    aspect="16/9"
+    label="Light"
+  />
+  <DiagramPanel
+    src="/projects/self-building-portfolio/theme-adaptive-dark.webp"
+    alt="The same live cover in the dark theme: the grids, encoder, and decoder on a dark surface, the green accents brighter, contrast preserved."
+    aspect="16/9"
+    label="Dark"
+  />
+</DiagramRow>
+
+Under the surface, the site is held to five bars, each with a concrete mechanism and something to show for it.
+
+| Quality bar | Mechanism | Evidence |
+|---|---|---|
+| Fast on a phone | Every page prerendered to static HTML — content in the first response, nothing fetched | 100 desktop Lighthouse |
+| Accessible | Contrast lives in the design tokens; semantic structure, visible focus, sized touch targets, gated motion | WCAG AA in both themes, survives a redesign |
+| Distraction-free reading | Reading mode softens the background and cuts motion and color; dropped entirely on mobile | Prose-first long reads |
+| Readable by people and agents | Semantic HTML, JSON-LD, sitemap, robots, and an `llms.txt` summary — all from one content source | Never drifts from the pages |
+| Hardened | A strict Content Security Policy and standard security headers, set once for every route | No per-page gaps |
+
+That machine-readable line is worth drawing out: everything a crawler or an agent reads — the pages, the structured data, the sitemap and robots policy, the `llms.txt` summary — comes from the same content source as the page itself, so it can't drift out of step with what a person sees.
 
 Those bars hold together because of the token discipline: the contrast and theme behavior carry into the diagrams and covers automatically, and stay correct through a redesign. This was also a first web build, held to the standards a non-creative product site faces, without cutting a corner just because no one would check.
 
