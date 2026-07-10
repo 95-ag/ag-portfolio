@@ -18,7 +18,7 @@ export const mdxComponents: MDXComponents = {
   pre: ({ children, ...props }) => <CodeBlock {...props}>{children}</CodeBlock>,
   table: ({ children, ...props }) => (
     <div className="my-[var(--spacing-xl)] overflow-x-auto">
-      <table className="mx-auto max-w-fit border-collapse text-sm" {...props}>
+      <table className="mx-auto max-w-fit border-collapse" {...props}>
         {children}
       </table>
     </div>
