@@ -7,6 +7,8 @@
 // gap reads as the lightweight-decoder asymmetry). Right: a uniform soft grid — the
 // reconstruction, recovered but blurry at reduced scale.
 
+import { COVER_ANNOTATION, COVER_LABEL } from "./cover-styles";
+
 const COLS = 6;
 const ROWS = 6;
 const PITCH = 45; // cell-to-cell spacing
@@ -48,15 +50,12 @@ const DECODER_POINTS = "648,305 712,287 712,387 648,369";
 
 export function MaskedAutoencodersCover() {
   const labelStyle: React.CSSProperties = {
-    fontFamily: "var(--font-jetbrains-mono)",
-    fontSize: 18,
-    letterSpacing: "0.08em",
+    ...COVER_LABEL,
     fill: "var(--ink)",
   };
 
   const caveatStyle: React.CSSProperties = {
-    fontFamily: "var(--font-caveat)",
-    fontSize: 30,
+    ...COVER_ANNOTATION,
     fill: "var(--accent)",
   };
 

@@ -1,10 +1,8 @@
-const CAVEAT: React.CSSProperties = { fontFamily: "var(--font-caveat)" };
+import { COVER_ANNOTATION, COVER_LABEL } from "./cover-styles";
 
 export function ModelExtractionAttacksCover() {
   const labelStyle: React.CSSProperties = {
-    fontFamily: "var(--font-jetbrains-mono)",
-    fontSize: 20,
-    letterSpacing: "0.05em",
+    ...COVER_LABEL,
     fill: "var(--ink)",
   };
 
@@ -180,7 +178,7 @@ export function ModelExtractionAttacksCover() {
           x="225"
           y="490"
           textAnchor="middle"
-          style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           entropy-ranked
         </text>
@@ -188,7 +186,7 @@ export function ModelExtractionAttacksCover() {
           x="225"
           y="522"
           textAnchor="middle"
-          style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           selection
         </text>
@@ -225,7 +223,7 @@ export function ModelExtractionAttacksCover() {
           x="310"
           y="168"
           textAnchor="middle"
-          style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           only 25K queries
         </text>
@@ -262,7 +260,7 @@ export function ModelExtractionAttacksCover() {
           x="820"
           y="505"
           textAnchor="middle"
-          style={{ ...CAVEAT, fontSize: 30, fill: "var(--accent)" }}
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           82.88% fidelity
         </text>

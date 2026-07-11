@@ -8,6 +8,8 @@
 // sequence); the DQL prediction is crooked ACCENT dots offset from truth with a faint
 // motion trail — never settling onto ground truth. Encodes the honest negative result.
 
+import { COVER_ANNOTATION } from "./cover-styles";
+
 const VP_X = 960; // vanishing point in the right third (offset camera, shifted right)
 const VP_Y = 150; // high horizon
 const BOTTOM_Y = 675; // road reaches the image bottom
@@ -203,9 +205,7 @@ export function DqnLaneLocalizationCover() {
           x={256}
           y={330}
           textAnchor="middle"
-          style={{ fontFamily: "var(--font-caveat)" }}
-          fontSize={28}
-          fill="var(--accent)"
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           localized acc 0.892
         </text>
@@ -213,9 +213,7 @@ export function DqnLaneLocalizationCover() {
           x={256}
           y={360}
           textAnchor="middle"
-          style={{ fontFamily: "var(--font-caveat)" }}
-          fontSize={28}
-          fill="var(--accent)"
+          style={{ ...COVER_ANNOTATION, fill: "var(--accent)" }}
         >
           worse than baseline 0.900
         </text>
