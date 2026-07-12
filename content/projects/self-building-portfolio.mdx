@@ -34,7 +34,7 @@ overview:
     nothing invented. Its outputs derive from the site's design tokens, so they survive
     redesigns and adapt to light and dark.
   results:
-    - "A 100 desktop Lighthouse performance score, on fully static, prerendered output"
+    - "100 desktop Lighthouse performance score — fully static, prerendered output"
     - "WCAG AA contrast in both light and dark themes, enforced at the design-token level"
     - "Diagrams and covers regenerate from tracked sources and the site's tokens, reproducible and theme-adaptive, not baked one-offs"
   learnings:
@@ -83,7 +83,7 @@ The system is deliberately not autonomous: direction, style, and the bar for goo
 
 The contract is a layered set of files the agent reads before it acts, and the website is what those layers produce.
 
-- **Documentation** is the specification: product intent, the content schema, and the design system. The design system is load-bearing, not decorative: every color is a role-based token (`surface`, `on-surface-muted`, a single `accent`), defined once per theme, so a redesign is a change in one place instead of a sweep through components.
+- **Documentation** is the specification: product intent, the content schema, and the design system. The design system is load-bearing, not decorative: every color is a role-based token (`surface`, `ink-muted`, a single `accent`), defined once per theme, so a redesign is a change in one place instead of a sweep through components.
 - **Rules** constrain how the agent works: engineering and git discipline, accessibility and design-system constraints, and the verification required before anything is called done. They are tiered (stack-agnostic, then web, framework, and this project) so the agent loads only what is relevant to the file it is touching.
 - **Skills** are the repeatable capabilities, each self-contained: `project-content-extraction`, `project-assets-generation`, `project-cover-generation`, `project-review`, all kept in [claude-field-kit](https://github.com/95-ag/claude-field-kit).
 - **Pipelines** compose skills into a fixed order for a unit of work.
@@ -164,18 +164,18 @@ Four skills write, illustrate, and review each project's deep-dive: grounded in 
 
 The parallel outcome is the site you are reading. Success for it was never "it looks nice": a portfolio a recruiter opens on a phone is held to the same bar as any product site, and that bar is what the design and engineering decisions above were made to hit. The site meets it.
 
-It holds up the same in either theme. Take this project's live cover: every color in it is a role-based design token defined once per theme — the handwritten annotations included — so it re-themes along with the rest of the page, contrast held to WCAG AA in both, and a full redesign would carry through for free.
+It holds up the same in either theme — and so does every asset the system generates. Each project's cover is composed from the same role-based design tokens, defined once per theme, handwritten annotations included, so it re-themes along with the page, contrast held to WCAG AA in both, and a full redesign carries through for free. Here is a different project's cover — the masked-autoencoders study — doing exactly that:
 
-<DiagramRow caption="The same live cover in light and dark — re-themed from the same design tokens, contrast held in both.">
+<DiagramRow caption="Another project's live cover — the masked-autoencoders study — in light and dark, re-themed from the same design tokens, contrast held in both.">
   <DiagramPanel
     src="/projects/self-building-portfolio/theme-adaptive-light.webp"
-    alt="A live SVG project cover in the light theme: a masked-input grid with dark-green accent cells, an encoder and dashed decoder, a reconstruction grid, and handwritten annotations, on a light surface."
+    alt="The masked-autoencoders project's live cover in the light theme: a masked-input grid with dark-green accent cells, an encoder and dashed decoder, a reconstruction grid, and handwritten annotations, on a light surface."
     aspect="16/9"
     label="Light"
   />
   <DiagramPanel
     src="/projects/self-building-portfolio/theme-adaptive-dark.webp"
-    alt="The same live cover in the dark theme: the grids, encoder, and decoder on a dark surface, the green accents brighter, contrast preserved."
+    alt="The same masked-autoencoders cover in the dark theme: the grids, encoder, and decoder on a dark surface, the green accents brighter, contrast preserved."
     aspect="16/9"
     label="Dark"
   />
