@@ -109,12 +109,14 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
+    user-select: none;
   }
   .nav-link {
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
+    user-select: none;
   }
 
   /* Structural mono */
@@ -126,6 +128,7 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--ink-muted);
+    user-select: none;
   }
   .tag-chip {
     font-family: var(--font-mono), monospace;
@@ -135,6 +138,7 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--ink);
+    user-select: none;
   }
   .insight-label {
     font-family: var(--font-mono), monospace;
@@ -144,6 +148,7 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--ink-muted);
+    user-select: none;
   }
   .mono-code {
     font-family: var(--font-mono), monospace;

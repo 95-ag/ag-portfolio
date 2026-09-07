@@ -156,7 +156,7 @@ export function SectionProgressNav({
                   block: "start",
                 });
               }}
-              className="support-meta max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="support-meta select-none max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               style={{
                 color: isActive ? "var(--ink)" : "var(--ink-muted)",
                 fontWeight: isActive ? 600 : 400,

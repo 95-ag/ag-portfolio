@@ -56,7 +56,7 @@
     margin-bottom: var(--spacing-lg);
   }
   .prose-content ul > li::marker {
-    color: var(--hairline);
+    color: var(--accent);
   }
   .prose-content ol {
     list-style-type: decimal;
@@ -114,9 +114,9 @@
   .prose-content table {
     width: 100%;
     border-collapse: collapse;
-    /* body-caption size */
-    font-size: 14px;
-    line-height: 20px;
+    /* table text — one step above body-caption for legibility in dense tables */
+    font-size: 16px;
+    line-height: 24px;
     margin-bottom: var(--spacing-md);
   }
   .prose-content th,

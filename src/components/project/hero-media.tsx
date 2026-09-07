@@ -26,7 +26,13 @@ export function HeroMedia({
 }: HeroMediaProps) {
   if (slug && coverComponents[slug]) {
     const CoverComponent = coverComponents[slug];
-    return <CoverComponent />;
+    // Covers are decorative inline SVGs — their <text> must not be selectable.
+    // `contents` keeps zero layout box; user-select:none inherits into the SVG.
+    return (
+      <span className="contents select-none">
+        <CoverComponent />
+      </span>
+    );
   }
 
   // No live cover → render the heroImage; if absent (allowed in dev), render nothing.
