@@ -1,11 +1,19 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { DownloadIcon } from "@/components/icons/material/download";
 import { Button } from "@/components/ui/button";
 
-// One action that both opens the résumé in a new tab (read-only view) and
-// triggers a download — per the chosen "one button does both" behavior.
-export function ResumeButton({ href }: { href: string }) {
+// "View or save": one click opens the file in a new tab AND downloads it. The dual action needs a
+// client onClick (a declarative <a download> cancels the new-tab navigation), so it can't be inlined
+// on the server About page — hence this small co-located client island.
+export function ViewDownloadButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
   const handleClick = () => {
     window.open(href, "_blank", "noopener,noreferrer");
     const link = document.createElement("a");
@@ -23,7 +31,7 @@ export function ResumeButton({ href }: { href: string }) {
       icon={<DownloadIcon size={18} />}
       className="justify-center"
     >
-      Resume
+      {children}
     </Button>
   );
 }

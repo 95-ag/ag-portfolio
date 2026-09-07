@@ -61,9 +61,9 @@ const FRAG = /* glsl */ `
 
 function readAccent(): THREE.Vector3 {
   if (typeof window === "undefined") return new THREE.Vector3(0, 0.43, 0.22);
-  // True accent in both themes (light #006e37 / dark #2aa566) via the live --accent-rgb.
+  // Read live so the color tracks the active theme.
   const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue("--accent-rgb")
+    .getPropertyValue("--meteor-accent-rgb")
     .trim();
   const nums = raw.split(/[\s,]+/).map(Number);
   if (nums.length === 3 && nums.every((n) => !Number.isNaN(n))) {
@@ -72,15 +72,17 @@ function readAccent(): THREE.Vector3 {
   return new THREE.Vector3(0, 0.43, 0.22);
 }
 
-// Secondary particle color — theme-aware so both themes feel palette-native.
-// Light: blue #3059b3 — paired with the true green accent for the inverted dark-ink streaks.
-// Dark:  steel blue (89, 140, 217) — cool glow contrast reads well on dark bg.
+// Secondary particle color — paired with the accent for the inverted dark-ink streaks.
 function readAltColor(): THREE.Vector3 {
   if (typeof window === "undefined") return new THREE.Vector3(0.35, 0.55, 0.85);
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  return isDark
-    ? new THREE.Vector3(0.35, 0.55, 0.85)
-    : new THREE.Vector3(0.188, 0.349, 0.702);
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--meteor-secondary-rgb")
+    .trim();
+  const nums = raw.split(/[\s,]+/).map(Number);
+  if (nums.length === 3 && nums.every((n) => !Number.isNaN(n))) {
+    return new THREE.Vector3(nums[0] / 255, nums[1] / 255, nums[2] / 255);
+  }
+  return new THREE.Vector3(0.35, 0.55, 0.85);
 }
 
 export function MeteorShower({ opacity = 0.32 }: { opacity?: number }) {

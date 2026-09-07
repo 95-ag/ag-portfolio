@@ -76,7 +76,7 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--outline-variant)] bg-[var(--surface-nav)] backdrop-blur-[12px] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       >
         <MenuIcon size={18} />
       </button>
@@ -94,10 +94,10 @@ export function MobileNav() {
               transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
               onClick={() => setOpen(false)}
               aria-hidden="true"
-              className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-[var(--on-background)]/30"
+              className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-[var(--ink)]/30"
             />
 
-            {/* Panel */}
+            {/* Panel — animated, fixed-positioned wrapper; visual content is MobileNavPanel. */}
             <motion.div
               key="panel"
               ref={panelRef}
@@ -112,75 +112,94 @@ export function MobileNav() {
                 duration: shouldReduceMotion ? 0 : 0.3,
                 ease: [0.3, 0, 0, 1],
               }}
-              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] flex h-full w-[min(280px,80vw)] flex-col bg-[var(--surface-nav)] p-[var(--spacing-lg)] backdrop-blur-[12px]"
+              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] h-full w-[min(280px,80vw)]"
             >
-              {/* Header: logomark + close */}
-              <div className="flex items-center justify-between">
-                <Link
-                  href="/"
-                  aria-label="Home"
-                  aria-current={pathname === "/" ? "page" : undefined}
-                  className="flex h-11 w-11 items-center justify-center"
-                >
-                  <Image
-                    src="/cat_head_icon.svg"
-                    alt=""
-                    width={32}
-                    height={32}
-                    className={cn(
-                      "rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-muted)] hover:outline-1 hover:outline-[var(--accent)]",
-                      pathname === "/" && "outline-2 outline-[var(--accent)]",
-                    )}
-                    unoptimized
-                  />
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  aria-label="Close navigation menu"
-                  className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--on-surface-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]"
-                >
-                  <CloseIcon size={18} />
-                </button>
-              </div>
-
-              {/* Nav items */}
-              <nav
-                aria-label="Primary"
-                className="mt-[var(--spacing-xl)] flex flex-col gap-[var(--spacing-xs)]"
-              >
-                {NAV_ITEMS.map(({ href, label, Icon }) => {
-                  const isActive = pathname.startsWith(href);
-                  return (
-                    <Link
-                      key={href}
-                      href={href}
-                      aria-current={isActive ? "page" : undefined}
-                      className={cn(
-                        "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
-                        isActive
-                          ? "bg-[var(--surface-selection)] text-[var(--on-surface)]"
-                          : "text-[var(--on-surface-muted)] hover:bg-[var(--surface-sunken)] hover:text-[var(--on-surface)]",
-                      )}
-                    >
-                      <Icon
-                        size={16}
-                        className={isActive ? "text-[var(--accent)]" : ""}
-                      />
-                      {label}
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="flex-1" />
-
-              {/* Theme selector */}
-              <InlineThemeSelector />
+              <MobileNavPanel
+                pathname={pathname}
+                onClose={() => setOpen(false)}
+              />
             </motion.div>
           </>
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+// Presentational drawer panel — no open/close state, focus trap, or scroll lock. MobileNav wraps it
+// in the animated dialog; the design-system gallery renders it directly to preview the drawer open.
+export function MobileNavPanel({
+  pathname,
+  onClose,
+}: {
+  pathname: string;
+  onClose?: () => void;
+}) {
+  return (
+    <div className="flex h-full w-full flex-col bg-[var(--surface-floating)] p-[var(--spacing-lg)] backdrop-blur-[12px]">
+      {/* Header: logomark + close */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/"
+          aria-label="Home"
+          aria-current={pathname === "/" ? "page" : undefined}
+          className="flex h-11 w-11 items-center justify-center"
+        >
+          <Image
+            src="/cat_head_icon.svg"
+            alt=""
+            width={32}
+            height={32}
+            className={cn(
+              "rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
+              pathname === "/" && "outline-2 outline-[var(--accent)]",
+            )}
+            unoptimized
+          />
+        </Link>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close navigation menu"
+          className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-deep)] hover:text-[var(--ink)]"
+        >
+          <CloseIcon size={18} />
+        </button>
+      </div>
+
+      {/* Nav items */}
+      <nav
+        aria-label="Primary"
+        className="mt-[var(--spacing-xl)] flex flex-col gap-[var(--spacing-xs)]"
+      >
+        {NAV_ITEMS.map(({ href, label, Icon }) => {
+          const isActive = pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-current={isActive ? "page" : undefined}
+              className={cn(
+                "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
+                isActive
+                  ? "bg-[var(--surface-active)] text-[var(--ink)]"
+                  : "text-[var(--ink-muted)] hover:bg-[var(--surface-deep)] hover:text-[var(--ink)]",
+              )}
+            >
+              <Icon
+                size={16}
+                className={isActive ? "text-[var(--accent)]" : ""}
+              />
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="flex-1" />
+
+      {/* Theme selector */}
+      <InlineThemeSelector />
+    </div>
   );
 }

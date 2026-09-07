@@ -48,7 +48,9 @@ export default function HomePage() {
             {/* Content column - fixed width so headline stays 2 lines */}
             <div className="flex flex-col gap-[var(--spacing-xl)] lg:flex-1">
               <div className="flex flex-col gap-[var(--spacing-lg)]">
-                <p className="mono-anchor">Aishwarya Ganesan — AI Engineer</p>
+                <p className="mono-anchor select-text">
+                  Aishwarya Ganesan — AI Engineer
+                </p>
                 <Heading level={1} type="display-primary">
                   I build for production, not proof of concept.
                 </Heading>

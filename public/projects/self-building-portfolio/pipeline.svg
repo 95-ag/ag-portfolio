@@ -1,0 +1,75 @@
+<svg viewBox="-2 -2 512 198" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four skills build a project page in sequence. Content fills the page with prose; Assets lands figures and tables in it; Cover adds the hero at the top; Review signs it off with two cold passes. A small human gate sits between each stage.">
+  <title>Four skills assembling a project page</title>
+  <defs>
+    <style>
+      .n  { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
+      .na { fill: #f3f4f5; stroke: #006e37; stroke-width: 1.5; }
+      .nt { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
+      .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: #2d2d2d; }
+      .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; }
+      .conn { fill: none; stroke: #6c7a71; stroke-width: 1.5; }
+      .af  { fill: #6c7a71; }
+      @media (prefers-color-scheme: dark) {
+        .n  { fill: #1c1b1b; stroke: #3c4a42; }
+        .na { fill: #1c1b1b; stroke: #2aa566; }
+        .nt { fill: #1c1b1b; stroke: #3c4a42; }
+        .lbl { fill: #e2e2e2; }
+        .sub { fill: #bbcabf; }
+        .conn { stroke: #86948a; }
+        .af  { fill: #86948a; }
+      }
+    </style>
+    <marker id="arr" markerWidth="7" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path class="af" d="M0,0 L7,3 L0,6 Z"/>
+    </marker>
+  </defs>
+
+  <rect class="nt" x="20" y="26" width="90" height="118" rx="5"/>
+  <line class="conn" stroke-width="1" x1="29" y1="42" x2="93" y2="42"/>
+  <line class="conn" stroke-width="1" x1="29" y1="51" x2="85" y2="51"/>
+  <line class="conn" stroke-width="1" x1="29" y1="60" x2="97" y2="60"/>
+  <line class="conn" stroke-width="1" x1="29" y1="69" x2="89" y2="69"/>
+  <line class="conn" stroke-width="1" x1="29" y1="78" x2="95" y2="78"/>
+  <line class="conn" stroke-width="1" x1="29" y1="87" x2="81" y2="87"/>
+  <line class="conn" stroke-width="1" x1="29" y1="98" x2="91" y2="98"/>
+  <line class="conn" stroke-width="1" x1="29" y1="107" x2="77" y2="107"/>
+  <rect class="nt" x="145" y="26" width="90" height="118" rx="5"/>
+  <line class="conn" stroke-width="1" x1="154" y1="42" x2="218" y2="42"/>
+  <line class="conn" stroke-width="1" x1="154" y1="51" x2="210" y2="51"/>
+  <line class="conn" stroke-width="1" x1="154" y1="60" x2="222" y2="60"/>
+  <rect class="n" x="154" y="73" width="72" height="26" rx="3"/>
+  <line class="conn" stroke-width="1" x1="154" y1="107" x2="216" y2="107"/>
+  <line class="conn" stroke-width="1" x1="154" y1="116" x2="202" y2="116"/>
+  <rect class="nt" x="270" y="26" width="90" height="118" rx="5"/>
+  <rect class="na" x="279" y="36" width="72" height="20" rx="3"/>
+  <line class="conn" stroke-width="1" x1="279" y1="66" x2="343" y2="66"/>
+  <line class="conn" stroke-width="1" x1="279" y1="75" x2="335" y2="75"/>
+  <line class="conn" stroke-width="1" x1="279" y1="84" x2="347" y2="84"/>
+  <rect class="n" x="279" y="97" width="72" height="26" rx="3"/>
+  <line class="conn" stroke-width="1" x1="279" y1="131" x2="341" y2="131"/>
+  <line class="conn" stroke-width="1" x1="279" y1="140" x2="327" y2="140"/>
+  <rect class="nt" x="395" y="26" width="90" height="118" rx="5"/>
+  <rect class="na" x="404" y="36" width="72" height="20" rx="3"/>
+  <line class="conn" stroke-width="1" x1="404" y1="66" x2="468" y2="66"/>
+  <line class="conn" stroke-width="1" x1="404" y1="75" x2="460" y2="75"/>
+  <line class="conn" stroke-width="1" x1="404" y1="84" x2="472" y2="84"/>
+  <rect class="n" x="404" y="97" width="72" height="26" rx="3"/>
+  <line class="conn" stroke-width="1" x1="404" y1="131" x2="466" y2="131"/>
+  <line class="conn" stroke-width="1" x1="404" y1="140" x2="452" y2="140"/>
+  <circle class="na" cx="479" cy="30" r="11"/>
+  <path class="na" fill="none" stroke-width="2" d="M 474 30 L 477.5 34 L 484 26"/>
+  <text class="lbl" x="65" y="162" text-anchor="middle">Content</text>
+  <text class="sub" x="65" y="176" text-anchor="middle">writes the deep-dive</text>
+  <text class="lbl" x="190" y="162" text-anchor="middle">Assets</text>
+  <text class="sub" x="190" y="176" text-anchor="middle">adds figures + tables</text>
+  <text class="lbl" x="315" y="162" text-anchor="middle">Cover</text>
+  <text class="sub" x="315" y="176" text-anchor="middle">adds the hero</text>
+  <text class="lbl" x="440" y="162" text-anchor="middle">Review</text>
+  <text class="sub" x="440" y="176" text-anchor="middle">two cold passes</text>
+  <line class="conn" x1="110" y1="85" x2="145" y2="85" marker-end="url(#arr)"/>
+  <text class="sub" x="127" y="77" text-anchor="middle">gate</text>
+  <line class="conn" x1="235" y1="85" x2="270" y2="85" marker-end="url(#arr)"/>
+  <text class="sub" x="252" y="77" text-anchor="middle">gate</text>
+  <line class="conn" x1="360" y1="85" x2="395" y2="85" marker-end="url(#arr)"/>
+  <text class="sub" x="377" y="77" text-anchor="middle">gate</text>
+</svg>

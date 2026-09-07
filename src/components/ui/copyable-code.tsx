@@ -31,8 +31,8 @@ export function CopyableCode({
       onClick={handleCopy}
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--outline-variant)] bg-[var(--surface-sunken)] px-[var(--spacing-md)]",
-        "font-mono text-[16px] font-normal leading-[24px] text-[var(--on-surface-muted)]",
+        "inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-deep)] px-[var(--spacing-md)]",
+        "font-mono text-[16px] font-normal leading-[24px] text-[var(--ink-muted)]",
         "transition-colors duration-[var(--duration-fast)]",
         "hover:border-[var(--accent)] hover:text-[var(--accent)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",

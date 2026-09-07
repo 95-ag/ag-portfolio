@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { coverComponents } from "@/components/project/covers";
 import {
   type ProjectFrontmatter,
   ProjectFrontmatterSchema,
@@ -60,6 +61,25 @@ export function getAllProjects(): Project[] {
     }
   }
 
+  // Production release gate: a published project must have a hero — a registered live
+  // cover OR a heroImage. Dev/preview builds stay permissive (the hero may be empty until
+  // the cover stage); only the live production build (VERCEL_ENV=production) fails, so a
+  // heroless project can never reach production.
+  if (process.env.VERCEL_ENV === "production") {
+    const heroless = projects.filter(
+      (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
+    );
+    if (heroless.length > 0) {
+      throw new Error(
+        `Production release: project(s) have no hero (no live cover and no heroImage): ${heroless
+          .map((p) => p.slug)
+          .join(
+            ", ",
+          )}. Add a heroImage or register a live cover before releasing.`,
+      );
+    }
+  }
+
   return projects.sort((a, b) => {
     if (a.frontmatter.order !== b.frontmatter.order) {
       return a.frontmatter.order - b.frontmatter.order;
@@ -78,25 +98,14 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return parseProject(filename);
 }
 
-const PROJECT_TYPE_PRIORITY: Record<string, number> = {
-  academic: 0,
-  freelance: 0,
-  personal: 1,
-};
-
 export function getProjectsForWork(): Project[] {
+  // Work index is ordered newest-first by publish date; `order` breaks ties.
   return getAllProjects().sort((a, b) => {
-    const priorityDiff =
-      (PROJECT_TYPE_PRIORITY[a.frontmatter.projectType] ?? 1) -
-      (PROJECT_TYPE_PRIORITY[b.frontmatter.projectType] ?? 1);
-    if (priorityDiff !== 0) return priorityDiff;
-    if (a.frontmatter.order !== b.frontmatter.order) {
-      return a.frontmatter.order - b.frontmatter.order;
-    }
-    return (
+    const dateDiff =
       new Date(b.frontmatter.publishedAt).getTime() -
-      new Date(a.frontmatter.publishedAt).getTime()
-    );
+      new Date(a.frontmatter.publishedAt).getTime();
+    if (dateDiff !== 0) return dateDiff;
+    return a.frontmatter.order - b.frontmatter.order;
   });
 }
 

@@ -17,15 +17,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <Link
       href={`/work/${slug}`}
       className={cn(
-        "group flex flex-col border border-[var(--outline-variant)] bg-[var(--surface-raised)]",
+        "group flex flex-col border border-[var(--hairline)] bg-[var(--surface-elevated)]",
         "transition-colors duration-[var(--duration-fast)]",
-        "hover:border-[var(--outline)] hover:bg-[var(--surface)]",
+        "hover:border-[var(--hairline-strong)] hover:bg-[var(--surface)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
       )}
     >
       {/* Hero — every card renders a hero (live cover or heroImage) */}
       <div className="p-[var(--spacing-md)]">
-        <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-sunken)] aspect-video">
+        <div className="relative w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)] aspect-video">
           <div className="absolute inset-0 transition-transform duration-[var(--duration-slow)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
             <HeroMedia
               src={fm.heroImage}
@@ -52,7 +52,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </p>
           <ArrowForwardIcon
             size={16}
-            className="mt-[3px] shrink-0 text-[var(--on-surface-muted)] opacity-0 transition-all duration-[var(--duration-fast)] group-hover:translate-x-[3px] group-hover:text-[var(--accent)] group-hover:opacity-100 motion-reduce:group-hover:translate-x-0"
+            className="mt-[3px] shrink-0 text-[var(--ink-muted)] opacity-0 transition-all duration-[var(--duration-fast)] group-hover:translate-x-[3px] group-hover:text-[var(--accent)] group-hover:opacity-100 motion-reduce:group-hover:translate-x-0"
           />
         </div>
 

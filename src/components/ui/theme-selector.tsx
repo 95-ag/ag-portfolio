@@ -82,8 +82,8 @@ export function PillThemeSelector() {
                 "flex h-8 w-8 items-center justify-center rounded-[var(--radius-pill)]",
                 "transition-colors duration-[var(--duration-fast)]",
                 isSelected
-                  ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                  : "text-[var(--on-surface-muted)] hover:text-[var(--on-surface)]",
+                  ? "bg-[var(--accent-tint)] text-[var(--accent)]"
+                  : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
               )}
             >
               <ModeIcon size={16} />
@@ -102,7 +102,7 @@ export function InlineThemeSelector({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex w-fit items-center rounded-[var(--radius-pill)] bg-[var(--surface-sunken)] p-1",
+        "flex w-fit items-center rounded-[var(--radius-pill)] bg-[var(--surface-deep)] p-1",
         className,
       )}
     >
@@ -120,8 +120,8 @@ export function InlineThemeSelector({ className }: { className?: string }) {
               "flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)]",
               "transition-colors duration-[var(--duration-fast)]",
               isSelected
-                ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                : "text-[var(--on-surface-muted)] hover:text-[var(--on-surface)]",
+                ? "bg-[var(--accent-tint)] text-[var(--accent)]"
+                : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
             )}
           >
             <ModeIcon size={16} />
