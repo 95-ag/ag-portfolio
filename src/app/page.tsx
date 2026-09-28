@@ -70,7 +70,7 @@ export default function HomePage() {
                 </Button>
                 <Button
                   variant="secondary"
-                  href="mailto:aishwaryaganesan95@gmail.com"
+                  href="mailto:aishwarya.workbench@gmail.com"
                   icon={<MailIcon size={18} />}
                 >
                   Get in Touch

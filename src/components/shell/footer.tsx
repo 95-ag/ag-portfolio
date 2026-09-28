@@ -46,7 +46,7 @@ export function Footer() {
               <LinkedInIcon size={20} />
             </a>
             <a
-              href="mailto:aishwaryaganesan95@gmail.com"
+              href="mailto:aishwarya.workbench@gmail.com"
               aria-label="Send email"
               className="flex h-11 w-11 items-center justify-center text-[var(--ink)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
             >
