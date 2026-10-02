@@ -1,9 +1,9 @@
 ---
 title: "One Component, Seventeen Listings"
-subtitle: "Entity resolution across 17 Indian electronics retailers, and the ingestion fleet that had to come first"
-summary: "Built the ingestion fleet behind a federated component search engine: 17 Indian retailers, ~184,000 listings on a Postgres-backed worker queue, plus the identity design for resolving them."
+subtitle: "A catalog pipeline for 17 Indian electronics retailers, and the three design decisions its own data overturned"
+summary: "An ingestion pipeline for 17 Indian electronics retailers — 184,801 listings on a Postgres-backed worker queue — and the three design decisions its own data overturned."
 projectType: freelance
-metaDescription: "Ingestion fleet for a federated electronics-component search engine: 17 Indian retailers, ~184,000 listings, and the identity design behind them."
+metaDescription: "A 17-retailer electronics catalog pipeline, 184,801 listings, and the three design decisions its own measurements overturned."
 
 publishedAt: "2026-08-04"
 order: 20
@@ -32,14 +32,14 @@ overview:
     and per reel. Nothing in the data says which listings are the same thing, so nobody can
     compare prices with any confidence.
   built: |
-    Built the system that collects every product listing from 17 Indian electronics
-    retailers and turns them into one clean, queryable catalog, and specified the rules for
-    deciding when two listings are the same physical part. Tested search quality on a
-    throwaway prototype before committing the real stack to a design.
+    Built the pipeline that collects every product listing from 17 Indian electronics
+    retailers, and specified and built the identity model that decides when two listings are
+    the same physical part. Each of its three central design decisions was later overturned by
+    a measurement, and changed.
   results:
-    - "Shipped a catalog of ~184,000 listings from 17 retailers that previously could not be searched together"
+    - "Built a 184,801-listing catalog across 17 retailers that previously could not be searched together"
     - "Search prototype went live as a public beta with registered users and click analytics"
-    - "Collapsed 17 storefronts onto 3 reusable scrapers, so a new retailer is a parser, not a project"
+    - "Collapsed 17 storefronts onto 3 reusable scrapers — a new retailer is a parser, not a project"
   transferableSkills:
     - "Designing entity-resolution systems where a false merge costs more than a missed one"
     - "Building resilient ingestion pipelines across heterogeneous third-party systems"
@@ -49,241 +49,178 @@ overview:
 
 ## Detailed Problem
 
-Seventeen Indian electronics retailers list broadly overlapping catalogs, and no two
-describe a part the same way. The same transistor appears as `BC547`, as `BC547 NPN
-Transistor`, as `BC547 Transistor (Pack of 5)`, and as `BC547 Transistor – NPN – TO-92 –
-CDIL`. Prices are quoted per piece, per pack and per reel, in the same currency with no unit
-stated, so the pack-of-five price is not comparable to the others. One character further out,
-`BC547B` turns up as both `NPN Transistor BC547B` and `BC547B TO92 CDIL NPN Transistor 45V
-100mA ETA1190` — a different gain bin from plain `BC547`, and genuinely a different
-component.
+Seventeen Indian retailers sell the same transistor. One lists it as `BC547`, another as
+`BC547 Transistor (Pack of 5)`, a third as `BC547 Transistor – NPN – TO-92 – CDIL`. Each
+quotes a price per piece, per pack or per reel without saying which, so none of the three
+prices can be compared to another. Multiply that across 184,801 listings and nobody can tell
+an engineer what a transistor costs.
 
-The engineering question is entity resolution: decide which listings refer to the same
-physical component, well enough that a price comparison built on top is trustworthy rather
-than merely plausible.
+Components101, an Indian electronics-components publisher, commissioned a federated search
+layer over those retailers. Making the prices comparable is an entity-resolution problem:
+decide which listings refer to the same physical component. The obvious key is the
+manufacturer part number. **The obvious key does not work — a third of this catalog does not
+have one.**
 
-The difficulty is not the matching algorithm. Entity resolution inherits every defect in
-its input, and a resolver run over a catalog scraped inconsistently — pack sizes not
-normalized, categories mismapped, part numbers missing because one store buries them in a
-spec table and another omits them — produces confident, wrong groupings. Merging two parts
-that differ by a suffix puts the wrong price on the wrong component. A false merge costs
-more than a missed one, and neither is visible without a clean corpus to measure against.
-That ordering is the design thesis of everything below: input quality bounds resolution
-quality, so the corpus comes first.
-
-The client was Components101, an Indian electronics-components publisher building a
-federated search layer over the retailers its readers already buy from. Three systems appear
-below, with different provenance. The ingestion fleet and the search harness were built and
-operated here, end to end. The identity model and resolver design were specified here and
-implemented by Components101's own team on internal infrastructure — that engine is not part
-of the codebase this page draws on.
+Finding that out took building the pipeline first, and it was not the only decision the data
+overturned. Three of this system's central choices were made confidently, documented, and then
+contradicted by a measurement: how identity is keyed, which stores could be reached from
+where, and how category should influence ranking. Each section below takes one of them and
+follows the same four beats — what was decided, what the measurement showed, what changed, and
+where it stands now.
 
 ## Entity Resolution
 
-What follows is a specification. The engine built from it was delivered to Components101 and
-runs on their internal infrastructure; it has not been released, and the team that took over
-is still integrating it. Nothing below is a report on production behavior.
+### First reversal — the part number cannot carry identity
 
-Identity is a normalized manufacturer part number, matched exactly. The rule is
-deliberately narrow. `BC547`, `BC547A` and `BC547B` become three separate canonical
-products, and a listing with no suffix does not absorb the suffixed variants. Functional
-equivalents are never grouped: a `BC547` and a `2N2222` do comparable jobs and are not the
-same part, so they share a sub-category and nothing closer. Search compensates for the
-strictness — a query for `BC547` is specified to return the whole family as distinct
-results — so a narrow identity rule is designed to cost the user nothing at the point of
-use.
+**Decided:** identity is an exact match on the normalized manufacturer part number. Nothing
+fuzzy, no functional grouping.
 
-The one sanctioned exception is aliasing. Known clone pairs — `SS8050` and `8050`, `LM7805`
-and `L7805` — are mapped in an explicit table so listings sharing an alias group under one
-canonical product. Aliases are enumerated, never inferred.
+**Measured:** against the real corpus, **36.3% of listings — 67,128 of 184,801 rows — carry
+no part number at all**, far beyond the modules-and-kits exception the design allowed for. A
+single part number turned out not to mean a single product either: `BMP585` resolves to four
+physically different items, from a bare IC to two breakout boards at roughly twice and four
+times the price. And variant suffixes cut the opposite way to the normalization rule —
+`ESP32-WROOM-32D` against `-32E` is identity, not noise to strip.
 
-Part numbers are normalized before matching: uppercased, whitespace stripped, known
-packaging suffixes removed. Meaningful suffixes survive, because stripping the `A` from
-`BC547A` would collapse exactly the distinction the rule exists to protect.
+**Changed:** resolution was deferred, and the key was left strict. Relaxing the match to cover
+the missing third would have merged genuinely different parts, and that error is the expensive
+one — `BC547`, `BC547A` and `BC547B` are three different gain bins, so a false merge puts a
+wrong price on a real component. A duplicate row costs a reader a second glance; a false merge
+costs them the wrong part. For listings with no part number, identity moves to a
+human-assigned identifier that behaves exactly like a real one.
 
-The resolver is specified in three tiers. An exact hash match on the normalized part number
-handles listings that carry one. Listings that do not fall through to embedding similarity,
-compared only within blocks keyed on category and manufacturer — naive pairwise comparison
-across a corpus this size runs to roughly seventeen billion pairs, while blocking is designed
-to hold each comparison set in the hundreds. Pairs landing between the auto-merge and auto-separate
-thresholds are escalated rather than guessed: to a human review queue, and for genuinely
-ambiguous cases, to an LLM adjudicator.
+**Where it stands:** that turns a matching problem into a review queue with a cost per row,
+and the size of that queue — 67,128 rows — is now the thing to optimize. The engine was built
+and delivered to Components101 and runs on their internal infrastructure; it has not been
+released, and the team that took over is still integrating it.
 
-Nothing in the design silently guesses an identity. An unextractable part number, an
-unmappable category, an unresolvable spec value — each routes to admin review as an explicit
-queue item. Products with no manufacturer part number at all, which is most modules, dev
-boards and kits, take a human-assigned identifier that then behaves exactly like a real part
-number for grouping.
+### What the strict key still buys
 
-### What the corpus did to the identity key
+Escalation, not guessing, is what makes the strictness workable. An exact hash match handles
+listings that carry a part number; embedding similarity handles the rest within blocks keyed
+on category and manufacturer; anything landing between the auto-merge and auto-separate
+thresholds goes to human review, or for genuinely ambiguous pairs to an LLM adjudicator.
+Blocking is what makes that affordable — pairwise comparison across a corpus this size runs
+to roughly seventeen billion pairs, and blocking holds each comparison set in the hundreds.
 
-Measured against the real 184,801-listing corpus, the part number does not survive as a
-uniqueness constraint. **36.3% of listings — 67,128 rows — carry no part number at all**,
-which is far more than the modules-and-kits exception anticipated. Worse, a single part
-number is not always a single product: `BMP585` resolves to four physically different
-items, from a bare IC to two different breakout boards at roughly twice and four times the
-price. And variant suffixes turn out to cut the other way from the normalization rule —
-`ESP32-WROOM-32D` against `-32E` is identity, not noise to be stripped.
-
-The instinct behind the strict key held up: over-normalizing merges genuinely different
-products, and that is the expensive error. What did not hold up was treating the part number
-as sufficient. The conclusion was to **defer resolution rather than loosen the key** — keep
-strictness, stop pretending one column can carry identity for a third of the catalog, and
-let the review queue and the taxonomy do more of the work. That is the state the design was
-handed over in.
-
-## Architecture
-
-The fleet has to keep running when any of seventeen third-party storefronts changes shape,
-rate-limits, or goes down, and it has to do so without an operator watching. That
-constraint set the structure.
-
-Every store implements two methods against a shared abstract base. `discover()` is called
-by a master process to seed initial crawl items; `process()` is called by workers per item
-and returns follow-ups. Everything else — throttling, snapshot persistence, error logging,
-run accounting — lives in the base and is inherited, so a new store is two methods and a
-parser.
-
-Seventeen storefronts did not need seventeen scrapers. Three shared transports cover twelve
-of them: six Shopify storefronts on one base reading collection JSON endpoints, three
-WooCommerce stores on another reading the Store API, and three more on a sitemap-plus-JSON-LD
-base, reached that way because their platforms expose no usable REST surface — two are
-WooCommerce installations without it, one runs CS-Cart. The remaining five each needed their
-own path: a BigCommerce store, a Cloudflare-protected GraphQL store driven through a browser,
-a plain-HTML store, and two genuinely bespoke storefronts on OpenCart and hand-written PHP.
-
-Above that sits a master/worker system over a Postgres-backed queue, one queue per store.
-A master process is long-lived for one store's scrape and owns run lifecycle. Workers run
-continuously and attach themselves to whichever run is active, so masters come and go
-beneath a stable worker pool.
-
-One Postgres instance carries both the relational data and the queue. No Redis, no RabbitMQ.
-The queue is `pgmq`; workers compete through `FOR UPDATE SKIP LOCKED`. Running the queue
-inside the transactional database means an item and the rows it produces commit together,
-which removes a class of partial-failure states an external broker would introduce. The
-vector extension is installed in the image against the resolver's embedding tier but is not
-yet enabled in the database.
-
-The fleet is deployed across two hosts — a datacenter VPS and a residential machine — with
-stores assigned by measured reachability. A proxy-rotation layer with cooldown is built and
-wired but unused, so that mitigation is untested.
-
-### The search harness
-
-A deliberately throwaway harness came first, to test whether the taxonomy and query
-interpretation could actually find the right parts before the production stack committed to
-a retrieval design. It indexed 132,884 classified products — an earlier seven-store dataset, not the
-seventeen-store corpus and not the fleet's live database — into a local keyword index, combined keyword and
-vector retrieval through reciprocal rank fusion, and used an LLM to interpret each query
-into a category and a search keyword. It answered the question it was built for. Components101
-then deployed it as a public beta, which accumulated user registration, retention and click
-analytics, a photo-identification endpoint and a browser extension. It is still the
-throwaway stack.
-
-## Workflow
-
-Most operational pain in a scraping fleet comes from runs that end in an ambiguous state,
-so every step has a defined failure mode.
-
-A master process takes an atomic filesystem lock before anything else, so a second master
-for the same store cannot start. It then refuses to proceed if a previous run is still marked
-running, naming the exact maintenance command to clear it rather than failing opaquely. Queue
-residue from a finished run is handled the other way — the master purges it and continues,
-because stale items are debris rather than a reason to stop. Discovery drains into the
-queue while a rate-limited heartbeat marks the run alive, and the watch loop polls queue
-depth, treating three consecutive zeros as drained.
-
-Workers meanwhile pull items, call `process()`, write a product snapshot plus any follow-up
-items, and acknowledge. A failure is simply not acknowledged: the item redelivers on a
-visibility timeout that backs off across attempts before dead-lettering. Retry is therefore
-a property of the queue rather than logic each store repeats.
-
-Run status is classified from the database, not from counters accumulated in the loop, which
-are racy under a worker pool. The classification counts only non-recoverable losses:
-dead-lettered items and parse failures. A transient error that retried and succeeded does not
-degrade the run. An HTTP 404 on a stale sitemap link is recorded as not-found and is not a
-loss at all, because it is store-side link rot rather than a pipeline fault. That distinction
-is what separates a fleet whose status field means something from one where every run looks
-degraded.
-
-Finalization runs on a fresh session under a short statement timeout and recomputes run
-totals from the snapshot and error tables.
+Known clone pairs are the one sanctioned exception: `SS8050` and `8050`, `LM7805` and `L7805`
+are mapped in an explicit alias table, enumerated and never inferred.
 
 ## Engineering Decisions
 
-**The platform abstraction was validated by the second batch, not the first.** Building
-shared Shopify and WooCommerce bases while only two or three stores existed is speculative
-generality, the kind that usually ages badly. It paid off when ten further retailers were
-added at once: a probe hitting each candidate's homepage, platform-specific API paths and
-HTML fingerprints sorted them into existing bases, leaving only two needing bespoke code.
+### Second reversal — reachability belongs to the IP, not the store
 
-**Reachability is a property of the IP, not of the store.** Three stores were classified
-early as Cloudflare-protected and residential-only, on evidence from a single datacenter
-address. The first full fleet run put all three on the datacenter host; all three completed
-successfully. The original finding had measured that address's reputation and attributed it
-to the stores. The inverse also held — one plain WooCommerce store with no protection history
-turned out to be datacenter-blocked and had to move to the residential host, and a store
-fingerprinted as one platform turned out to run another. The decision record was amended in
-place with the contradicting evidence rather than quietly corrected, because the original
-reasoning was sound and only its scope was wrong.
+**Decided:** three stores were classified as bot-protected and reachable only from a
+residential network, and the deployment plan placed them there.
 
-**A ranking signal should amplify relevance, never gate it.** In the search harness, category
-classification was blended into ranking as an additive bonus. Because that bonus was large
-relative to the term rewarding retrieval position, a misclassification could bury an
-excellent match: two strong matches for a module query, ranked fifth and fourteenth of
-fifteen hundred candidates by combined keyword and vector retrieval, fell to composite ranks
-496 and 1,548 of 2,732 once the category term was added. Replacing the additive bonus
-with a bounded multiplicative boost let category lift an already-good match above its
-neighbors while never pushing a poorly-retrieved item above a well-retrieved one.
+**Measured:** the first full fleet run put all three on a datacenter host instead, and all
+three completed successfully. The original finding had measured one datacenter address's
+reputation and attributed it to the stores. The inverse held too — a plain WooCommerce store
+with no protection history turned out to be datacenter-blocked, and a store fingerprinted as
+one platform was running another.
+
+**Changed:** the three cleared stores moved to the datacenter host and the blocked one moved
+to residential, inverting the original placement. The decision record was amended in place
+with the contradicting evidence rather than quietly corrected — the reasoning had been sound
+and only its scope was wrong, and a record showing both is worth more than one showing only
+the conclusion.
+
+**Where it stands:** two stores still require a residential path, and every classification is
+treated as a measurement with an expiry rather than a property of the store.
+
+### Third reversal — a ranking signal must amplify, never gate
+
+**Decided:** in the search harness, category classification entered ranking as an additive
+bonus, on the assumption that knowing a query's category should promote matches in it.
+
+**Measured:** the bonus was large relative to the term rewarding retrieval position, so one
+wrong category label could bury an excellent match. Two strong matches for a module query,
+ranked fifth and fourteenth by combined keyword and vector retrieval, fell to 496th and
+1,548th once the category term was applied.
+
+**Changed:** a bounded multiplicative boost replaced it. Category can now lift an
+already-good match above its neighbors but can never push a poorly-retrieved item above a
+well-retrieved one. Classification will never be perfect at this scale, so it cannot be
+allowed to act as a gate.
+
+**Where it stands:** the bounded form is what the public beta runs on.
+
+## Architecture
+
+Every one of those measurements needed a corpus to measure against, and building it was most
+of the work. Seventeen storefronts, twelve of them on three shared transports and five on
+their own.
+
+Each store implements two methods against a shared abstract base: `discover()`, which a
+master process calls to seed crawl items, and `process()`, which workers call per item.
+Throttling, snapshot persistence, error logging and run accounting live in the base, so
+onboarding a retailer is two methods and a parser. That abstraction is the one central
+decision measurement *confirmed* rather than overturned: when ten further retailers were added
+at once, a probe of each candidate's homepage, platform API paths and HTML fingerprints sorted
+eight of them into the existing bases, leaving two that needed bespoke code.
+
+A master/worker system runs over `pgmq`, one queue per store, with workers competing through
+`FOR UPDATE SKIP LOCKED`. Masters are long-lived for a single scrape and own run lifecycle;
+workers run continuously and attach to whichever run is active, so masters come and go beneath
+a stable pool. Keeping the queue inside the transactional database means an item and the rows
+it produces commit together, which removes a class of partial-failure states an external
+broker introduces. One Postgres instance carries the relational data and the queue; the vector
+extension ships in the image for the resolver's embedding tier but is not yet enabled.
+
+### The search harness
+
+A deliberately throwaway harness came first, to find out whether the taxonomy and query
+interpretation could locate the right parts before the production stack committed to a
+retrieval design. It indexed 132,884 classified products — an earlier seven-store dataset,
+before the fleet reached seventeen — combined keyword and vector retrieval through reciprocal
+rank fusion, and used an LLM to turn each query into a category and a search keyword. It was
+good enough to justify the approach, and Components101 deployed it as a public beta, where it
+picked up user registration, retention and click analytics, a photo-identification endpoint
+and a browser extension. It is still the throwaway stack.
+
+## Workflow
+
+Most operational pain in a scraping fleet comes from runs that end in an ambiguous state, so
+run status is classified from the database rather than from in-loop counters that are racy
+under a worker pool. Only non-recoverable losses count: dead-lettered items and parse
+failures. A transient error that retried and succeeded leaves the run clean, and an HTTP 404
+on a stale sitemap link is recorded as not-found and is not a loss at all — that is store-side
+link rot, not a pipeline fault.
+
+That distinction is what makes the status field worth reading. Without it every run on a fleet
+this size looks degraded, and an operator stops checking.
 
 ## Outcomes
 
-All seventeen storefronts run end to end. The first full fleet run captured roughly 184,000
-raw product listings, with the Cloudflare-protected store contributing well over half
-through a browser-driven warm-up flow executed from the residential host, because that store
-rejects datacenter traffic before the API call is attempted.
+All seventeen storefronts run end to end, and the first full fleet run captured 184,801 raw
+product listings. The bot-protected store contributed well over half of them through a
+browser-driven warm-up flow executed from a residential host.
 
-The scraper layer carries 397 tests over parsers, the shared transports, per-store discovery
-and processing, throttling, the queue contract and the worker harness — all on inline
-fixtures, with no database or network dependency.
+The scraper layer carries 397 tests, all on inline fixtures with no database or network. That
+boundary is also their limit, and a five-pass review found what it leaves uncovered: a
+deduplication check that ran before insert with no database constraint behind it, workers that
+could attribute output to a finalized run, and a malformed queue message that crash-looped
+workers without dead-lettering. Each is a database or queue behavior that an inline-fixture
+suite cannot see. All were fixed and covered by regression tests.
 
-A five-pass review across the codebase, with findings validated by live runs against all
-seventeen stores, surfaced a cluster of individually minor defects: snapshot deduplication
-that checked before inserting with no database constraint behind it; workers that could
-attribute output to an already-finalized run; a malformed queue message that crash-looped
-workers without ever dead-lettering; and pagination that decided completion from post-filter
-counts, so one junk entry could silently truncate a catalog. All were fixed and covered by
-regression tests. The review also measured something no checklist would have caught: four stores had no
-politeness delay on the product path at all, and robu — the one store publishing a
-`Crawl-delay` of five seconds — was being fetched one second apart. Each of the four now
-sleeps between product fetches.
-
-Handover was part of the deliverable. An 1,800-line code walkthrough was written for the
-incoming Go backend engineer — opening with a Python orientation and closing with the runtime
-behaviors most likely to surprise someone arriving from Go. It documents the seven-store
-system as it stood when the incoming engineer joined, and lives on that branch rather than
-travelling with the fleet as it grew.
+The review also measured something no checklist would have caught: four stores had no
+politeness delay on the product path, and the one publishing a `Crawl-delay` of five seconds
+was being fetched a second apart. All four now sleep between fetches, and that store honors
+the full five seconds.
 
 ## Limitations
 
-The resolver runs on Components101's internal infrastructure and sits outside the shared
-codebase, so the fleet and the resolver cannot be read as one system from outside. The
-corpus figure counts raw listings captured, not resolved components; the number of distinct
-physical parts behind 184,000 listings is a different and much smaller number.
+The resolver is built but not in the search path, so the beta still compares listings rather
+than components — the capability the whole identity model exists to provide is not yet what
+its users experience. Closing that gap means working through a queue sized by the 67,128 rows
+with no part number, and that cost has not been paid.
 
-The deployed beta serves search from a flat classified snapshot rather than from resolved
-canonical products, so it compares listings rather than components. The capability the
-resolver exists to provide is not yet what users of the beta experience.
+Two stores depend on a residential network path. That is an operational dependency, not a
+solved problem: a change in either store's protection posture reopens it. The proxy-rotation
+layer that would mitigate it is built and wired but unused, so it is untested under load.
 
-Two stores depend on a residential network path, which is an operational dependency rather
-than a solved problem: a change in either store's protection posture reopens it.
-
-Every reachability classification is a measurement of one host against one store on one day,
-and this project has already been wrong in both directions. They should be re-measured on
-deployment rather than trusted from the record.
-
-Every figure here reflects the state at handover in July 2026, measured in a repository that
-is private and client-owned, so none of it is independently checkable by a reader. The
-engagement concluded before the resolver reached the search path, and the system has since
-continued under a different team — store count, test count and deployment shape have all
-moved on since.
+The engagement ended in July 2026 with the resolver delivered and the fleet running, and the
+system has continued under a different team since. What transfers is the habit rather than the
+figures: every number here is a measurement of one system on one day, this project was wrong
+about three of them, and the ones that have not been re-measured are the ones to distrust
+first.
