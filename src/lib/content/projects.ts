@@ -62,9 +62,11 @@ export function getAllProjects(): Project[] {
   }
 
   // Production release gate: a published project must have a hero — a registered live
-  // cover OR a heroImage. Dev/preview builds stay permissive (the hero may be empty until
-  // the cover stage); only the live production build (VERCEL_ENV=production) fails, so a
-  // heroless project can never reach production.
+  // cover OR a heroImage — and alt text for it. Dev/preview builds stay permissive (the
+  // hero may be empty until the cover stage); only the live production build
+  // (VERCEL_ENV=production) fails, so neither a heroless nor an unlabelled hero can reach
+  // production. heroAlt is gated here rather than in the schema because a live cover
+  // satisfies the hero without a heroImage, so the schema cannot tell whether a hero exists.
   if (process.env.VERCEL_ENV === "production") {
     const heroless = projects.filter(
       (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
@@ -76,6 +78,17 @@ export function getAllProjects(): Project[] {
           .join(
             ", ",
           )}. Add a heroImage or register a live cover before releasing.`,
+      );
+    }
+
+    const unlabelled = projects.filter((p) => !p.frontmatter.heroAlt);
+    if (unlabelled.length > 0) {
+      throw new Error(
+        `Production release: project(s) have a hero with no heroAlt: ${unlabelled
+          .map((p) => p.slug)
+          .join(
+            ", ",
+          )}. Add heroAlt describing the delivered cover before releasing.`,
       );
     }
   }

@@ -3,7 +3,11 @@ import { coverComponents } from "./covers";
 
 interface HeroMediaProps {
   src?: string;
-  alt: string;
+  // Optional for the same reason src is: a project in the content stage has no cover yet.
+  // Unused on the live-cover path (decorative inline SVG). Defaults to "" so a hero that
+  // exists without alt text degrades to decorative rather than crashing; the production
+  // gate (getAllProjects) refuses to ship that state.
+  alt?: string;
   poster?: string;
   loop?: boolean;
   slug?: string;
@@ -19,7 +23,7 @@ function isSvg(src: string) {
 
 export function HeroMedia({
   src,
-  alt,
+  alt = "",
   poster,
   loop = true,
   slug,

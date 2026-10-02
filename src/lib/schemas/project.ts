@@ -53,7 +53,10 @@ export const ProjectFrontmatterSchema = z
     // (empty hero until the cover stage); the production build (VERCEL_ENV=production)
     // fails if a project has neither a live cover nor a heroImage — see getAllProjects.
     heroImage: z.string().startsWith("/").optional(),
-    heroAlt: z.string().min(1),
+    // Optional for the same reason heroImage is: a project in the content stage has no
+    // cover yet, so there is nothing to describe. The production gate in
+    // content/projects.ts requires it alongside the hero itself.
+    heroAlt: z.string().min(1).optional(),
     heroPoster: z.string().startsWith("/").optional(),
     heroVideoLoop: z.boolean().optional().default(true),
     tags: z.array(z.string()).min(1).max(8),
