@@ -349,7 +349,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 16,
     weight: 400,
     lh: 24,
-    sample: "Monospaced code for inline snippets and code blocks.",
+    sample: "Token names, measurements, and scale readouts.",
   },
 ];
 
@@ -377,7 +377,7 @@ const RADIUS_TOKENS: ShapeItem[] = [
     token: "none",
     radius: "var(--radius-none)",
     value: "0px",
-    usage: "Cards, code blocks, callouts; sharp containers",
+    usage: "Cards, code blocks, inline code, callouts; sharp containers",
   },
   {
     token: "sm",

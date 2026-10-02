@@ -132,15 +132,19 @@
     border-bottom: 2px solid var(--accent);
   }
   .prose-content code:not(pre code) {
-    /* inline code — mono-code metrics, accent text on a faint accent tint */
+    /* inline code — mono-code metrics (kept in sync with .mono-code in typography.css).
+       Accent text carries the distinction; the hairline supplies containment. No fill:
+       a background creates a luminance step across the glyphs, which fragments the
+       reading line at the 20-plus-spans-per-page density these pages run. Sharp corners
+       because this is a structural container, not a control. */
     font-family: var(--font-mono), monospace;
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-none);
     padding: 2px 6px;
   }
   /* Shiki dual-theme. defaultColor:false emits only CSS vars (no inline token
