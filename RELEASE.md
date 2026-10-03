@@ -9,6 +9,21 @@ This repo publishes through a **dual-branch model**. `release.sh` automates the 
 
 **Never merge `main` into `production`.** Each release is a **snapshot-replace**: the production worktree's tracked files are overwritten with a curated, allowlisted copy of `main`'s current state, then committed as `Release vN`. The two branches share no ancestry.
 
+## Release Versioning
+
+Release numbers are a **release train, not semver** — `vX.Y` never implies a backwards-compatible API
+addition. Three tiers:
+
+| Tier | Meaning |
+|---|---|
+| `vX.0` | A version release — the feature set for that version (e.g. `v2.0` ships the v2 phases). |
+| `vX.Y` | Any additive release: a work/blog publish (single or clubbed), a small feature, or both. |
+| `vX.Y.Z` | Corrections only — code fixes, content edits, typos. |
+
+- The snapshot commit message is `Release vN` with the resolved number, per → Per-release procedure (snapshot `vN`).
+- A feature set under development ships its phases as separate additive releases rather than one
+  version release, so a partial feature set never blocks a publish.
+
 ## What ships (allowlist)
 
 A production snapshot keeps exactly:
@@ -18,7 +33,7 @@ src/ public/ content/ package.json package-lock.json next.config.ts
 tsconfig.json postcss.config.mjs biome.json .nvmrc .gitignore README.md
 ```
 
-Everything else is intentionally dropped (denylist): `.claude/` (including docs), `AGENTS.md`, `assets-source/`, `requirements.txt`, `playwright.config.ts`, `tmp/`. The allowlist is the single source of truth and is duplicated in `release.sh` — keep the two in sync.
+Everything else is intentionally dropped (denylist): `.claude/` (including docs), `AGENTS.md`, `assets-source/`, `requirements.txt`, `playwright.config.ts`, `tmp/`. The release script holds the authoritative allowlist; this list describes it and must be updated to follow it, never the reverse.
 
 ## Why orphan-snapshot
 
