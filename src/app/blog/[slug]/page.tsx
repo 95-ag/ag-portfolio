@@ -25,6 +25,9 @@ export async function generateMetadata({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) return {};
   const fm = post.frontmatter;
+  // A page's openGraph replaces the root's wholesale, file-based default image included, so
+  // the site default has to be named here for a post without its own ogImage.
+  const image = fm.ogImage ?? "/opengraph-image";
   return {
     title: fm.title,
     description: fm.metaDescription ?? fm.summary,
@@ -36,11 +39,11 @@ export async function generateMetadata({ params }: Props) {
       url: `/blog/${slug}`,
       publishedTime: new Date(fm.publishedAt).toISOString(),
       authors: ["Aishwarya Ganesan"],
-      ...(fm.ogImage ? { images: [fm.ogImage] } : {}),
+      images: [image],
     },
     twitter: {
       card: "summary_large_image" as const,
-      ...(fm.ogImage ? { images: [fm.ogImage] } : {}),
+      images: [image],
     },
   };
 }
