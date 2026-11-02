@@ -14,9 +14,8 @@ const MeteorShower = dynamic(
 
 // Dense-reading pages — the WebGL meteor layer is suppressed and the ASCII field uses the
 // quiet, gutter-masked treatment (dropped entirely on mobile, see AsciiField). Covers project
-// detail pages AND the dev-only /design-system gallery, which previews components against the
-// work-page backdrop. The /design-system route is pruned from production, so that branch is
-// inert there.
+// detail pages AND the /design-system gallery, which previews components against the
+// work-page backdrop.
 const READING_PAGE_PATTERN = /^\/(work\/.+|design-system)$/;
 
 // Mobile/desktop divider — matches AsciiField's MIN_WIDTH. The meteor must honor
