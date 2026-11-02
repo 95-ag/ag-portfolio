@@ -20,7 +20,7 @@ export function LinkPill({
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group inline-flex h-9 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)] active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+      className="group inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)] active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
     >
       {icon}
       {children}
