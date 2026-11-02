@@ -16,10 +16,9 @@ export interface Post {
   slug: string;
   frontmatter: PostFrontmatter;
   body: string;
-  isDraft: boolean;
 }
 
-function parsePost(dir: string, filename: string, isDraft: boolean): Post {
+function parsePost(dir: string, filename: string): Post {
   const slug = filename.replace(/\.mdx$/, "");
   const raw = fs.readFileSync(path.join(dir, filename), "utf-8");
   const { data, content } = parseFrontmatter(raw);
@@ -32,23 +31,23 @@ function parsePost(dir: string, filename: string, isDraft: boolean): Post {
     throw new Error(`Invalid frontmatter in ${filename}:\n${issues}`);
   }
 
-  return { slug, frontmatter: result.data, body: content, isDraft };
+  return { slug, frontmatter: result.data, body: content };
 }
 
 // A clean clone has no content/blog/ until the first post is published — git cannot
 // track an empty directory — so a missing directory means no posts, not an error.
-function readPosts(dir: string, isDraft: boolean): Post[] {
+function readPosts(dir: string): Post[] {
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".mdx"))
-    .map((f) => parsePost(dir, f, isDraft));
+    .map((f) => parsePost(dir, f));
 }
 
 export function getAllPosts(): Post[] {
-  const published = readPosts(BLOG_DIR, false);
+  const published = readPosts(BLOG_DIR);
   const drafts =
-    process.env.NODE_ENV === "development" ? readPosts(DRAFTS_DIR, true) : [];
+    process.env.NODE_ENV === "development" ? readPosts(DRAFTS_DIR) : [];
 
   const publishedSlugs = new Set(published.map((p) => p.slug));
   for (const draft of drafts) {
@@ -61,6 +60,7 @@ export function getAllPosts(): Post[] {
 
   const posts = [...published, ...drafts];
   const projectSlugs = new Set(getAllProjects().map((p) => p.slug));
+  const draftSlugs = new Set(drafts.map((p) => p.slug));
   const postSlugs = new Set(posts.map((p) => p.slug));
 
   for (const post of posts) {
@@ -73,12 +73,16 @@ export function getAllPosts(): Post[] {
         `relatedProject in "${post.slug}" references unknown project slug: "${relatedProject}"`,
       );
     }
+    // A published post may only point at published posts: drafts vanish from the production
+    // build, so a link to one would pass in development and fail at release.
+    const linkable = draftSlugs.has(post.slug) ? postSlugs : publishedSlugs;
     for (const slug of related ?? []) {
-      if (!projectSlugs.has(slug) && !postSlugs.has(slug)) {
-        throw new Error(
-          `related in "${post.slug}" references unknown slug: "${slug}"`,
-        );
-      }
+      if (projectSlugs.has(slug) || linkable.has(slug)) continue;
+      throw new Error(
+        draftSlugs.has(slug)
+          ? `related in "${post.slug}" references "${slug}", which is still a draft — publish it first.`
+          : `related in "${post.slug}" references unknown slug: "${slug}"`,
+      );
     }
   }
 

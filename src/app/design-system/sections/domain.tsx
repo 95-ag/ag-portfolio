@@ -53,7 +53,6 @@ const demoPosts: Post[] = [
   {
     slug: "post-one",
     body: "",
-    isDraft: false,
     frontmatter: {
       title: "Post Title",
       summary:
@@ -65,7 +64,6 @@ const demoPosts: Post[] = [
   {
     slug: "post-two",
     body: "",
-    isDraft: false,
     frontmatter: {
       title:
         "A Longer Post Title That Wraps Onto a Second Line at Narrow Widths",
@@ -290,7 +288,7 @@ export function DomainSections() {
         title="Domain · Blog Post"
         mapsTo="Domain Components → Blog Post"
         source="src/app/blog/[slug]/page.tsx · [inline]"
-        intro="The post page layout, built inline; listed, not previewed. See it on any post."
+        intro="The post page layout, built inline in src/app/blog/[slug]/page.tsx; listed, not previewed."
       >
         <InlineList items={["Blog Post Layout"]} />
       </GallerySection>
