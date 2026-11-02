@@ -13,11 +13,13 @@ import { Footer } from "@/components/shell/footer";
 import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { CopyLink } from "@/components/ui/copy-link";
 import { CopyableCode } from "@/components/ui/copyable-code";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
+import { Related } from "@/components/ui/related";
 import { Tag } from "@/components/ui/tag";
 import {
   InlineThemeSelector,
@@ -211,6 +213,42 @@ export function ComponentsSections() {
           </Specimen>
 
           <Specimen
+            id="ui-breadcrumbs"
+            name="Breadcrumbs"
+            source="@/components/ui/breadcrumbs"
+            description="Location trail above the page title on Project Detail and Blog Post. Ancestors link; the trailing segment is the current page and is not a link. Selection is suppressed: it is chrome."
+            spec="support-meta · ink-muted, current page ink · / separator · accent on ancestor hover"
+            headingLevel={4}
+          >
+            <div className="flex flex-col gap-[var(--spacing-xl)]">
+              <div className="flex flex-col gap-[var(--spacing-sm)]">
+                <span className="mono-anchor">Project trail</span>
+                <Breadcrumbs
+                  trail={[
+                    { name: "Home", href: "#ui-breadcrumbs" },
+                    { name: "Work", href: "#ui-breadcrumbs" },
+                    {
+                      name: "Evaluating Masked Autoencoders for Computer Vision",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="flex flex-col gap-[var(--spacing-sm)]">
+                <span className="mono-anchor">Longest project title</span>
+                <Breadcrumbs
+                  trail={[
+                    { name: "Home", href: "#ui-breadcrumbs" },
+                    { name: "Work", href: "#ui-breadcrumbs" },
+                    {
+                      name: "The agent that writes, illustrates, and ships this portfolio",
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          </Specimen>
+
+          <Specimen
             id="ui-copy-link"
             name="CopyLink"
             source="@/components/ui/copy-link"
@@ -254,6 +292,62 @@ export function ComponentsSections() {
               <Tag>PyTorch</Tag>
               <Tag>Next.js</Tag>
               <Tag>Computer Vision</Tag>
+            </div>
+          </Specimen>
+
+          <Specimen
+            id="ui-related"
+            name="Related"
+            source="@/components/ui/related"
+            description="Curated next reads at the end of a long-form page: up to 3 items mixing projects and posts, each a type label, title and one-line summary. Renders its own H2 and nothing at all when given no items. Stacked through tablet, three columns from lg."
+            spec="mono-anchor H2 · hairline top rule per item · title underlines on hover"
+            headingLevel={4}
+          >
+            <div className="flex flex-col gap-[var(--spacing-2xl)]">
+              <div className="flex flex-col gap-[var(--spacing-sm)]">
+                <span className="mono-anchor">Three mixed items</span>
+                <Related
+                  items={[
+                    {
+                      kind: "project",
+                      title:
+                        "Evaluating Masked Autoencoders for Computer Vision",
+                      summary:
+                        "Reconstruction-based pretraining measured against supervised baselines on a small labelled set.",
+                      href: "#ui-breadcrumbs",
+                    },
+                    {
+                      kind: "post",
+                      title: "What a measurement overturned",
+                      summary:
+                        "Three decisions that looked settled until the data said otherwise.",
+                      href: "#ui-tag",
+                    },
+                    {
+                      kind: "project",
+                      title:
+                        "The agent that writes, illustrates, and ships this portfolio",
+                      summary:
+                        "A four-skill pipeline that turns a research report and a repository into a finished case study page.",
+                      href: "#ui-related",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="flex flex-col gap-[var(--spacing-sm)]">
+                <span className="mono-anchor">One item</span>
+                <Related
+                  items={[
+                    {
+                      kind: "post",
+                      title: "What a measurement overturned",
+                      summary:
+                        "Three decisions that looked settled until the data said otherwise.",
+                      href: "#ui-tag",
+                    },
+                  ]}
+                />
+              </div>
             </div>
           </Specimen>
 
