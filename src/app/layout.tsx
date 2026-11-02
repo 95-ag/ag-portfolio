@@ -12,9 +12,9 @@ import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-// Set the reading-surface flag before first paint (no flash on direct loads of project pages);
-// SurfaceContext keeps it in sync across client navigation.
-const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/work\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
+// Set the reading-surface flag before first paint (no flash on direct loads of project and post
+// pages); SurfaceContext keeps it in sync across client navigation.
+const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|blog)\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
