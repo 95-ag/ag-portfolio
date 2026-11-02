@@ -1,4 +1,5 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
+import type { PostFrontmatter } from "@/lib/schemas/post";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 import { SITE_URL } from "@/lib/site";
 
@@ -54,10 +55,13 @@ export function buildPersonSchema(
   };
 }
 
-export function buildCreativeWorkSchema(slug: string, fm: ProjectFrontmatter) {
+export function buildSoftwareSourceCodeSchema(
+  slug: string,
+  fm: ProjectFrontmatter,
+) {
   return {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
+    "@type": "SoftwareSourceCode",
     name: fm.title,
     description: fm.metaDescription ?? fm.summary,
     url: `${SITE_URL}/work/${slug}`,
@@ -71,6 +75,28 @@ export function buildCreativeWorkSchema(slug: string, fm: ProjectFrontmatter) {
     keywords: fm.tags.join(", "),
     ...(fm.heroImage ? { image: `${SITE_URL}${fm.heroImage}` } : {}),
     ...(fm.links?.github ? { codeRepository: fm.links.github } : {}),
+  };
+}
+
+export function buildBlogPostingSchema(slug: string, fm: PostFrontmatter) {
+  const url = `${SITE_URL}/blog/${slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: fm.title,
+    description: fm.metaDescription ?? fm.summary,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: "en",
+    datePublished: new Date(fm.publishedAt).toISOString(),
+    dateModified: new Date(fm.updatedAt ?? fm.publishedAt).toISOString(),
+    author: {
+      "@type": "Person",
+      name: "Aishwarya Ganesan",
+      url: SITE_URL,
+    },
+    keywords: fm.tags.join(", "),
+    image: `${SITE_URL}${fm.ogImage ?? "/opengraph-image"}`,
   };
 }
 

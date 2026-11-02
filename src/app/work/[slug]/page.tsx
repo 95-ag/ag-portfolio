@@ -18,7 +18,7 @@ import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
 import { getRelatedForProject } from "@/lib/content/related";
 import {
   buildBreadcrumbSchema,
-  buildCreativeWorkSchema,
+  buildSoftwareSourceCodeSchema,
   serializeJsonLd,
 } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
@@ -66,7 +66,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   const fm = project.frontmatter;
-  const creativeWorkSchema = buildCreativeWorkSchema(slug, fm);
+  const softwareSourceCodeSchema = buildSoftwareSourceCodeSchema(slug, fm);
   const trail: Crumb[] = [
     { name: "Home", href: "/" },
     { name: "Work", href: "/work" },
@@ -85,7 +85,7 @@ export default async function ProjectPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: serializeJsonLd(creativeWorkSchema),
+          __html: serializeJsonLd(softwareSourceCodeSchema),
         }}
       />
       <script

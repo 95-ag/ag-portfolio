@@ -11,7 +11,11 @@ import { Tag } from "@/components/ui/display/tag";
 import { Breadcrumbs, type Crumb } from "@/components/ui/links/breadcrumbs";
 import { getAllPosts, getPostBySlug } from "@/lib/content/posts";
 import { getRelatedForPost } from "@/lib/content/related";
-import { buildBreadcrumbSchema, serializeJsonLd } from "@/lib/seo/jsonld";
+import {
+  buildBlogPostingSchema,
+  buildBreadcrumbSchema,
+  serializeJsonLd,
+} from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
 import { formatDate } from "@/lib/utils/format-date";
 
@@ -70,10 +74,16 @@ export default async function PostPage({ params }: Props) {
       url: href === "/" ? SITE_URL : `${SITE_URL}${href}`,
     })),
   );
+  const blogPostingSchema = buildBlogPostingSchema(slug, fm);
   const related = getRelatedForPost(slug);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: serializeJsonLd escapes <, > and & so the payload cannot close the script tag
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogPostingSchema) }}
+      />
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: serializeJsonLd escapes <, > and & so the payload cannot close the script tag
