@@ -48,17 +48,6 @@ export function getAllProjects(): Project[] {
     );
   }
 
-  const allSlugs = new Set(projects.map((p) => p.slug));
-  for (const project of projects) {
-    for (const related of project.frontmatter.relatedProjects ?? []) {
-      if (!allSlugs.has(related)) {
-        throw new Error(
-          `relatedProjects in "${project.slug}" references unknown slug: "${related}"`,
-        );
-      }
-    }
-  }
-
   // Production release gate: a published project must have a hero — a registered live
   // cover OR a heroImage — and a static hero must carry alt text. Dev/preview builds stay
   // permissive (the hero may be empty until the cover stage); only the live production

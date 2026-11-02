@@ -68,7 +68,7 @@ export const ProjectFrontmatterSchema = z
     contributors: z.array(ContributorSchema).optional(),
     ogImage: z.string().startsWith("/").optional(),
     metaDescription: z.string().max(160).optional(),
-    relatedProjects: z.array(z.string()).optional(),
+    related: z.array(z.string()).optional(),
   })
   .refine(
     (data) => !data.heroImage || !isVideo(data.heroImage) || !!data.heroPoster,
