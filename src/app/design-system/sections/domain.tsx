@@ -118,7 +118,9 @@ export function DomainSections() {
         source="src/app/page.tsx · [inline]"
         intro="Home-page compositions built inline; listed, not previewed. See them on the home page."
       >
-        <InlineList items={["Hero", "Featured Projects Grid"]} />
+        <InlineList
+          items={["Hero", "Featured Projects Grid", "Latest Writing"]}
+        />
       </GallerySection>
 
       <GallerySection

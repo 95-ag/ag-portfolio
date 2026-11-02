@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PostRow } from "@/components/blog/post-row";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
 import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
@@ -9,6 +10,7 @@ import { ProjectCard } from "@/components/project/project-card";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { getAbout } from "@/lib/content/about";
+import { getAllPosts } from "@/lib/content/posts";
 import { getFeaturedProjects } from "@/lib/content/projects";
 import { buildPersonSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const featured = getFeaturedProjects();
+  const latestPosts = getAllPosts().slice(0, 3);
   const { frontmatter: about } = getAbout();
   const projectTags = featured.flatMap((p) => p.frontmatter.tags);
   const personSchema = buildPersonSchema(about, projectTags);
@@ -128,6 +131,32 @@ export default function HomePage() {
                   className="body-caption transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
                   View all projects →
+                </Link>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {/* Latest writing */}
+      {latestPosts.length > 0 && (
+        <Section className="pt-0">
+          <Container>
+            <div className="flex flex-col gap-[var(--spacing-lg)]">
+              <h2 className="mono-anchor">Latest writing</h2>
+              <ul className="divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
+                {latestPosts.map((post) => (
+                  <li key={post.slug}>
+                    <PostRow post={post} />
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-end">
+                <Link
+                  href="/blog"
+                  className="body-caption transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                >
+                  Read the blog →
                 </Link>
               </div>
             </div>

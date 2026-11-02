@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IconProps } from "@/components/icons/icon-base";
+import { EditNoteIcon } from "@/components/icons/material/edit-note";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { PillThemeSelector } from "@/components/ui/theme-selector";
@@ -14,6 +15,7 @@ type NavIconComponent = (props: IconProps) => React.ReactElement;
 const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
   { href: "/about", label: "About", Icon: FingerprintIcon },
   { href: "/work", label: "Work", Icon: FolderCodeIcon },
+  { href: "/blog", label: "Blog", Icon: EditNoteIcon },
 ];
 
 function LogoMark({ active }: { active: boolean }) {

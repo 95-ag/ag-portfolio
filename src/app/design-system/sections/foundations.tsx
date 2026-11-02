@@ -12,6 +12,7 @@ import { DarkModeIcon } from "@/components/icons/material/dark-mode";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { DownloadIcon } from "@/components/icons/material/download";
+import { EditNoteIcon } from "@/components/icons/material/edit-note";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { LightModeIcon } from "@/components/icons/material/light-mode";
@@ -465,6 +466,7 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "DeployedCode", Icon: DeployedCodeIcon },
   { name: "Description", Icon: DescriptionIcon },
   { name: "Download", Icon: DownloadIcon },
+  { name: "EditNote", Icon: EditNoteIcon },
   { name: "Fingerprint", Icon: FingerprintIcon },
   { name: "FolderCode", Icon: FolderCodeIcon },
   { name: "LightMode", Icon: LightModeIcon },
