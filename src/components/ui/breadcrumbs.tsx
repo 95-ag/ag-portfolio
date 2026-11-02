@@ -9,14 +9,14 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ trail }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="select-none">
-      <ol className="support-meta flex flex-wrap items-baseline">
+      <ol className="support-meta">
         {trail.map((crumb, index) => {
           const isLast = index === trail.length - 1;
           return (
             <li
               key={crumb.name}
               aria-current={isLast ? "page" : undefined}
-              className="flex min-w-0 items-baseline"
+              className="inline"
             >
               {crumb.href && !isLast ? (
                 <Link

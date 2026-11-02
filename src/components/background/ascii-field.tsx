@@ -37,7 +37,7 @@ const CELL = 30;
 // Mobile/desktop divider — matches the site's `md` breakpoint and nav switch.
 const MIN_WIDTH = 768;
 const DESKTOP_DENSITY = 0.2;
-// Mobile (non-project) gets a sparser, fainter full-bleed field — texture, not noise.
+// Mobile (non-reading pages) gets a sparser, fainter full-bleed field — texture, not noise.
 const MOBILE_DENSITY = 0.1;
 const MOBILE_OPACITY = 0.55;
 // Desktop/tablet: clear a centered band sized to the content column (+buffer) so
