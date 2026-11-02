@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
 import { HeroMedia } from "@/components/project/hero-media";
-import { Tag } from "@/components/ui/tag";
+import { Tag } from "@/components/ui/display/tag";
 import type { Project } from "@/lib/content/projects";
 import { cn } from "@/lib/utils/cn";
 

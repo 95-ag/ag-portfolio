@@ -12,8 +12,8 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
-import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
-import { Related } from "@/components/ui/related";
+import { Related } from "@/components/ui/display/related";
+import { Breadcrumbs, type Crumb } from "@/components/ui/links/breadcrumbs";
 import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
 import { getRelatedForProject } from "@/lib/content/related";
 import {

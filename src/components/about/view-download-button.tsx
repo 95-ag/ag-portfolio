@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { DownloadIcon } from "@/components/icons/material/download";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/controls/button";
 
 // "View or save": one click opens the file in a new tab AND downloads it. The dual action needs a
 // client onClick (a declarative <a download> cancels the new-tab navigation), so it can't be inlined

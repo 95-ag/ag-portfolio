@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
 import { Container } from "@/components/layout/container";
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/controls/button";
+import { Heading } from "@/components/ui/display/heading";
 
 export default function NotFound() {
   return (

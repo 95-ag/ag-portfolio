@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Tag } from "@/components/ui/tag";
+import { Tag } from "@/components/ui/display/tag";
 import type { Post } from "@/lib/content/posts";
 import { cn } from "@/lib/utils/cn";
 import { formatDate } from "@/lib/utils/format-date";

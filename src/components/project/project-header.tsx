@@ -3,8 +3,8 @@ import { ArticleIcon } from "@/components/icons/material/article";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
-import { LinkPill } from "@/components/ui/link-pill";
-import { Tag } from "@/components/ui/tag";
+import { Tag } from "@/components/ui/display/tag";
+import { LinkPill } from "@/components/ui/links/link-pill";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 interface ProjectHeaderProps {

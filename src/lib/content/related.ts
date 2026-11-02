@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { RelatedItem } from "@/components/ui/related";
+import type { RelatedItem } from "@/components/ui/display/related";
 import { getAllPosts } from "./posts";
 import { getAllProjects } from "./projects";
 

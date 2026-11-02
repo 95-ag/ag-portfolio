@@ -11,7 +11,7 @@ import { EditNoteIcon } from "@/components/icons/material/edit-note";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { MenuIcon } from "@/components/icons/material/menu";
-import { InlineThemeSelector } from "@/components/ui/theme-selector";
+import { InlineThemeSelector } from "@/components/ui/controls/theme-selector";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
 

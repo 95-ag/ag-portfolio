@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Popover, PopoverDescription } from "@/components/ui/popover";
+import { Popover, PopoverDescription } from "@/components/ui/display/popover";
 
 interface Logo {
   src: string;

@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { ProjectCard } from "@/components/project/project-card";
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/ui/display/heading";
 import { getProjectsForWork } from "@/lib/content/projects";
 
 export const metadata: Metadata = {

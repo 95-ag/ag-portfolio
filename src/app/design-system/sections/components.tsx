@@ -14,19 +14,19 @@ import { Footer } from "@/components/shell/footer";
 import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { Button } from "@/components/ui/button";
-import { CopyLink } from "@/components/ui/copy-link";
-import { CopyableCode } from "@/components/ui/copyable-code";
-import { Heading } from "@/components/ui/heading";
-import { LinkPill } from "@/components/ui/link-pill";
-import { Popover, PopoverDescription } from "@/components/ui/popover";
-import { Related } from "@/components/ui/related";
-import { Tag } from "@/components/ui/tag";
+import { Button } from "@/components/ui/controls/button";
 import {
   InlineThemeSelector,
   PillThemeSelector,
-} from "@/components/ui/theme-selector";
+} from "@/components/ui/controls/theme-selector";
+import { CopyableCode } from "@/components/ui/display/copyable-code";
+import { Heading } from "@/components/ui/display/heading";
+import { Popover, PopoverDescription } from "@/components/ui/display/popover";
+import { Related } from "@/components/ui/display/related";
+import { Tag } from "@/components/ui/display/tag";
+import { Breadcrumbs } from "@/components/ui/links/breadcrumbs";
+import { CopyLink } from "@/components/ui/links/copy-link";
+import { LinkPill } from "@/components/ui/links/link-pill";
 import {
   GallerySection,
   Specimen,
@@ -148,7 +148,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-button"
             name="Button"
-            source="@/components/ui/button"
+            source="@/components/ui/controls/button"
             description="Primary action and link control; used for CTAs and actions across the site."
             headingLevel={4}
           >
@@ -171,7 +171,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-theme-selector"
             name="ThemeSelector"
-            source="@/components/ui/theme-selector"
+            source="@/components/ui/controls/theme-selector"
             description="The three-option theme control (system / light / dark). Two variants from one file: a collapsed pill that expands on hover (pill nav) and an always-expanded inline row (mobile menu + this page's header)."
             headingLevel={4}
           >
@@ -196,7 +196,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-link-pill"
             name="LinkPill"
-            source="@/components/ui/link-pill"
+            source="@/components/ui/links/link-pill"
             description="Compact pill link with a leading icon; used for external and social links."
             headingLevel={4}
           >
@@ -217,7 +217,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-breadcrumbs"
             name="Breadcrumbs"
-            source="@/components/ui/breadcrumbs"
+            source="@/components/ui/links/breadcrumbs"
             description="Location trail above the page title on Project Detail and Blog Post. Ancestors link; the trailing segment is the current page and is not a link. Selection is suppressed: it is chrome."
             spec="support-meta · ink-muted, current page ink · / separator · accent on ancestor hover"
             headingLevel={4}
@@ -253,7 +253,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-copy-link"
             name="CopyLink"
-            source="@/components/ui/copy-link"
+            source="@/components/ui/links/copy-link"
             description="Inline value with a copy-to-clipboard affordance; used for the contact email."
             headingLevel={4}
           >
@@ -265,7 +265,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-heading"
             name="Heading"
-            source="@/components/ui/heading"
+            source="@/components/ui/display/heading"
             description="Maps a heading level (h1–h6) to a semantic type token, keeping level (a11y) and visual style decoupled. Used by the page headers on home, about, work, and 404. The six type values are in Foundations → Typography; demoed at level 4 below."
             headingLevel={4}
           >
@@ -285,7 +285,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-tag"
             name="Tag"
-            source="@/components/ui/tag"
+            source="@/components/ui/display/tag"
             description="Mono uppercase metadata chip; labels stack and topic tags on cards and project pages."
             spec="mono uppercase chip · surface-tag · radius-sm"
             headingLevel={4}
@@ -300,7 +300,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-popover"
             name="Popover"
-            source="@/components/ui/popover"
+            source="@/components/ui/display/popover"
             description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens above the mark, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
             spec="surface-elevated · hairline · radius-sm · body-caption · z-popover (45) · 44×44 hit area"
             headingLevel={4}
@@ -357,7 +357,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-related"
             name="Related"
-            source="@/components/ui/related"
+            source="@/components/ui/display/related"
             description="Curated next reads at the end of a long-form page: up to 3 items mixing projects and posts, each a type label, title and one-line summary. Renders its own H2 and nothing at all when given no items. Stacked through tablet, three columns from lg."
             spec="mono-anchor H2 · hairline top rule per item · title underlines on hover"
             headingLevel={4}
@@ -413,7 +413,7 @@ export function ComponentsSections() {
           <Specimen
             id="ui-copyable-code"
             name="CopyableCode"
-            source="@/components/ui/copyable-code"
+            source="@/components/ui/display/copyable-code"
             description="Inline code with a copy button; used for shell and install commands."
             headingLevel={4}
           >
