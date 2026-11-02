@@ -16,9 +16,7 @@ export interface Project {
 }
 
 function getProjectFiles(): string[] {
-  return fs
-    .readdirSync(CONTENT_DIR)
-    .filter((f) => f.endsWith(".mdx") && !f.startsWith("_"));
+  return fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"));
 }
 
 function parseProject(filename: string): Project {
