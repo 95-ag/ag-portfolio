@@ -26,6 +26,9 @@
 *:Zone.Identifier
 /tmp
 
+# unpublished blog posts — tracked means published
+/content/blog/_drafts/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
