@@ -15,7 +15,7 @@ export function PostRow({ post }: PostRowProps) {
     <Link
       href={`/blog/${slug}`}
       className={cn(
-        "group flex flex-col gap-[var(--spacing-xs)] py-[var(--spacing-lg)]",
+        "group flex select-none flex-col gap-[var(--spacing-xs)] py-[var(--spacing-lg)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
       )}
     >
