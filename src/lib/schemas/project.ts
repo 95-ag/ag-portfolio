@@ -55,7 +55,7 @@ export const ProjectFrontmatterSchema = z
     heroImage: z.string().startsWith("/").optional(),
     // Optional for the same reason heroImage is: a project in the content stage has no
     // cover yet, so there is nothing to describe. The production gate in
-    // content/projects.ts requires it alongside the hero itself.
+    // content/projects.ts requires it where a heroImage is set and no live cover is registered.
     heroAlt: z.string().min(1).optional(),
     heroPoster: z.string().startsWith("/").optional(),
     heroVideoLoop: z.boolean().optional().default(true),
