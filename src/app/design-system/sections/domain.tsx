@@ -87,12 +87,31 @@ const demoPosts: Post[] = [
 // Dedicated logo/avatar samples (not the diagram/figure ones) — fixed colours, since logos sit on a
 // white badge and avatars are cover-cropped into a small circle.
 const demoLogos = [
-  { src: "/design-system/samples/logo-a.svg", alt: "Sample logo A" },
-  { src: "/design-system/samples/logo-b.svg", alt: "Sample logo B" },
+  {
+    src: "/design-system/samples/logo-a.svg",
+    alt: "Sample logo A",
+    name: "Sample Institute",
+    location: "Stockholm, Sweden",
+  },
+  {
+    src: "/design-system/samples/logo-b.svg",
+    alt: "Sample logo B",
+    name: "Sample Company",
+    url: "https://example.com",
+  },
 ];
 const demoContributors = [
-  { name: "Sample One", avatar: "/design-system/samples/avatar-a.svg" },
-  { name: "Sample Two", avatar: "/design-system/samples/avatar-b.svg" },
+  {
+    name: "Sample One",
+    avatar: "/design-system/samples/avatar-a.svg",
+    role: "Sample role",
+  },
+  {
+    name: "Sample Two",
+    avatar: "/design-system/samples/avatar-b.svg",
+    role: "Sample role",
+    url: "https://example.com",
+  },
 ];
 
 // prose-content owns the list styling for these listed [inline] sections.
@@ -174,7 +193,7 @@ export function DomainSections() {
           id="project-hero-overlay"
           name="HeroMetaOverlay"
           source="@/components/project/hero-meta-overlay"
-          description="A separate, non-interactive overlay on the detail-page hero: logos bottom-left, contributor avatars bottom-right. Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
+          description="The provenance overlay on the detail-page hero: logos bottom-left, contributor avatars bottom-right, each a Popover trigger revealing a name with a location or role. Hover or focus a mark to see its reveal; the second logo and second contributor carry a url, so they link. Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
         >
           <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
             <HeroMetaOverlay

@@ -117,7 +117,6 @@ export default async function ProjectPage({ params }: Props) {
                 <HeroMetaOverlay
                   logos={fm.logos}
                   contributors={fm.contributors}
-                  interactive
                 />
               </div>
 

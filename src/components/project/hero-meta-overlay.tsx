@@ -1,27 +1,27 @@
 import Image from "next/image";
+import { Popover, PopoverDescription } from "@/components/ui/popover";
 
 interface Logo {
   src: string;
   alt: string;
+  name: string;
+  location?: string;
+  url?: string;
 }
 
 interface Contributor {
   name: string;
   avatar: string;
+  role?: string;
   url?: string;
 }
 
 interface HeroMetaOverlayProps {
   logos?: Logo[];
   contributors?: Contributor[];
-  interactive?: boolean;
 }
 
-export function HeroMetaOverlay({
-  logos,
-  contributors,
-  interactive = false,
-}: HeroMetaOverlayProps) {
+export function HeroMetaOverlay({ logos, contributors }: HeroMetaOverlayProps) {
   const hasLogos = logos && logos.length > 0;
   const hasContributors = contributors && contributors.length > 0;
   if (!hasLogos && !hasContributors) return null;
@@ -32,18 +32,25 @@ export function HeroMetaOverlay({
       {hasLogos ? (
         <div className="pointer-events-auto flex items-center gap-[var(--spacing-xs)] md:gap-[var(--spacing-sm)]">
           {logos.map((logo) => (
-            <div
+            <Popover
               key={logo.src}
-              className="relative h-8 w-8 overflow-hidden rounded-full border border-[var(--hairline)] bg-white md:h-10 md:w-10"
+              label={logo.alt}
+              description={
+                <PopoverDescription name={logo.name} detail={logo.location} />
+              }
+              align="start"
+              href={logo.url}
             >
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                fill
-                className="object-contain p-1"
-                unoptimized={logo.src.endsWith(".svg")}
-              />
-            </div>
+              <span className="relative block h-8 w-8 overflow-hidden rounded-full border border-[var(--hairline)] bg-white md:h-10 md:w-10">
+                <Image
+                  src={logo.src}
+                  alt=""
+                  fill
+                  className="object-contain p-1"
+                  unoptimized={logo.src.endsWith(".svg")}
+                />
+              </span>
+            </Popover>
           ))}
         </div>
       ) : (
@@ -52,36 +59,30 @@ export function HeroMetaOverlay({
 
       {/* Bottom-right: contributor avatars */}
       {hasContributors && (
-        <div className="pointer-events-auto flex items-center">
-          {contributors.map((c, i) => {
-            const img = (
+        <div className="pointer-events-auto flex items-center -space-x-1.5">
+          {contributors.map((contributor) => (
+            <Popover
+              key={contributor.name}
+              label={contributor.name}
+              description={
+                <PopoverDescription
+                  name={contributor.name}
+                  detail={contributor.role}
+                />
+              }
+              align="end"
+              href={contributor.url}
+            >
               <Image
-                key={c.name}
-                src={c.avatar}
-                alt={c.name}
+                src={contributor.avatar}
+                alt=""
                 width={24}
                 height={24}
                 className="h-5 w-5 rounded-full border border-[var(--hairline)] object-cover md:h-6 md:w-6"
-                style={{ marginLeft: i > 0 ? "-6px" : undefined }}
-                unoptimized={c.avatar.endsWith(".svg")}
+                unoptimized={contributor.avatar.endsWith(".svg")}
               />
-            );
-            return interactive && c.url ? (
-              <a
-                key={c.name}
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={c.name}
-                className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-                style={{ marginLeft: i > 0 ? "-6px" : undefined }}
-              >
-                {img}
-              </a>
-            ) : (
-              img
-            );
-          })}
+            </Popover>
+          ))}
         </div>
       )}
     </div>

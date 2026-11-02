@@ -1,4 +1,5 @@
 import rehypeShiki from "@shikijs/rehype";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
@@ -19,6 +20,7 @@ import { CopyLink } from "@/components/ui/copy-link";
 import { CopyableCode } from "@/components/ui/copyable-code";
 import { Heading } from "@/components/ui/heading";
 import { LinkPill } from "@/components/ui/link-pill";
+import { Popover, PopoverDescription } from "@/components/ui/popover";
 import { Related } from "@/components/ui/related";
 import { Tag } from "@/components/ui/tag";
 import {
@@ -292,6 +294,63 @@ export function ComponentsSections() {
               <Tag>PyTorch</Tag>
               <Tag>Next.js</Tag>
               <Tag>Computer Vision</Tag>
+            </div>
+          </Specimen>
+
+          <Specimen
+            id="ui-popover"
+            name="Popover"
+            source="@/components/ui/popover"
+            description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens above the mark, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
+            spec="surface-elevated · hairline · radius-sm · body-caption · z-popover (45) · 44×44 hit area"
+            headingLevel={4}
+          >
+            <div className="flex flex-col gap-[var(--spacing-md)]">
+              <span className="mono-anchor">
+                Start-aligned, button · end-aligned, with a link
+              </span>
+              <div className="flex items-center justify-between gap-[var(--spacing-md)] rounded-[var(--radius-md)] bg-[var(--surface-deep)] p-[var(--spacing-md)]">
+                <Popover
+                  label="Sample logo A"
+                  description={
+                    <PopoverDescription
+                      name="Sample Institute"
+                      detail="Stockholm, Sweden"
+                    />
+                  }
+                  align="start"
+                >
+                  <span className="relative block h-10 w-10 overflow-hidden rounded-full border border-[var(--hairline)] bg-white">
+                    <Image
+                      src="/design-system/samples/logo-a.svg"
+                      alt=""
+                      fill
+                      className="object-contain p-1"
+                      unoptimized
+                    />
+                  </span>
+                </Popover>
+                <Popover
+                  label="Sample Two"
+                  description={
+                    <PopoverDescription
+                      name="Sample Two"
+                      detail="Sample role"
+                    />
+                  }
+                  align="end"
+                  href="https://example.com"
+                >
+                  <Image
+                    src="/design-system/samples/avatar-b.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 rounded-full border border-[var(--hairline)] object-cover"
+                    unoptimized
+                  />
+                </Popover>
+              </div>
             </div>
           </Specimen>
 
