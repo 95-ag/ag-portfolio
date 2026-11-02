@@ -60,33 +60,41 @@ export function getAllProjects(): Project[] {
   }
 
   // Production release gate: a published project must have a hero — a registered live
-  // cover OR a heroImage — and alt text for it. Dev/preview builds stay permissive (the
-  // hero may be empty until the cover stage); only the live production build
-  // (VERCEL_ENV=production) fails, so neither a heroless nor an unlabelled hero can reach
-  // production. heroAlt is gated here rather than in the schema because a live cover
-  // satisfies the hero without a heroImage, so the schema cannot tell whether a hero exists.
+  // cover OR a heroImage — and a static hero must carry alt text. Dev/preview builds stay
+  // permissive (the hero may be empty until the cover stage); only the live production
+  // build (VERCEL_ENV=production) fails. heroAlt is required only where a heroImage is the
+  // visible hero: live-cover projects also set heroImage as their OG raster, but the cover
+  // is aria-hidden and decorative, so alt text for it would render nothing. Both checks
+  // report together so one blocker never hides the other.
   if (process.env.VERCEL_ENV === "production") {
     const heroless = projects.filter(
       (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
     );
+    const unlabelled = projects.filter(
+      (p) =>
+        p.frontmatter.heroImage &&
+        !coverComponents[p.slug] &&
+        !p.frontmatter.heroAlt,
+    );
+
+    const problems: string[] = [];
     if (heroless.length > 0) {
-      throw new Error(
-        `Production release: project(s) have no hero (no live cover and no heroImage): ${heroless
+      problems.push(
+        `no hero (no live cover and no heroImage): ${heroless
           .map((p) => p.slug)
-          .join(
-            ", ",
-          )}. Add a heroImage or register a live cover before releasing.`,
+          .join(", ")}. Add a heroImage or register a live cover.`,
       );
     }
-
-    const unlabelled = projects.filter((p) => !p.frontmatter.heroAlt);
     if (unlabelled.length > 0) {
-      throw new Error(
-        `Production release: project(s) have a hero with no heroAlt: ${unlabelled
+      problems.push(
+        `a static heroImage with no heroAlt: ${unlabelled
           .map((p) => p.slug)
-          .join(
-            ", ",
-          )}. Add heroAlt describing the delivered cover before releasing.`,
+          .join(", ")}. Add heroAlt describing the hero image.`,
+      );
+    }
+    if (problems.length > 0) {
+      throw new Error(
+        `Production release blocked — project(s) have ${problems.join("\n  Project(s) have ")}`,
       );
     }
   }
