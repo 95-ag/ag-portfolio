@@ -28,11 +28,15 @@ const LinksSchema = z
 const LogoSchema = z.object({
   src: z.string().startsWith("/"),
   alt: z.string().min(1),
+  name: z.string().min(1),
+  location: z.string().min(1).optional(),
+  url: z.string().url().optional(),
 });
 
 const ContributorSchema = z.object({
   name: z.string().min(1),
   avatar: z.string().startsWith("/"),
+  role: z.string().min(1).optional(),
   url: z.string().url().optional(),
 });
 
