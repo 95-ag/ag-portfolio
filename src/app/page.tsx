@@ -128,7 +128,7 @@ export default function HomePage() {
               <div className="flex justify-end">
                 <Link
                   href="/work"
-                  className="body-caption motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
                   View all projects →
                 </Link>
@@ -154,7 +154,7 @@ export default function HomePage() {
               <div className="flex justify-end">
                 <Link
                   href="/blog"
-                  className="body-caption motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
                   Read the blog →
                 </Link>
