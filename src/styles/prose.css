@@ -132,15 +132,15 @@
     border-bottom: 2px solid var(--accent);
   }
   .prose-content code:not(pre code) {
-    /* inline code — mono-code metrics (kept in sync with .mono-code in typography.css).
-       Accent text carries the distinction; the hairline supplies containment. No fill:
+    /* inline code — mono-code metrics come from the --mono-code-* properties in
+       typography.css. Accent text carries the distinction; the hairline supplies containment. No fill:
        a background creates a luminance step across the glyphs, which fragments the
        reading line at the 20-plus-spans-per-page density these pages run. Sharp corners
        because this is a structural container, not a control. */
-    font-family: var(--font-mono), monospace;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
+    font-family: var(--mono-code-font-family);
+    font-size: var(--mono-code-font-size);
+    font-weight: var(--mono-code-font-weight);
+    line-height: var(--mono-code-line-height);
     color: var(--accent);
     background: transparent;
     border: 1px solid var(--hairline);

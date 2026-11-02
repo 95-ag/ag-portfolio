@@ -1,4 +1,14 @@
 @layer components {
+  /* mono-code metrics — one definition, read by .mono-code here and by inline code
+     in prose.css, so the two cannot drift. Custom properties rather than a class
+     because inline code also carries its own colour, border and padding. */
+  :root {
+    --mono-code-font-family: var(--font-mono), monospace;
+    --mono-code-font-size: 16px;
+    --mono-code-font-weight: 400;
+    --mono-code-line-height: 24px;
+  }
+
   /* ── Semantic typography tokens ── */
 
   /* Display — page-title tier (home / about / work / 404) */
@@ -151,10 +161,10 @@
     user-select: none;
   }
   .mono-code {
-    font-family: var(--font-mono), monospace;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
+    font-family: var(--mono-code-font-family);
+    font-size: var(--mono-code-font-size);
+    font-weight: var(--mono-code-font-weight);
+    line-height: var(--mono-code-line-height);
     color: var(--ink-muted);
   }
 
