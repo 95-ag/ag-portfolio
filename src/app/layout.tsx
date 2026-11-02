@@ -10,7 +10,7 @@ import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { SurfaceContext } from "@/components/shell/surface-context";
 import { getAllPosts } from "@/lib/content/posts";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
-import { SITE_URL } from "@/lib/site";
+import { FEED_TITLE, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Set the reading-surface flag before first paint (no flash on direct loads of project and post
@@ -23,8 +23,7 @@ export const metadata: Metadata = {
     default: "Aishwarya Ganesan",
     template: "%s | AG",
   },
-  description:
-    "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.",
+  description: SITE_DESCRIPTION,
   authors: [{ name: "Aishwarya Ganesan" }],
   openGraph: {
     type: "website",
@@ -60,6 +59,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">
+        {/* Not metadata.alternates.types: every page declares its own alternates.canonical, and a
+            page's alternates replaces the layout's wholesale, so the feed link would vanish. */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={FEED_TITLE}
+          href="/rss.xml"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }}

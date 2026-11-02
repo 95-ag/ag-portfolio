@@ -1,4 +1,5 @@
 import { getAbout } from "@/lib/content/about";
+import { getAllPosts } from "@/lib/content/posts";
 import { getAllProjects } from "@/lib/content/projects";
 import { SITE_URL } from "@/lib/site";
 
@@ -7,6 +8,7 @@ export const dynamic = "force-static";
 export function GET() {
   const { frontmatter: about } = getAbout();
   const projects = getAllProjects();
+  const posts = getAllPosts();
 
   const aboutSection = about.detailedPositioning
     .split("\n\n")
@@ -25,6 +27,13 @@ export function GET() {
     )
     .join("\n\n");
 
+  const writingSection = posts
+    .map(
+      (p) =>
+        `- [${p.frontmatter.title}](${SITE_URL}/blog/${p.slug}): ${p.frontmatter.summary}`,
+    )
+    .join("\n");
+
   const body = [
     `# ${about.name}`,
     "",
@@ -34,6 +43,7 @@ export function GET() {
     "",
     `- [About](${SITE_URL}/about): Background, capabilities, and approach`,
     `- [Work](${SITE_URL}/work): All project case studies`,
+    `- [Blog](${SITE_URL}/blog): Writing on AI and software engineering`,
     "",
     "## About",
     "",
@@ -49,6 +59,7 @@ export function GET() {
     "",
     projectsSection,
     "",
+    ...(posts.length > 0 ? ["## Writing", "", writingSection, ""] : []),
     "## Contact",
     "",
     `- [LinkedIn](${about.socials.linkedin ?? "https://www.linkedin.com/in/aishganesan/"})`,

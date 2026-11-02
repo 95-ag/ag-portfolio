@@ -1,6 +1,7 @@
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { MailIcon } from "@/components/icons/material/mail";
+import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { Container } from "@/components/layout/container";
 
 export function Footer() {
@@ -51,6 +52,13 @@ export function Footer() {
               className="flex h-11 w-11 items-center justify-center text-[var(--ink)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
             >
               <MailIcon size={20} />
+            </a>
+            <a
+              href="/rss.xml"
+              aria-label="RSS feed"
+              className="flex h-11 w-11 items-center justify-center text-[var(--ink)] transition-all duration-[var(--duration-fast)] hover:scale-110 hover:text-[var(--accent)] motion-reduce:hover:scale-100"
+            >
+              <RssFeedIcon size={20} />
             </a>
           </div>
         </div>
