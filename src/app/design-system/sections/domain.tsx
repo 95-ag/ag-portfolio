@@ -359,6 +359,16 @@ export function DomainSections() {
       >
         <InlineList items={["404 Not Found"]} />
       </GallerySection>
+
+      <GallerySection
+        id="error-boundaries"
+        title="Domain · Error Boundaries"
+        mapsTo="Domain Components → Error Boundaries"
+        source="src/app/error.tsx · src/app/global-error.tsx · [inline]"
+        intro="The route and root error boundaries, built inline in src/app/error.tsx and src/app/global-error.tsx; listed, not previewed."
+      >
+        <InlineList items={["Route error boundary", "Root error boundary"]} />
+      </GallerySection>
     </>
   );
 }
