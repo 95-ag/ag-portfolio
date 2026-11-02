@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { cn } from "@/lib/utils/cn";
 
 type FigureWidth = "default" | "narrow" | "wide";
@@ -34,17 +35,22 @@ export function Diagram({
         className,
       )}
     >
-      <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
-        <div style={{ aspectRatio: aspect }} className="relative w-full">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 100vw, 760px"
-          />
-        </div>
-      </div>
+      <LightboxTrigger src={src} alt={alt} caption={caption}>
+        <span className="block overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
+          <span
+            style={{ aspectRatio: aspect }}
+            className="relative block w-full"
+          >
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 760px"
+            />
+          </span>
+        </span>
+      </LightboxTrigger>
       {caption && (
         <figcaption className="body-caption mt-[var(--spacing-sm)] text-center">
           {caption}

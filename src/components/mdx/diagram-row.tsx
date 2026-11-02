@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { cn } from "@/lib/utils/cn";
 
 interface DiagramPanelProps {
@@ -17,17 +18,19 @@ export function DiagramPanel({
   label,
 }: DiagramPanelProps) {
   const box = (
-    <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
-      <div style={{ aspectRatio: aspect }} className="relative w-full">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 380px"
-        />
-      </div>
-    </div>
+    <LightboxTrigger src={src} alt={alt} caption={label}>
+      <span className="block overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
+        <span style={{ aspectRatio: aspect }} className="relative block w-full">
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 380px"
+          />
+        </span>
+      </span>
+    </LightboxTrigger>
   );
 
   if (!label) return <div className="min-w-0">{box}</div>;

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/controls/theme-selector";
 import { CopyableCode } from "@/components/ui/display/copyable-code";
 import { Heading } from "@/components/ui/display/heading";
+import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { Popover, PopoverDescription } from "@/components/ui/display/popover";
 import { Related } from "@/components/ui/display/related";
 import { Tag } from "@/components/ui/display/tag";
@@ -351,6 +352,33 @@ export function ComponentsSections() {
                   />
                 </Popover>
               </div>
+            </div>
+          </Specimen>
+
+          <Specimen
+            id="ui-lightbox"
+            name="Lightbox"
+            source="@/components/ui/display/lightbox"
+            description="Full-size view of a figure whose detail exceeds the reading column. The media box is the trigger: a button with a zoom-in cursor and the focus ring, no icon. Opens a modal over a surface backdrop with the caption beneath the image, which never renders larger than its natural size. Traps focus, locks scroll, and closes on Esc, a backdrop click or the close button, returning focus to the trigger. The open transition is opacity-only and instant under reduced motion. Figure, Diagram and DiagramPanel carry it; cards and heroes do not."
+            spec="surface at 95% · 44×44 close button, 20px icon · z-lightbox (70) · opacity on duration-base"
+            headingLevel={4}
+          >
+            <div className="w-full sm:w-1/2">
+              <LightboxTrigger
+                src="/design-system/samples/figure.svg"
+                alt="Neutral sample image, opened at full size"
+                caption="Lightbox: the image at its natural size, caption beneath"
+              >
+                <span className="relative block aspect-video w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)]">
+                  <Image
+                    src="/design-system/samples/figure.svg"
+                    alt="Neutral sample image, opened at full size"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                </span>
+              </LightboxTrigger>
             </div>
           </Specimen>
 

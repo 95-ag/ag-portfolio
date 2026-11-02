@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { cn } from "@/lib/utils/cn";
 
 type FigureWidth = "default" | "wide";
@@ -34,18 +35,20 @@ export function Figure({
         className,
       )}
     >
-      <div
-        style={{ aspectRatio: aspect }}
-        className="relative w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)]"
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 760px"
-        />
-      </div>
+      <LightboxTrigger src={src} alt={alt} caption={caption}>
+        <span
+          style={{ aspectRatio: aspect }}
+          className="relative block w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)]"
+        >
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 760px"
+          />
+        </span>
+      </LightboxTrigger>
       {caption && (
         <figcaption className="body-caption mt-[var(--spacing-sm)] text-center">
           {caption}
