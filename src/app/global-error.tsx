@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { caveat, inter, manrope, mono } from "@/app/fonts";
 import { RefreshIcon } from "@/components/icons/material/refresh";
 import { Container } from "@/components/layout/container";
@@ -26,7 +26,7 @@ export default function GlobalError({
   error: Error & { digest?: string };
   unstable_retry: () => void;
 }) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.dataset.theme = resolveTheme();
   }, []);
 
@@ -36,6 +36,7 @@ export default function GlobalError({
       className={`${manrope.variable} ${inter.variable} ${mono.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
+      <title>Error | AG</title>
       <body>
         <main className="flex flex-1 items-center py-[var(--spacing-2xl)]">
           <Container>

@@ -19,6 +19,7 @@ import { LightModeIcon } from "@/components/icons/material/light-mode";
 import { MailIcon } from "@/components/icons/material/mail";
 import { MenuIcon } from "@/components/icons/material/menu";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
+import { RefreshIcon } from "@/components/icons/material/refresh";
 import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
 import { Divider } from "@/components/layout/divider";
@@ -474,6 +475,7 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "Mail", Icon: MailIcon },
   { name: "Menu", Icon: MenuIcon },
   { name: "OpenInNew", Icon: OpenInNewIcon },
+  { name: "Refresh", Icon: RefreshIcon },
   { name: "RssFeed", Icon: RssFeedIcon },
   { name: "Slideshow", Icon: SlideshowIcon },
 ];

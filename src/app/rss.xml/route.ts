@@ -32,7 +32,7 @@ export function GET() {
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     "  <channel>",
     `    <title>${escapeXml(FEED_TITLE)}</title>`,
-    `    <link>${SITE_URL}</link>`,
+    `    <link>${SITE_URL}/blog</link>`,
     `    <description>${escapeXml(SITE_DESCRIPTION)}</description>`,
     "    <language>en</language>",
     `    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />`,

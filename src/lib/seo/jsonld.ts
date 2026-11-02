@@ -1,7 +1,7 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
 import type { PostFrontmatter } from "@/lib/schemas/post";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
-import { SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 // Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
 // not escape `<`, so a value containing `</script>` would break out of the tag.
@@ -20,8 +20,7 @@ export function buildWebSiteSchema() {
     "@type": "WebSite",
     name: "Aishwarya Ganesan",
     url: SITE_URL,
-    description:
-      "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.",
+    description: SITE_DESCRIPTION,
     creator: {
       "@type": "Person",
       name: "Aishwarya Ganesan",
