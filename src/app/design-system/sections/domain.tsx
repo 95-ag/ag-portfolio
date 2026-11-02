@@ -1,4 +1,5 @@
 import { ViewDownloadButton } from "@/components/about/view-download-button";
+import { PostRow } from "@/components/blog/post-row";
 import { coverComponents } from "@/components/project/covers";
 import { HeroMedia } from "@/components/project/hero-media";
 import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
@@ -7,6 +8,7 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
+import type { Post } from "@/lib/content/posts";
 import type { Project } from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
@@ -44,6 +46,45 @@ const demoProject: Project = {
     links: { github: "https://github.com", demo: "https://example.com" },
   },
 };
+
+// Two rows so the hairline rule between them shows; the second carries the maximum 8 tags to
+// exercise the tag row's wrap.
+const demoPosts: Post[] = [
+  {
+    slug: "post-one",
+    body: "",
+    isDraft: false,
+    frontmatter: {
+      title: "Post Title",
+      summary:
+        "A one-line summary of the post, shown under the title in the archive.",
+      publishedAt: "2026-02-01",
+      tags: ["tag-one", "tag-two"],
+    },
+  },
+  {
+    slug: "post-two",
+    body: "",
+    isDraft: false,
+    frontmatter: {
+      title:
+        "A Longer Post Title That Wraps Onto a Second Line at Narrow Widths",
+      summary:
+        "A longer summary that runs to two lines, to show how the secondary text wraps beneath a long title.",
+      publishedAt: "2026-01-15",
+      tags: [
+        "tag-one",
+        "tag-two",
+        "tag-three",
+        "tag-four",
+        "tag-five",
+        "tag-six",
+        "tag-seven",
+        "tag-eight",
+      ],
+    },
+  },
+];
 
 // Dedicated logo/avatar samples (not the diagram/figure ones) — fixed colours, since logos sit on a
 // white badge and avatars are cover-cropped into a small circle.
@@ -222,6 +263,36 @@ export function DomainSections() {
             ]}
           />
         </Specimen>
+      </GallerySection>
+
+      <GallerySection
+        id="blog-index"
+        title="Domain · Blog Index"
+        mapsTo="Domain Components → Blog Index"
+        intro="The post archive: a display H1 over hairline-ruled rows, built inline in src/app/blog/page.tsx. Its one standalone part, the row, is shown with placeholder content."
+      >
+        <Specimen
+          id="post-row"
+          name="PostRow"
+          source="@/components/blog/post-row"
+          description="One archive entry: date, title, summary and tags, with no image. The whole row is the link; the title underlines on hover."
+        >
+          <div className="max-w-[960px] divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
+            {demoPosts.map((post) => (
+              <PostRow key={post.slug} post={post} />
+            ))}
+          </div>
+        </Specimen>
+      </GallerySection>
+
+      <GallerySection
+        id="blog-post"
+        title="Domain · Blog Post"
+        mapsTo="Domain Components → Blog Post"
+        source="src/app/blog/[slug]/page.tsx · [inline]"
+        intro="The post page layout, built inline; listed, not previewed. See it on any post."
+      >
+        <InlineList items={["Blog Post Layout"]} />
       </GallerySection>
 
       <GallerySection
