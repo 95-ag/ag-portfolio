@@ -12,7 +12,10 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
+import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
+import { Related } from "@/components/ui/related";
 import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
+import { getRelatedForProject } from "@/lib/content/related";
 import {
   buildBreadcrumbSchema,
   buildCreativeWorkSchema,
@@ -64,14 +67,21 @@ export default async function ProjectPage({ params }: Props) {
 
   const fm = project.frontmatter;
   const creativeWorkSchema = buildCreativeWorkSchema(slug, fm);
-  const breadcrumbSchema = buildBreadcrumbSchema([
-    { name: "Home", url: SITE_URL },
-    { name: "Work", url: `${SITE_URL}/work` },
-    { name: fm.title, url: `${SITE_URL}/work/${slug}` },
-  ]);
+  const trail: Crumb[] = [
+    { name: "Home", href: "/" },
+    { name: "Work", href: "/work" },
+    { name: fm.title, href: `/work/${slug}` },
+  ];
+  const breadcrumbSchema = buildBreadcrumbSchema(
+    trail.map(({ name, href }) => ({
+      name,
+      url: href === "/" ? SITE_URL : `${SITE_URL}${href}`,
+    })),
+  );
+  const related = getRelatedForProject(slug);
 
   return (
-    <article>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -87,56 +97,68 @@ export default async function ProjectPage({ params }: Props) {
       <Section>
         <Container>
           <div className="mx-auto max-w-[960px]">
-            {/* Header: tags, title, subtitle, links */}
-            <ProjectHeader frontmatter={fm} />
-
-            {/* Hero */}
-            <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
-              <HeroMedia
-                src={fm.heroImage}
-                alt={fm.heroAlt}
-                poster={fm.heroPoster}
-                loop={fm.heroVideoLoop}
-                slug={slug}
-              />
-              <HeroMetaOverlay
-                logos={fm.logos}
-                contributors={fm.contributors}
-                interactive
-              />
+            <div className="mb-[var(--spacing-md)]">
+              <Breadcrumbs trail={trail} />
             </div>
 
-            <div className="prose-content mt-[var(--spacing-3xl)]">
-              <h2>Overview</h2>
-              <ProjectOverview overview={fm.overview} />
+            <article>
+              {/* Header: tags, title, subtitle, links */}
+              <ProjectHeader frontmatter={fm} />
 
-              <h2>Tech Stack</h2>
-              <TechStack stack={fm.stack} />
+              {/* Hero */}
+              <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
+                <HeroMedia
+                  src={fm.heroImage}
+                  alt={fm.heroAlt}
+                  poster={fm.heroPoster}
+                  loop={fm.heroVideoLoop}
+                  slug={slug}
+                />
+                <HeroMetaOverlay
+                  logos={fm.logos}
+                  contributors={fm.contributors}
+                  interactive
+                />
+              </div>
 
-              <MDXRemote
-                source={project.body}
-                components={mdxComponents}
-                options={{
-                  mdxOptions: {
-                    remarkPlugins: [remarkGfm],
-                    rehypePlugins: [
-                      [
-                        rehypeShiki,
-                        {
-                          themes: {
-                            light: "vitesse-light",
-                            dark: "vitesse-dark",
+              <div className="prose-content mt-[var(--spacing-3xl)]">
+                <h2>Overview</h2>
+                <ProjectOverview overview={fm.overview} />
+
+                <h2>Tech Stack</h2>
+                <TechStack stack={fm.stack} />
+
+                <MDXRemote
+                  source={project.body}
+                  components={mdxComponents}
+                  options={{
+                    mdxOptions: {
+                      remarkPlugins: [remarkGfm],
+                      rehypePlugins: [
+                        [
+                          rehypeShiki,
+                          {
+                            themes: {
+                              light: "vitesse-light",
+                              dark: "vitesse-dark",
+                            },
+                            // No default color → Shiki emits only CSS vars (no inline
+                            // token colors), so the dark-theme swap needs no !important.
+                            defaultColor: false,
                           },
-                          // No default color → Shiki emits only CSS vars (no inline
-                          // token colors), so the dark-theme swap needs no !important.
-                          defaultColor: false,
-                        },
+                        ],
                       ],
-                    ],
-                  },
-                }}
-              />
-            </div>
+                    },
+                  }}
+                />
+              </div>
+            </article>
+
+            {related.length > 0 && (
+              <div className="mt-[var(--spacing-3xl)]">
+                <Related items={related} />
+              </div>
+            )}
 
             {/* Back link */}
             <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
@@ -150,6 +172,6 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </Container>
       </Section>
-    </article>
+    </>
   );
 }
