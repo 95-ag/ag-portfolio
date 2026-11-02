@@ -359,7 +359,7 @@ export function ComponentsSections() {
             id="ui-lightbox"
             name="Lightbox"
             source="@/components/ui/display/lightbox"
-            description="Full-size view of a figure whose detail exceeds the reading column. The media box is the trigger: a button with a zoom-in cursor and the focus ring, no icon. Opens a modal over a surface backdrop with the caption beneath the image, which never renders larger than its natural size. Traps focus, locks scroll, and closes on Esc, a backdrop click or the close button, returning focus to the trigger. The open transition is opacity-only and instant under reduced motion. Figure, Diagram and DiagramPanel carry it; cards and heroes do not."
+            description="Full-size view of a figure whose detail exceeds the reading column. The media box is the trigger: a button with a zoom-in cursor and the focus ring, no icon. Opens a modal over a surface backdrop with the caption beneath the image: a raster never renders larger than its natural size, while a vector diagram scales to fit. Traps focus, locks scroll, and closes on Esc, a backdrop click or the close button, returning focus to the trigger. The open transition is opacity-only and instant under reduced motion. Figure, Diagram and DiagramPanel carry it; cards and heroes do not."
             spec="surface at 95% · 44×44 close button, 20px icon · z-lightbox (70) · opacity on duration-base"
             headingLevel={4}
           >
@@ -367,7 +367,7 @@ export function ComponentsSections() {
               <LightboxTrigger
                 src="/design-system/samples/figure.svg"
                 alt="Neutral sample image, opened at full size"
-                caption="Lightbox: the image at its natural size, caption beneath"
+                caption="Lightbox: the vector figure scaled to fit, caption beneath"
               >
                 <span className="relative block aspect-video w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)]">
                   <Image

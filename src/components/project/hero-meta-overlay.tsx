@@ -27,10 +27,10 @@ export function HeroMetaOverlay({ logos, contributors }: HeroMetaOverlayProps) {
   if (!hasLogos && !hasContributors) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--spacing-sm)] md:p-[var(--spacing-md)]">
+    <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--spacing-md)]">
       {/* Bottom-left: logos */}
       {hasLogos ? (
-        <div className="pointer-events-auto flex items-center gap-[var(--spacing-xs)] md:gap-[var(--spacing-sm)]">
+        <div className="pointer-events-auto flex items-center gap-[var(--spacing-md)] md:gap-[var(--spacing-sm)]">
           {logos.map((logo) => (
             <Popover
               key={logo.src}
@@ -59,7 +59,7 @@ export function HeroMetaOverlay({ logos, contributors }: HeroMetaOverlayProps) {
 
       {/* Bottom-right: contributor avatars */}
       {hasContributors && (
-        <div className="pointer-events-auto flex items-center -space-x-1.5">
+        <div className="pointer-events-auto flex items-center gap-[var(--spacing-lg)]">
           {contributors.map((contributor) => (
             <Popover
               key={contributor.name}

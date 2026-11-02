@@ -33,8 +33,10 @@ export function LightboxTrigger({
       <button
         type="button"
         onClick={() => setOpen(true)}
+        aria-haspopup="dialog"
         className="block w-full cursor-zoom-in rounded-[var(--radius-md)] text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       >
+        <span className="sr-only">View full size: </span>
         {children}
       </button>
       {open &&
