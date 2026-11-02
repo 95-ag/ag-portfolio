@@ -46,11 +46,11 @@ const GUTTER_MASK =
   "linear-gradient(to right, #000 0, #000 calc(50% - 600px), transparent calc(50% - 540px), transparent calc(50% + 540px), #000 calc(50% + 600px), #000 100%)";
 
 interface AsciiFieldProps {
-  /** Project detail pages are dense reading — kept fully clean on mobile. */
-  isProjectDetail: boolean;
+  /** Project pages and blog posts are dense reading — kept fully clean on mobile. */
+  isReadingPage: boolean;
 }
 
-export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
+export function AsciiField({ isReadingPage }: AsciiFieldProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,8 +68,8 @@ export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
       const W = window.innerWidth;
       const isMobile = W < MIN_WIDTH;
 
-      // Mobile project pages: no background at all (protect dense prose).
-      if (isMobile && isProjectDetail) {
+      // Mobile reading pages: no background at all (protect dense prose).
+      if (isMobile && isReadingPage) {
         setMask("none");
         return;
       }
@@ -123,7 +123,7 @@ export function AsciiField({ isProjectDetail }: AsciiFieldProps) {
       window.removeEventListener("resize", onResize);
       if (t) window.clearTimeout(t);
     };
-  }, [isProjectDetail]);
+  }, [isReadingPage]);
 
   return (
     <div

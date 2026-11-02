@@ -12,11 +12,15 @@ const MeteorShower = dynamic(
   { ssr: false, loading: () => null },
 );
 
-// Dense-reading pages — the WebGL meteor layer is suppressed and the ASCII field uses the
-// quiet, gutter-masked treatment (dropped entirely on mobile, see AsciiField). Covers project
-// detail pages AND the /design-system gallery, which previews components against the
-// work-page backdrop.
-const READING_PAGE_PATTERN = /^\/(work\/.+|design-system)$/;
+// Dense-reading pages — the ASCII field uses the quiet, gutter-masked treatment (dropped
+// entirely on mobile, see AsciiField). Covers project detail pages, blog posts AND the
+// /design-system gallery, which previews components against the work-page backdrop.
+const READING_PAGE_PATTERN = /^\/(work\/.+|blog\/.+|design-system)$/;
+
+// The meteor is suppressed on project detail pages and the gallery, but not on every post:
+// an ordinary post keeps the atmosphere, and only a post that declares `motion` brings its
+// own effects and drops it (those paths arrive as `meteorSuppressedPaths`).
+const METEOR_SUPPRESSED_PATTERN = /^\/(work\/.+|design-system)$/;
 
 // Mobile/desktop divider — matches AsciiField's MIN_WIDTH. The meteor must honor
 // the same floor (and re-check on resize) so a hover-capable laptop dragged below
@@ -72,16 +76,25 @@ function isMeteorCapable(): boolean {
   return true;
 }
 
-export function BackgroundLayer() {
+interface BackgroundLayerProps {
+  meteorSuppressedPaths: string[];
+}
+
+export function BackgroundLayer({
+  meteorSuppressedPaths,
+}: BackgroundLayerProps) {
   const pathname = usePathname();
   const isReadingPage = READING_PAGE_PATTERN.test(pathname);
+  const isMeteorSuppressed =
+    METEOR_SUPPRESSED_PATTERN.test(pathname) ||
+    meteorSuppressedPaths.includes(pathname);
   const [mountMeteor, setMountMeteor] = useState(false);
 
   useEffect(() => {
     let t: number | undefined;
     const evaluate = () => {
       setMountMeteor(
-        !isReadingPage &&
+        !isMeteorSuppressed &&
           window.innerWidth >= MOBILE_BREAKPOINT &&
           isMeteorCapable(),
       );
@@ -96,7 +109,7 @@ export function BackgroundLayer() {
       window.removeEventListener("resize", onResize);
       if (t) window.clearTimeout(t);
     };
-  }, [isReadingPage]);
+  }, [isMeteorSuppressed]);
 
   return (
     <div
@@ -110,7 +123,7 @@ export function BackgroundLayer() {
         isolation: "isolate",
       }}
     >
-      <AsciiField isProjectDetail={isReadingPage} />
+      <AsciiField isReadingPage={isReadingPage} />
       {mountMeteor && <MeteorShower opacity={0.42} />}
     </div>
   );

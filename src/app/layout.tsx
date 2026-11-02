@@ -8,6 +8,7 @@ import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { SurfaceContext } from "@/components/shell/surface-context";
+import { getAllPosts } from "@/lib/content/posts";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -51,6 +52,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const websiteSchema = buildWebSiteSchema();
+  const meteorSuppressedPaths = getAllPosts()
+    .filter((post) => post.frontmatter.motion)
+    .map((post) => `/blog/${post.slug}`);
 
   return (
     <html
@@ -66,7 +70,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: SURFACE_INIT }} />
         <Providers>
           <SurfaceContext />
-          <BackgroundLayer />
+          <BackgroundLayer meteorSuppressedPaths={meteorSuppressedPaths} />
           <Nav />
           <main className="relative flex flex-1 flex-col pt-[var(--spacing-3xl)]">
             {children}
