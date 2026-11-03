@@ -77,6 +77,7 @@ export function Specimen({
   return (
     <div
       id={id}
+      data-progress-nav="exclude"
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
     >
       <Heading className="heading-component">{name}</Heading>

@@ -128,8 +128,8 @@ export function TechnicalSections() {
                   devices.
                 </li>
                 <li>
-                  Buttons stand 56px tall; LinkPill is the one known exception
-                  at 36px (below the 44px minimum).
+                  Buttons stand 56px tall; LinkPill stands 44px tall, its
+                  visible height the touch target itself.
                 </li>
                 <li>
                   Icon-only controls (theme, scroll-to-top, menu) sit in a ≥44px

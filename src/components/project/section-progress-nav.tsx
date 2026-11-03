@@ -38,7 +38,11 @@ export function SectionProgressNav({
     const article = document.querySelector("article");
     if (!article) return;
 
-    const headings = Array.from(article.querySelectorAll("h2"));
+    // A gallery specimen renders real components, some with their own H2 (Related); those are
+    // demos, not sections of the page, and would otherwise get dead rail entries.
+    const headings = Array.from(article.querySelectorAll("h2")).filter(
+      (h) => !h.closest('[data-progress-nav="exclude"]'),
+    );
     const parsed: Section[] = headings.map((h) => {
       const label = h.textContent ?? "";
       const id = slugify(label);
