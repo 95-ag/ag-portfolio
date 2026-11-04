@@ -106,14 +106,16 @@ export default async function ProjectPage({ params }: Props) {
               <ProjectHeader frontmatter={fm} />
 
               {/* Hero */}
-              <div className="mt-[var(--spacing-2xl)] relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
-                <HeroMedia
-                  src={fm.heroImage}
-                  alt={fm.heroAlt}
-                  poster={fm.heroPoster}
-                  loop={fm.heroVideoLoop}
-                  slug={slug}
-                />
+              <div className="relative mt-[var(--spacing-2xl)]">
+                <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
+                  <HeroMedia
+                    src={fm.heroImage}
+                    alt={fm.heroAlt}
+                    poster={fm.heroPoster}
+                    loop={fm.heroVideoLoop}
+                    slug={slug}
+                  />
+                </div>
                 <HeroMetaOverlay
                   logos={fm.logos}
                   contributors={fm.contributors}

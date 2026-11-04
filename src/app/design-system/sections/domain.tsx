@@ -195,7 +195,8 @@ export function DomainSections() {
           source="@/components/project/hero-meta-overlay"
           description="The provenance overlay on the detail-page hero: logos bottom-left, contributor avatars bottom-right, each a Popover trigger revealing a name with a location or role. Hover or focus a mark to see its reveal; the second logo and second contributor carry a url (link clicks are disabled on this page). Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
         >
-          <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
+          <div className="relative">
+            <div className="aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]" />
             <HeroMetaOverlay
               logos={demoLogos}
               contributors={demoContributors}

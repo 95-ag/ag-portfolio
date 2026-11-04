@@ -27,7 +27,8 @@ export function HeroMetaOverlay({ logos, contributors }: HeroMetaOverlayProps) {
   if (!hasLogos && !hasContributors) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--spacing-md)]">
+    // Below md the marks sit in a row under the hero: over a phone-width image they crowd it.
+    <div className="flex items-center justify-between pt-[var(--spacing-sm)] md:pointer-events-none md:absolute md:inset-0 md:items-end md:p-[var(--spacing-md)]">
       {/* Bottom-left: logos */}
       {hasLogos ? (
         <div className="pointer-events-auto flex items-center gap-[var(--spacing-md)] md:gap-[var(--spacing-sm)]">
