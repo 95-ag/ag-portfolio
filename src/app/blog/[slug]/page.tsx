@@ -148,7 +148,7 @@ export default async function PostPage({ params }: Props) {
             </article>
 
             {related.length > 0 && (
-              <div className="mt-[var(--spacing-3xl)]">
+              <div className="mt-[var(--spacing-4xl)]">
                 <Related items={related} />
               </div>
             )}

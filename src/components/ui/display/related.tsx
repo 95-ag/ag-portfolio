@@ -29,12 +29,12 @@ export function Related({ items }: RelatedProps) {
       <h2 id={headingId} className="mono-anchor mb-[var(--spacing-lg)]">
         Related
       </h2>
-      <ul className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-[var(--spacing-gutter)]">
+      <ul className="grid grid-cols-1 divide-y divide-[var(--hairline)] border-t border-[var(--hairline)] lg:grid-cols-3 lg:gap-x-[var(--spacing-gutter)] lg:divide-y-0">
         {items.slice(0, MAX_ITEMS).map((item) => (
           <li key={item.href} className="min-w-0">
             <Link
               href={item.href}
-              className="group flex flex-col gap-[var(--spacing-xs)] border-t border-[var(--hairline)] py-[var(--spacing-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="group flex flex-col gap-[var(--spacing-xs)] py-[var(--spacing-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
             >
               <span className="support-meta">{KIND_LABEL[item.kind]}</span>
               <span className="heading-component break-words font-semibold group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
