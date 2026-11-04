@@ -81,12 +81,10 @@ export default async function PostPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: serializeJsonLd escapes <, > and & so the payload cannot close the script tag
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogPostingSchema) }}
       />
       <script
         type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: serializeJsonLd escapes <, > and & so the payload cannot close the script tag
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
       <Section>
