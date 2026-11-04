@@ -12,7 +12,6 @@ import { DarkModeIcon } from "@/components/icons/material/dark-mode";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { DownloadIcon } from "@/components/icons/material/download";
-import { EditNoteIcon } from "@/components/icons/material/edit-note";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { LightModeIcon } from "@/components/icons/material/light-mode";
@@ -22,6 +21,7 @@ import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { RefreshIcon } from "@/components/icons/material/refresh";
 import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
+import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
 import { Divider } from "@/components/layout/divider";
 import { Grid } from "@/components/layout/grid";
 import { Stack } from "@/components/layout/stack";
@@ -468,7 +468,6 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "DeployedCode", Icon: DeployedCodeIcon },
   { name: "Description", Icon: DescriptionIcon },
   { name: "Download", Icon: DownloadIcon },
-  { name: "EditNote", Icon: EditNoteIcon },
   { name: "Fingerprint", Icon: FingerprintIcon },
   { name: "FolderCode", Icon: FolderCodeIcon },
   { name: "LightMode", Icon: LightModeIcon },
@@ -478,6 +477,7 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "Refresh", Icon: RefreshIcon },
   { name: "RssFeed", Icon: RssFeedIcon },
   { name: "Slideshow", Icon: SlideshowIcon },
+  { name: "StickyNote", Icon: StickyNoteIcon },
 ];
 
 const BRAND_ICONS: IconEntry[] = [

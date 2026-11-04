@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { IconProps } from "@/components/icons/icon-base";
 import { CloseIcon } from "@/components/icons/material/close";
-import { EditNoteIcon } from "@/components/icons/material/edit-note";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { MenuIcon } from "@/components/icons/material/menu";
+import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
 import { InlineThemeSelector } from "@/components/ui/controls/theme-selector";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
@@ -20,7 +20,7 @@ type NavIconComponent = (props: IconProps) => React.ReactElement;
 const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
   { href: "/about", label: "About", Icon: FingerprintIcon },
   { href: "/work", label: "Work", Icon: FolderCodeIcon },
-  { href: "/blog", label: "Blog", Icon: EditNoteIcon },
+  { href: "/blog", label: "Blog", Icon: StickyNoteIcon },
 ];
 
 export function MobileNav() {
