@@ -4,6 +4,10 @@ import { getAllProjects } from "./projects";
 
 const MAX_ITEMS = 3;
 
+function selfListed(slug: string): Error {
+  return new Error(`related in "${slug}" lists "${slug}" itself.`);
+}
+
 function dedupeAndCap(items: RelatedItem[]): RelatedItem[] {
   const seen = new Set<string>();
   const unique = items.filter((item) => {
@@ -43,6 +47,7 @@ export function getRelatedForProject(slug: string): RelatedItem[] {
   if (!project) return [];
 
   const declared = (project.frontmatter.related ?? []).map((target) => {
+    if (target === slug) throw selfListed(slug);
     const item = resolveSlug(target);
     if (!item) {
       throw new Error(
@@ -78,6 +83,7 @@ export function getRelatedForPost(slug: string): RelatedItem[] {
   if (!post) return [];
 
   const { relatedProject, related } = post.frontmatter;
+  if (related?.includes(slug)) throw selfListed(slug);
   const targets = [
     ...(relatedProject ? [relatedProject] : []),
     ...(related ?? []),
