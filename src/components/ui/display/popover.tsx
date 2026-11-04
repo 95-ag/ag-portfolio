@@ -81,9 +81,9 @@ export function Popover({
     // Floating chrome above the panel's own layer is found by looking at what
     // is stacked over the panel's would-be rect, so the nav is never hardcoded.
     const layer = Number(getComputedStyle(panel).zIndex);
-    const runsUnderChrome = () => {
+    const runsUnderChrome = (top: number) => {
       const xs = [left + 1, left + box.width / 2, left + box.width - 1];
-      const ys = [aboveTop + 1, aboveTop + box.height / 2];
+      const ys = [top + 1, top + box.height / 2];
       return xs.some((x) =>
         ys.some((y) =>
           document.elementsFromPoint(x, y).some((el) => {
@@ -102,10 +102,12 @@ export function Popover({
         ),
       );
     };
-    const fitsAbove = aboveTop >= inset && !runsUnderChrome();
     const fitsBelow =
-      mark.bottom + box.height <= document.documentElement.clientHeight - inset;
-    const below = !fitsAbove && fitsBelow;
+      mark.bottom + box.height <=
+        document.documentElement.clientHeight - inset &&
+      !runsUnderChrome(mark.bottom);
+    const fitsAbove = aboveTop >= inset && !runsUnderChrome(aboveTop);
+    const below = fitsBelow || !fitsAbove;
 
     // The xs gap sits on the side facing the mark, so the pointer can cross it.
     panel.dataset.side = below ? "below" : "above";
@@ -229,7 +231,7 @@ export function Popover({
               }
             }}
           >
-            <div className="body-caption rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] py-[var(--spacing-sm)]">
+            <div className="body-caption rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] py-[var(--spacing-xs)]">
               {description}
             </div>
           </div>,

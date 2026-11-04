@@ -302,7 +302,7 @@ export function ComponentsSections() {
             id="ui-popover"
             name="Popover"
             source="@/components/ui/display/popover"
-            description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens above the mark, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
+            description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens below the mark, or above it when there is no room below, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
             spec="surface-elevated · hairline · radius-sm · body-caption · z-popover (45) · 44×44 hit area"
             headingLevel={4}
           >
