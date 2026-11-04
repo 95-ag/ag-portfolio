@@ -1,18 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import type { RelatedItem } from "@/components/ui/display/related";
-import { getAllPosts } from "./posts";
+import { getAllPosts, isDraft } from "./posts";
 import { getAllProjects } from "./projects";
 
 const MAX_ITEMS = 3;
-
-// Mirrors posts.ts's drafts directory: a project is always published, so a related entry
-// naming a draft would pass in development and fail at release.
-const DRAFTS_DIR = path.join(process.cwd(), "content", "blog", "_drafts");
-
-function isDraft(slug: string): boolean {
-  return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
-}
 
 function dedupeAndCap(items: RelatedItem[]): RelatedItem[] {
   const seen = new Set<string>();
@@ -59,6 +49,8 @@ export function getRelatedForProject(slug: string): RelatedItem[] {
         `related in "${slug}" references unknown slug: "${target}"`,
       );
     }
+    // A project is always published, so a related entry naming a draft would pass in
+    // development and fail at release.
     if (item.kind === "post" && isDraft(target)) {
       throw new Error(
         `related in "${slug}" references "${target}", which is still a draft — publish it first.`,

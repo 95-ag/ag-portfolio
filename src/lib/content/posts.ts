@@ -95,6 +95,10 @@ export function getAllPosts(): Post[] {
   });
 }
 
+export function isDraft(slug: string): boolean {
+  return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
+}
+
 export function getPostBySlug(slug: string): Post | undefined {
   return getAllPosts().find((p) => p.slug === slug);
 }
