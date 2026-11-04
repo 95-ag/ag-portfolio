@@ -156,7 +156,7 @@ export default function HomePage() {
                   href="/blog"
                   className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
-                  Read the blog →
+                  See all blog posts →
                 </Link>
               </div>
             </div>
