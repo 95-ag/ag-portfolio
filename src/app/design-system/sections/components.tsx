@@ -387,7 +387,7 @@ export function ComponentsSections() {
             name="Related"
             source="@/components/ui/display/related"
             description="Curated next reads at the end of a long-form page: up to 3 items mixing projects and posts, each a type label, title and one-line summary. Renders its own H2 and nothing at all when given no items. Stacked through tablet, three columns from lg."
-            spec="mono-anchor H2 · hairline top rule per item · title underlines on hover"
+            spec="mono-anchor H2 · full-width hairline above the list, and between stacked items below lg · title underlines on hover"
             headingLevel={4}
           >
             <div className="flex flex-col gap-[var(--spacing-2xl)]">
