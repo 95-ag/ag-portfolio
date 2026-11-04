@@ -176,7 +176,12 @@ export default function AboutPage() {
                 >
                   Let&apos;s talk
                 </Button>
-                <CopyLink value={about.contactEmail} />
+                {/* A 28px tap area, above the 24px WCAG AA floor; the negative margin keeps it from
+                    moving or overlapping the buttons around it. */}
+                <CopyLink
+                  value={about.contactEmail}
+                  className="-my-[var(--spacing-xs)] py-[var(--spacing-xs)]"
+                />
               </div>
               <ViewDownloadButton href="/AishwaryaGanesan_Resume.pdf">
                 Resume
