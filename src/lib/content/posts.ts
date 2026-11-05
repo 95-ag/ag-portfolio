@@ -6,6 +6,7 @@ import {
   PostFrontmatterSchema,
 } from "@/lib/schemas/post";
 import { parseFrontmatter } from "./frontmatter";
+import { assertKebabSlug, assertPublicFiles } from "./validate";
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 // Drafts are gitignored, so they never reach the public repo or a release snapshot. They
@@ -21,7 +22,7 @@ export interface Post {
 function parsePost(dir: string, filename: string): Post {
   const slug = filename.replace(/\.mdx$/, "");
   const raw = fs.readFileSync(path.join(dir, filename), "utf-8");
-  const { data, content } = parseFrontmatter(raw);
+  const { data, content } = parseFrontmatter(raw, filename);
 
   const result = PostFrontmatterSchema.safeParse(data);
   if (!result.success) {
@@ -30,6 +31,8 @@ function parsePost(dir: string, filename: string): Post {
       .join("\n");
     throw new Error(`Invalid frontmatter in ${filename}:\n${issues}`);
   }
+  assertKebabSlug(slug, filename);
+  assertPublicFiles(filename, { ogImage: result.data.ogImage });
 
   return { slug, frontmatter: result.data, body: content };
 }

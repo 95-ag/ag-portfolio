@@ -14,7 +14,7 @@ export interface About {
 
 export function getAbout(): About {
   const raw = fs.readFileSync(ABOUT_FILE, "utf-8");
-  const { data } = parseFrontmatter(raw);
+  const { data } = parseFrontmatter(raw, "about.mdx");
 
   const result = AboutFrontmatterSchema.safeParse(data);
   if (!result.success) {

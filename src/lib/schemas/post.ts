@@ -5,7 +5,7 @@ export const POST_MOTION = ["parallax", "reveal", "body-motion"] as const;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export const PostFrontmatterSchema = z
-  .object({
+  .strictObject({
     title: z.string().min(1),
     subtitle: z.string().optional(),
     summary: z.string().min(1).max(200),

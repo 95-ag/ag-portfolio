@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-const StackSchema = z.object({
+const StackSchema = z.strictObject({
   languages: z.array(z.string()),
   frameworks: z.array(z.string()),
   libraries: z.array(z.string()),
   tools: z.array(z.string()),
 });
 
-const OverviewSchema = z.object({
+const OverviewSchema = z.strictObject({
   problem: z.string().min(1),
   built: z.string().min(1),
   results: z.array(z.string()).optional(),
@@ -16,7 +16,7 @@ const OverviewSchema = z.object({
 });
 
 const LinksSchema = z
-  .object({
+  .strictObject({
     github: z.string().url().optional(),
     demo: z.string().url().optional(),
     paper: z.string().optional(),
@@ -25,7 +25,7 @@ const LinksSchema = z
   })
   .optional();
 
-const LogoSchema = z.object({
+const LogoSchema = z.strictObject({
   src: z.string().startsWith("/"),
   alt: z.string().min(1),
   name: z.string().min(1),
@@ -33,7 +33,7 @@ const LogoSchema = z.object({
   url: z.string().url().optional(),
 });
 
-const ContributorSchema = z.object({
+const ContributorSchema = z.strictObject({
   name: z.string().min(1),
   avatar: z.string().startsWith("/"),
   role: z.string().min(1).optional(),
@@ -41,11 +41,11 @@ const ContributorSchema = z.object({
 });
 
 const VIDEO_EXTENSIONS = [".mp4", ".webm"];
-const isVideo = (path: string) =>
+export const isVideo = (path: string) =>
   VIDEO_EXTENSIONS.some((ext) => path.toLowerCase().endsWith(ext));
 
 export const ProjectFrontmatterSchema = z
-  .object({
+  .strictObject({
     title: z.string().min(1),
     subtitle: z.string().optional(),
     summary: z.string().min(1).max(200),

@@ -6,6 +6,7 @@ import {
   ProjectFrontmatterSchema,
 } from "@/lib/schemas/project";
 import { parseFrontmatter } from "./frontmatter";
+import { assertKebabSlug, assertPublicFiles } from "./validate";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "projects");
 
@@ -23,7 +24,7 @@ function parseProject(filename: string): Project {
   const slug = filename.replace(/\.mdx$/, "");
   const filepath = path.join(CONTENT_DIR, filename);
   const raw = fs.readFileSync(filepath, "utf-8");
-  const { data, content } = parseFrontmatter(raw);
+  const { data, content } = parseFrontmatter(raw, filename);
 
   const result = ProjectFrontmatterSchema.safeParse(data);
   if (!result.success) {
@@ -32,8 +33,24 @@ function parseProject(filename: string): Project {
       .join("\n");
     throw new Error(`Invalid frontmatter in ${filename}:\n${issues}`);
   }
+  assertKebabSlug(slug, filename);
+  const fm = result.data;
+  assertPublicFiles(filename, {
+    heroImage: fm.heroImage,
+    heroPoster: fm.heroPoster,
+    ogImage: fm.ogImage,
+    ...Object.fromEntries(
+      (fm.logos ?? []).map((logo, i) => [`logos.${i}.src`, logo.src]),
+    ),
+    ...Object.fromEntries(
+      (fm.contributors ?? []).map((c, i) => [
+        `contributors.${i}.avatar`,
+        c.avatar,
+      ]),
+    ),
+  });
 
-  return { slug, frontmatter: result.data, body: content };
+  return { slug, frontmatter: fm, body: content };
 }
 
 export function getAllProjects(): Project[] {
