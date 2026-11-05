@@ -17,7 +17,7 @@ import {
   buildBreadcrumbSchema,
   serializeJsonLd,
 } from "@/lib/seo/jsonld";
-import { SITE_URL } from "@/lib/site";
+import { AUTHOR_NAME, SITE_URL } from "@/lib/site";
 import { formatDate } from "@/lib/utils/format-date";
 
 interface Props {
@@ -47,10 +47,10 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       type: "article" as const,
       url: `/blog/${slug}`,
-      siteName: "Aishwarya Ganesan",
+      siteName: AUTHOR_NAME,
       locale: "en_US",
       publishedTime: new Date(fm.publishedAt).toISOString(),
-      authors: ["Aishwarya Ganesan"],
+      authors: [AUTHOR_NAME],
       images: [image],
     },
     twitter: {

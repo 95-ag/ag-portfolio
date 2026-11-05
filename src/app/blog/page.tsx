@@ -5,6 +5,7 @@ import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Heading } from "@/components/ui/display/heading";
 import { getAllPosts } from "@/lib/content/posts";
+import { AUTHOR_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/blog",
-    siteName: "Aishwarya Ganesan",
+    siteName: AUTHOR_NAME,
     locale: "en_US",
     images: [{ url: "/opengraph-image" }],
   },

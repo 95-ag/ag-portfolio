@@ -6,4 +6,6 @@ export const SITE_URL = "https://aishwaryaganesan.vercel.app";
 export const SITE_DESCRIPTION =
   "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.";
 
-export const FEED_TITLE = "Aishwarya Ganesan — Blog";
+export const AUTHOR_NAME = "Aishwarya Ganesan";
+
+export const FEED_TITLE = `${AUTHOR_NAME} — Blog`;

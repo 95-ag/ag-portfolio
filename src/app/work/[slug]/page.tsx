@@ -21,7 +21,7 @@ import {
   buildSoftwareSourceCodeSchema,
   serializeJsonLd,
 } from "@/lib/seo/jsonld";
-import { SITE_URL } from "@/lib/site";
+import { AUTHOR_NAME, SITE_URL } from "@/lib/site";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -49,10 +49,10 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       type: "article" as const,
       url: `/work/${slug}`,
-      siteName: "Aishwarya Ganesan",
+      siteName: AUTHOR_NAME,
       locale: "en_US",
       publishedTime: new Date(fm.publishedAt).toISOString(),
-      authors: ["Aishwarya Ganesan"],
+      authors: [AUTHOR_NAME],
       ...(heroImg ? { images: [heroImg] } : {}),
     },
     twitter: {

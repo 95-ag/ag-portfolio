@@ -10,7 +10,12 @@ import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { SurfaceContext } from "@/components/shell/surface-context";
 import { getAllPosts } from "@/lib/content/posts";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
-import { FEED_TITLE, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
+import {
+  AUTHOR_NAME,
+  FEED_TITLE,
+  SITE_DESCRIPTION,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
 // Set the reading-surface flag before first paint (no flash on direct loads of project and post
@@ -20,14 +25,14 @@ const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|blog)
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Aishwarya Ganesan",
+    default: AUTHOR_NAME,
     template: "%s | AG",
   },
   description: SITE_DESCRIPTION,
-  authors: [{ name: "Aishwarya Ganesan" }],
+  authors: [{ name: AUTHOR_NAME }],
   openGraph: {
     type: "website",
-    siteName: "Aishwarya Ganesan",
+    siteName: AUTHOR_NAME,
     locale: "en_US",
   },
   twitter: {

@@ -1,7 +1,7 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
 import type { PostFrontmatter } from "@/lib/schemas/post";
 import { isVideo, type ProjectFrontmatter } from "@/lib/schemas/project";
-import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
+import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 // Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
 // not escape `<`, so a value containing `</script>` would break out of the tag.
@@ -18,12 +18,12 @@ export function buildWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Aishwarya Ganesan",
+    name: AUTHOR_NAME,
     url: SITE_URL,
     description: SITE_DESCRIPTION,
     creator: {
       "@type": "Person",
-      name: "Aishwarya Ganesan",
+      name: AUTHOR_NAME,
     },
   };
 }
@@ -74,7 +74,7 @@ export function buildSoftwareSourceCodeSchema(
     inLanguage: "en",
     author: {
       "@type": "Person",
-      name: "Aishwarya Ganesan",
+      name: AUTHOR_NAME,
       url: SITE_URL,
     },
     keywords: fm.tags.join(", "),
@@ -97,7 +97,7 @@ export function buildBlogPostingSchema(slug: string, fm: PostFrontmatter) {
     dateModified: new Date(fm.updatedAt ?? fm.publishedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: "Aishwarya Ganesan",
+      name: AUTHOR_NAME,
       url: SITE_URL,
     },
     keywords: fm.tags.join(", "),
