@@ -32,7 +32,7 @@ export function CopyableCode({
       aria-label={ariaLabel}
       className={cn(
         "inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-deep)] px-[var(--spacing-md)]",
-        "font-mono text-[16px] font-normal leading-[24px] text-[var(--ink-muted)]",
+        "mono-code",
         "transition-colors duration-[var(--duration-fast)]",
         "hover:border-[var(--accent)] hover:text-[var(--accent)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
