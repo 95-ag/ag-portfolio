@@ -439,17 +439,20 @@ export function ComponentsSections() {
               </div>
               <div className="flex flex-col gap-[var(--spacing-sm)]">
                 <span className="mono-anchor">One item</span>
-                <Related
-                  items={[
-                    {
-                      kind: "post",
-                      title: "What a measurement overturned",
-                      summary:
-                        "Three decisions that looked settled until the data said otherwise.",
-                      href: "#ui-tag",
-                    },
-                  ]}
-                />
+                {/* Inert: a second live region named "Related" would duplicate the one above. */}
+                <div inert>
+                  <Related
+                    items={[
+                      {
+                        kind: "post",
+                        title: "What a measurement overturned",
+                        summary:
+                          "Three decisions that looked settled until the data said otherwise.",
+                        href: "#ui-tag",
+                      },
+                    ]}
+                  />
+                </div>
               </div>
             </div>
           </Specimen>
