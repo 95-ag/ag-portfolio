@@ -2,20 +2,19 @@ import type { RelatedItem } from "@/components/ui/display/related";
 import { getAllPosts, isDraft } from "./posts";
 import { getAllProjects } from "./projects";
 
-const MAX_ITEMS = 3;
-
 function selfListed(slug: string): Error {
   return new Error(`related in "${slug}" lists "${slug}" itself.`);
 }
 
-function dedupeAndCap(items: RelatedItem[]): RelatedItem[] {
+// The display cap lives in the Related component; this only removes repeats.
+function dedupe(items: RelatedItem[]): RelatedItem[] {
   const seen = new Set<string>();
   const unique = items.filter((item) => {
     if (seen.has(item.href)) return false;
     seen.add(item.href);
     return true;
   });
-  return unique.slice(0, MAX_ITEMS);
+  return unique;
 }
 
 function resolveSlug(slug: string): RelatedItem | undefined {
@@ -75,7 +74,7 @@ export function getRelatedForProject(slug: string): RelatedItem[] {
       }),
     );
 
-  return dedupeAndCap([...reverse, ...declared]);
+  return dedupe([...reverse, ...declared]);
 }
 
 export function getRelatedForPost(slug: string): RelatedItem[] {
@@ -88,6 +87,14 @@ export function getRelatedForPost(slug: string): RelatedItem[] {
     ...(relatedProject ? [relatedProject] : []),
     ...(related ?? []),
   ];
-  const items = targets.flatMap((target) => resolveSlug(target) ?? []);
-  return dedupeAndCap(items);
+  const items = targets.map((target) => {
+    const item = resolveSlug(target);
+    if (!item) {
+      throw new Error(
+        `related in "${slug}" references unknown slug: "${target}"`,
+      );
+    }
+    return item;
+  });
+  return dedupe(items);
 }
