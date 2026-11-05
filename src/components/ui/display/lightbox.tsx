@@ -27,10 +27,12 @@ export function LightboxTrigger({
   children,
 }: LightboxTriggerProps) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
@@ -45,6 +47,7 @@ export function LightboxTrigger({
             src={src}
             alt={alt}
             caption={caption}
+            returnTo={triggerRef}
             onClose={() => setOpen(false)}
           />,
           document.body,
@@ -57,14 +60,21 @@ interface LightboxDialogProps {
   src: string;
   alt: string;
   caption?: string;
+  returnTo: React.RefObject<HTMLButtonElement | null>;
   onClose: () => void;
 }
 
-function LightboxDialog({ src, alt, caption, onClose }: LightboxDialogProps) {
+function LightboxDialog({
+  src,
+  alt,
+  caption,
+  returnTo,
+  onClose,
+}: LightboxDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
-  useFocusTrap(dialogRef, true);
+  useFocusTrap(dialogRef, true, returnTo);
 
   // Reading layout flushes the closed styles, so the opacity transition has a
   // starting frame without waiting on requestAnimationFrame.
@@ -90,6 +100,7 @@ function LightboxDialog({ src, alt, caption, onClose }: LightboxDialogProps) {
     // biome-ignore lint/a11y/useKeyWithClickEvents: Esc and the close button are the keyboard paths; the backdrop click is a pointer shortcut for the same action
     <div
       ref={dialogRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={alt}

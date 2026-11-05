@@ -28,8 +28,9 @@ export function MobileNav() {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  useFocusTrap(panelRef, open);
+  useFocusTrap(panelRef, open, triggerRef);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, setOpen is stable
   useEffect(() => {
@@ -74,6 +75,7 @@ export function MobileNav() {
     <>
       {/* Trigger */}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
@@ -103,6 +105,7 @@ export function MobileNav() {
             <motion.div
               key="panel"
               ref={panelRef}
+              tabIndex={-1}
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
