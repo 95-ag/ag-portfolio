@@ -193,7 +193,7 @@ export function DomainSections() {
           id="project-hero-overlay"
           name="HeroMetaOverlay"
           source="@/components/project/hero-meta-overlay"
-          description="The provenance overlay on the detail-page hero: logos bottom-left, contributor avatars bottom-right, each a Popover trigger revealing a name with a location or role. Hover or focus a mark to see its reveal; the second logo and second contributor carry a url (link clicks are disabled on this page). Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
+          description="The provenance marks on the detail-page hero: logos bottom-left, contributor avatars bottom-right, over the hero from md and in a row under it below md, each a Popover trigger revealing a name with a location or role. Hover or focus a mark to see its reveal; the second logo and second contributor carry a url (link clicks are disabled on this page). Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
         >
           <div className="relative">
             <div className="aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]" />
@@ -299,9 +299,19 @@ export function DomainSections() {
         >
           <div className="max-w-[960px] divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
             {demoPosts.map((post) => (
-              <PostRow key={post.slug} post={post} />
+              // Sample posts have no page, so a prefetch would 404 in production.
+              <PostRow key={post.slug} post={post} prefetch={false} />
             ))}
           </div>
+        </Specimen>
+
+        <Specimen
+          id="blog-index-inline"
+          name="Inline sections"
+          source="src/app/blog/page.tsx · [inline]"
+          description="Page-bound composition, not a standalone component; listed, not previewed. See it on /blog."
+        >
+          <InlineList items={["Blog Index (display H1 over ruled rows)"]} />
         </Specimen>
       </GallerySection>
 
@@ -369,6 +379,21 @@ export function DomainSections() {
         intro="The route and root error boundaries, built inline in src/app/error.tsx and src/app/global-error.tsx; listed, not previewed."
       >
         <InlineList items={["Route error boundary", "Root error boundary"]} />
+      </GallerySection>
+
+      <GallerySection
+        id="resume"
+        title="Domain · Resume"
+        mapsTo="Domain Components → Resume"
+        intro="Recorded in DESIGN.md as pending design, so the planned surface is not forgotten. Nothing is built yet."
+      >
+        <Specimen
+          id="resume-pending"
+          name="Not yet designed"
+          description="A single-column resume page in the site's own type and colour system. Its layout waits on the resume's content structure, settled when the resume phase starts."
+        >
+          {null}
+        </Specimen>
       </GallerySection>
     </>
   );

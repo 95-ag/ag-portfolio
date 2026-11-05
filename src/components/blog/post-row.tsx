@@ -6,14 +6,16 @@ import { formatDate } from "@/lib/utils/format-date";
 
 interface PostRowProps {
   post: Post;
+  prefetch?: boolean;
 }
 
-export function PostRow({ post }: PostRowProps) {
+export function PostRow({ post, prefetch }: PostRowProps) {
   const { slug, frontmatter: fm } = post;
 
   return (
     <Link
       href={`/blog/${slug}`}
+      prefetch={prefetch}
       className={cn(
         "group flex select-none flex-col gap-[var(--spacing-xs)] py-[var(--spacing-lg)]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",

@@ -118,7 +118,7 @@ export function ComponentsSections() {
           id="shell-footer"
           name="Footer"
           source="@/components/shell/footer"
-          description="Site-wide footer: copyright, repo link, social icons. Full-width, in document flow."
+          description="Site-wide footer: copyright, repo link, social and feed icons. Full-width, in document flow."
         >
           <ChromeFrame ariaHidden>
             <Footer />
@@ -173,7 +173,7 @@ export function ComponentsSections() {
             id="ui-theme-selector"
             name="ThemeSelector"
             source="@/components/ui/controls/theme-selector"
-            description="The three-option theme control (system / light / dark). Two variants from one file: a collapsed pill that expands on hover (pill nav) and an always-expanded inline row (mobile menu + this page's header)."
+            description="The three-option theme control (system / light / dark). Two variants from one file: a collapsed pill that expands on hover or keyboard focus (pill nav) and an always-expanded inline row (mobile menu + this page's header)."
             headingLevel={4}
           >
             <div className="flex flex-wrap items-start gap-[var(--spacing-2xl)]">
@@ -216,6 +216,19 @@ export function ComponentsSections() {
           </Specimen>
 
           <Specimen
+            id="ui-copy-link"
+            name="CopyLink"
+            source="@/components/ui/links/copy-link"
+            description="Inline value with a copy-to-clipboard affordance; used for the contact email. The call site sets the tap area: at least 24px tall, never overlapping a neighbouring control."
+            headingLevel={4}
+          >
+            <CopyLink
+              value="hello@example.com"
+              className="-my-[var(--spacing-xs)] py-[var(--spacing-xs)]"
+            />
+          </Specimen>
+
+          <Specimen
             id="ui-breadcrumbs"
             name="Breadcrumbs"
             source="@/components/ui/links/breadcrumbs"
@@ -249,16 +262,6 @@ export function ComponentsSections() {
                 />
               </div>
             </div>
-          </Specimen>
-
-          <Specimen
-            id="ui-copy-link"
-            name="CopyLink"
-            source="@/components/ui/links/copy-link"
-            description="Inline value with a copy-to-clipboard affordance; used for the contact email."
-            headingLevel={4}
-          >
-            <CopyLink value="hello@example.com" />
           </Specimen>
         </SpecimenGroup>
 
@@ -296,6 +299,19 @@ export function ComponentsSections() {
               <Tag>Next.js</Tag>
               <Tag>Computer Vision</Tag>
             </div>
+          </Specimen>
+
+          <Specimen
+            id="ui-copyable-code"
+            name="CopyableCode"
+            source="@/components/ui/display/copyable-code"
+            description="Inline code with a copy button; used for shell and install commands."
+            headingLevel={4}
+          >
+            <CopyableCode
+              value="npm install"
+              ariaLabel="Copy install command"
+            />
           </Specimen>
 
           <Specimen
@@ -436,19 +452,6 @@ export function ComponentsSections() {
                 />
               </div>
             </div>
-          </Specimen>
-
-          <Specimen
-            id="ui-copyable-code"
-            name="CopyableCode"
-            source="@/components/ui/display/copyable-code"
-            description="Inline code with a copy button; used for shell and install commands."
-            headingLevel={4}
-          >
-            <CopyableCode
-              value="npm install"
-              ariaLabel="Copy install command"
-            />
           </Specimen>
         </SpecimenGroup>
       </GallerySection>

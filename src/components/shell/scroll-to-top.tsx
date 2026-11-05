@@ -8,7 +8,7 @@ const REST_BOTTOM = 24; // px — resting offset from the viewport bottom
 const FOOTER_GAP = 16; // px — clearance kept above the footer
 
 // `forceVisible` pins the FAB visible at its resting position regardless of scroll — used by the
-// dev design-system gallery to preview it in a bounded frame. Production callers omit it.
+// design-system gallery to preview it in a bounded frame. Site pages omit it.
 export function ScrollToTop({
   forceVisible = false,
 }: {
@@ -26,7 +26,7 @@ export function ScrollToTop({
       setVisible(window.scrollY > 400);
       // Lift the button so it never overlaps the footer once it scrolls in. Use the LAST footer:
       // the page's real footer is always last in the DOM, so this stays correct even when another
-      // <footer> appears earlier (e.g. the dev design-system gallery rendering a Footer specimen).
+      // <footer> appears earlier (e.g. the design-system gallery rendering a Footer specimen).
       const footers = document.querySelectorAll("footer");
       const footer = footers[footers.length - 1];
       const footerTop = footer?.getBoundingClientRect().top ?? Infinity;

@@ -128,6 +128,12 @@ export function TechnicalSections() {
                   devices.
                 </li>
                 <li>
+                  A secondary text action beside a primary control that does the
+                  same job, such as copy email beside Let&apos;s talk, takes the
+                  WCAG 2.2 AA minimum of 24×24px instead, never overlapping a
+                  neighbouring target.
+                </li>
+                <li>
                   Buttons stand 56px tall; LinkPill stands 44px tall, its
                   visible height the touch target itself.
                 </li>
