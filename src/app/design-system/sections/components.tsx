@@ -8,6 +8,7 @@ import { Callout } from "@/components/mdx/callout";
 import { Diagram } from "@/components/mdx/diagram";
 import { DiagramPanel, DiagramRow } from "@/components/mdx/diagram-row";
 import { Figure } from "@/components/mdx/figure";
+import type { FigureWidth } from "@/components/mdx/figure-width";
 import { Highlight } from "@/components/mdx/highlight";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { Footer } from "@/components/shell/footer";
@@ -38,6 +39,25 @@ import { InertDemo } from "../scaffold-kit/click-guards";
 
 // Rendered through the real MDX + Shiki pipeline (not hand-fed) so the highlighting matches a real
 // content code fence.
+const FIGURE_WIDTHS: { width: FigureWidth; px: number }[] = [
+  { width: "xs", px: 380 },
+  { width: "sm", px: 460 },
+  { width: "md", px: 560 },
+  { width: "lg", px: 640 },
+  { width: "xl", px: 720 },
+];
+
+const SAMPLE_SIDE_BY_SIDE_MDX = `<SideBySide>
+  <Diagram src="/design-system/samples/diagram.svg" alt="Neutral sample diagram beside its table" caption="SideBySide: figure at width xs" width="xs" />
+
+| Setting | Result |
+|---|---|
+| Baseline | 32.7% |
+| Variant A | 64.3% |
+| Variant B | 66.9% |
+
+</SideBySide>`;
+
 const SAMPLE_CODE_MDX = `\`\`\`ts
 export function add(a: number, b: number) {
   return a + b;
@@ -524,6 +544,25 @@ export function ComponentsSections() {
           </Specimen>
 
           <Specimen
+            id="mdx-figure-width"
+            name="Figure width scale"
+            source="@/components/mdx/figure-width"
+            description="One width prop shared by Figure, Diagram and DiagramRow. default fills the column; xs–xl centre and cap the figure; wide caps at 960px. Shown here on Diagram."
+            spec="xs 380 · sm 460 · md 560 · lg 640 · xl 720 · wide 960"
+            headingLevel={4}
+          >
+            {FIGURE_WIDTHS.map(({ width, px }) => (
+              <Diagram
+                key={width}
+                src="/design-system/samples/diagram.svg"
+                alt={`Neutral sample diagram at the ${width} width`}
+                caption={`width="${width}" · ${px}px`}
+                width={width}
+              />
+            ))}
+          </Specimen>
+
+          <Specimen
             id="mdx-diagram-row"
             name="DiagramRow · DiagramPanel"
             source="@/components/mdx/diagram-row"
@@ -542,6 +581,24 @@ export function ComponentsSections() {
                 label="After"
               />
             </DiagramRow>
+          </Specimen>
+
+          <Specimen
+            id="mdx-side-by-side"
+            name="SideBySide"
+            source="@/components/mdx/side-by-side"
+            description="A figure beside the table it summarises: stacked below md, two equal columns vertically centred from md. The figure keeps its own width; its block margin is dropped."
+            spec="stacked gap spacing-lg · md: 2 columns, gap spacing-xl, items centred · margin spacing-2xl"
+            headingLevel={4}
+          >
+            {/* Through MDX, so the table takes the same registry wrapper and prose styling as content. */}
+            <div className="prose-content">
+              <MDXRemote
+                source={SAMPLE_SIDE_BY_SIDE_MDX}
+                components={mdxComponents}
+                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+              />
+            </div>
           </Specimen>
         </SpecimenGroup>
 
