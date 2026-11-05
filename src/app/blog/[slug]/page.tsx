@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
+import { Heading } from "@/components/ui/display/heading";
 import { Related } from "@/components/ui/display/related";
 import { Tag } from "@/components/ui/display/tag";
 import { Breadcrumbs, type Crumb } from "@/components/ui/links/breadcrumbs";
@@ -98,7 +99,9 @@ export default async function PostPage({ params }: Props) {
 
             <article>
               <header className="flex flex-col gap-[var(--spacing-lg)]">
-                <h1 className="display-title">{fm.title}</h1>
+                <Heading level={1} type="display-title">
+                  {fm.title}
+                </Heading>
                 {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
                 <p className="support-meta">
                   <time dateTime={fm.publishedAt}>
