@@ -1,6 +1,6 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
 import type { PostFrontmatter } from "@/lib/schemas/post";
-import type { ProjectFrontmatter } from "@/lib/schemas/project";
+import { isVideo, type ProjectFrontmatter } from "@/lib/schemas/project";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 // Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
@@ -54,6 +54,12 @@ export function buildPersonSchema(
   };
 }
 
+// Matches the page's OG image (ogImage, else heroImage), but a video hero is not an image.
+function projectImage(fm: ProjectFrontmatter): string | undefined {
+  if (fm.ogImage) return fm.ogImage;
+  return fm.heroImage && !isVideo(fm.heroImage) ? fm.heroImage : undefined;
+}
+
 export function buildSoftwareSourceCodeSchema(
   slug: string,
   fm: ProjectFrontmatter,
@@ -72,7 +78,7 @@ export function buildSoftwareSourceCodeSchema(
       url: SITE_URL,
     },
     keywords: fm.tags.join(", "),
-    ...(fm.heroImage ? { image: `${SITE_URL}${fm.heroImage}` } : {}),
+    ...(projectImage(fm) ? { image: `${SITE_URL}${projectImage(fm)}` } : {}),
     ...(fm.links?.github ? { codeRepository: fm.links.github } : {}),
   };
 }
