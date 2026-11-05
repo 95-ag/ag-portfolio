@@ -1,16 +1,15 @@
 import { z } from "zod";
+import { IsoDate } from "@/lib/schemas/date";
 
 export const POST_MOTION = ["parallax", "reveal", "body-motion"] as const;
-
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export const PostFrontmatterSchema = z
   .strictObject({
     title: z.string().min(1),
     subtitle: z.string().optional(),
     summary: z.string().min(1).max(200),
-    publishedAt: z.string().regex(ISO_DATE),
-    updatedAt: z.string().regex(ISO_DATE).optional(),
+    publishedAt: IsoDate,
+    updatedAt: IsoDate.optional(),
     tags: z.array(z.string()).min(1).max(8),
     relatedProject: z.string().optional(),
     related: z.array(z.string()).optional(),
