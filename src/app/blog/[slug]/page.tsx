@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: Props) {
       siteName: AUTHOR_NAME,
       locale: "en_US",
       publishedTime: new Date(fm.publishedAt).toISOString(),
+      modifiedTime: new Date(fm.updatedAt ?? fm.publishedAt).toISOString(),
       authors: [AUTHOR_NAME],
       images: [image],
     },
