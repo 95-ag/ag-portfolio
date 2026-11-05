@@ -37,7 +37,7 @@ export default function GlobalError({
       suppressHydrationWarning
     >
       <title>Error | AG</title>
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <main className="flex flex-1 items-center py-[var(--spacing-2xl)]">
           <Container>
             <div className="flex flex-col gap-[var(--spacing-2xl)]">
