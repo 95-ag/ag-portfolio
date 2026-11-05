@@ -175,7 +175,10 @@ export function DomainSections() {
           source="@/components/project/project-header"
           description="The project-detail page header: title, subtitle, tags, and links."
         >
-          <ProjectHeader frontmatter={demoProject.frontmatter} />
+          {/* Inert: its real h1 would be the gallery's second, out of heading order. */}
+          <div inert>
+            <ProjectHeader frontmatter={demoProject.frontmatter} />
+          </div>
         </Specimen>
 
         <Specimen
