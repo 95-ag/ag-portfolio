@@ -1,14 +1,10 @@
 import Image from "next/image";
+import {
+  type FigureWidth,
+  figureWidthClass,
+} from "@/components/mdx/figure-width";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { cn } from "@/lib/utils/cn";
-
-type FigureWidth = "default" | "narrow" | "wide";
-
-const containerClass: Record<FigureWidth, string> = {
-  default: "w-full",
-  narrow: "mx-auto w-full max-w-[560px]",
-  wide: "w-full max-w-[960px]",
-};
 
 interface DiagramProps {
   src: string;
@@ -31,7 +27,7 @@ export function Diagram({
     <figure
       className={cn(
         "my-[var(--spacing-2xl)] mx-auto",
-        containerClass[width],
+        figureWidthClass[width],
         className,
       )}
     >

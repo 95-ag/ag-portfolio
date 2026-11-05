@@ -1,5 +1,9 @@
 import Image from "next/image";
 import React from "react";
+import {
+  type FigureWidth,
+  figureWidthClass,
+} from "@/components/mdx/figure-width";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { cn } from "@/lib/utils/cn";
 
@@ -49,22 +53,30 @@ type DiagramRowLayout = "2col" | "2+1";
 
 interface DiagramRowProps {
   caption?: string;
-  className?: string;
+  width?: FigureWidth;
   children: React.ReactNode;
   layout?: DiagramRowLayout;
+  className?: string;
 }
 
 export function DiagramRow({
   caption,
-  className,
+  width = "default",
   children,
   layout = "2col",
+  className,
 }: DiagramRowProps) {
   const childArray = React.Children.toArray(children);
   const isTwoPlusOne = layout === "2+1" && childArray.length === 3;
 
   return (
-    <figure className={cn("my-[var(--spacing-2xl)] mx-auto w-full", className)}>
+    <figure
+      className={cn(
+        "my-[var(--spacing-2xl)] mx-auto",
+        figureWidthClass[width],
+        className,
+      )}
+    >
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
         {isTwoPlusOne
           ? childArray.map((child, i) => {
