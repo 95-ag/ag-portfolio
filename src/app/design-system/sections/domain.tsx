@@ -249,7 +249,7 @@ export function DomainSections() {
           source="@/components/project/section-progress-nav"
           description="Fixed left-rail table of contents of the article's section headings; highlights the active section as you scroll. Shown at 2xl+ where the gutter clears it. Previewed live below with a long sample list so it caps and scrolls — hover the rail to reveal the scroll indicator. The production rail also runs on this page at 2xl+."
         >
-          <ChromeFrame height={260} ariaHidden>
+          <ChromeFrame height={260} inert>
             <SectionProgressNav
               demoSections={[
                 { id: "ds-rail-overview", label: "Overview" },

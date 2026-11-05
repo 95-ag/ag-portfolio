@@ -90,7 +90,7 @@ export function ComponentsSections() {
           source="@/components/shell/pill-nav"
           description="Floating pill nav (md+), with routing-aware active state."
         >
-          <ChromeFrame height={120} ariaHidden>
+          <ChromeFrame height={120} inert>
             <PillNav />
           </ChromeFrame>
         </Specimen>
@@ -102,7 +102,7 @@ export function ComponentsSections() {
           description="Mobile hamburger drawer (below md): logomark, nav links, and theme selector, sliding in from the right. The live drawer is on this page at mobile widths; resize below 768px and tap the menu."
         >
           <InertDemo>
-            <ChromeFrame height={420} ariaHidden>
+            <ChromeFrame height={420} inert>
               <div
                 aria-hidden
                 className="absolute inset-0 bg-[var(--ink)]/30"
@@ -120,7 +120,7 @@ export function ComponentsSections() {
           source="@/components/shell/footer"
           description="Site-wide footer: copyright, repo link, social and feed icons. Full-width, in document flow."
         >
-          <ChromeFrame ariaHidden>
+          <ChromeFrame inert>
             <Footer />
           </ChromeFrame>
         </Specimen>
