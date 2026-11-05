@@ -59,6 +59,13 @@ export function PillThemeSelector() {
       ref={containerRef}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
+      // Keyboard users reach the hidden options too, so focus expands it like hover.
+      onFocus={() => setExpanded(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setExpanded(false);
+        }
+      }}
       className="flex items-center"
     >
       {MODES.map((mode) => {
