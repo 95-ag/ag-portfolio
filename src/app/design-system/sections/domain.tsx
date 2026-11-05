@@ -383,21 +383,6 @@ export function DomainSections() {
       >
         <InlineList items={["Route error boundary", "Root error boundary"]} />
       </GallerySection>
-
-      <GallerySection
-        id="resume"
-        title="Domain · Resume"
-        mapsTo="Domain Components → Resume"
-        intro="Recorded in DESIGN.md as pending design, so the planned surface is not forgotten. Nothing is built yet."
-      >
-        <Specimen
-          id="resume-pending"
-          name="Not yet designed"
-          description="A single-column resume page in the site's own type and colour system. Its layout waits on the resume's content structure, settled when the resume phase starts."
-        >
-          {null}
-        </Specimen>
-      </GallerySection>
     </>
   );
 }
