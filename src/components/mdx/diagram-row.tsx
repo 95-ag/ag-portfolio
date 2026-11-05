@@ -5,7 +5,6 @@ import {
   figureWidthClass,
 } from "@/components/mdx/figure-width";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
-import { cn } from "@/lib/utils/cn";
 
 interface DiagramPanelProps {
   src: string;
@@ -56,7 +55,6 @@ interface DiagramRowProps {
   width?: FigureWidth;
   children: React.ReactNode;
   layout?: DiagramRowLayout;
-  className?: string;
 }
 
 export function DiagramRow({
@@ -64,18 +62,13 @@ export function DiagramRow({
   width = "default",
   children,
   layout = "2col",
-  className,
 }: DiagramRowProps) {
   const childArray = React.Children.toArray(children);
   const isTwoPlusOne = layout === "2+1" && childArray.length === 3;
 
   return (
     <figure
-      className={cn(
-        "my-[var(--spacing-2xl)] mx-auto",
-        figureWidthClass[width],
-        className,
-      )}
+      className={`my-[var(--spacing-2xl)] mx-auto ${figureWidthClass[width]}`}
     >
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
         {isTwoPlusOne

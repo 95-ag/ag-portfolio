@@ -4,7 +4,6 @@ import {
   figureWidthClass,
 } from "@/components/mdx/figure-width";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
-import { cn } from "@/lib/utils/cn";
 
 interface DiagramProps {
   src: string;
@@ -12,7 +11,6 @@ interface DiagramProps {
   caption?: string;
   width?: FigureWidth;
   aspect?: string;
-  className?: string;
 }
 
 export function Diagram({
@@ -21,15 +19,10 @@ export function Diagram({
   caption,
   width = "default",
   aspect = "16/9",
-  className,
 }: DiagramProps) {
   return (
     <figure
-      className={cn(
-        "my-[var(--spacing-2xl)] mx-auto",
-        figureWidthClass[width],
-        className,
-      )}
+      className={`my-[var(--spacing-2xl)] mx-auto ${figureWidthClass[width]}`}
     >
       <LightboxTrigger src={src} alt={alt} caption={caption}>
         <span className="block overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">

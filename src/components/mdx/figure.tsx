@@ -4,7 +4,6 @@ import {
   figureWidthClass,
 } from "@/components/mdx/figure-width";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
-import { cn } from "@/lib/utils/cn";
 
 interface FigureProps {
   src: string;
@@ -13,7 +12,6 @@ interface FigureProps {
   width?: FigureWidth;
   /** Aspect ratio for the image container, e.g. "16/9" or "4/3" */
   aspect?: string;
-  className?: string;
 }
 
 export function Figure({
@@ -22,15 +20,10 @@ export function Figure({
   caption,
   width = "default",
   aspect = "16/9",
-  className,
 }: FigureProps) {
   return (
     <figure
-      className={cn(
-        "my-[var(--spacing-2xl)] mx-auto",
-        figureWidthClass[width],
-        className,
-      )}
+      className={`my-[var(--spacing-2xl)] mx-auto ${figureWidthClass[width]}`}
     >
       <LightboxTrigger src={src} alt={alt} caption={caption}>
         <span

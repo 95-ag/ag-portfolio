@@ -23,3 +23,24 @@ export function assertPublicFiles(
     }
   }
 }
+
+// Presentation in content goes through named props (DESIGN.md → Components → Document). Code samples
+// may legitimately show `className=`, so fenced blocks and inline code are skipped.
+export function assertNoClassName(body: string, filename: string): void {
+  let inFence = false;
+  const lines: number[] = [];
+  body.split("\n").forEach((line, i) => {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      return;
+    }
+    if (!inFence && /\bclassName=/.test(line.replace(/`[^`]*`/g, ""))) {
+      lines.push(i + 1);
+    }
+  });
+  if (lines.length > 0) {
+    throw new Error(
+      `${filename}: className is not allowed in MDX content (body lines ${lines.join(", ")}); use the component's named props.`,
+    );
+  }
+}

@@ -6,7 +6,11 @@ import {
   ProjectFrontmatterSchema,
 } from "@/lib/schemas/project";
 import { parseFrontmatter } from "./frontmatter";
-import { assertKebabSlug, assertPublicFiles } from "./validate";
+import {
+  assertKebabSlug,
+  assertNoClassName,
+  assertPublicFiles,
+} from "./validate";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "projects");
 
@@ -34,6 +38,7 @@ function parseProject(filename: string): Project {
     throw new Error(`Invalid frontmatter in ${filename}:\n${issues}`);
   }
   assertKebabSlug(slug, filename);
+  assertNoClassName(content, filename);
   const fm = result.data;
   assertPublicFiles(filename, {
     heroImage: fm.heroImage,

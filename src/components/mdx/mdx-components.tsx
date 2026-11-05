@@ -1,5 +1,4 @@
 import type { MDXComponents } from "mdx/types";
-import { Stack } from "@/components/layout/stack";
 import { Callout } from "@/components/mdx/callout";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { Diagram } from "@/components/mdx/diagram";
@@ -16,7 +15,6 @@ export const mdxComponents: MDXComponents = {
   Callout,
   Highlight,
   SideBySide,
-  Stack,
   pre: ({ children, ...props }) => <CodeBlock {...props}>{children}</CodeBlock>,
   table: ({ children, ...props }) => (
     <div className="my-[var(--spacing-xl)] overflow-x-auto">
