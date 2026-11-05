@@ -51,6 +51,11 @@ export const ProjectFrontmatterSchema = z
     summary: z.string().min(1).max(200),
     projectType: z.enum(["academic", "freelance", "personal"]),
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    // When the page last changed, for crawlers only — publishedAt is the project's own date.
+    updatedAt: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
     order: z.number(),
     // Hero is satisfied by EITHER a registered live cover component (preferred) OR a
     // static heroImage (image or video). Optional: heroless builds pass in dev/preview
@@ -80,6 +85,10 @@ export const ProjectFrontmatterSchema = z
       message: "heroPoster is required when heroImage is a video",
       path: ["heroPoster"],
     },
-  );
+  )
+  .refine((data) => !data.updatedAt || data.updatedAt >= data.publishedAt, {
+    message: "updatedAt cannot be earlier than publishedAt",
+    path: ["updatedAt"],
+  });
 
 export type ProjectFrontmatter = z.infer<typeof ProjectFrontmatterSchema>;

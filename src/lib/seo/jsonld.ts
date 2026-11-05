@@ -71,6 +71,10 @@ export function buildSoftwareSourceCodeSchema(
     description: fm.metaDescription ?? fm.summary,
     url: `${SITE_URL}/work/${slug}`,
     datePublished: new Date(fm.publishedAt).toISOString(),
+    // publishedAt is the project's own date, not the page's, so it is no stand-in for a modified date.
+    ...(fm.updatedAt
+      ? { dateModified: new Date(fm.updatedAt).toISOString() }
+      : {}),
     inLanguage: "en",
     author: {
       "@type": "Person",
