@@ -46,6 +46,8 @@ export async function generateMetadata({ params }: Props) {
     openGraph: {
       type: "article" as const,
       url: `/blog/${slug}`,
+      siteName: "Aishwarya Ganesan",
+      locale: "en_US",
       publishedTime: new Date(fm.publishedAt).toISOString(),
       authors: ["Aishwarya Ganesan"],
       images: [image],

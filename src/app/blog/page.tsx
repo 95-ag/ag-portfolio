@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/blog",
+    siteName: "Aishwarya Ganesan",
+    locale: "en_US",
     images: [{ url: "/opengraph-image" }],
   },
 };
