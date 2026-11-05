@@ -29,7 +29,7 @@ export function CopyableCode({
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={ariaLabel}
+      aria-label={`${ariaLabel}: ${value}`}
       className={cn(
         "inline-flex h-11 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-deep)] px-[var(--spacing-md)]",
         "mono-code",
