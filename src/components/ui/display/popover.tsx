@@ -102,12 +102,14 @@ export function Popover({
         ),
       );
     };
-    const fitsBelow =
+    // Lazy, because place() runs on every scroll while open and each chrome
+    // check hit-tests six points; below-first usually settles it in one.
+    const fitsBelow = () =>
       mark.bottom + box.height <=
         document.documentElement.clientHeight - inset &&
       !runsUnderChrome(mark.bottom);
-    const fitsAbove = aboveTop >= inset && !runsUnderChrome(aboveTop);
-    const below = fitsBelow || !fitsAbove;
+    const fitsAbove = () => aboveTop >= inset && !runsUnderChrome(aboveTop);
+    const below = fitsBelow() || !fitsAbove();
 
     // The xs gap sits on the side facing the mark, so the pointer can cross it.
     panel.dataset.side = below ? "below" : "above";
@@ -170,6 +172,11 @@ export function Popover({
     onPointerDown: (event: React.PointerEvent) => {
       lastPointerType.current = event.pointerType;
       touchStartedClosed.current = !open;
+    },
+    // A touch that turns into a scroll never clicks, so a later keyboard
+    // click would otherwise read as the first tap and be swallowed.
+    onPointerCancel: () => {
+      lastPointerType.current = "";
     },
     onFocus: () => {
       pressedPanel.current = false;
