@@ -161,6 +161,8 @@ export function LogoMark({
         }}
       >
         {(["sit", "stretch"] as const).map((candidate) => (
+          // Lazy, not eager: on desktop both images are on screen and load at once (the hidden pose is
+          // only transparent), while on phones the pill nav is display:none and skips them entirely.
           <Image
             key={candidate}
             ref={(image) => {
@@ -170,7 +172,6 @@ export function LogoMark({
             alt=""
             width={32}
             height={32}
-            loading="eager"
             unoptimized
             className="absolute inset-0 h-full w-full"
             style={{ opacity: candidate === initialPose.current ? 1 : 0 }}
