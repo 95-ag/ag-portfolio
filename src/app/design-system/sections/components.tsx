@@ -13,6 +13,7 @@ import { Highlight } from "@/components/mdx/highlight";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { Footer } from "@/components/shell/footer";
 import { MobileNavPanel } from "@/components/shell/mobile-nav";
+import { LogoMark } from "@/components/shell/logo-mark";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/controls/button";
@@ -113,6 +114,26 @@ export function ComponentsSections() {
           <ChromeFrame height={120} inert>
             <PillNav />
           </ChromeFrame>
+        </Specimen>
+
+        <Specimen
+          id="shell-logomark"
+          name="LogoMark"
+          source="@/components/shell/logo-mark"
+          description="Route-aware cat logomark in the pill nav and mobile panel: sitting on Home, stretching everywhere else. Crossing the Home boundary zooms into the cat's face, cuts to the other pose's matching face and zooms out; hovering in the pill nav shows the current pose's full body. Shown here static, one per pose."
+        >
+          <div inert className="flex items-center gap-[var(--spacing-xl)]">
+            <figure className="flex flex-col items-center gap-[var(--spacing-xs)]">
+              <LogoMark animated={false} pathname="/" />
+              <figcaption className="support-meta">Home — sitting</figcaption>
+            </figure>
+            <figure className="flex flex-col items-center gap-[var(--spacing-xs)]">
+              <LogoMark animated={false} pathname="/work" />
+              <figcaption className="support-meta">
+                Elsewhere — stretching
+              </figcaption>
+            </figure>
+          </div>
         </Specimen>
 
         <Specimen
