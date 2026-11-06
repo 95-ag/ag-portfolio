@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IconProps } from "@/components/icons/icon-base";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
+import { LogoMark } from "@/components/shell/logo-mark";
 import { PillThemeSelector } from "@/components/ui/controls/theme-selector";
 import { cn } from "@/lib/utils/cn";
 
@@ -18,29 +18,6 @@ const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
   { href: "/blog", label: "Blog", Icon: StickyNoteIcon },
 ];
 
-function LogoMark({ active }: { active: boolean }) {
-  return (
-    <Link
-      href="/"
-      aria-label="Home"
-      aria-current={active ? "page" : undefined}
-      className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
-        active && "outline-2 outline-[var(--accent)]",
-      )}
-    >
-      <Image
-        src="/cat_head_icon.svg"
-        alt=""
-        width={32}
-        height={32}
-        className="rounded-full"
-        unoptimized
-      />
-    </Link>
-  );
-}
-
 export function PillNav() {
   const pathname = usePathname();
 
@@ -50,7 +27,14 @@ export function PillNav() {
         aria-label="Primary"
         className="pointer-events-auto flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] border border-[var(--hairline)] bg-[var(--surface-floating)] px-[var(--spacing-sm)] backdrop-blur-[12px]"
       >
-        <LogoMark active={pathname === "/"} />
+        <Link
+          href="/"
+          aria-label="Home"
+          aria-current={pathname === "/" ? "page" : undefined}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+        >
+          <LogoMark />
+        </Link>
 
         <div aria-hidden="true" className="h-5 w-px bg-[var(--hairline)]" />
 

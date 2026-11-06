@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +10,7 @@ import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { MenuIcon } from "@/components/icons/material/menu";
 import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
+import { LogoMark } from "@/components/shell/logo-mark";
 import { InlineThemeSelector } from "@/components/ui/controls/theme-selector";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
@@ -150,17 +150,7 @@ export function MobileNavPanel({
           aria-current={pathname === "/" ? "page" : undefined}
           className="flex h-11 w-11 items-center justify-center"
         >
-          <Image
-            src="/cat_head_icon.svg"
-            alt=""
-            width={32}
-            height={32}
-            className={cn(
-              "rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
-              pathname === "/" && "outline-2 outline-[var(--accent)]",
-            )}
-            unoptimized
-          />
+          <LogoMark animated={false} pathname={pathname} />
         </Link>
         <button
           type="button"
