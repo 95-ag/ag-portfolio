@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { Callout } from "@/components/mdx/callout";
+import { Clip } from "@/components/mdx/clip";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { Diagram } from "@/components/mdx/diagram";
 import { DiagramPanel, DiagramRow } from "@/components/mdx/diagram-row";
@@ -9,6 +10,7 @@ import { SideBySide } from "@/components/mdx/side-by-side";
 
 export const mdxComponents: MDXComponents = {
   Figure,
+  Clip,
   Diagram,
   DiagramRow,
   DiagramPanel,
