@@ -10,6 +10,8 @@
 html {
   background-color: var(--surface);
   color: var(--ink);
+  /* The Lightbox locks scroll with overflow: hidden; a reserved gutter keeps the page from shifting. */
+  scrollbar-gutter: stable;
 }
 
 body {
