@@ -148,7 +148,7 @@ export function MobileNavPanel({
           href="/"
           aria-label="Home"
           aria-current={pathname === "/" ? "page" : undefined}
-          className="flex h-11 w-11 items-center justify-center"
+          className="group flex h-11 w-11 items-center justify-center"
         >
           <LogoMark animated={false} pathname={pathname} />
         </Link>

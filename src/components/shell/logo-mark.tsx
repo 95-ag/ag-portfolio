@@ -23,10 +23,12 @@ import { cn } from "@/lib/utils/cn";
 // Timing and easing are a declared exception: DESIGN.md → Interaction Rules → Hover (Special).
 const LEG_SECONDS = 0.3;
 const HOVER_SECONDS = 0.25;
-const EASE_STANDARD = [0.2, 0, 0, 1] as const;
+type CubicBezier = [number, number, number, number];
+
+const EASE_STANDARD: CubicBezier = [0.2, 0, 0, 1];
 // Accelerate into the face and decelerate out of it, so the cut lands at peak speed.
-const EASE_INTO_FACE = [0.4, 0, 1, 1] as const;
-const EASE_OUT_OF_FACE = [0, 0, 0.2, 1] as const;
+const EASE_INTO_FACE: CubicBezier = [0.4, 0, 1, 1];
+const EASE_OUT_OF_FACE: CubicBezier = [0, 0, 0.2, 1];
 
 const SOURCE_OF: Record<Pose, string> = {
   sit: "/cat_icon.svg",
@@ -78,17 +80,12 @@ export function LogoMark({
   }, []);
 
   const moveTo = useCallback(
-    (
-      target: Framing,
-      anchorPose: Pose,
-      seconds: number,
-      ease: readonly number[],
-    ) => {
+    (target: Framing, anchorPose: Pose, seconds: number, ease: CubicBezier) => {
       controls.current?.stop();
       const from = framing.current;
       const playback = animate(0, 1, {
         duration: seconds,
-        ease: ease as [number, number, number, number],
+        ease,
         onUpdate: (progress) =>
           applyFraming(between(from, target, ANCHOR_OF[anchorPose], progress)),
       });
@@ -150,12 +147,13 @@ export function LogoMark({
       onPointerLeave={(event) => event.pointerType === "mouse" && hover(false)}
       className={cn(
         "relative block h-8 w-8 shrink-0 overflow-hidden rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
-        pose === "sit" && "outline-2 outline-[var(--accent)]",
+        // The link draws the focus ring; dropping the Home ring while it shows keeps them from merging.
+        pose === "sit" &&
+          "outline-2 outline-[var(--accent)] group-focus-visible:outline-none",
       )}
     >
       <span
         ref={cameraRef}
-        data-logomark-camera
         className="absolute inset-0"
         style={{
           transformOrigin: "0 0",
@@ -168,7 +166,6 @@ export function LogoMark({
             ref={(image) => {
               imageRefs.current[candidate] = image;
             }}
-            data-pose={candidate}
             src={SOURCE_OF[candidate]}
             alt=""
             width={32}

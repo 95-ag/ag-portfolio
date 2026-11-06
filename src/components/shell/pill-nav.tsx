@@ -31,7 +31,7 @@ export function PillNav() {
           href="/"
           aria-label="Home"
           aria-current={pathname === "/" ? "page" : undefined}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+          className="group flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
         >
           <LogoMark />
         </Link>
