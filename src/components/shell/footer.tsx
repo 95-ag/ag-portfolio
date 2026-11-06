@@ -20,7 +20,7 @@ export function Footer() {
               href="https://github.com/95-ag/ag-portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-2 transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)]"
+              className="underline underline-offset-2 motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--ink)]"
             >
               Designed &amp; developed by me.
             </a>

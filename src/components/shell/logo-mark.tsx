@@ -146,7 +146,7 @@ export function LogoMark({
       onPointerEnter={(event) => event.pointerType === "mouse" && hover(true)}
       onPointerLeave={(event) => event.pointerType === "mouse" && hover(false)}
       className={cn(
-        "relative block h-8 w-8 shrink-0 overflow-hidden rounded-full transition-colors duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
+        "relative block h-8 w-8 shrink-0 overflow-hidden rounded-full motion-safe:transition-[background-color] motion-safe:duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:outline-1 hover:outline-[var(--accent)]",
         // The link draws the focus ring; dropping the Home ring while it shows keeps them from merging.
         pose === "sit" &&
           "outline-2 outline-[var(--accent)] group-focus-visible:outline-none",

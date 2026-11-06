@@ -80,7 +80,7 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+        className="fixed top-[var(--spacing-md)] right-[var(--spacing-md)] z-[var(--z-pill-nav)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--radius-pill)] border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       >
         <MenuIcon size={18} />
       </button>
@@ -156,7 +156,7 @@ export function MobileNavPanel({
           type="button"
           onClick={onClose}
           aria-label="Close navigation menu"
-          className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-deep)] hover:text-[var(--ink)]"
+          className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)] text-[var(--ink-muted)] motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)] hover:bg-[var(--surface-deep)] hover:text-[var(--ink)]"
         >
           <CloseIcon size={18} />
         </button>
@@ -175,7 +175,7 @@ export function MobileNavPanel({
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] transition-colors duration-[var(--duration-fast)]",
+                "nav-link flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] px-[var(--spacing-md)] motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)]",
                 isActive
                   ? "bg-[var(--surface-active)] text-[var(--ink)]"
                   : "text-[var(--ink-muted)] hover:bg-[var(--surface-deep)] hover:text-[var(--ink)]",

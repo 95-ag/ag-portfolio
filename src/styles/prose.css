@@ -81,9 +81,13 @@
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-color: var(--hairline);
-    transition:
-      color var(--duration-fast),
-      text-decoration-color var(--duration-fast);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .prose-content a[href^="#"] {
+      transition:
+        color var(--duration-fast),
+        text-decoration-color var(--duration-fast);
+    }
   }
   .prose-content a[href^="#"]:hover {
     color: var(--accent);

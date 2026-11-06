@@ -134,7 +134,7 @@ export function SectionProgressNav({
       {thumb.show && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 w-[2px] rounded-full bg-[var(--hairline-strong)] opacity-0 transition-opacity duration-[var(--duration-fast)] group-hover:opacity-100"
+          className="pointer-events-none absolute left-0 w-[2px] rounded-full bg-[var(--hairline-strong)] opacity-0 motion-safe:transition-opacity motion-safe:duration-[var(--duration-fast)] group-hover:opacity-100"
           style={{ top: thumb.top, height: thumb.height }}
         />
       )}
@@ -160,7 +160,7 @@ export function SectionProgressNav({
                   block: "start",
                 });
               }}
-              className="support-meta select-none max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="support-meta select-none max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               style={{
                 color: isActive ? "var(--ink)" : "var(--ink-muted)",
                 fontWeight: isActive ? 600 : 400,

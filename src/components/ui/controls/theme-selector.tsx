@@ -76,7 +76,7 @@ export function PillThemeSelector() {
           <div
             key={mode}
             className={cn(
-              "overflow-hidden transition-[width,opacity] ease-[var(--ease-standard)] duration-[var(--duration-slow)]",
+              "overflow-hidden motion-safe:transition-[width,opacity] motion-safe:ease-[var(--ease-standard)] motion-safe:duration-[var(--duration-slow)]",
               visible ? "w-8 opacity-100" : "w-0 opacity-0",
             )}
           >
@@ -87,7 +87,7 @@ export function PillThemeSelector() {
               aria-pressed={isSelected}
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-[var(--radius-pill)]",
-                "transition-colors duration-[var(--duration-fast)]",
+                "motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)]",
                 isSelected
                   ? "bg-[var(--accent-tint)] text-[var(--accent)]"
                   : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
@@ -125,7 +125,7 @@ export function InlineThemeSelector({ className }: { className?: string }) {
             aria-pressed={isSelected}
             className={cn(
               "flex h-11 w-11 items-center justify-center rounded-[var(--radius-pill)]",
-              "transition-colors duration-[var(--duration-fast)]",
+              "motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)]",
               isSelected
                 ? "bg-[var(--accent-tint)] text-[var(--accent)]"
                 : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
