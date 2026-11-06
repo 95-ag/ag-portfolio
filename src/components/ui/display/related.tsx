@@ -37,7 +37,7 @@ export function Related({ items }: RelatedProps) {
               className="group flex flex-col gap-[var(--spacing-xs)] py-[var(--spacing-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
             >
               <span className="support-meta">{KIND_LABEL[item.kind]}</span>
-              <span className="heading-component break-words font-semibold group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
+              <span className="heading-component break-words group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
                 {item.title}
               </span>
               <span className="body-secondary truncate">{item.summary}</span>

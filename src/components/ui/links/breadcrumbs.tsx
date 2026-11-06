@@ -14,7 +14,7 @@ export function Breadcrumbs({ trail }: BreadcrumbsProps) {
           const isLast = index === trail.length - 1;
           return (
             <li
-              key={crumb.name}
+              key={crumb.href ?? crumb.name}
               aria-current={isLast ? "page" : undefined}
               className="inline"
             >

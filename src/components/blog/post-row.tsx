@@ -24,7 +24,7 @@ export function PostRow({ post, prefetch }: PostRowProps) {
       <time dateTime={fm.publishedAt} className="support-meta">
         {formatDate(fm.publishedAt)}
       </time>
-      <p className="heading-component font-semibold group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
+      <p className="heading-component group-hover:underline group-hover:decoration-[var(--accent)] group-hover:underline-offset-2">
         {fm.title}
       </p>
       <p className="body-secondary">{fm.summary}</p>
