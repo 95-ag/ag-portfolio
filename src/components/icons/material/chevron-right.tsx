@@ -1,0 +1,10 @@
+import { IconBase, type IconProps } from "@/components/icons/icon-base";
+
+export function ChevronRightIcon(props: IconProps) {
+  return (
+    <IconBase
+      {...props}
+      path="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"
+    />
+  );
+}

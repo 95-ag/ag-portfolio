@@ -140,3 +140,8 @@
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
 }
+
+/* ScreenCarousel pages its screens only on a window wide and tall enough for its smallest frame.
+   677px = 200px reserved for caption, dots and nav + the 220px frame's height (220 × 1278 / 590), so it moves
+   with either value (DESIGN.md → Components → Document → Figures & Media → ScreenCarousel). */
+@custom-variant carousel (@media (min-width: 64rem) and (min-height: 677px));

@@ -6,11 +6,14 @@ import { Diagram } from "@/components/mdx/diagram";
 import { DiagramPanel, DiagramRow } from "@/components/mdx/diagram-row";
 import { Figure } from "@/components/mdx/figure";
 import { Highlight } from "@/components/mdx/highlight";
+import { ScreenCarousel, ScreenSlide } from "@/components/mdx/screen-carousel";
 import { SideBySide } from "@/components/mdx/side-by-side";
 
 export const mdxComponents: MDXComponents = {
   Figure,
   Clip,
+  ScreenCarousel,
+  ScreenSlide,
   Diagram,
   DiagramRow,
   DiagramPanel,
