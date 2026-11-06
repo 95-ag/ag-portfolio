@@ -5,15 +5,17 @@ import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { MailIcon } from "@/components/icons/material/mail";
 import { Callout } from "@/components/mdx/callout";
+import { Clip } from "@/components/mdx/clip";
 import { Diagram } from "@/components/mdx/diagram";
 import { DiagramPanel, DiagramRow } from "@/components/mdx/diagram-row";
 import { Figure } from "@/components/mdx/figure";
 import type { FigureWidth } from "@/components/mdx/figure-width";
 import { Highlight } from "@/components/mdx/highlight";
 import { mdxComponents } from "@/components/mdx/mdx-components";
+import { ScreenCarousel, ScreenSlide } from "@/components/mdx/screen-carousel";
 import { Footer } from "@/components/shell/footer";
-import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { LogoMark } from "@/components/shell/logo-mark";
+import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/controls/button";
@@ -547,6 +549,63 @@ export function ComponentsSections() {
               caption="Figure: object-cover in a bordered, radius-md frame"
             />
           </Specimen>
+          <Specimen
+            id="mdx-clip"
+            name="Clip"
+            source="@/components/mdx/clip"
+            description="Short screen recording in the Figure frame. Poster with native controls; muted, inline, no autoplay or loop, nothing loaded before play. Takes the figure width scale; no Lightbox."
+            headingLevel={4}
+          >
+            <Clip
+              src="/design-system/samples/clip.mp4"
+              poster="/design-system/samples/clip-poster.webp"
+              alt="Neutral sample clip: a square moving left to right"
+              caption="Clip: poster and native controls in a bordered, radius-md frame"
+              width="md"
+            />
+          </Specimen>
+          <Specimen
+            id="mdx-screen-carousel"
+            name="ScreenCarousel"
+            source="@/components/mdx/screen-carousel"
+            description="App screens paired with the prose that explains them, one ScreenSlide per screen. From lg on a window at least 677px tall it pages: the frame grows from 220px to 280px with the window height, with chevrons and position dots. From lg on a shorter window the screens sit side by side; below lg they stack with the frame half the screen tall. Resize the window to see each."
+            spec={
+              "<ScreenSlide image | video poster alt caption?>prose</ScreenSlide>"
+            }
+            headingLevel={4}
+          >
+            <div className="prose-content">
+              <ScreenCarousel label="Sample screens">
+                <ScreenSlide
+                  image="/design-system/samples/screen-1.svg"
+                  alt="Neutral sample phone screen"
+                  caption="A full phone screen fills the frame"
+                >
+                  <p>
+                    Each slide pairs one screen with the prose that explains it,
+                    so the reader looks from the text to the screen without
+                    scrolling.
+                  </p>
+                </ScreenSlide>
+                <ScreenSlide
+                  image="/design-system/samples/screen-2.svg"
+                  alt="Neutral sample screen, shorter than a full phone"
+                  caption="A shorter screen sits at the top of the frame"
+                >
+                  <p>
+                    Every screen takes the same frame, so paging never resizes
+                    the carousel.
+                  </p>
+                </ScreenSlide>
+                <ScreenSlide
+                  video="/design-system/samples/clip.mp4"
+                  poster="/design-system/samples/clip-poster.webp"
+                  alt="Neutral sample clip: a square moving left to right"
+                  caption="A clip plays as Clip does; with no prose, the frame centres"
+                />
+              </ScreenCarousel>
+            </div>
+          </Specimen>
         </SpecimenGroup>
 
         <SpecimenGroup title="Diagrams & Charts">
@@ -568,7 +627,7 @@ export function ComponentsSections() {
             id="mdx-figure-width"
             name="Figure width scale"
             source="@/components/mdx/figure-width"
-            description="One width prop shared by Figure, Diagram and DiagramRow. default fills the column; xs–xl centre and cap the figure; wide caps at 960px. Shown here on Diagram."
+            description="One width prop shared by Figure, Clip, Diagram and DiagramRow. default fills the column; xs–xl centre and cap the figure; wide caps at 960px. Shown here on Diagram."
             spec="xs 380 · sm 460 · md 560 · lg 640 · xl 720 · wide 960"
             headingLevel={4}
           >

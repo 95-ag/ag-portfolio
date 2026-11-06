@@ -5,6 +5,8 @@ import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
 import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { CheckIcon } from "@/components/icons/material/check";
+import { ChevronLeftIcon } from "@/components/icons/material/chevron-left";
+import { ChevronRightIcon } from "@/components/icons/material/chevron-right";
 import { CloseIcon } from "@/components/icons/material/close";
 import { ComputerIcon } from "@/components/icons/material/computer";
 import { ContentCopyIcon } from "@/components/icons/material/content-copy";
@@ -461,6 +463,8 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "ArrowUpward", Icon: ArrowUpwardIcon },
   { name: "Article", Icon: ArticleIcon },
   { name: "Check", Icon: CheckIcon },
+  { name: "ChevronLeft", Icon: ChevronLeftIcon },
+  { name: "ChevronRight", Icon: ChevronRightIcon },
   { name: "Close", Icon: CloseIcon },
   { name: "Computer", Icon: ComputerIcon },
   { name: "ContentCopy", Icon: ContentCopyIcon },
@@ -487,6 +491,12 @@ const BRAND_ICONS: IconEntry[] = [
 
 const ICON_SIZES = [
   {
+    px: 72,
+    label: "72px",
+    context:
+      "ScreenCarousel previous / next chevrons (the glyph draws about 36px tall)",
+  },
+  {
     px: 20,
     label: "20px",
     context: "Standalone icon-only controls (footer social, scroll-to-top)",
@@ -504,7 +514,7 @@ const ICON_SIZES = [
   },
 ];
 
-// Largest size in the scale; used for the catalog grids (icons not in a button/nav context).
+// The standalone-control size; used for the catalog grids (icons not in a button/nav context).
 const ICON_GRID_SIZE = 20;
 
 const GRID_CELLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
