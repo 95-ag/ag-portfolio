@@ -8,7 +8,6 @@ import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { SurfaceContext } from "@/components/shell/surface-context";
-import { getAllPosts } from "@/lib/content/posts";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import {
   AUTHOR_NAME,
@@ -60,9 +59,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const websiteSchema = buildWebSiteSchema();
-  const meteorSuppressedPaths = getAllPosts()
-    .filter((post) => post.frontmatter.motion)
-    .map((post) => `/blog/${post.slug}`);
 
   return (
     <html
@@ -92,7 +88,7 @@ export default function RootLayout({
           >
             Skip to content
           </a>
-          <BackgroundLayer meteorSuppressedPaths={meteorSuppressedPaths} />
+          <BackgroundLayer />
           <Nav />
           <main
             id="main"

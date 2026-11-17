@@ -18,12 +18,11 @@ const contentSecurityPolicy = [
   "form-action 'self'",
   // Next RSC bootstrap + theme pre-paint script + next-themes + ld+json (all inline).
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-  // Inline style attributes from framer-motion and the WebGL background.
+  // Inline style attributes from framer-motion.
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
   "connect-src 'self'",
-  "worker-src 'self' blob:",
   "manifest-src 'self'",
   "upgrade-insecure-requests",
 ].join("; ");

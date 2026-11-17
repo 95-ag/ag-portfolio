@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { PostRow } from "@/components/blog/post-row";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
@@ -79,37 +78,6 @@ export default function HomePage() {
                   Get in Touch
                 </Button>
               </div>
-            </div>
-
-            {/* Portrait — two theme-specific portraits at natural aspect (no crop).
-                globals.css shows only the active one via the `data-theme` swap.
-                mix-blend-mode drops each baked background so the fixed WebGL meteor
-                layer shows through the dissolved edges: dark #080808 → screen,
-                light #fcfcfc → multiply. The per-theme contrast() snaps the near-pure
-                field to true #000 / #fff (screen/multiply only fully drop PURE
-                black/white) so no residual rectangle shows when meteors are absent.
-                The wrapper and every ancestor up to <body> MUST stay transparent and
-                stacking-context-free (no z-index/transform/opacity/mask on ANCESTORS)
-                or the blend composites against an opaque box instead of the meteors —
-                the contrast filter is on the <img> itself, which is fine. See
-                DESIGN.md Home → Hero. */}
-            <div className="hidden shrink-0 lg:block lg:w-[460px]">
-              <Image
-                src="/hero-dark.png"
-                alt="Aishwarya Ganesan"
-                width={800}
-                height={1000}
-                sizes="(max-width: 1024px) 0px, 460px"
-                className="hero-dark h-auto w-full opacity-90 mix-blend-screen [filter:contrast(1.07)_saturate(0.85)]"
-              />
-              <Image
-                src="/hero-light.png"
-                alt="Aishwarya Ganesan"
-                width={800}
-                height={1000}
-                sizes="(max-width: 1024px) 0px, 460px"
-                className="hero-light h-auto w-full opacity-90 mix-blend-multiply [filter:contrast(1.03)_saturate(0.85)]"
-              />
             </div>
           </div>
         </Container>

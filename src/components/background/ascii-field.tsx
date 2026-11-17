@@ -36,10 +36,9 @@ const GLYPHS = [
 const CELL = 30;
 // Mobile/desktop divider — matches the site's `md` breakpoint and nav switch.
 const MIN_WIDTH = 768;
-const DESKTOP_DENSITY = 0.2;
-// Mobile (non-reading pages) gets a sparser, fainter full-bleed field — texture, not noise.
-const MOBILE_DENSITY = 0.1;
-const MOBILE_OPACITY = 0.55;
+const DENSITY = 0.2;
+// Mobile (non-reading pages) gets the full-bleed field at the desktop density.
+const MOBILE_OPACITY = 0.85;
 // Desktop/tablet: clear a centered band sized to the content column (+buffer) so
 // glyphs sit only in the outer gutters/corners and never touch the reading column.
 const GUTTER_MASK =
@@ -74,7 +73,6 @@ export function AsciiField({ isReadingPage }: AsciiFieldProps) {
         return;
       }
 
-      const density = isMobile ? MOBILE_DENSITY : DESKTOP_DENSITY;
       setMask(isMobile ? "none" : GUTTER_MASK);
       if (isMobile) host.style.opacity = String(MOBILE_OPACITY);
 
@@ -89,7 +87,7 @@ export function AsciiField({ isReadingPage }: AsciiFieldProps) {
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          if (rand() > density) continue;
+          if (rand() > DENSITY) continue;
           const s = document.createElement("span");
           s.textContent = GLYPHS[Math.floor(rand() * GLYPHS.length)];
           s.style.position = "absolute";
