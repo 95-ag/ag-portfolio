@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Cover } from "@/components/project/cover";
+import { CoverLoop } from "@/components/project/cover-loop";
 import { TypeLabel } from "@/components/writing/type-label";
 import { type Post, postColour } from "@/lib/content/posts";
 import { getProjectBySlug } from "@/lib/content/projects";
@@ -44,7 +45,6 @@ export function WritingTile({ post, size }: WritingTileProps) {
       className="wtile select-none"
       data-size={size}
       data-art={hasArt}
-      data-cover-host={hasArt ? "" : undefined}
       data-ear={ear}
       data-post-group={POST_TYPE_GROUP[fm.type]}
     >
@@ -52,11 +52,16 @@ export function WritingTile({ post, size }: WritingTileProps) {
         <>
           <span className="wtile-art-head">
             <TileTitle post={post} size={size} />
-            <TypeLabel type={fm.type} addons={fm.addons} year={year} />
+            <TypeLabel
+              type={fm.type}
+              addons={fm.addons}
+              year={year}
+              large={size === "art"}
+            />
           </span>
-          <span className="wtile-art-media">
+          <CoverLoop className="wtile-art-media">
             <Cover project={project} colour={postColour(slug)} variant="tile" />
-          </span>
+          </CoverLoop>
         </>
       ) : (
         <>
@@ -66,7 +71,12 @@ export function WritingTile({ post, size }: WritingTileProps) {
           >
             “{fm.summary}”
           </span>
-          <TypeLabel type={fm.type} addons={fm.addons} year={year} />
+          <TypeLabel
+            type={fm.type}
+            addons={fm.addons}
+            year={year}
+            large={size === "art"}
+          />
         </>
       )}
     </Link>

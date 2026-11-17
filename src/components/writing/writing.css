@@ -9,6 +9,23 @@
   gap: 0 var(--spacing-sm);
   font-style: italic;
 }
+.type-label-fit {
+  position: relative;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.type-label-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-sm);
+}
+/* A hidden copy of the one-line form: its height says whether the line wraps. */
+.type-label-probe {
+  position: absolute;
+  inset-inline: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 .type-label-name {
   color: var(--ink-muted);
 }
@@ -149,7 +166,7 @@ html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
 }
 
 /* Art tile: the project's cover fills the tile, and on hover or focus the whole cover slides down inside the square,
-   narrowed to 90% of the width and centred with its top at 34%; the tile's edge cuts its lower part. Touch screens
+   narrowed to 90% of the width and centred, until the head is fully revealed (never higher than 34%); the tile's edge cuts its lower part. Touch screens
    start revealed. By transform and clip only. */
 .wtile-art-head {
   display: grid;
@@ -169,14 +186,20 @@ html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
   clip-path: inset(0 round var(--radius-xs));
 }
 .wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media {
-  transform: translateY(34%) scale(0.9);
+  transform: translateY(
+      max(34%, calc(var(--art-bottom, 0px) + var(--spacing-md)))
+    )
+    scale(0.9);
 }
 .wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media .cover {
   clip-path: inset(0 round var(--radius-md));
 }
 @media (hover: none) {
   .wtile[data-art="true"] .wtile-art-media {
-    transform: translateY(34%) scale(0.9);
+    transform: translateY(
+        max(34%, calc(var(--art-bottom, 0px) + var(--spacing-md)))
+      )
+      scale(0.9);
   }
   .wtile[data-art="true"] .wtile-art-media .cover {
     clip-path: inset(0 round var(--radius-md));
@@ -211,6 +234,9 @@ html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
   display: grid;
   gap: var(--spacing-sm);
   align-content: start;
+}
+.post-rail-cover {
+  display: block;
 }
 .cover[data-variant="rail"] {
   aspect-ratio: 4 / 3;

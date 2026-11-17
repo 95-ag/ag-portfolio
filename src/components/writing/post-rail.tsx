@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { artefactComponents } from "@/components/project/covers";
-import { Artefact } from "@/components/project/covers/artefacts/artefact";
+import { Cover } from "@/components/project/cover";
+import { CoverLoop } from "@/components/project/cover-loop";
 import { Tag } from "@/components/ui/display/tag";
 import type { Post } from "@/lib/content/posts";
 import { getProjectBySlug } from "@/lib/content/projects";
@@ -19,7 +19,6 @@ export function PostRail({ post }: PostRailProps) {
   const project = fm.relatedProject
     ? getProjectBySlug(fm.relatedProject)
     : undefined;
-  const showArtefact = project && artefactComponents[project.slug];
 
   return (
     <aside className="post-rail" aria-label="About this post">
@@ -54,19 +53,9 @@ export function PostRail({ post }: PostRailProps) {
           data-colour={project.frontmatter.colour}
         >
           <p className="meta-label">From the project</p>
-          {showArtefact && (
-            <span
-              className="cover"
-              aria-hidden="true"
-              data-variant="rail"
-              data-cover-light={project.frontmatter.cover?.light ?? "marker"}
-              data-cover-dark={project.frontmatter.cover?.dark ?? "marker"}
-            >
-              <span className="cover-media">
-                <Artefact slug={project.slug} caption={false} />
-              </span>
-            </span>
-          )}
+          <CoverLoop className="post-rail-cover">
+            <Cover project={project} variant="rail" caption={false} />
+          </CoverLoop>
           <span className="heading-component">{project.frontmatter.title}</span>
         </Link>
       )}

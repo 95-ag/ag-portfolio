@@ -7,13 +7,15 @@ import { HeroMedia } from "@/components/project/hero-media";
 import type { Project } from "@/lib/content/projects";
 import "@/components/project/covers/cover.css";
 
-type CoverVariant = "card" | "spotlight" | "hero" | "tile";
+type CoverVariant = "card" | "spotlight" | "hero" | "tile" | "rail";
 
 interface CoverProps {
   project: Project;
   // Overrides the project's palette slot — an art tile wears its post's colour in the project's modes.
   colour?: number;
   variant: CoverVariant;
+  // An artefact cover's caption chip; the post rail leaves it out.
+  caption?: boolean;
   // Plays the cover. An ancestor marked `data-cover-host` plays it while hovered or focused.
   playing?: boolean;
 }
@@ -28,6 +30,7 @@ export function Cover({
   project,
   colour,
   variant,
+  caption = true,
   playing = false,
 }: CoverProps) {
   const { slug, frontmatter: fm } = project;
@@ -59,7 +62,7 @@ export function Cover({
       <div className="cover-media">
         {kind === "live" && LiveCover && <LiveCover />}
         {kind === "artefact" && artefactComponents[slug] && (
-          <Artefact slug={slug} caption />
+          <Artefact slug={slug} caption={caption} />
         )}
         {(kind === "image" || kind === "video") && fm.heroImage && (
           <HeroMedia
