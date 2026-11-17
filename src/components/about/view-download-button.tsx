@@ -26,7 +26,7 @@ export function ViewDownloadButton({
 
   return (
     <Button
-      variant="secondary"
+      variant="neutral"
       onClick={handleClick}
       icon={<DownloadIcon size={18} />}
       className="justify-center"

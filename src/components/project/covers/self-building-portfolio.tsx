@@ -482,7 +482,7 @@ export function SelfBuildingPortfolioCover() {
                 {...draw(13)}
                 d={`M ${gx - 7} ${AXIS_Y + 0.5} L ${gx - 2} ${AXIS_Y + 6} L ${gx + 7.5} ${AXIS_Y - 6.5}`}
                 fill="none"
-                stroke="var(--ink-on-accent)"
+                stroke="var(--cover-ground, var(--surface))"
                 strokeWidth={2.6}
                 strokeLinecap="round"
                 strokeLinejoin="round"

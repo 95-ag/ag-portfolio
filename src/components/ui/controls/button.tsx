@@ -1,8 +1,16 @@
+"use client";
+
+import { useRef } from "react";
 import { cn } from "@/lib/utils/cn";
+import { useAttentionCue } from "./attention-cue";
+import "./button.css";
 
 type ButtonBaseProps = {
-  variant?: "primary" | "secondary";
+  variant: "ink" | "neutral";
   icon?: React.ReactNode;
+  iconPosition?: "leading" | "trailing";
+  // `full`: the outline draws, then the sheen crosses twice. `draw`: the outline draw alone.
+  cue?: "full" | "draw";
   children: React.ReactNode;
   className?: string;
 };
@@ -19,36 +27,48 @@ type ButtonAsAnchor = ButtonBaseProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
-const buttonClass = (variant: "primary" | "secondary", className?: string) =>
-  cn(
-    "interactive-label inline-flex h-14 cursor-pointer items-center gap-[var(--spacing-sm)] rounded-[var(--radius-sm)] px-[var(--spacing-2xl)] motion-safe:transition-[color,background-color,border-color] motion-safe:duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]",
-    variant === "primary" && [
-      "bg-[var(--accent)] text-[var(--ink-on-accent)]",
-      "hover:bg-[var(--ink)] hover:text-[var(--surface)]",
-    ],
-    variant === "secondary" && [
-      "border border-[var(--hairline-strong)] bg-transparent text-[var(--ink)]",
-      "hover:border-[var(--accent)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)]",
-    ],
-    className,
-  );
-
 export function Button(props: ButtonProps) {
-  const { variant = "primary", icon, children, className, ...rest } = props;
+  const {
+    variant,
+    icon,
+    iconPosition = "leading",
+    cue,
+    children,
+    className,
+    ...rest
+  } = props;
+  const ref = useRef<HTMLElement | null>(null);
+  useAttentionCue(ref, cue !== undefined);
 
+  const setRef = (node: HTMLElement | null) => {
+    ref.current = node;
+  };
+  const classes = cn("btn button-label", className);
+  const iconMark = icon && (
+    <span aria-hidden="true" className="btn-icon">
+      {icon}
+    </span>
+  );
   const content = (
     <>
-      {icon && <span aria-hidden="true">{icon}</span>}
+      {cue === "full" && <span className="btn-sheen" aria-hidden="true" />}
+      {iconPosition === "leading" && iconMark}
       {children}
+      {iconPosition === "trailing" && iconMark}
     </>
   );
 
   if (rest.href !== undefined) {
-    const { href, ...anchorRest } = rest as ButtonAsAnchor;
+    const { href, target, rel, ...anchorRest } = rest as ButtonAsAnchor;
     return (
       <a
+        ref={setRef}
         href={href}
-        className={buttonClass(variant, className)}
+        target={target}
+        rel={target === "_blank" ? (rel ?? "noopener noreferrer") : rel}
+        className={classes}
+        data-variant={variant}
+        data-cue={cue}
         {...anchorRest}
       >
         {content}
@@ -56,12 +76,14 @@ export function Button(props: ButtonProps) {
     );
   }
 
-  const { ...buttonRest } = rest as ButtonAsButton;
   return (
     <button
+      ref={setRef}
       type="button"
-      className={buttonClass(variant, className)}
-      {...buttonRest}
+      className={classes}
+      data-variant={variant}
+      data-cue={cue}
+      {...(rest as ButtonAsButton)}
     >
       {content}
     </button>

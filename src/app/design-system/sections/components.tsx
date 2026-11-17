@@ -71,18 +71,18 @@ const buttonVariants = [
   {
     token: "primary",
     spec: "bg accent · text ink-on-accent · radius-sm · 56px tall",
-    render: <Button variant="primary">Primary</Button>,
+    render: <Button variant="ink">Primary</Button>,
   },
   {
     token: "secondary",
     spec: "1px hairline-strong · transparent · hover accent tint",
-    render: <Button variant="secondary">Secondary</Button>,
+    render: <Button variant="neutral">Secondary</Button>,
   },
   {
     token: "primary + icon",
     spec: "leading icon (18px) + label",
     render: (
-      <Button variant="primary" icon={<MailIcon size={18} />}>
+      <Button variant="ink" icon={<MailIcon size={18} />}>
         Email me
       </Button>
     ),
@@ -91,7 +91,7 @@ const buttonVariants = [
     token: "as link",
     spec: "renders an <a> when href is set",
     render: (
-      <Button href="#ui-button" variant="secondary">
+      <Button href="#ui-button" variant="neutral">
         As link
       </Button>
     ),

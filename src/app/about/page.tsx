@@ -169,7 +169,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:w-fit sm:grid-cols-2">
               <div className="flex flex-col gap-[var(--spacing-xs)]">
                 <Button
-                  variant="primary"
+                  variant="ink"
                   href={`mailto:${about.contactEmail}`}
                   icon={<MailIcon size={18} />}
                   className="justify-center"

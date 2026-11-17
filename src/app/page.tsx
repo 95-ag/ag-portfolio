@@ -64,14 +64,14 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
                 <Button
-                  variant="primary"
+                  variant="ink"
                   href="#featured"
                   icon={<ArrowDownwardIcon size={18} />}
                 >
                   See Projects
                 </Button>
                 <Button
-                  variant="secondary"
+                  variant="ink"
                   href="mailto:aishwarya.workbench@gmail.com"
                   icon={<MailIcon size={18} />}
                 >

@@ -1,19 +1,9 @@
-import { cn } from "@/lib/utils/cn";
-
 interface TagProps {
   children: React.ReactNode;
-  className?: string;
 }
 
-export function Tag({ children, className }: TagProps) {
-  return (
-    <span
-      className={cn(
-        "tag-chip inline-block rounded-[var(--radius-sm)] bg-[var(--surface-tag)] px-[var(--spacing-sm)] py-[2px]",
-        className,
-      )}
-    >
-      {children}
-    </span>
-  );
+// A plain label: no fill, no padding. Its colour is the context's — the parent sets `color` (the project's ink, the
+// accent), and the label takes it.
+export function Tag({ children }: TagProps) {
+  return <span className="tag-label inline-block">{children}</span>;
 }

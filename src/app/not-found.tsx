@@ -21,14 +21,14 @@ export default function NotFound() {
           </div>
           <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
             <Button
-              variant="primary"
+              variant="ink"
               href="/work"
               icon={<ArrowForwardIcon size={18} />}
             >
               See Projects
             </Button>
             <Button
-              variant="secondary"
+              variant="ink"
               href="/"
               icon={
                 <Image
