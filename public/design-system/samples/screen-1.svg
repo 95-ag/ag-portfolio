@@ -3,12 +3,12 @@
     .bg { fill: #eef0f1; }
     .block { fill: #dfe3e4; }
     .line { fill: #cfd5d6; }
-    .accent { fill: #006e37; opacity: 0.35; }
+    .accent { fill: #b24a35; opacity: 0.35; }
     @media (prefers-color-scheme: dark) {
       .bg { fill: #161616; }
       .block { fill: #23262a; }
       .line { fill: #2f3438; }
-      .accent { fill: #2aa566; opacity: 0.4; }
+      .accent { fill: #f35c5d; opacity: 0.4; }
     }
   </style>
   <rect class="bg" width="590" height="1278"/>

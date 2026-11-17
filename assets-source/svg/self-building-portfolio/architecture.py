@@ -55,4 +55,5 @@ _theme.build(
     ),
     content_bbox=(60, 20, 360, 350),
     body=BODY,
+    slot=2,
 )

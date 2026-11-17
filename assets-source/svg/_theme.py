@@ -16,30 +16,38 @@ Run a diagram from repo root, e.g.:
   .venv/bin/python3 assets-source/svg/masked-autoencoders/mae-architecture.py
 """
 
+import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _tokens import NEUTRALS, out_root, slot_ink  # noqa: E402
 
 # Uniform viewBox padding (SVG user units) around the measured content bounds.
 FRAME_PAD = 16
 
-# Canonical defs — node/edge classes, light + dark, and the arrowhead marker.
+# Canonical defs — node/edge classes, light + dark, and the arrowhead marker. Neutrals come from the design system's
+# token file; the one accent is the colour of the project the diagram illustrates (Foundations → Imagery → Diagrams).
 # These values are the diagram system; do not fork them per project.
-DEFS = """  <defs>
+DEFS_TEMPLATE = """  <defs>
     <style>
-      .n  { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
-      .na { fill: #f3f4f5; stroke: #006e37; stroke-width: 1.5; }
-      .nt { fill: #f3f4f5; stroke: #bbcabf; stroke-width: 1; }
-      .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: #2d2d2d; }
-      .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: #6c7a71; }
-      .conn { fill: none; stroke: #6c7a71; stroke-width: 1.5; }
-      .af  { fill: #6c7a71; }
+      .n  { fill: @tag_l@; stroke: @line_l@; stroke-width: 1; }
+      .na { fill: @tag_l@; stroke: @ink_l@; stroke-width: 1.5; }
+      .nt { fill: @tag_l@; stroke: @line_l@; stroke-width: 1; }
+      .zone { fill: @ink_l@; fill-opacity: 0.07; }
+      .lbl { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 500; fill: @text_l@; }
+      .sub { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; fill: @muted_l@; }
+      .conn { fill: none; stroke: @muted_l@; stroke-width: 1.5; }
+      .af  { fill: @muted_l@; }
       @media (prefers-color-scheme: dark) {
-        .n  { fill: #1c1b1b; stroke: #3c4a42; }
-        .na { fill: #1c1b1b; stroke: #2aa566; }
-        .nt { fill: #1c1b1b; stroke: #3c4a42; }
-        .lbl { fill: #e2e2e2; }
-        .sub { fill: #bbcabf; }
-        .conn { stroke: #86948a; }
-        .af  { fill: #86948a; }
+        .n  { fill: @tag_d@; stroke: @line_d@; }
+        .na { fill: @tag_d@; stroke: @ink_d@; }
+        .nt { fill: @tag_d@; stroke: @line_d@; }
+        .zone { fill: @ink_d@; }
+        .lbl { fill: @text_d@; }
+        .sub { fill: @muted_d@; }
+        .conn { stroke: @muted_d@; }
+        .af  { fill: @muted_d@; }
       }
     </style>
     <marker id="arr" markerWidth="7" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -47,15 +55,30 @@ DEFS = """  <defs>
     </marker>
   </defs>"""
 
-# Repo root = assets-source/svg/_theme.py -> parents[2]
-REPO_ROOT = Path(__file__).resolve().parents[2]
+
+def defs(slot):
+    """The shared defs with the neutrals and the given project slot's page colour filled in."""
+    ink_l, ink_d = slot_ink(slot)
+    values = {
+        "tag": NEUTRALS["surface-tag"],
+        "line": NEUTRALS["hairline-strong"],
+        "text": NEUTRALS["ink"],
+        "muted": NEUTRALS["ink-muted"],
+        "ink": (ink_l, ink_d),
+    }
+    out = DEFS_TEMPLATE
+    for key, (light, dark) in values.items():
+        out = out.replace(f"@{key}_l@", light).replace(f"@{key}_d@", dark)
+    assert not re.search(r"@[a-z]+_[ld]@", out), "an unfilled placeholder is left in the defs"
+    return out
 
 
-def build(*, out_rel, title, aria_label, content_bbox, body, pad=FRAME_PAD):
+def build(*, out_rel, title, aria_label, content_bbox, body, slot, pad=FRAME_PAD):
     """Write a production SVG with shared defs and a tight, padded viewBox.
 
     content_bbox: (min_x, min_y, max_x, max_y) of the drawn content (node extents).
-    out_rel:      production path relative to the repo root.
+    out_rel:      production path relative to the repo root (or ASSET_OUT_ROOT).
+    slot:         the palette slot (1–12) of the project the diagram illustrates; its colour is the accent.
     Returns the aspect string (w/h) so the MDX <Diagram aspect=...> can match.
     """
     min_x, min_y, max_x, max_y = content_bbox
@@ -66,12 +89,12 @@ def build(*, out_rel, title, aria_label, content_bbox, body, pad=FRAME_PAD):
         f'<svg viewBox="{vx} {vy} {vw} {vh}" xmlns="http://www.w3.org/2000/svg" '
         f'role="img" aria-label="{aria_label}">\n'
         f"  <title>{title}</title>\n"
-        f"{DEFS}\n\n"
+        f"{defs(slot)}\n\n"
         f"{body.rstrip()}\n"
         f"</svg>\n"
     )
 
-    out = REPO_ROOT / out_rel
+    out = out_root() / out_rel
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(svg, encoding="utf-8")
     aspect = f"{vw}/{vh}"

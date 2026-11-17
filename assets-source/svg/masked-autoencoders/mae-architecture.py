@@ -73,4 +73,5 @@ _theme.build(
     ),
     content_bbox=(150, 20, 658, 172),
     body=BODY,
+    slot=4,
 )

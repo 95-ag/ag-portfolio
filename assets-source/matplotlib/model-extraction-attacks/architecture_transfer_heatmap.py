@@ -14,7 +14,9 @@ import matplotlib.colors as mcolors
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _portfolio import use_portfolio_style, BACKGROUND, ACCENT, ACCENT_MUTED, TEXT, MUTED
+from _portfolio import use_portfolio_style, slot_colours, out_root, BACKGROUND, TEXT, MUTED
+
+ACCENT, _, ACCENT_MUTED = slot_colours(5)  # Model extraction attacks' page colour
 
 use_portfolio_style()
 
@@ -71,8 +73,8 @@ for spine in ax.spines.values():
     spine.set_visible(False)
 
 ax.tick_params(length=0)
-ax.tick_params(axis="x", colors="#6c7a71")
-ax.tick_params(axis="y", colors="#6c7a71")
+ax.tick_params(axis="x", colors=MUTED)
+ax.tick_params(axis="y", colors=MUTED)
 
 # Colorbar
 cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.03)
@@ -84,7 +86,7 @@ fig.tight_layout(pad=1.2)
 # Ensure left margin is wide enough for y-axis labels on small displays
 fig.subplots_adjust(left=0.20)
 
-out_path = Path(__file__).parent.parent.parent.parent / "public/projects/model-extraction-attacks/architecture-transfer-heatmap.svg"
+out_path = out_root() / "public/projects/model-extraction-attacks/architecture-transfer-heatmap.svg"
 out_path.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out_path, format="svg", bbox_inches="tight", transparent=False)
 print(f"Saved: {out_path}")

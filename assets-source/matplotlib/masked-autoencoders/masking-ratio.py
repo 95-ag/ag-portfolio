@@ -23,7 +23,9 @@ import numpy as np
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from _portfolio import use_portfolio_style, BACKGROUND, ACCENT, ACCENT_MID, TEXT, MUTED, EDGE, GRID
+from _portfolio import use_portfolio_style, slot_colours, out_root, BACKGROUND, TEXT, MUTED, EDGE, GRID
+
+ACCENT, ACCENT_MID, _ = slot_colours(4)  # Masked autoencoders' page colour
 
 use_portfolio_style()
 
@@ -73,7 +75,7 @@ ax.set_axisbelow(True)
 
 fig.tight_layout(pad=1.2)
 
-out_path = Path(__file__).parent.parent.parent.parent / "public/projects/masked-autoencoders/masking-ratio.svg"
+out_path = out_root() / "public/projects/masked-autoencoders/masking-ratio.svg"
 out_path.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out_path, format="svg", bbox_inches="tight", transparent=False)
 print(f"Saved: {out_path}")

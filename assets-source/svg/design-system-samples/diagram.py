@@ -29,4 +29,5 @@ _theme.build(
     aria_label="Neutral sample diagram: input flows to a model, which produces an output.",
     content_bbox=(20, 20, 468, 64),
     body=BODY,
+    slot=1,
 )
