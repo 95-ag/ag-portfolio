@@ -132,6 +132,7 @@
   --z-mobile-menu-overlay: 55;
   --z-mobile-menu-panel: 60;
   --z-lightbox: 70;
+  --z-skip-link: 80;
 
   /* Motion */
   --duration-fast: 150ms;

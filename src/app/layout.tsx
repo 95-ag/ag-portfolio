@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { caveat, inter, manrope, mono } from "@/app/fonts";
 import { Providers } from "@/app/providers";
 import { BackgroundLayer } from "@/components/background/background-layer";
@@ -21,6 +21,13 @@ import "./globals.css";
 // Set the reading-surface flag before first paint (no flash on direct loads of project and post
 // pages); SurfaceContext keeps it in sync across client navigation.
 const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|blog)\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -79,9 +86,19 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: SURFACE_INIT }} />
         <Providers>
           <SurfaceContext />
+          <a
+            href="#main"
+            className="body-caption sr-only z-[var(--z-skip-link)] bg-[var(--surface)] text-[var(--ink)] focus:not-sr-only focus:fixed focus:top-[var(--spacing-md)] focus:left-[var(--spacing-md)] focus:border focus:border-[var(--hairline-strong)] focus:px-[var(--spacing-md)] focus:py-[var(--spacing-sm)]"
+          >
+            Skip to content
+          </a>
           <BackgroundLayer meteorSuppressedPaths={meteorSuppressedPaths} />
           <Nav />
-          <main className="relative flex flex-1 flex-col pt-[var(--spacing-3xl)]">
+          <main
+            id="main"
+            tabIndex={-1}
+            className="relative flex flex-1 flex-col pt-[var(--spacing-3xl)] focus:outline-none"
+          >
             {children}
           </main>
           <Footer />

@@ -86,7 +86,7 @@ export function PillThemeSelector() {
               aria-label={`Set ${LABEL[mode]} theme`}
               aria-pressed={isSelected}
               className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-[var(--radius-pill)]",
+                "focus-inset flex h-8 w-8 items-center justify-center rounded-[var(--radius-pill)]",
                 "motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)]",
                 isSelected
                   ? "bg-[var(--accent-tint)] text-[var(--accent)]"

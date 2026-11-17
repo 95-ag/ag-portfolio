@@ -46,6 +46,10 @@ body {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
+/* A control inside an overflow-hidden box would have its outside ring clipped, so it draws the ring within its own edge. */
+.focus-inset:focus-visible {
+  outline-offset: -2px;
+}
 
 /* Reduced-motion: Framer Motion components handle this individually via useReducedMotion().
    Global override avoided here — !important fights with component-level transitions. */
