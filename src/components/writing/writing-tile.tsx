@@ -14,19 +14,15 @@ interface WritingTileProps {
   size: TileSize;
 }
 
-function TileHead({ post, size }: WritingTileProps) {
-  const { title, type, addons } = post.frontmatter;
+function TileTitle({ post, size }: WritingTileProps) {
   return (
-    <span className="wtile-head">
-      <span
-        className={`wtile-title ${size === "sm" ? "tile-title-sm" : "heading-component"}`}
-      >
-        {title}{" "}
-        <span className="wtile-arrow" aria-hidden="true">
-          ↗
-        </span>
+    <span
+      className={`wtile-title ${size === "sm" ? "tile-title-sm" : "heading-component"}`}
+    >
+      {post.frontmatter.title}{" "}
+      <span className="wtile-arrow" aria-hidden="true">
+        ↗
       </span>
-      <TypeLabel type={type} addons={addons} />
     </span>
   );
 }
@@ -55,8 +51,8 @@ export function WritingTile({ post, size }: WritingTileProps) {
       {hasArt && project ? (
         <>
           <span className="wtile-art-head">
-            <TileHead post={post} size={size} />
-            <span className="wtile-year body-caption">{year}</span>
+            <TileTitle post={post} size={size} />
+            <TypeLabel type={fm.type} addons={fm.addons} year={year} />
           </span>
           <span className="wtile-art-media">
             <Cover project={project} colour={postColour(slug)} variant="tile" />
@@ -64,13 +60,13 @@ export function WritingTile({ post, size }: WritingTileProps) {
         </>
       ) : (
         <>
-          <TileHead post={post} size={size} />
+          <TileTitle post={post} size={size} />
           <span
             className={`wtile-quote ${size === "sm" ? "quote-text-sm" : "quote-text"}`}
           >
             “{fm.summary}”
           </span>
-          <span className="wtile-year body-caption">{year}</span>
+          <TypeLabel type={fm.type} addons={fm.addons} year={year} />
         </>
       )}
     </Link>

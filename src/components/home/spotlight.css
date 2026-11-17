@@ -62,9 +62,9 @@
       opacity 0.45s,
       transform var(--duration-slow);
   }
-  /* The whole slide grows as one from its centre, so cover and text do not move apart. */
+  /* The whole slide shrinks as one from its centre, so cover and text do not move apart. */
   .spot-slide[data-on="true"]:hover {
-    transform: scale(1.03);
+    transform: scale(0.97);
   }
 }
 

@@ -7,6 +7,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0 var(--spacing-sm);
+  font-style: italic;
 }
 .type-label-name {
   color: var(--ink-muted);
@@ -74,15 +75,15 @@ html[data-theme="dark"] .type-label-name {
   padding: var(--spacing-md);
 }
 .wtile:is(:hover, :focus-visible) {
+  /* A more vivid hue: toward the group's ink in light, toward ink in dark. */
+  background: color-mix(in oklab, var(--wtile-ground), var(--g-ink) 10%);
+}
+html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
   background: color-mix(in oklab, var(--wtile-ground), var(--ink) 5%);
 }
 .wtile:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-}
-.wtile-head {
-  display: grid;
-  gap: var(--spacing-sm);
 }
 .wtile-title {
   color: var(--ink);
@@ -97,9 +98,9 @@ html[data-theme="dark"] .type-label-name {
 .wtile-quote {
   display: block;
 }
-.wtile-year {
+/* The type line sits at the bottom of the tile, so a short quote leaves the space above it. */
+.wtile > .type-label {
   margin-top: auto;
-  font-style: italic;
 }
 
 /* Dog-ear: a folded bottom-right corner on a post with no related project, or a note. The folded face shades from the
@@ -141,13 +142,15 @@ html[data-theme="dark"] .type-label-name {
   }
 }
 
-/* Art tile: square; the project's cover fills it, and on hover or focus drops into the lower two-thirds — from 34%
-   down, a margin in from the sides and bottom — uncovering the head and year. The reveal is a clip: the cover keeps
-   its size and is cropped to the box, so nothing is laid out again. Touch screens start revealed. */
-.wtile[data-art="true"] {
+/* Every index tile is square, quote and art alike. */
+.wtile[data-size="art"] {
   aspect-ratio: 1;
   overflow: hidden;
 }
+
+/* Art tile: the project's cover fills the tile, and on hover or focus the whole cover slides down inside the square,
+   narrowed to 90% of the width and centred with its top at 34%; the tile's edge cuts its lower part. Touch screens
+   start revealed. By transform and clip only. */
 .wtile-art-head {
   display: grid;
   gap: var(--spacing-sm);
@@ -156,30 +159,41 @@ html[data-theme="dark"] .type-label-name {
   position: absolute;
   inset: 0;
   display: block;
-  clip-path: inset(0 round var(--radius-xs));
+  transform-origin: 50% 0;
 }
 .wtile-art-media .cover {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
+  clip-path: inset(0 round var(--radius-xs));
 }
 .wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media {
-  clip-path: inset(
-    34% var(--spacing-md) var(--spacing-md) round var(--radius-md)
-  );
+  transform: translateY(34%) scale(0.9);
+}
+.wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media .cover {
+  clip-path: inset(0 round var(--radius-md));
 }
 @media (hover: none) {
   .wtile[data-art="true"] .wtile-art-media {
-    clip-path: inset(
-      34% var(--spacing-md) var(--spacing-md) round var(--radius-md)
-    );
+    transform: translateY(34%) scale(0.9);
+  }
+  .wtile[data-art="true"] .wtile-art-media .cover {
+    clip-path: inset(0 round var(--radius-md));
   }
 }
 @media (prefers-reduced-motion: no-preference) {
   /* Declared exception to the duration scale (Writing Tile → Art tile). */
+  .wtile-art-media,
+  .wtile-art-media .cover {
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   .wtile-art-media {
-    transition: clip-path 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-property: transform;
+  }
+  .wtile-art-media .cover {
+    transition-property: clip-path;
   }
 }
 
