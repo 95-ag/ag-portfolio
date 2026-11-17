@@ -1,29 +1,29 @@
 import type { Metadata } from "next";
-import { PostRow } from "@/components/blog/post-row";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Heading } from "@/components/ui/display/heading";
+import { PostRow } from "@/components/writing/post-row";
 import { getAllPosts } from "@/lib/content/posts";
 import { AUTHOR_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Writing",
   description:
     "Writing on AI and software engineering — build learnings beyond the case studies.",
   alternates: {
-    canonical: "/blog",
+    canonical: "/writing",
   },
   openGraph: {
     type: "website",
-    url: "/blog",
+    url: "/writing",
     siteName: AUTHOR_NAME,
     locale: "en_US",
     images: [{ url: "/opengraph-image" }],
   },
 };
 
-export default function BlogPage() {
+export default function WritingPage() {
   const posts = getAllPosts();
 
   return (
@@ -32,7 +32,7 @@ export default function BlogPage() {
         <Stack gap="xl" className="mx-auto max-w-[960px]">
           <header>
             <Heading level={1} type="display-primary">
-              Blog
+              Writing
             </Heading>
           </header>
           {posts.length > 0 && (

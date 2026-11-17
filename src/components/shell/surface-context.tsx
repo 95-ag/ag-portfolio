@@ -3,11 +3,11 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-// Long-read (project detail and blog post) pages get the softer reading surface; everything else
+// Long-read (project detail and writing post) pages get the softer reading surface; everything else
 // uses the immersive showcase surface. Sets `data-read="long"` on <html> so globals.css can switch
 // the background depth. The pre-paint inline script in the root layout sets this on first load
 // (no flash); this keeps it correct across client-side navigation.
-const LONG_READ_PATTERN = /^\/(work|blog)\/.+/;
+const LONG_READ_PATTERN = /^\/(work|writing)\/.+/;
 
 export function SurfaceContext() {
   const pathname = usePathname();

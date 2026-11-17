@@ -15,7 +15,7 @@ function escapeXml(text: string): string {
 export function GET() {
   const items = getAllPosts().map((post) => {
     const { frontmatter: fm } = post;
-    const url = `${SITE_URL}/blog/${post.slug}`;
+    const url = `${SITE_URL}/writing/${post.slug}`;
     return [
       "    <item>",
       `      <title>${escapeXml(fm.title)}</title>`,
@@ -32,7 +32,7 @@ export function GET() {
     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
     "  <channel>",
     `    <title>${escapeXml(FEED_TITLE)}</title>`,
-    `    <link>${SITE_URL}/blog</link>`,
+    `    <link>${SITE_URL}/writing</link>`,
     `    <description>${escapeXml(SITE_DESCRIPTION)}</description>`,
     "    <language>en</language>",
     `    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />`,

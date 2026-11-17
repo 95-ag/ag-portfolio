@@ -17,7 +17,7 @@ addition. Three tiers:
 | Tier | Meaning |
 |---|---|
 | `vX.0` | A version release — the feature set for that version (e.g. `v2.0` ships the v2 phases). |
-| `vX.Y` | Any additive release: a work/blog publish (single or clubbed), a small feature, or both. |
+| `vX.Y` | Any additive release: a work/writing publish (single or clubbed), a small feature, or both. |
 | `vX.Y.Z` | Corrections only — code fixes, content edits, typos. |
 
 - The snapshot commit message is `Release vN` with the resolved number, per → Per-release procedure (snapshot `vN`).

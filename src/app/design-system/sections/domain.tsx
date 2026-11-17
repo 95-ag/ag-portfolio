@@ -1,5 +1,4 @@
 import { ViewDownloadButton } from "@/components/about/view-download-button";
-import { PostRow } from "@/components/blog/post-row";
 import { coverComponents } from "@/components/project/covers";
 import { HeroMedia } from "@/components/project/hero-media";
 import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
@@ -8,6 +7,7 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
+import { PostRow } from "@/components/writing/post-row";
 import type { Post } from "@/lib/content/posts";
 import type { Project } from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
@@ -289,15 +289,15 @@ export function DomainSections() {
       </GallerySection>
 
       <GallerySection
-        id="blog-index"
-        title="Domain · Blog Index"
-        mapsTo="Domain Components → Blog Index"
-        intro="The post archive: a display H1 over hairline-ruled rows, built inline in src/app/blog/page.tsx. Its one standalone part, the row, is shown with placeholder content."
+        id="writing-index"
+        title="Domain · Writing Index"
+        mapsTo="Domain Components → Writing Index"
+        intro="The post archive: a display H1 over hairline-ruled rows, built inline in src/app/writing/page.tsx. Its one standalone part, the row, is shown with placeholder content."
       >
         <Specimen
           id="post-row"
           name="PostRow"
-          source="@/components/blog/post-row"
+          source="@/components/writing/post-row"
           description="One archive entry: date, title, summary and tags, with no image. The whole row is the link; the title underlines on hover."
         >
           <div className="max-w-[960px] divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
@@ -309,23 +309,23 @@ export function DomainSections() {
         </Specimen>
 
         <Specimen
-          id="blog-index-inline"
+          id="writing-index-inline"
           name="Inline sections"
-          source="src/app/blog/page.tsx · [inline]"
-          description="Page-bound composition, not a standalone component; listed, not previewed. See it on /blog."
+          source="src/app/writing/page.tsx · [inline]"
+          description="Page-bound composition, not a standalone component; listed, not previewed. See it on /writing."
         >
-          <InlineList items={["Blog Index (display H1 over ruled rows)"]} />
+          <InlineList items={["Writing Index (display H1 over ruled rows)"]} />
         </Specimen>
       </GallerySection>
 
       <GallerySection
-        id="blog-post"
-        title="Domain · Blog Post"
-        mapsTo="Domain Components → Blog Post"
-        source="src/app/blog/[slug]/page.tsx · [inline]"
-        intro="The post page layout, built inline in src/app/blog/[slug]/page.tsx; listed, not previewed."
+        id="post"
+        title="Domain · Post"
+        mapsTo="Domain Components → Post"
+        source="src/app/writing/[slug]/page.tsx · [inline]"
+        intro="The post page layout, built inline in src/app/writing/[slug]/page.tsx; listed, not previewed."
       >
-        <InlineList items={["Blog Post Layout"]} />
+        <InlineList items={["Post Layout"]} />
       </GallerySection>
 
       <GallerySection

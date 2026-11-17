@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PostRow } from "@/components/blog/post-row";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
 import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
@@ -8,6 +7,7 @@ import { Section } from "@/components/layout/section";
 import { ProjectCard } from "@/components/project/project-card";
 import { Button } from "@/components/ui/controls/button";
 import { Heading } from "@/components/ui/display/heading";
+import { PostRow } from "@/components/writing/post-row";
 import { getAbout } from "@/lib/content/about";
 import { getAllPosts } from "@/lib/content/posts";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -121,10 +121,10 @@ export default function HomePage() {
               </ul>
               <div className="flex justify-end">
                 <Link
-                  href="/blog"
+                  href="/writing"
                   className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
-                  See all blog posts →
+                  See all writing →
                 </Link>
               </div>
             </div>

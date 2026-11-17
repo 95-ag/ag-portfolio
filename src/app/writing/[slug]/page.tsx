@@ -42,11 +42,11 @@ export async function generateMetadata({ params }: Props) {
     title: fm.title,
     description: fm.metaDescription ?? fm.summary,
     alternates: {
-      canonical: `/blog/${slug}`,
+      canonical: `/writing/${slug}`,
     },
     openGraph: {
       type: "article" as const,
-      url: `/blog/${slug}`,
+      url: `/writing/${slug}`,
       siteName: AUTHOR_NAME,
       locale: "en_US",
       publishedTime: new Date(fm.publishedAt).toISOString(),
@@ -69,8 +69,8 @@ export default async function PostPage({ params }: Props) {
   const fm = post.frontmatter;
   const trail: Crumb[] = [
     { name: "Home", href: "/" },
-    { name: "Blog", href: "/blog" },
-    { name: fm.title, href: `/blog/${slug}` },
+    { name: "Writing", href: "/writing" },
+    { name: fm.title, href: `/writing/${slug}` },
   ];
   const breadcrumbSchema = buildBreadcrumbSchema(
     trail.map(({ name, href }) => ({
@@ -159,10 +159,10 @@ export default async function PostPage({ params }: Props) {
 
             <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
               <Link
-                href="/blog"
+                href="/writing"
                 className="interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
-                ← Back to Blog
+                ← Back to Writing
               </Link>
             </div>
           </div>

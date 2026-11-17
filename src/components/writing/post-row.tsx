@@ -14,7 +14,7 @@ export function PostRow({ post, prefetch }: PostRowProps) {
 
   return (
     <Link
-      href={`/blog/${slug}`}
+      href={`/writing/${slug}`}
       prefetch={prefetch}
       className={cn(
         "group flex select-none flex-col gap-[var(--spacing-xs)] py-[var(--spacing-lg)]",

@@ -26,8 +26,8 @@
 *:Zone.Identifier
 /tmp
 
-# unpublished blog posts — tracked means published
-/content/blog/_drafts/
+# unpublished posts — tracked means published
+/content/writing/_drafts/
 
 # debug
 npm-debug.log*

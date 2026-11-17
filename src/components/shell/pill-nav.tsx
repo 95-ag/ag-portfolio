@@ -15,7 +15,7 @@ type NavIconComponent = (props: IconProps) => React.ReactElement;
 const NAV_ITEMS: { href: string; label: string; Icon: NavIconComponent }[] = [
   { href: "/about", label: "About", Icon: FingerprintIcon },
   { href: "/work", label: "Work", Icon: FolderCodeIcon },
-  { href: "/blog", label: "Blog", Icon: StickyNoteIcon },
+  { href: "/writing", label: "Writing", Icon: StickyNoteIcon },
 ];
 
 export function PillNav() {

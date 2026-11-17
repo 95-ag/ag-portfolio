@@ -12,10 +12,10 @@ import {
   assertPublicFiles,
 } from "./validate";
 
-const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+const WRITING_DIR = path.join(process.cwd(), "content", "writing");
 // Drafts are gitignored, so they never reach the public repo or a release snapshot. They
 // are read in development only, so a local production build matches what ships.
-const DRAFTS_DIR = path.join(BLOG_DIR, "_drafts");
+const DRAFTS_DIR = path.join(WRITING_DIR, "_drafts");
 
 export interface Post {
   slug: string;
@@ -42,7 +42,7 @@ function parsePost(dir: string, filename: string): Post {
   return { slug, frontmatter: result.data, body: content };
 }
 
-// A clean clone has no content/blog/ until the first post is published — git cannot
+// A clean clone has no content/writing/ until the first post is published — git cannot
 // track an empty directory — so a missing directory means no posts, not an error.
 function readPosts(dir: string): Post[] {
   if (!fs.existsSync(dir)) return [];
@@ -53,7 +53,7 @@ function readPosts(dir: string): Post[] {
 }
 
 export function getAllPosts(): Post[] {
-  const published = readPosts(BLOG_DIR);
+  const published = readPosts(WRITING_DIR);
   const drafts =
     process.env.NODE_ENV === "development" ? readPosts(DRAFTS_DIR) : [];
 

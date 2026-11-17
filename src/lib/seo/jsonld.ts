@@ -88,7 +88,7 @@ export function buildSoftwareSourceCodeSchema(
 }
 
 export function buildBlogPostingSchema(slug: string, fm: PostFrontmatter) {
-  const url = `${SITE_URL}/blog/${slug}`;
+  const url = `${SITE_URL}/writing/${slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

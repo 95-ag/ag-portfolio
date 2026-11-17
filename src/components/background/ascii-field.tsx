@@ -45,7 +45,7 @@ const GUTTER_MASK =
   "linear-gradient(to right, #000 0, #000 calc(50% - 600px), transparent calc(50% - 540px), transparent calc(50% + 540px), #000 calc(50% + 600px), #000 100%)";
 
 interface AsciiFieldProps {
-  /** Project pages and blog posts are dense reading — kept fully clean on mobile. */
+  /** Project pages and writing posts are dense reading — kept fully clean on mobile. */
   isReadingPage: boolean;
 }
 

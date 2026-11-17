@@ -19,7 +19,7 @@ import "./globals.css";
 
 // Set the reading-surface flag before first paint (no flash on direct loads of project and post
 // pages); SurfaceContext keeps it in sync across client navigation.
-const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|blog)\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
+const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|writing)\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
 
 export const viewport: Viewport = {
   themeColor: [

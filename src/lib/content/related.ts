@@ -33,7 +33,7 @@ function resolveSlug(slug: string): RelatedItem | undefined {
       kind: "post",
       title: post.frontmatter.title,
       summary: post.frontmatter.summary,
-      href: `/blog/${slug}`,
+      href: `/writing/${slug}`,
     };
   }
   return undefined;
@@ -70,7 +70,7 @@ export function getRelatedForProject(slug: string): RelatedItem[] {
         kind: "post",
         title: post.frontmatter.title,
         summary: post.frontmatter.summary,
-        href: `/blog/${post.slug}`,
+        href: `/writing/${post.slug}`,
       }),
     );
 

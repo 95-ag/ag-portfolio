@@ -275,7 +275,7 @@ export function ComponentsSections() {
             id="ui-breadcrumbs"
             name="Breadcrumbs"
             source="@/components/ui/links/breadcrumbs"
-            description="Location trail above the page title on Project Detail and Blog Post. Ancestors link; the trailing segment is the current page and is not a link. Selection is suppressed: it is chrome."
+            description="Location trail above the page title on Project Detail and Post. Ancestors link; the trailing segment is the current page and is not a link. Selection is suppressed: it is chrome."
             spec="support-meta · ink-muted, current page ink · / separator · accent on ancestor hover"
             headingLevel={4}
           >

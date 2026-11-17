@@ -8,4 +8,4 @@ export const SITE_DESCRIPTION =
 
 export const AUTHOR_NAME = "Aishwarya Ganesan";
 
-export const FEED_TITLE = `${AUTHOR_NAME} — Blog`;
+export const FEED_TITLE = `${AUTHOR_NAME} — Writing`;

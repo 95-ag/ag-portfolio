@@ -30,7 +30,7 @@ export function GET() {
   const writingSection = posts
     .map(
       (p) =>
-        `- [${p.frontmatter.title}](${SITE_URL}/blog/${p.slug}): ${p.frontmatter.summary}`,
+        `- [${p.frontmatter.title}](${SITE_URL}/writing/${p.slug}): ${p.frontmatter.summary}`,
     )
     .join("\n");
 
@@ -43,7 +43,7 @@ export function GET() {
     "",
     `- [About](${SITE_URL}/about): Background, capabilities, and approach`,
     `- [Work](${SITE_URL}/work): All project case studies`,
-    `- [Blog](${SITE_URL}/blog): Writing on AI and software engineering`,
+    `- [Writing](${SITE_URL}/writing): Writing on AI and software engineering`,
     "",
     "## About",
     "",
