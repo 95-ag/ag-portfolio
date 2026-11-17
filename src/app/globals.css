@@ -14,6 +14,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Thin, quiet scrollbars on the page and on inner scroll areas (DESIGN.md → Technical Conventions → Root Layout Shell). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline-strong) transparent;
+}
+
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
   min-height: 100dvh;
@@ -51,7 +57,7 @@ body {
    ───────────────────────────────────────────── */
 
 .ascii-bg-glyph-accent {
-  color: var(--accent);
+  color: var(--mark);
   opacity: 0.72;
 }
 .ascii-bg-glyph-ink {

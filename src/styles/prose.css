@@ -19,6 +19,29 @@
   .prose-content > h2:first-child {
     margin-top: 0;
   }
+  /* A post's h2 is a section heading, not the project page's ruled mono label (DESIGN.md → Prose). The post page
+     root carries data-page="post"; heading-section tiers mirror typography.css. */
+  [data-page="post"] .prose-content h2 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 26px;
+    line-height: 34px;
+    letter-spacing: -0.015em;
+    text-transform: none;
+    color: var(--ink);
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: var(--spacing-4xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  [data-page="post"] .prose-content > h2:first-child {
+    margin-top: 0;
+  }
+  @media (max-width: 1279px) {
+    [data-page="post"] .prose-content h2 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
   .prose-content h3 {
     /* heading-component values */
     font-family: var(--font-display), system-ui, sans-serif;
