@@ -27,6 +27,7 @@ const demoProject: Project = {
     projectType: "personal",
     publishedAt: "2026-01-01",
     order: 0,
+    colour: 1,
     heroAlt: "Project cover",
     heroVideoLoop: true,
     featured: false,
@@ -58,6 +59,7 @@ const demoPosts: Post[] = [
       summary:
         "A one-line summary of the post, shown under the title in the archive.",
       publishedAt: "2026-02-01",
+      type: "note",
       tags: ["tag-one", "tag-two"],
     },
   },
@@ -70,6 +72,7 @@ const demoPosts: Post[] = [
       summary:
         "A longer summary that runs to two lines, to show how the secondary text wraps beneath a long title.",
       publishedAt: "2026-01-15",
+      type: "essay",
       tags: [
         "tag-one",
         "tag-two",

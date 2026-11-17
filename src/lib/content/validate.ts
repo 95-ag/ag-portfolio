@@ -11,6 +11,33 @@ export function assertKebabSlug(slug: string, filename: string): void {
   }
 }
 
+const MAX_FEATURED = 5;
+
+interface ProjectSetEntry {
+  slug: string;
+  frontmatter: { colour: number; featured: boolean };
+}
+
+// Rules over the whole project set: the spotlight's cap and one palette slot per project.
+export function assertProjectSet(projects: ProjectSetEntry[]): void {
+  const featured = projects.filter((p) => p.frontmatter.featured);
+  if (featured.length > MAX_FEATURED) {
+    throw new Error(
+      `Too many featured projects (${featured.length}). Maximum is ${MAX_FEATURED}.`,
+    );
+  }
+  const slotOwner = new Map<number, string>();
+  for (const { slug, frontmatter } of projects) {
+    const owner = slotOwner.get(frontmatter.colour);
+    if (owner) {
+      throw new Error(
+        `Projects "${owner}" and "${slug}" share colour ${frontmatter.colour}; each project takes its own palette slot.`,
+      );
+    }
+    slotOwner.set(frontmatter.colour, slug);
+  }
+}
+
 export function assertPublicFiles(
   filename: string,
   paths: Record<string, string | undefined>,

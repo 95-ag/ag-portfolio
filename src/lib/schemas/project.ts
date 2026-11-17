@@ -41,6 +41,17 @@ const ContributorSchema = z.strictObject({
   url: z.string().url().optional(),
 });
 
+export const COVER_KINDS = ["live", "artefact", "image", "video"] as const;
+export const COVER_MODES = ["filled", "marker"] as const;
+
+// Where the cover comes from, and whether it is filled or marker in each theme
+// (DESIGN.md → Foundations → Colors → Covers).
+const CoverSchema = z.strictObject({
+  kind: z.enum(COVER_KINDS),
+  light: z.enum(COVER_MODES),
+  dark: z.enum(COVER_MODES),
+});
+
 const VIDEO_EXTENSIONS = [".mp4", ".webm"];
 export const isVideo = (path: string) =>
   VIDEO_EXTENSIONS.some((ext) => path.toLowerCase().endsWith(ext));
@@ -49,12 +60,16 @@ export const ProjectFrontmatterSchema = z
   .strictObject({
     title: z.string().min(1),
     subtitle: z.string().optional(),
+    // The Home spotlight's tab name; the tab falls back to the title.
+    shortTitle: z.string().min(1).optional(),
     summary: z.string().min(1).max(200),
     projectType: z.enum(["academic", "freelance", "personal"]),
     publishedAt: IsoDate,
     // When the page last changed, for crawlers only — publishedAt is the project's own date.
     updatedAt: IsoDate.optional(),
     order: z.number(),
+    // The project's palette slot; uniqueness across projects is a cross-file rule (assertProjectSet).
+    colour: z.number().int().min(1).max(12),
     // Hero is satisfied by EITHER a registered live cover component (preferred) OR a
     // static heroImage (image or video). Optional: heroless builds pass in dev/preview
     // (empty hero until the cover stage); the production build (VERCEL_ENV=production)
@@ -66,6 +81,8 @@ export const ProjectFrontmatterSchema = z
     heroAlt: z.string().min(1).optional(),
     heroPoster: z.string().startsWith("/").optional(),
     heroVideoLoop: z.boolean().optional().default(true),
+    // Optional in dev/preview like the hero; the production gate in content/projects.ts requires it.
+    cover: CoverSchema.optional(),
     tags: z.array(z.string()).min(1).max(8),
     stack: StackSchema,
     overview: OverviewSchema,

@@ -9,6 +9,7 @@ import { parseFrontmatter } from "./frontmatter";
 import {
   assertKebabSlug,
   assertNoClassName,
+  assertProjectSet,
   assertPublicFiles,
 } from "./validate";
 
@@ -62,25 +63,24 @@ export function getAllProjects(): Project[] {
   const files = getProjectFiles();
   const projects = files.map(parseProject);
 
-  // Cross-file validation
-  const featured = projects.filter((p) => p.frontmatter.featured);
-  if (featured.length > 3) {
-    throw new Error(
-      `Too many featured projects (${featured.length}). Maximum is 3.`,
-    );
-  }
+  assertProjectSet(projects);
 
-  // Production release gate: a published project must have a hero — a registered live
-  // cover OR a heroImage — and a static hero must carry alt text. Dev/preview builds stay
-  // permissive (the hero may be empty until the cover stage); only the live production
-  // build (VERCEL_ENV=production) fails. heroAlt is required only where a heroImage is the
-  // visible hero: live-cover projects also set heroImage as their OG raster, but the cover
-  // is aria-hidden and decorative, so alt text for it would render nothing. Both checks
-  // report together so one blocker never hides the other.
+  // Production release gate: a published project must declare a cover whose source exists
+  // (a registered live cover, or a heroImage for the image and video kinds), and a static
+  // hero must carry alt text. Dev/preview builds stay permissive (the hero may be empty
+  // until the cover stage); only the live production build (VERCEL_ENV=production) fails.
+  // heroAlt is required only where a heroImage is the visible hero: live-cover projects also
+  // set heroImage as their OG raster, but the cover is aria-hidden and decorative, so alt
+  // text for it would render nothing. Every check reports together so one blocker never
+  // hides another.
   if (process.env.VERCEL_ENV === "production") {
-    const heroless = projects.filter(
-      (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
-    );
+    const coverless = projects.filter((p) => !p.frontmatter.cover);
+    const sourceless = projects.filter((p) => {
+      const kind = p.frontmatter.cover?.kind;
+      if (kind === "live") return !coverComponents[p.slug];
+      if (kind === "image" || kind === "video") return !p.frontmatter.heroImage;
+      return false;
+    });
     const unlabelled = projects.filter(
       (p) =>
         p.frontmatter.heroImage &&
@@ -89,11 +89,18 @@ export function getAllProjects(): Project[] {
     );
 
     const problems: string[] = [];
-    if (heroless.length > 0) {
+    if (coverless.length > 0) {
       problems.push(
-        `no hero (no live cover and no heroImage): ${heroless
+        `no cover declared: ${coverless
           .map((p) => p.slug)
-          .join(", ")}. Add a heroImage or register a live cover.`,
+          .join(", ")}. Add a cover (kind, light, dark) to the frontmatter.`,
+      );
+    }
+    if (sourceless.length > 0) {
+      problems.push(
+        `a cover with no source (a live cover is not registered, or an image or video cover has no heroImage): ${sourceless
+          .map((p) => p.slug)
+          .join(", ")}.`,
       );
     }
     if (unlabelled.length > 0) {

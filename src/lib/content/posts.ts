@@ -103,6 +103,25 @@ export function getAllPosts(): Post[] {
   });
 }
 
+// A post's palette slot is its place in publish order, oldest first, wrapping after twelve. Ties
+// break by slug, as the listing does.
+export function postColourSlots(
+  posts: Pick<Post, "slug" | "frontmatter">[],
+): Map<string, number> {
+  const oldestFirst = [...posts].sort(
+    (a, b) =>
+      a.frontmatter.publishedAt.localeCompare(b.frontmatter.publishedAt) ||
+      a.slug.localeCompare(b.slug),
+  );
+  return new Map(oldestFirst.map((p, i) => [p.slug, (i % 12) + 1]));
+}
+
+export function postColour(slug: string): number {
+  const slot = postColourSlots(getAllPosts()).get(slug);
+  if (slot === undefined) throw new Error(`No post with slug "${slug}".`);
+  return slot;
+}
+
 export function isDraft(slug: string): boolean {
   return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
 }
