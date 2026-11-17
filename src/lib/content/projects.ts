@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { coverComponents } from "@/components/project/covers";
+import {
+  artefactComponents,
+  coverComponents,
+} from "@/components/project/covers";
 import {
   type ProjectFrontmatter,
   ProjectFrontmatterSchema,
@@ -78,6 +81,7 @@ export function getAllProjects(): Project[] {
     const sourceless = projects.filter((p) => {
       const kind = p.frontmatter.cover?.kind;
       if (kind === "live") return !coverComponents[p.slug];
+      if (kind === "artefact") return !artefactComponents[p.slug];
       if (kind === "image" || kind === "video") return !p.frontmatter.heroImage;
       return false;
     });
@@ -98,7 +102,7 @@ export function getAllProjects(): Project[] {
     }
     if (sourceless.length > 0) {
       problems.push(
-        `a cover with no source (a live cover is not registered, or an image or video cover has no heroImage): ${sourceless
+        `a cover with no source (a live cover or artefact is not registered, or an image or video cover has no heroImage): ${sourceless
           .map((p) => p.slug)
           .join(", ")}.`,
       );

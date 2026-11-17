@@ -8,7 +8,7 @@
 // sequence); the DQL prediction is crooked ACCENT dots offset from truth with a faint
 // motion trail — never settling onto ground truth. Encodes the honest negative result.
 
-import { COVER_ANNOTATION } from "./cover-styles";
+import { COVER_ANNOTATION, draw } from "./cover-styles";
 
 const VP_X = 960; // vanishing point in the right third (offset camera, shifted right)
 const VP_Y = 150; // high horizon
@@ -145,6 +145,7 @@ export function DqnLaneLocalizationCover() {
         {/* Lane dividers (solid grey, perspective) */}
         {DIVIDER_FRACS.map((frac) => (
           <path
+            {...draw(0)}
             key={`div-${frac}`}
             d={lanePath(frac)}
             fill="none"
@@ -156,6 +157,7 @@ export function DqnLaneLocalizationCover() {
         {/* Ground-truth points — uniform unfilled circles along the real (curved) lane */}
         {truth.map((p) => (
           <circle
+            {...draw(1)}
             key={`truth-${p.y}`}
             cx={p.x}
             cy={p.y}
@@ -180,6 +182,7 @@ export function DqnLaneLocalizationCover() {
         {/* Predicted lane — thin green line threading the predicted dots (thinner
             than the lane stroke), the straighter chord on the lane's right. */}
         <polyline
+          {...draw(2)}
           points={predLine}
           fill="none"
           stroke="var(--accent)"
@@ -202,6 +205,7 @@ export function DqnLaneLocalizationCover() {
               the open ground on the LEFT (vertical middle); a curved arrow sweeps to the
               gap between the truth lane and the predicted dots near the mid-bottom. ── */}
         <text
+          data-note={0}
           x={256}
           y={330}
           textAnchor="middle"
@@ -210,6 +214,7 @@ export function DqnLaneLocalizationCover() {
           localized acc 0.892
         </text>
         <text
+          data-note={1}
           x={256}
           y={360}
           textAnchor="middle"
@@ -223,6 +228,7 @@ export function DqnLaneLocalizationCover() {
         {/* notebook gesture: tail at the truth-vs-prediction gap (figure), head up-left
             at the note's bottom edge. Final tangent u≈(-0.6,-0.8); barbs splay ±28°. */}
         <path
+          {...draw(3)}
           d="M 472,556 C 405,548 291,423 261,383"
           fill="none"
           stroke="var(--accent)"
@@ -230,6 +236,7 @@ export function DqnLaneLocalizationCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(4)}
           x1="256"
           y1="377"
           x2="258"
@@ -239,6 +246,7 @@ export function DqnLaneLocalizationCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(5)}
           x1="256"
           y1="377"
           x2="265"

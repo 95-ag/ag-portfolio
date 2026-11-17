@@ -1,4 +1,9 @@
 import type React from "react";
+import { ComponentsRadarArtefact } from "./artefacts/components-radar";
+import { DqnLaneLocalizationArtefact } from "./artefacts/dqn-lane-localization";
+import { MaskedAutoencodersArtefact } from "./artefacts/masked-autoencoders";
+import { ModelExtractionAttacksArtefact } from "./artefacts/model-extraction-attacks";
+import { SelfBuildingPortfolioArtefact } from "./artefacts/self-building-portfolio";
 import { DqnLaneLocalizationCover } from "./dqn-lane-localization";
 import { MaskedAutoencodersCover } from "./masked-autoencoders";
 import { ModelExtractionAttacksCover } from "./model-extraction-attacks";
@@ -9,4 +14,16 @@ export const coverComponents: Record<string, React.ComponentType> = {
   "dqn-lane-localization": DqnLaneLocalizationCover,
   "masked-autoencoders": MaskedAutoencodersCover,
   "self-building-portfolio": SelfBuildingPortfolioCover,
+};
+
+// A project's real output on the cover ground, registered by slug alongside the live covers.
+export const artefactComponents: Record<
+  string,
+  React.ComponentType<{ caption: boolean }>
+> = {
+  "components-radar": ComponentsRadarArtefact,
+  "self-building-portfolio": SelfBuildingPortfolioArtefact,
+  "model-extraction-attacks": ModelExtractionAttacksArtefact,
+  "dqn-lane-localization": DqnLaneLocalizationArtefact,
+  "masked-autoencoders": MaskedAutoencodersArtefact,
 };

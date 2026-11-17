@@ -576,12 +576,14 @@ html[data-theme="dark"] [data-cover-dark="filled"] {
   --ink: var(--c-cover-text);
   --ink-muted: var(--c-cover-muted);
   --accent: var(--c-cover-marks);
+  --cover-ground: var(--c-cover);
   background-color: var(--c-cover);
 }
 
 html:not([data-theme="dark"]) [data-cover-light="marker"],
 html[data-theme="dark"] [data-cover-dark="marker"] {
   --accent: var(--c-ink);
+  --cover-ground: var(--surface-elevated);
   background-color: var(--surface-elevated);
 }
 

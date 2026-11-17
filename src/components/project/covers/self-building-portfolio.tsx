@@ -5,7 +5,12 @@
 // subject is the gate system — bold accent gate badges between stages, the human-approval
 // discipline that anchors the agent. Two rails labeled DOCS · RULES · GATES frame it.
 
-import { COVER_ANNOTATION, COVER_LABEL, COVER_SUBLABEL } from "./cover-styles";
+import {
+  COVER_ANNOTATION,
+  COVER_LABEL,
+  COVER_SUBLABEL,
+  draw,
+} from "./cover-styles";
 
 // A tonal ladder inside each page builds the dark anchor the composition needs (cf. the
 // house covers' single bold element): faint text < medium figure < solid-ink hero band.
@@ -158,6 +163,7 @@ export function SelfBuildingPortfolioCover() {
         {[railTop, railBot].map((ry) => (
           <g key={ry}>
             <line
+              {...draw(0)}
               x1={railX1}
               y1={ry}
               x2={railX2}
@@ -166,6 +172,7 @@ export function SelfBuildingPortfolioCover() {
               strokeWidth={1}
             />
             <line
+              {...draw(1)}
               x1={railX1}
               y1={ry}
               x2={railX1}
@@ -174,6 +181,7 @@ export function SelfBuildingPortfolioCover() {
               strokeWidth={1}
             />
             <line
+              {...draw(2)}
               x1={railX2}
               y1={ry}
               x2={railX2}
@@ -204,6 +212,7 @@ export function SelfBuildingPortfolioCover() {
           return (
             <g key={label}>
               <rect
+                {...draw(3)}
                 x={srcX}
                 y={by}
                 width={srcW}
@@ -274,6 +283,7 @@ export function SelfBuildingPortfolioCover() {
         {/* ── FUNNEL ── */}
         {sources.map(({ cy, label }) => (
           <line
+            {...draw(4)}
             key={label}
             x1={srcX + srcW}
             y1={cy}
@@ -293,6 +303,7 @@ export function SelfBuildingPortfolioCover() {
           opacity={0.7}
         />
         <line
+          {...draw(5)}
           x1={junctionX + 4}
           y1={AXIS_Y}
           x2={stage0X - 8}
@@ -302,6 +313,7 @@ export function SelfBuildingPortfolioCover() {
           opacity={0.5}
         />
         <polyline
+          {...draw(6)}
           points={`${stage0X - 10},${AXIS_Y - 4} ${stage0X - 4},${AXIS_Y} ${stage0X - 10},${AXIS_Y + 4}`}
           fill="none"
           stroke="var(--ink)"
@@ -323,6 +335,7 @@ export function SelfBuildingPortfolioCover() {
           return (
             <g key={label}>
               <rect
+                {...draw(7)}
                 x={x}
                 y={BOX_TOP}
                 width={BOX_W}
@@ -397,6 +410,7 @@ export function SelfBuildingPortfolioCover() {
               {isReview && (
                 <>
                   <circle
+                    {...draw(8)}
                     cx={x + BOX_W - 24}
                     cy={BOX_BOT - 26}
                     r={12}
@@ -405,6 +419,7 @@ export function SelfBuildingPortfolioCover() {
                     strokeWidth={1.75}
                   />
                   <path
+                    {...draw(9)}
                     d={`M ${x + BOX_W - 30} ${BOX_BOT - 26} L ${x + BOX_W - 25.5} ${BOX_BOT - 21} L ${x + BOX_W - 17} ${BOX_BOT - 31}`}
                     fill="none"
                     stroke="var(--accent)"
@@ -434,6 +449,7 @@ export function SelfBuildingPortfolioCover() {
           return (
             <g key={gx}>
               <line
+                {...draw(10)}
                 x1={fromX}
                 y1={AXIS_Y}
                 x2={gx - 17}
@@ -443,6 +459,7 @@ export function SelfBuildingPortfolioCover() {
                 opacity={0.5}
               />
               <line
+                {...draw(11)}
                 x1={gx + 17}
                 y1={AXIS_Y}
                 x2={toX - 8}
@@ -452,6 +469,7 @@ export function SelfBuildingPortfolioCover() {
                 opacity={0.5}
               />
               <polyline
+                {...draw(12)}
                 points={`${toX - 10},${AXIS_Y - 4} ${toX - 4},${AXIS_Y} ${toX - 10},${AXIS_Y + 4}`}
                 fill="none"
                 stroke="var(--ink)"
@@ -461,6 +479,7 @@ export function SelfBuildingPortfolioCover() {
               />
               <circle cx={gx} cy={AXIS_Y} r={17} fill="var(--accent)" />
               <path
+                {...draw(13)}
                 d={`M ${gx - 7} ${AXIS_Y + 0.5} L ${gx - 2} ${AXIS_Y + 6} L ${gx + 7.5} ${AXIS_Y - 6.5}`}
                 fill="none"
                 stroke="var(--ink-on-accent)"
@@ -474,6 +493,7 @@ export function SelfBuildingPortfolioCover() {
 
         {/* ── OUTPUT PAGE ── */}
         <line
+          {...draw(14)}
           x1={stages[3].x + BOX_W}
           y1={AXIS_Y}
           x2={pageX - 8}
@@ -483,6 +503,7 @@ export function SelfBuildingPortfolioCover() {
           opacity={0.5}
         />
         <polyline
+          {...draw(15)}
           points={`${pageX - 10},${AXIS_Y - 4} ${pageX - 4},${AXIS_Y} ${pageX - 10},${AXIS_Y + 4}`}
           fill="none"
           stroke="var(--ink)"
@@ -491,12 +512,14 @@ export function SelfBuildingPortfolioCover() {
           strokeLinejoin="round"
         />
         <path
+          {...draw(16)}
           d={`M ${pageX} ${pageY + 4} q 0 -4 4 -4 h ${pageW - 18} l 14 14 v ${pageH - 14} q 0 4 -4 4 h ${-(pageW - 4)} q -4 0 -4 -4 Z`}
           fill="var(--surface)"
           stroke="var(--hairline-strong)"
           strokeWidth={1.25}
         />
         <path
+          {...draw(17)}
           d={`M ${pageX + pageW - 14} ${pageY} v 10 q 0 4 4 4 h 10`}
           fill="none"
           stroke="var(--hairline-strong)"
@@ -539,6 +562,7 @@ export function SelfBuildingPortfolioCover() {
             <g key={n.lines[0]}>
               {n.lines.map((line, i) => (
                 <text
+                  data-note={0}
                   key={line}
                   x={n.x}
                   y={n.y + i * 30}
@@ -550,6 +574,7 @@ export function SelfBuildingPortfolioCover() {
                 </text>
               ))}
               <path
+                {...draw(18)}
                 d={d}
                 fill="none"
                 stroke="var(--accent)"
@@ -557,6 +582,7 @@ export function SelfBuildingPortfolioCover() {
                 strokeLinecap="round"
               />
               <line
+                {...draw(19)}
                 x1={n.tip[0]}
                 y1={n.tip[1]}
                 x2={b1[0]}
@@ -566,6 +592,7 @@ export function SelfBuildingPortfolioCover() {
                 strokeLinecap="round"
               />
               <line
+                {...draw(20)}
                 x1={n.tip[0]}
                 y1={n.tip[1]}
                 x2={b2[0]}
