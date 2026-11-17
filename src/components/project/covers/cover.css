@@ -215,11 +215,12 @@ html[data-theme="dark"] .art-sbp .art-lt {
 
 /* ───────── Play ───────── */
 
-/* A cover plays where it has focus: the frame says so (`data-playing`), or an ancestor marked as a cover host is
+/* A cover plays where it has focus: the frame says so (`data-playing`), an ancestor marked active (the spotlight's current slide), or an ancestor marked as a cover host is
    hovered or holds focus. The static base above is what shows otherwise, and what reduced motion keeps. */
 @media (prefers-reduced-motion: no-preference) {
   :is(
     .cover[data-playing="true"],
+    [data-cover-active="true"] .cover,
     [data-cover-host]:is(:hover, :focus-within) .cover
   ) {
     /* Live SVG covers: solid strokes draw in, then the Caveat notes write on, 0.3s apart. */
@@ -312,6 +313,7 @@ html[data-theme="dark"] .art-sbp .art-lt {
   /* In dark the screenshots swap the other way round. */
   html[data-theme="dark"] :is(
       .cover[data-playing="true"],
+      [data-cover-active="true"] .cover,
       [data-cover-host]:is(:hover, :focus-within) .cover
     )
     .art-sbp {
@@ -539,5 +541,15 @@ html[data-theme="dark"] .art-sbp .art-lt {
   }
   100% {
     opacity: 0;
+  }
+}
+
+/* A project card zooms its cover's content inside the fixed frame (DESIGN.md → Project Card). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-cover-zoom] .cover-media {
+    transition: transform var(--duration-slow);
+  }
+  [data-cover-zoom]:hover .cover-media {
+    transform: scale(1.03);
   }
 }

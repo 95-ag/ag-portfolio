@@ -1,0 +1,215 @@
+/* Writing — tiles, the type label and the post rail (DESIGN.md → Writing Index → Writing Tile, Post → Post Layout).
+   A tile wears its post group (`data-post-group` sets --g-ink and --g-tint). */
+
+/* ───────── Type label ───────── */
+
+.type-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-sm);
+}
+.type-label-name {
+  color: var(--ink-muted);
+}
+.type-label-addon {
+  color: var(--g-ink, var(--accent));
+}
+html[data-theme="dark"] .type-label-name {
+  color: var(--g-ink, var(--ink-muted));
+}
+
+/* ───────── Tiles ───────── */
+
+.wtiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Ragged bottoms: a tile ends where its text does, so tiles in a row align at the top. */
+  align-items: start;
+  gap: var(--spacing-md);
+}
+.wtiles[data-size="sm"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1099px) {
+  .wtiles[data-size="sm"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 860px) {
+  .wtiles,
+  .wtiles[data-size="sm"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Home shows two rows at most at every width: 8, 6 or 2 tiles. */
+.wtiles[data-size="sm"] > :nth-child(n + 9) {
+  display: none;
+}
+@media (max-width: 1099px) {
+  .wtiles[data-size="sm"] > :nth-child(n + 7) {
+    display: none;
+  }
+}
+@media (max-width: 860px) {
+  .wtiles[data-size="sm"] > :nth-child(n + 3) {
+    display: none;
+  }
+}
+
+.wtile {
+  --wtile-ground: var(--g-tint);
+  --wtile-ear: 56px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xs);
+  background: var(--wtile-ground);
+  color: var(--ink);
+}
+.wtile[data-size="sm"] {
+  --wtile-ear: 40px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+}
+.wtile:is(:hover, :focus-visible) {
+  background: color-mix(in oklab, var(--wtile-ground), var(--ink) 5%);
+}
+.wtile:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.wtile-head {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+.wtile-title {
+  color: var(--ink);
+  text-wrap: balance;
+}
+.wtile-arrow {
+  color: var(--ink-muted);
+}
+.wtile:is(:hover, :focus-visible) .wtile-arrow {
+  color: var(--ink);
+}
+.wtile-quote {
+  display: block;
+}
+.wtile-year {
+  margin-top: auto;
+  font-style: italic;
+}
+
+/* Dog-ear: a folded bottom-right corner on a post with no related project, or a note. The folded face shades from the
+   tile ground toward ink; the cut-away half is the page ground. */
+.wtile[data-ear="true"]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: var(--wtile-ear);
+  height: var(--wtile-ear);
+  border-top-left-radius: var(--radius-xs);
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--wtile-ground), var(--ink) 14%) 0%,
+    color-mix(in oklab, var(--wtile-ground), var(--ink) 6%) 50%,
+    var(--surface) 50%
+  );
+  transform-origin: 100% 100%;
+}
+.wtile[data-ear="true"]:is(:hover, :focus-visible)::after {
+  /* 40 → 52px on Home, 56 → 72px on the index. */
+  transform: scale(1.3);
+}
+.wtile[data-size="art"][data-ear="true"]:is(:hover, :focus-visible)::after {
+  transform: scale(calc(72 / 56));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wtile {
+    transition: background-color var(--duration-fast);
+  }
+  .wtile-arrow {
+    transition: color var(--duration-fast);
+  }
+  .wtile[data-ear="true"]::after {
+    transition: transform var(--duration-fast);
+  }
+}
+
+/* Art tile: square; the project's cover fills it, and on hover or focus drops into the lower two-thirds — from 34%
+   down, a margin in from the sides and bottom — uncovering the head and year. The reveal is a clip: the cover keeps
+   its size and is cropped to the box, so nothing is laid out again. Touch screens start revealed. */
+.wtile[data-art="true"] {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.wtile-art-head {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+.wtile-art-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  clip-path: inset(0 round var(--radius-xs));
+}
+.wtile-art-media .cover {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+.wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media {
+  clip-path: inset(
+    34% var(--spacing-md) var(--spacing-md) round var(--radius-md)
+  );
+}
+@media (hover: none) {
+  .wtile[data-art="true"] .wtile-art-media {
+    clip-path: inset(
+      34% var(--spacing-md) var(--spacing-md) round var(--radius-md)
+    );
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Declared exception to the duration scale (Writing Tile → Art tile). */
+  .wtile-art-media {
+    transition: clip-path 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+/* ───────── Post rail ───────── */
+
+.post-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+.post-rail > * {
+  min-width: 140px;
+}
+.post-rail-project {
+  display: grid;
+  gap: var(--spacing-sm);
+  align-content: start;
+}
+.cover[data-variant="rail"] {
+  aspect-ratio: 4 / 3;
+}
+@media (min-width: 1200px) {
+  .post-rail {
+    position: sticky;
+    top: var(--spacing-4xl);
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 200px;
+    justify-self: end;
+    align-self: start;
+  }
+}

@@ -1,0 +1,195 @@
+/* Spotlight — one featured project at a time (DESIGN.md → Home Page → Spotlight). Each slide and tab wears its project's
+   slot (`data-colour` sets --c-ink). */
+
+.spot {
+  position: relative;
+}
+.spot-stage {
+  display: grid;
+}
+.spot-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+}
+.spot-slide[data-on="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+.spot-link {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--spacing-2xl);
+}
+.spot-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.spot-cover {
+  min-height: 420px;
+}
+.spot-text {
+  display: grid;
+  align-content: space-between;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-sm) 0;
+}
+.spot-copy {
+  display: grid;
+  gap: var(--spacing-md);
+}
+.spot-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-md);
+  color: var(--c-ink);
+}
+.spot-link:hover .spot-title {
+  color: var(--c-ink);
+}
+
+/* Rotation: a 0.45s cross-fade and the 7s fill are declared exceptions to the duration scale. Nothing rotates under
+   reduced motion, so the fade only matters to a visitor who picks a tab. */
+@media (prefers-reduced-motion: no-preference) {
+  .spot-slide {
+    transition:
+      opacity 0.45s,
+      visibility 0s 0.45s,
+      transform var(--duration-slow);
+  }
+  .spot-slide[data-on="true"] {
+    transition:
+      opacity 0.45s,
+      transform var(--duration-slow);
+  }
+  /* The whole slide grows as one from its centre, so cover and text do not move apart. */
+  .spot-slide[data-on="true"]:hover {
+    transform: scale(1.03);
+  }
+}
+
+.spot-tabs {
+  display: grid;
+  grid-template-columns: repeat(var(--spot-count, 5), 1fr);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+.spot-tab {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-sm);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  text-align: left;
+  cursor: pointer;
+}
+.spot-tab[aria-selected="true"],
+.spot-tab:is(:hover, :focus-visible) {
+  color: var(--ink);
+}
+.spot-tab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.spot-bar {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--hairline);
+}
+.spot-tab:is(:hover, :focus-visible) .spot-bar {
+  background: var(--hairline-strong);
+}
+.spot-bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.spot-tab[aria-selected="true"] .spot-bar i {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .spot[data-auto="true"] .spot-tab[aria-selected="true"] .spot-bar i {
+    animation: spot-fill 7s linear both;
+  }
+}
+@keyframes spot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.spot-pause {
+  position: absolute;
+  top: calc(-1 * var(--spacing-md));
+  right: 0;
+  z-index: 2;
+  min-height: 44px;
+  padding: 0 0 0 var(--spacing-md);
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+.spot-pause:is(:hover, :focus-visible) {
+  color: var(--ink);
+}
+.spot-pause:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.spot-now {
+  display: none;
+}
+
+/* At and below the stack threshold (860px): the slide stacks, the tabs become dashes with the current short name
+   beneath, and Play / Pause moves to that row (its top-right spot sits under the fixed menu button). */
+@media (max-width: 860px) {
+  .spot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "stage stage"
+      "tabs tabs"
+      "now pause";
+    align-items: center;
+  }
+  .spot-stage {
+    grid-area: stage;
+  }
+  .spot-tabs {
+    grid-area: tabs;
+    gap: var(--spacing-sm);
+  }
+  .spot-now {
+    grid-area: now;
+    display: block;
+    margin: 0;
+    color: var(--ink);
+  }
+  .spot-pause {
+    grid-area: pause;
+    position: static;
+  }
+  .spot-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-lg);
+  }
+  .spot-cover {
+    min-height: 220px;
+  }
+  .spot-tab {
+    padding-top: var(--spacing-lg);
+  }
+  .spot-tab-name {
+    display: none;
+  }
+}
