@@ -1,6 +1,13 @@
 "use client";
 
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useCoverLoop } from "@/components/project/cover-loop";
 import "@/components/home/spotlight.css";
 
 export interface SpotlightSlide {
@@ -39,6 +46,31 @@ function useRotation(count: number) {
   return { index, setIndex, paused, setPaused, auto };
 }
 
+// One slide: it loops its cover (one play, a pause, again) while it is the current slide and in view.
+function SlideFrame({
+  colour,
+  active,
+  children,
+}: {
+  colour: number;
+  active: boolean;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useCoverLoop(ref, active);
+  return (
+    <div
+      ref={ref}
+      className="spot-slide"
+      data-colour={colour}
+      data-on={active}
+      data-cover-active="false"
+    >
+      {children}
+    </div>
+  );
+}
+
 // The rotation, tabs and Play / Pause. The slides arrive rendered by the server so no project body reaches the client.
 export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
   const { index, setIndex, paused, setPaused, auto } = useRotation(
@@ -61,15 +93,13 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
       </button>
       <div className="spot-stage">
         {slides.map((slide, i) => (
-          <div
+          <SlideFrame
             key={slide.slug}
-            className="spot-slide"
-            data-colour={slide.colour}
-            data-on={i === index}
-            data-cover-active={i === index}
+            colour={slide.colour}
+            active={i === index}
           >
             {slide.node}
-          </div>
+          </SlideFrame>
         ))}
       </div>
       <div className="spot-tabs" role="tablist" aria-label="Projects">

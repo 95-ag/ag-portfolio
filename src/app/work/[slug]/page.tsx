@@ -8,6 +8,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { Cover } from "@/components/project/cover";
+import { CoverLoop } from "@/components/project/cover-loop";
 import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
@@ -115,7 +116,9 @@ export default async function ProjectPage({ params }: Props) {
 
                 {/* Hero */}
                 <div className="relative mt-[var(--spacing-2xl)]">
-                  <Cover project={project} variant="hero" playing />
+                  <CoverLoop className="block">
+                    <Cover project={project} variant="hero" />
+                  </CoverLoop>
                   <HeroMetaOverlay
                     logos={fm.logos}
                     contributors={fm.contributors}
