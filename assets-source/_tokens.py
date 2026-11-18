@@ -37,14 +37,10 @@ NEUTRALS = {
     for key in ("surface", "surface-tag", "ink", "ink-muted", "hairline", "hairline-strong", "accent")
 }
 _INK = {n: _pair(_css, f"--project-{n}-ink") for n in SLOTS}
-_TILE = {n: _pair(_css, f"--project-{n}-tile") for n in SLOTS}
-assert len(_INK) == 12 and len(_TILE) == 12
+assert len(_INK) == 12
 
 
 def slot_ink(slot: int) -> tuple[str, str]:
     """A project's page colour (light, dark) — Foundations → Colors → Project Colours."""
     return _INK[slot]
 
-
-def slot_tile(slot: int) -> tuple[str, str]:
-    return _TILE[slot]

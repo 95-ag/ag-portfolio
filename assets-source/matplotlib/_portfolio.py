@@ -19,7 +19,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from _tokens import NEUTRALS, out_root, slot_ink, slot_tile  # noqa: E402,F401
+from _tokens import NEUTRALS, out_root, slot_ink  # noqa: E402,F401
 
 # --- Neutrals (light) ---
 BACKGROUND = NEUTRALS["surface"][0]
@@ -38,9 +38,9 @@ def _mix(foreground: str, background: str, amount: float) -> str:
 
 def slot_colours(slot: int) -> tuple[str, str, str]:
     """(accent, mid, muted) for a project's colour slot: its page colour, that colour half-strength on the
-    background, and its tile colour."""
+    background, and that colour at 12% (the pale end of a heatmap)."""
     accent = slot_ink(slot)[0]
-    return accent, _mix(accent, BACKGROUND, 0.5), slot_tile(slot)[0]
+    return accent, _mix(accent, BACKGROUND, 0.5), _mix(accent, BACKGROUND, 0.12)
 
 
 def use_portfolio_style() -> None:
