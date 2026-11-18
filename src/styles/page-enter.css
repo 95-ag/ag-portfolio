@@ -1,0 +1,17 @@
+/* Page transition (DESIGN.md → Interaction Rules → Page Transition). 500ms and 12px are declared exceptions to the
+   duration scale; under reduced motion the animation is absent, so the page simply appears. */
+@media (prefers-reduced-motion: no-preference) {
+  .page-enter {
+    animation: page-enter 500ms ease-out both;
+  }
+}
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
