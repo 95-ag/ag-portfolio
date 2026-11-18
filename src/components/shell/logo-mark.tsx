@@ -161,8 +161,9 @@ export function LogoMark({
         }}
       >
         {(["sit", "stretch"] as const).map((candidate) => (
-          // Lazy, not eager: on desktop both images are on screen and load at once (the hidden pose is
-          // only transparent), while on phones the pill nav is display:none and skips them entirely.
+          // The visible pose loads eagerly: the page enter starts the content at opacity 0, which makes this
+          // logo the Largest Contentful Paint candidate, and Next warns when that is lazy. The hidden pose
+          // stays lazy, and on phones the pill nav is display:none so neither is fetched.
           <Image
             key={candidate}
             ref={(image) => {
@@ -173,6 +174,7 @@ export function LogoMark({
             width={32}
             height={32}
             unoptimized
+            loading={candidate === initialPose.current ? "eager" : "lazy"}
             className="absolute inset-0 h-full w-full"
             style={{ opacity: candidate === initialPose.current ? 1 : 0 }}
           />
