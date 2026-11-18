@@ -22,7 +22,7 @@ export function ModelExtractionAttacksArtefact({
           />
         </div>
         <div className="art-verdict">
-          <span className="art-lbl artefact-label">Model says</span>
+          <span className="art-lbl insight-label">Model says</span>
           <span className="art-v">
             <span className="art-cat">Cat</span>
             <span className="art-dog">Dog</span>
@@ -30,7 +30,7 @@ export function ModelExtractionAttacksArtefact({
         </div>
       </div>
       {caption && (
-        <span className="art-cap artefact-label">
+        <span className="art-cap insight-label">
           ~80% replica from 25k queries
         </span>
       )}

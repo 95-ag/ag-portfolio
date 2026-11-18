@@ -9,7 +9,7 @@ export function DqnLaneLocalizationArtefact({ caption }: { caption: boolean }) {
         }}
       />
       {caption && (
-        <span className="art-cap artefact-label">
+        <span className="art-cap insight-label">
           Lane reconstruction, TuSimple
         </span>
       )}

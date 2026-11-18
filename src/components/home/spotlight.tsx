@@ -3,6 +3,7 @@ import {
   type SpotlightSlide,
   SpotlightStage,
 } from "@/components/home/spotlight-stage";
+import { EastIcon } from "@/components/icons/material/east";
 import { Cover } from "@/components/project/cover";
 import { Tag } from "@/components/ui/display/tag";
 import type { Project } from "@/lib/content/projects";
@@ -31,7 +32,7 @@ export function Spotlight({ projects }: SpotlightProps) {
             <Cover project={project} variant="spotlight" />
           </div>
           <div className="spot-text select-none">
-            <p className="meta-label">
+            <p className="insight-label">
               {pad(i + 1)} / {pad(projects.length)}
             </p>
             <div className="spot-copy">
@@ -61,9 +62,10 @@ export function Spotlight({ projects }: SpotlightProps) {
       <div className="mt-[var(--spacing-lg)] flex justify-end">
         <Link
           href="/work"
-          className="body-caption flex min-h-[44px] items-center text-[var(--ink)] motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+          className="body-caption flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
         >
-          View all projects →
+          View all projects
+          <EastIcon size={16} />
         </Link>
       </div>
     </section>

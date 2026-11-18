@@ -3,8 +3,8 @@ import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
-import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
 import { MailIcon } from "@/components/icons/material/mail";
+import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { Callout } from "@/components/mdx/callout";
 import { Clip } from "@/components/mdx/clip";
 import { Diagram } from "@/components/mdx/diagram";
@@ -84,7 +84,7 @@ const buttonVariants = [
     token: "trailing icon",
     spec: "the same icon after the label",
     render: (
-      <Button iconPosition="trailing" icon={<ArrowOutwardIcon size={18} />}>
+      <Button iconPosition="trailing" icon={<NorthEastIcon size={18} />}>
         Trailing icon
       </Button>
     ),
@@ -100,7 +100,7 @@ const buttonVariants = [
   },
   {
     token: "EmailButton (cue: full)",
-    spec: "the address as the label, the arrow_outward icon trailing, then the outline draw and the accent sheen twice once 60% in view; hover or focus stops it; nothing under reduced motion",
+    spec: "the address as the label, the north_east icon trailing, then the outline draw and the accent sheen twice once 60% in view; hover or focus stops it; nothing under reduced motion",
     render: <EmailButton address="hello@example.com" />,
   },
 ];
@@ -341,7 +341,7 @@ export function ComponentsSections() {
             name="Tag"
             source="@/components/ui/display/tag"
             description="A plain mono uppercase label: no fill, no padding, no shape. It takes the colour of its context: a project's ink on cards and in the spotlight, the page colour on detail pages, the accent on About's capabilities."
-            spec="tag-label · currentColor"
+            spec="insight-label · currentColor"
             headingLevel={4}
           >
             <div className="flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">

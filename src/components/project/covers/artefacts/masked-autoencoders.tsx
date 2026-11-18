@@ -18,12 +18,12 @@ export function MaskedAutoencodersArtefact({ caption }: { caption: boolean }) {
         />
       </div>
       <div className="art-steps">
-        <span className="art-lbl artefact-label art-o">Original</span>
-        <span className="art-lbl artefact-label art-mk">Masked</span>
-        <span className="art-lbl artefact-label art-rc">Reconstruction</span>
+        <span className="art-lbl insight-label art-o">Original</span>
+        <span className="art-lbl insight-label art-mk">Masked</span>
+        <span className="art-lbl insight-label art-rc">Reconstruction</span>
       </div>
       {caption && (
-        <span className="art-cap artefact-label">
+        <span className="art-cap insight-label">
           66.85% linear probe at 75% masking
         </span>
       )}

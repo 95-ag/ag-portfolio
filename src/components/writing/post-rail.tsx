@@ -24,20 +24,20 @@ export function PostRail({ post }: PostRailProps) {
     <aside className="post-rail" aria-label="About this post">
       {fm.updatedAt && (
         <div>
-          <p className="meta-label">Updated</p>
+          <p className="insight-label">Updated</p>
           <p className="body-caption">{formatDate(fm.updatedAt)}</p>
         </div>
       )}
       <div>
-        <p className="meta-label">Published</p>
+        <p className="insight-label">Published</p>
         <p className="body-caption">{formatDate(fm.publishedAt)}</p>
       </div>
       <div>
-        <p className="meta-label">Read</p>
+        <p className="insight-label">Read</p>
         <p className="body-caption">{readingMinutes(post.body)} min</p>
       </div>
       <div>
-        <p className="meta-label">Tags</p>
+        <p className="insight-label">Tags</p>
         <ul className="flex flex-col text-[var(--accent)]">
           {fm.tags.map((tag) => (
             <li key={tag}>
@@ -52,7 +52,7 @@ export function PostRail({ post }: PostRailProps) {
           className="post-rail-project"
           data-colour={project.frontmatter.colour}
         >
-          <p className="meta-label">From the project</p>
+          <p className="insight-label">From the project</p>
           <CoverLoop className="post-rail-cover">
             <Cover project={project} variant="rail" caption={false} />
           </CoverLoop>

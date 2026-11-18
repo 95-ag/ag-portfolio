@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { EastIcon } from "@/components/icons/material/east";
+import { WestIcon } from "@/components/icons/material/west";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
@@ -156,16 +158,18 @@ export default async function PostPage({ params }: Props) {
             <div className="mt-[var(--spacing-5xl)] flex items-center justify-between gap-[var(--spacing-md)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)] rail-side:col-start-2">
               <Link
                 href="/writing"
-                className="interactive-label flex min-h-[44px] items-center text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
-                ← Back to Writing
+                <WestIcon size={16} />
+                Back to Writing
               </Link>
               {nextPost && (
                 <Link
                   href={`/writing/${nextPost.slug}`}
-                  className="interactive-label flex min-h-[44px] items-center text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                  className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
                 >
-                  Next post →
+                  Next post
+                  <EastIcon size={16} />
                 </Link>
               )}
             </div>

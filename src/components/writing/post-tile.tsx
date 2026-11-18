@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
+import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { Cover } from "@/components/project/cover";
 import { CoverLoop } from "@/components/project/cover-loop";
 import { TypeLabel } from "@/components/writing/type-label";
@@ -21,11 +21,11 @@ interface PostTileProps {
 function TileTitle({ post, size }: PostTileProps) {
   return (
     <span
-      className={`ptile-title ${size === "sm" ? "tile-title-sm" : "heading-component"}`}
+      className={`ptile-title ${size === "sm" ? "heading-narrative" : "heading-component"}`}
     >
       {post.frontmatter.title}{" "}
       <span className="ptile-arrow" aria-hidden="true">
-        <ArrowOutwardIcon size={size === "sm" ? 16 : 20} />
+        <NorthEastIcon size={size === "sm" ? 16 : 20} />
       </span>
     </span>
   );
@@ -74,7 +74,7 @@ export function PostTile({ post, size, colour }: PostTileProps) {
         <>
           <TileTitle post={post} size={size} />
           <span
-            className={`ptile-quote ${size === "sm" ? "quote-text-sm" : "quote-text"}`}
+            className={`ptile-quote ${size === "sm" ? "body-caption italic" : "body-secondary italic"}`}
           >
             “{fm.summary}”
           </span>

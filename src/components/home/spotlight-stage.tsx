@@ -54,7 +54,7 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
     >
       <button
         type="button"
-        className="spot-pause tab-label"
+        className="spot-pause interactive-label"
         onClick={() => setPaused((value) => !value)}
       >
         {paused ? "Play" : "Pause"}
@@ -78,7 +78,7 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
             key={`${slide.slug}-${index}`}
             type="button"
             role="tab"
-            className="spot-tab tab-label"
+            className="spot-tab interactive-label"
             data-colour={slide.colour}
             aria-selected={i === index}
             aria-label={slide.tab}
@@ -91,7 +91,7 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
           </button>
         ))}
       </div>
-      <p className="spot-now tab-label" aria-hidden="true">
+      <p className="spot-now interactive-label" aria-hidden="true">
         {current?.tab}
       </p>
     </div>

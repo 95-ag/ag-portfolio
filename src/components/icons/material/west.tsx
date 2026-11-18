@@ -1,0 +1,10 @@
+import { IconBase, type IconProps } from "@/components/icons/icon-base";
+
+export function WestIcon(props: IconProps) {
+  return (
+    <IconBase
+      {...props}
+      path="M360-200 80-480l280-280 56 56-183 184h647v80H233l184 184-57 56Z"
+    />
+  );
+}

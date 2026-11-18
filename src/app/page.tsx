@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Spotlight } from "@/components/home/spotlight";
+import { EastIcon } from "@/components/icons/material/east";
 import { Container } from "@/components/layout/container";
 import { EmailButton } from "@/components/ui/controls/email-button";
 import { Heading } from "@/components/ui/display/heading";
@@ -76,9 +77,10 @@ export default function HomePage() {
               <div className="mt-[var(--spacing-lg)] flex justify-end">
                 <Link
                   href="/writing"
-                  className="body-caption flex min-h-[44px] items-center text-[var(--ink)] motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className="body-caption flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
-                  See all writing →
+                  See all writing
+                  <EastIcon size={16} />
                 </Link>
               </div>
             </section>

@@ -8,3 +8,11 @@
 [data-theme="light"] .ds-shot-dark {
   display: none;
 }
+
+/* Tokens that exist in light only are hidden in dark, where a note says what stands in for them. */
+[data-theme="dark"] .ds-light-only {
+  display: none;
+}
+[data-theme="light"] .ds-dark-only {
+  display: none;
+}

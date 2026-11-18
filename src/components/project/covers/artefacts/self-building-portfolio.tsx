@@ -19,10 +19,10 @@ export function SelfBuildingPortfolioArtefact({
             "url(/projects/self-building-portfolio/theme-adaptive-dark.webp)",
         }}
       />
-      <span className="art-lbl artefact-label art-lt">Light theme</span>
-      <span className="art-lbl artefact-label art-dk">Dark theme</span>
+      <span className="art-lbl insight-label art-lt">Light theme</span>
+      <span className="art-lbl insight-label art-dk">Dark theme</span>
       {caption && (
-        <span className="art-cap artefact-label">
+        <span className="art-cap insight-label">
           One figure source, both themes
         </span>
       )}

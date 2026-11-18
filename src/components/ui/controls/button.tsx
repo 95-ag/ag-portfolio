@@ -41,7 +41,7 @@ export function Button(props: ButtonProps) {
   const setRef = (node: HTMLElement | null) => {
     ref.current = node;
   };
-  const classes = cn("btn button-label", className);
+  const classes = cn("btn interactive-label", className);
   const iconMark = icon && (
     <span aria-hidden="true" className="btn-icon">
       {icon}

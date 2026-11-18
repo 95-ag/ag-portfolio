@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
+import { NorthIcon } from "@/components/icons/material/north";
 
 const REST_BOTTOM = 24; // px — resting offset from the viewport bottom
 const FOOTER_GAP = 16; // px — clearance kept above the footer
@@ -61,7 +61,7 @@ export function ScrollToTop({
       className="fixed right-4 lg:right-[max(1rem,calc(50vw-36rem))] flex items-center justify-center h-11 w-11 xl:h-12 xl:w-12 rounded-full border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] motion-safe:transition-[color,border-color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--ink)] hover:border-[var(--hairline-strong)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       style={{ zIndex: "var(--z-scroll-to-top)", bottom: `${bottom}px` }}
     >
-      <ArrowUpwardIcon size={20} />
+      <NorthIcon size={20} />
     </button>
   );
 }

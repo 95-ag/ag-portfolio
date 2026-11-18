@@ -1,9 +1,5 @@
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
-import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
-import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
-import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
-import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { CheckIcon } from "@/components/icons/material/check";
 import { ChevronLeftIcon } from "@/components/icons/material/chevron-left";
@@ -15,16 +11,21 @@ import { DarkModeIcon } from "@/components/icons/material/dark-mode";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { DownloadIcon } from "@/components/icons/material/download";
+import { EastIcon } from "@/components/icons/material/east";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { LightModeIcon } from "@/components/icons/material/light-mode";
 import { MailIcon } from "@/components/icons/material/mail";
 import { MenuIcon } from "@/components/icons/material/menu";
+import { NorthIcon } from "@/components/icons/material/north";
+import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { RefreshIcon } from "@/components/icons/material/refresh";
 import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
+import { SouthIcon } from "@/components/icons/material/south";
 import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
+import { WestIcon } from "@/components/icons/material/west";
 import { Divider } from "@/components/layout/divider";
 import { Grid } from "@/components/layout/grid";
 import { Stack } from "@/components/layout/stack";
@@ -55,7 +56,7 @@ import {
 
 const PROJECT_COLOUR_SLOTS = Array.from({ length: 12 }, (_, i) => i + 1);
 
-// Slots 1–12 as text (`ink`) and tint (`tile`); the cover roles derive from them (DESIGN.md → Colors → Covers).
+// Slots 1–12 as text (`ink`); the cover roles derive from them (DESIGN.md → Colors → Covers).
 const PROJECT_COLOUR_GROUPS: SwatchGroup[] = [
   {
     label: "Project colours · ink",
@@ -63,16 +64,6 @@ const PROJECT_COLOUR_GROUPS: SwatchGroup[] = [
       token: `--project-${n}-ink`,
       name: `Slot ${n} Ink`,
       usage: "The colour as text: hover titles, tags, tab bars, page colour",
-    })),
-  },
-  {
-    label: "Project colours · tile",
-    tokens: PROJECT_COLOUR_SLOTS.map((n) => ({
-      token: `--project-${n}-tile`,
-      name: `Slot ${n} Tile`,
-      usage:
-        "The colour's tint (light only): accent-tint and surface-active on its page. In dark every tile is surface-tag.",
-      swatchValue: `var(--project-${n}-tile, var(--surface-tag))`,
     })),
   },
 ];
@@ -90,10 +81,17 @@ const POST_HUE_GROUPS: SwatchGroup[] = [
       {
         token: `--post-${g}-tint`,
         name: `Post ${g} Tint`,
-        usage: "Post-tile ground (light only; dark is surface-tag)",
-        swatchValue: `var(--post-${g}-tint, var(--surface-tag))`,
+        usage: "Post-tile ground",
+        lightOnly: true,
       },
     ]),
+    darkNote: (
+      <>
+        In dark every post tile is{" "}
+        <span className="mono-code">surface-tag</span>; only the four inks above
+        are defined for dark.
+      </>
+    ),
   },
 ];
 
@@ -352,70 +350,6 @@ const TYPE_TOKENS: TypeToken[] = [
     sample: "Mono label that tags a key insight or pull-quote.",
   },
   {
-    token: "tag-label",
-    family: "JetBrains Mono",
-    size: 11.5,
-    weight: 500,
-    lh: 17,
-    sample: "Uppercase mono for tags, in the colour of their context.",
-  },
-  {
-    token: "meta-label",
-    family: "JetBrains Mono",
-    size: 12,
-    weight: 500,
-    lh: 17,
-    sample: "Rail and metadata labels such as Published and Tags.",
-  },
-  {
-    token: "artefact-label",
-    family: "JetBrains Mono",
-    size: 11,
-    weight: 500,
-    lh: 14,
-    sample: "The caption chip on an artefact cover.",
-  },
-  {
-    token: "button-label",
-    family: "Inter",
-    size: 14,
-    weight: 600,
-    lh: 20,
-    sample: "The label inside a Button.",
-  },
-  {
-    token: "tab-label",
-    family: "Inter",
-    size: 13,
-    weight: 500,
-    lh: 18,
-    sample: "Spotlight tabs and Play / Pause.",
-  },
-  {
-    token: "tile-title-sm",
-    family: "Manrope",
-    size: 17,
-    weight: 600,
-    lh: 22,
-    sample: "The title on Home's small post tiles.",
-  },
-  {
-    token: "quote-text",
-    family: "Inter",
-    size: 17,
-    weight: 400,
-    lh: 26,
-    sample: "The post's summary as a pull quote, italic.",
-  },
-  {
-    token: "quote-text-sm",
-    family: "Inter",
-    size: 15,
-    weight: 400,
-    lh: 22,
-    sample: "The quote on Home's small post tiles, italic.",
-  },
-  {
     token: "mono-code",
     family: "JetBrains Mono",
     size: 16,
@@ -534,10 +468,11 @@ const EASING_TOKENS: EasingToken[] = [
 type IconEntry = { name: string; Icon: React.ComponentType<{ size?: number }> };
 
 const MATERIAL_ICONS: IconEntry[] = [
-  { name: "ArrowDownward", Icon: ArrowDownwardIcon },
-  { name: "ArrowForward", Icon: ArrowForwardIcon },
-  { name: "ArrowOutward", Icon: ArrowOutwardIcon },
-  { name: "ArrowUpward", Icon: ArrowUpwardIcon },
+  { name: "West", Icon: WestIcon },
+  { name: "South", Icon: SouthIcon },
+  { name: "East", Icon: EastIcon },
+  { name: "NorthEast", Icon: NorthEastIcon },
+  { name: "North", Icon: NorthIcon },
   { name: "Article", Icon: ArticleIcon },
   { name: "Check", Icon: CheckIcon },
   { name: "ChevronLeft", Icon: ChevronLeftIcon },
@@ -582,7 +517,8 @@ const ICON_SIZES = [
   {
     px: 16,
     label: "16px",
-    context: "Nav items, LinkPill icons, project-card chevron",
+    context:
+      "Nav items, LinkPill icons, link arrows, the small post tile arrow",
   },
   {
     px: 12,
@@ -614,7 +550,7 @@ export function FoundationsSections() {
         title="Foundations · Typography"
         mapsTo="Foundations → Typography"
         source="src/styles/typography.css"
-        intro="Twenty-six semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
+        intro="Eighteen semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
       >
         <TypeScaleList tokens={TYPE_TOKENS} />
       </GallerySection>
@@ -903,7 +839,7 @@ export function FoundationsSections() {
                 className="flex flex-col items-start gap-[var(--spacing-sm)]"
               >
                 <div className="flex h-8 items-center text-[var(--ink)]">
-                  <ArrowForwardIcon size={px} />
+                  <EastIcon size={px} />
                 </div>
                 <span className="mono-anchor">icon · {label}</span>
                 <span className="body-caption">{context}</span>

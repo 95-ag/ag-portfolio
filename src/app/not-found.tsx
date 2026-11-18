@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
+import { EastIcon } from "@/components/icons/material/east";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/controls/button";
 import { Heading } from "@/components/ui/display/heading";
@@ -20,11 +20,7 @@ export default function NotFound() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
-            <Button
-              cue="draw"
-              href="/work"
-              icon={<ArrowForwardIcon size={18} />}
-            >
+            <Button cue="draw" href="/work" icon={<EastIcon size={18} />}>
               See Projects
             </Button>
             <Button

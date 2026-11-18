@@ -5,6 +5,8 @@ interface LinkPillProps {
   icon: React.ReactNode;
   children: React.ReactNode;
   external?: boolean;
+  // New-tab attributes without the trailing icon (the Resume PDF).
+  newTab?: boolean;
 }
 
 // Soft-filled pill link shared by the About identity row and project-header
@@ -15,11 +17,14 @@ export function LinkPill({
   icon,
   children,
   external = false,
+  newTab = false,
 }: LinkPillProps) {
   return (
     <a
       href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...(external || newTab
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
       className="group inline-flex h-11 items-center gap-[var(--spacing-sm)] rounded-[var(--radius-pill)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] interactive-label text-[var(--ink)] motion-safe:transition-[color,background-color] motion-safe:duration-[var(--duration-fast)] hover:bg-[var(--accent-tint)] hover:text-[var(--accent)] active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
     >
       {icon}

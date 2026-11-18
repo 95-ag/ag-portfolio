@@ -1,4 +1,4 @@
-import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
+import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { Button } from "@/components/ui/controls/button";
 
 interface EmailButtonProps {
@@ -13,7 +13,7 @@ export function EmailButton({ address }: EmailButtonProps) {
       href={`mailto:${address}`}
       cue="full"
       iconPosition="trailing"
-      icon={<ArrowOutwardIcon size={18} />}
+      icon={<NorthEastIcon size={18} />}
     >
       {address}
     </Button>

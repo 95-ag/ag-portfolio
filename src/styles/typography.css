@@ -114,22 +114,6 @@
   }
 
   /* Interactive */
-  .button-label {
-    font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0;
-    user-select: none;
-  }
-  .tab-label {
-    font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 18px;
-    color: var(--ink-muted);
-    user-select: none;
-  }
   .interactive-label {
     font-family: var(--font-sans), system-ui, sans-serif;
     font-size: 14px;
@@ -160,34 +144,6 @@
   [data-page-colour] .mono-anchor {
     color: var(--ink-muted);
   }
-  .tag-label {
-    font-family: var(--font-mono), monospace;
-    font-size: 11.5px;
-    font-weight: 500;
-    line-height: 17px;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    user-select: none;
-  }
-  .meta-label {
-    font-family: var(--font-mono), monospace;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 17px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    user-select: none;
-  }
-  .artefact-label {
-    font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 14px;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    user-select: none;
-  }
   .insight-label {
     font-family: var(--font-mono), monospace;
     font-size: 13px;
@@ -207,30 +163,6 @@
   }
 
   /* Post tiles */
-  .tile-title-sm {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 22px;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  .quote-text {
-    font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 17px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 26px;
-    color: var(--ink-muted);
-  }
-  .quote-text-sm {
-    font-family: var(--font-sans), system-ui, sans-serif;
-    font-size: 15px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 22px;
-    color: var(--ink-muted);
-  }
 
   /* Support / navigation meta */
   .support-meta {

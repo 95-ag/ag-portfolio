@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { WestIcon } from "@/components/icons/material/west";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
@@ -164,9 +165,10 @@ export default async function ProjectPage({ params }: Props) {
               <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
                 <Link
                   href="/work"
-                  className="interactive-label text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                  className="interactive-label inline-flex items-center gap-[var(--spacing-xs)] text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
                 >
-                  ← Back to Work
+                  <WestIcon size={16} />
+                  Back to Work
                 </Link>
               </div>
             </div>

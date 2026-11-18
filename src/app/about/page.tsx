@@ -174,7 +174,7 @@ export default function AboutPage() {
               <LinkPill
                 href="/AishwaryaGanesan_Resume.pdf"
                 icon={<DownloadIcon size={16} />}
-                external
+                newTab
               >
                 Resume
               </LinkPill>
