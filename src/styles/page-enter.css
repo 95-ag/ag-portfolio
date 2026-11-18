@@ -2,7 +2,7 @@
    duration scale; under reduced motion the animation is absent, so the page simply appears. */
 @media (prefers-reduced-motion: no-preference) {
   .page-enter {
-    animation: page-enter 500ms ease-out both;
+    animation: page-enter 500ms ease-out backwards;
   }
 }
 @keyframes page-enter {

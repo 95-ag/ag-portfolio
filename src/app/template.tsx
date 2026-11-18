@@ -4,13 +4,29 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 
-// A template remounts on every navigation, which restarts the enter animation. The first render of a visit is the
-// server-rendered page, so it never animates (and hydration matches); only later mounts opt in.
+// Set once the first page of a visit has mounted: Home plays the enter only when a visitor returns to it, never on a
+// load or reload.
 let visitStarted = false;
 
+// A root template does not remount between /work and /work/[slug] (same top-level segment), so the wrapper is keyed by
+// pathname to restart the animation on every route change.
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [enters] = useState(() => visitStarted && pathname !== "/");
+  return (
+    <PageEnter key={pathname} isHome={pathname === "/"}>
+      {children}
+    </PageEnter>
+  );
+}
+
+function PageEnter({
+  isHome,
+  children,
+}: {
+  isHome: boolean;
+  children: React.ReactNode;
+}) {
+  const [enters] = useState(() => !isHome || visitStarted);
 
   useEffect(() => {
     visitStarted = true;
