@@ -28,9 +28,7 @@ export function Spotlight({ projects }: SpotlightProps) {
       tab: fm.shortTitle ?? fm.title,
       node: (
         <Link href={`/work/${slug}`} className="spot-link">
-          <div className="spot-cover">
-            <Cover project={project} variant="spotlight" />
-          </div>
+          <Cover project={project} variant="spotlight" />
           <div className="spot-text select-none">
             <p className="insight-label">
               {pad(i + 1)} / {pad(projects.length)}

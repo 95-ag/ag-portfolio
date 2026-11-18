@@ -25,9 +25,6 @@
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
 }
-.spot-cover {
-  min-height: 420px;
-}
 .spot-text {
   display: grid;
   align-content: space-between;
@@ -182,9 +179,6 @@
   .spot-link {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-lg);
-  }
-  .spot-cover {
-    min-height: 220px;
   }
   .spot-tab {
     padding-top: var(--spacing-lg);

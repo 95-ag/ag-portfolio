@@ -16,14 +16,13 @@
   aspect-ratio: 16 / 10;
 }
 .cover[data-variant="hero"] {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
 }
 .cover[data-variant="tile"] {
   aspect-ratio: 1;
 }
 .cover[data-variant="spotlight"] {
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10;
 }
 .cover-media {
   position: absolute;

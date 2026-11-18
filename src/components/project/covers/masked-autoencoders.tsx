@@ -84,7 +84,7 @@ export function MaskedAutoencodersCover() {
   return (
     <div className="relative w-full h-full" aria-hidden="true">
       <svg
-        viewBox="0 0 1200 675"
+        viewBox="0 -37.5 1200 750"
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
         aria-hidden="true"
