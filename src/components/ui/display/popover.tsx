@@ -238,7 +238,7 @@ export function Popover({
               }
             }}
           >
-            <div className="body-caption rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] py-[var(--spacing-xs)]">
+            <div className="body-caption rounded-[var(--radius-xs)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-md)] py-[var(--spacing-xs)]">
               {description}
             </div>
           </div>,

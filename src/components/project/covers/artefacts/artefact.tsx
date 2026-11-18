@@ -3,7 +3,7 @@ import "../cover.css";
 
 interface ArtefactProps {
   slug: string;
-  // Overrides the nearest ancestor's palette slot — an art tile wears its post's colour, not its project's.
+  // Overrides the nearest ancestor's colour slot — an art tile wears its post's colour, not its project's.
   colour?: number;
   caption: boolean;
 }

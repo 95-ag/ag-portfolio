@@ -68,7 +68,7 @@ export const ProjectFrontmatterSchema = z
     // When the page last changed, for crawlers only — publishedAt is the project's own date.
     updatedAt: IsoDate.optional(),
     order: z.number(),
-    // The project's palette slot; uniqueness across projects is a cross-file rule (assertProjectSet).
+    // The project's colour slot; uniqueness across projects is a cross-file rule (assertProjectSet).
     colour: z.number().int().min(1).max(12),
     // Hero is satisfied by EITHER a registered live cover component (preferred) OR a
     // static heroImage (image or video). Optional: heroless builds pass in dev/preview

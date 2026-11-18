@@ -78,7 +78,7 @@ def build(*, out_rel, title, aria_label, content_bbox, body, slot, pad=FRAME_PAD
 
     content_bbox: (min_x, min_y, max_x, max_y) of the drawn content (node extents).
     out_rel:      production path relative to the repo root (or ASSET_OUT_ROOT).
-    slot:         the palette slot (1–12) of the project the diagram illustrates; its colour is the accent.
+    slot:         the colour slot (1–12) of the project the diagram illustrates; its colour is the accent.
     Returns the aspect string (w/h) so the MDX <Diagram aspect=...> can match.
     """
     min_x, min_y, max_x, max_y = content_bbox

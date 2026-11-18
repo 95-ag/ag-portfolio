@@ -103,7 +103,7 @@ export function getAllPosts(): Post[] {
   });
 }
 
-// A post's palette slot is its place in publish order, oldest first, wrapping after twelve. Ties
+// A post's colour slot is its place in publish order, oldest first, wrapping after twelve. Ties
 // break by slug, as the listing does.
 export function postColourSlots(
   posts: Pick<Post, "slug" | "frontmatter">[],

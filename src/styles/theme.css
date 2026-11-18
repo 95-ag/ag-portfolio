@@ -30,114 +30,114 @@
   --focus-ring: var(--accent);
   --text-selection: #b24a3533;
 
-  /* Palette — slots 1–12 (Foundations → Colors → Palette) */
-  --palette-1-ink: #98504a;
-  --palette-1-tile: #ffebe8;
-  --palette-1-cover: #ffaea5;
-  --palette-1-cover-chip: #ffc6c0;
-  --palette-1-cover-rule: #d68980;
-  --palette-1-cover-text: #231716;
-  --palette-1-cover-muted: #664541;
-  --palette-1-cover-marks: #89322d;
+  /* Project colours — slots 1–12 (Foundations → Colors → Project Colours) */
+  --project-1-ink: #98504a;
+  --project-1-tile: #ffebe8;
+  --project-1-cover: #ffaea5;
+  --project-1-cover-chip: #ffc6c0;
+  --project-1-cover-rule: #d68980;
+  --project-1-cover-text: #231716;
+  --project-1-cover-muted: #664541;
+  --project-1-cover-marks: #89322d;
 
-  --palette-2-ink: #355e58;
-  --palette-2-tile: #e1f5f2;
-  --palette-2-cover: #355e58;
-  --palette-2-cover-chip: #27504a;
-  --palette-2-cover-rule: #57817a;
-  --palette-2-cover-text: #f8fdfc;
-  --palette-2-cover-muted: #cbd8d5;
-  --palette-2-cover-marks: #5de4d3;
+  --project-2-ink: #355e58;
+  --project-2-tile: #e1f5f2;
+  --project-2-cover: #355e58;
+  --project-2-cover-chip: #27504a;
+  --project-2-cover-rule: #57817a;
+  --project-2-cover-text: #f8fdfc;
+  --project-2-cover-muted: #cbd8d5;
+  --project-2-cover-marks: #5de4d3;
 
-  --palette-3-ink: #5260ab;
-  --palette-3-tile: #ebf0ff;
-  --palette-3-cover: #6b7bc8;
-  --palette-3-cover-chip: #798ad9;
-  --palette-3-cover-rule: #4a57a1;
-  --palette-3-cover-text: #000000;
-  --palette-3-cover-muted: #0b0e1e;
-  --palette-3-cover-marks: #0d064d;
+  --project-3-ink: #5260ab;
+  --project-3-tile: #ebf0ff;
+  --project-3-cover: #6b7bc8;
+  --project-3-cover-chip: #798ad9;
+  --project-3-cover-rule: #4a57a1;
+  --project-3-cover-text: #000000;
+  --project-3-cover-muted: #0b0e1e;
+  --project-3-cover-marks: #0d064d;
 
-  --palette-4-ink: #8a5a37;
-  --palette-4-tile: #feece0;
-  --palette-4-cover: #ffc8a2;
-  --palette-4-cover-chip: #ffdec8;
-  --palette-4-cover-rule: #d7a27d;
-  --palette-4-cover-text: #221812;
-  --palette-4-cover-muted: #654d3d;
-  --palette-4-cover-marks: #8b4700;
+  --project-4-ink: #8a5a37;
+  --project-4-tile: #feece0;
+  --project-4-cover: #ffc8a2;
+  --project-4-cover-chip: #ffdec8;
+  --project-4-cover-rule: #d7a27d;
+  --project-4-cover-text: #221812;
+  --project-4-cover-muted: #654d3d;
+  --project-4-cover-marks: #8b4700;
 
-  --palette-5-ink: #6d5f85;
-  --palette-5-tile: #f2edfd;
-  --palette-5-cover: #d9caf5;
-  --palette-5-cover-chip: #e8dcff;
-  --palette-5-cover-rule: #b3a4cd;
-  --palette-5-cover-text: #1c1823;
-  --palette-5-cover-muted: #554e63;
-  --palette-5-cover-marks: #684994;
+  --project-5-ink: #6d5f85;
+  --project-5-tile: #f2edfd;
+  --project-5-cover: #d9caf5;
+  --project-5-cover-chip: #e8dcff;
+  --project-5-cover-rule: #b3a4cd;
+  --project-5-cover-text: #1c1823;
+  --project-5-cover-muted: #554e63;
+  --project-5-cover-marks: #684994;
 
-  --palette-6-ink: #596b60;
-  --palette-6-tile: #e4f5eb;
-  --palette-6-cover: #a4b8ac;
-  --palette-6-cover-chip: #b4c8bc;
-  --palette-6-cover-rule: #809387;
-  --palette-6-cover-text: #121e17;
-  --palette-6-cover-muted: #36453c;
-  --palette-6-cover-marks: #004e30;
+  --project-6-ink: #596b60;
+  --project-6-tile: #e4f5eb;
+  --project-6-cover: #a4b8ac;
+  --project-6-cover-chip: #b4c8bc;
+  --project-6-cover-rule: #809387;
+  --project-6-cover-text: #121e17;
+  --project-6-cover-muted: #36453c;
+  --project-6-cover-marks: #004e30;
 
-  --palette-7-ink: #3269a1;
-  --palette-7-tile: #e6f2ff;
-  --palette-7-cover: #3b72aa;
-  --palette-7-cover-chip: #2c639a;
-  --palette-7-cover-rule: #5f96d1;
-  --palette-7-cover-text: #ffffff;
-  --palette-7-cover-muted: #f5f8fb;
-  --palette-7-cover-marks: #eff6ff;
+  --project-7-ink: #3269a1;
+  --project-7-tile: #e6f2ff;
+  --project-7-cover: #3b72aa;
+  --project-7-cover-chip: #2c639a;
+  --project-7-cover-rule: #5f96d1;
+  --project-7-cover-text: #ffffff;
+  --project-7-cover-muted: #f5f8fb;
+  --project-7-cover-marks: #eff6ff;
 
-  --palette-8-ink: #ae4400;
-  --palette-8-tile: #ffece3;
-  --palette-8-cover: #f4824e;
-  --palette-8-cover-chip: #ff9668;
-  --palette-8-cover-rule: #ca5c25;
-  --palette-8-cover-text: #130b08;
-  --palette-8-cover-muted: #49291a;
-  --palette-8-cover-marks: #622300;
+  --project-8-ink: #ae4400;
+  --project-8-tile: #ffece3;
+  --project-8-cover: #f4824e;
+  --project-8-cover-chip: #ff9668;
+  --project-8-cover-rule: #ca5c25;
+  --project-8-cover-text: #130b08;
+  --project-8-cover-muted: #49291a;
+  --project-8-cover-marks: #622300;
 
-  --palette-9-ink: #203760;
-  --palette-9-tile: #e8f1ff;
-  --palette-9-cover: #203760;
-  --palette-9-cover-chip: #142a52;
-  --palette-9-cover-rule: #3f5884;
-  --palette-9-cover-text: #f1f5fd;
-  --palette-9-cover-muted: #97a5bc;
-  --palette-9-cover-marks: #78a3ee;
+  --project-9-ink: #203760;
+  --project-9-tile: #e8f1ff;
+  --project-9-cover: #203760;
+  --project-9-cover-chip: #142a52;
+  --project-9-cover-rule: #3f5884;
+  --project-9-cover-text: #f1f5fd;
+  --project-9-cover-muted: #97a5bc;
+  --project-9-cover-marks: #78a3ee;
 
-  --palette-10-ink: #765f59;
-  --palette-10-tile: #ffebe6;
-  --palette-10-cover: #fbe0d9;
-  --palette-10-cover-chip: #fff5f2;
-  --palette-10-cover-rule: #d3b9b3;
-  --palette-10-cover-text: #231714;
-  --palette-10-cover-muted: #715f5a;
-  --palette-10-cover-marks: #a14b35;
+  --project-10-ink: #765f59;
+  --project-10-tile: #ffebe6;
+  --project-10-cover: #fbe0d9;
+  --project-10-cover-chip: #fff5f2;
+  --project-10-cover-rule: #d3b9b3;
+  --project-10-cover-text: #231714;
+  --project-10-cover-muted: #715f5a;
+  --project-10-cover-marks: #a14b35;
 
-  --palette-11-ink: #97532d;
-  --palette-11-tile: #ffece2;
-  --palette-11-cover: #d98f68;
-  --palette-11-cover-chip: #ea9f77;
-  --palette-11-cover-rule: #b16b44;
-  --palette-11-cover-text: #130b08;
-  --palette-11-cover-muted: #432b1f;
-  --palette-11-cover-marks: #5d2500;
+  --project-11-ink: #97532d;
+  --project-11-tile: #ffece2;
+  --project-11-cover: #d98f68;
+  --project-11-cover-chip: #ea9f77;
+  --project-11-cover-rule: #b16b44;
+  --project-11-cover-text: #130b08;
+  --project-11-cover-muted: #432b1f;
+  --project-11-cover-marks: #5d2500;
 
-  --palette-12-ink: #aa4631;
-  --palette-12-tile: #ffebe6;
-  --palette-12-cover: #fe9179;
-  --palette-12-cover-chip: #ffab98;
-  --palette-12-cover-rule: #d46c55;
-  --palette-12-cover-text: #231715;
-  --palette-12-cover-muted: #59362e;
-  --palette-12-cover-marks: #7f1c06;
+  --project-12-ink: #aa4631;
+  --project-12-tile: #ffebe6;
+  --project-12-cover: #fe9179;
+  --project-12-cover-chip: #ffab98;
+  --project-12-cover-rule: #d46c55;
+  --project-12-cover-text: #231715;
+  --project-12-cover-muted: #59362e;
+  --project-12-cover-marks: #7f1c06;
 
   /* Post hues — one per type group (Foundations → Colors → Post Hues) */
   --post-short-ink: #98504a;
@@ -176,250 +176,234 @@
   --focus-ring: var(--accent);
   --text-selection: #f35c5d33;
 
-  /* Palette */
-  --palette-1-ink: #d58a88;
-  --palette-1-tile: #1c1c1c;
-  --palette-1-cover: #5d1e21;
-  --palette-1-cover-chip: #4e1015;
-  --palette-1-cover-rule: #823f40;
-  --palette-1-cover-text: #fdf2f2;
-  --palette-1-cover-muted: #bd9997;
-  --palette-1-cover-marks: #e48382;
+  /* Project colours */
+  --project-1-ink: #d58a88;
+  --project-1-cover: #5d1e21;
+  --project-1-cover-chip: #4e1015;
+  --project-1-cover-rule: #823f40;
+  --project-1-cover-text: #fdf2f2;
+  --project-1-cover-muted: #bd9997;
+  --project-1-cover-marks: #e48382;
 
-  --palette-2-ink: #8ba8a1;
-  --palette-2-tile: #1c1c1c;
-  --palette-2-cover: #16302b;
-  --palette-2-cover-chip: #09241f;
-  --palette-2-cover-rule: #35504a;
-  --palette-2-cover-text: #edf8f5;
-  --palette-2-cover-muted: #90a29e;
-  --palette-2-cover-marks: #00a792;
+  --project-2-ink: #8ba8a1;
+  --project-2-cover: #16302b;
+  --project-2-cover-chip: #09241f;
+  --project-2-cover-rule: #35504a;
+  --project-2-cover-text: #edf8f5;
+  --project-2-cover-muted: #90a29e;
+  --project-2-cover-marks: #00a792;
 
-  --palette-3-ink: #8a9beb;
-  --palette-3-tile: #1c1c1c;
-  --palette-3-cover: #6b7bc8;
-  --palette-3-cover-chip: #798ad9;
-  --palette-3-cover-rule: #4a57a1;
-  --palette-3-cover-text: #000000;
-  --palette-3-cover-muted: #0b0e1e;
-  --palette-3-cover-marks: #0d064d;
+  --project-3-ink: #8a9beb;
+  --project-3-cover: #6b7bc8;
+  --project-3-cover-chip: #798ad9;
+  --project-3-cover-rule: #4a57a1;
+  --project-3-cover-text: #000000;
+  --project-3-cover-muted: #0b0e1e;
+  --project-3-cover-marks: #0d064d;
 
-  --palette-4-ink: #b99882;
-  --palette-4-tile: #1c1c1c;
-  --palette-4-cover: #3e2411;
-  --palette-4-cover-chip: #311805;
-  --palette-4-cover-rule: #5f432f;
-  --palette-4-cover-text: #fcf3ee;
-  --palette-4-cover-muted: #ac9a8e;
-  --palette-4-cover-marks: #cd8047;
+  --project-4-ink: #b99882;
+  --project-4-cover: #3e2411;
+  --project-4-cover-chip: #311805;
+  --project-4-cover-rule: #5f432f;
+  --project-4-cover-text: #fcf3ee;
+  --project-4-cover-muted: #ac9a8e;
+  --project-4-cover-marks: #cd8047;
 
-  --palette-5-ink: #a797c6;
-  --palette-5-tile: #1c1c1c;
-  --palette-5-cover: #8474a1;
-  --palette-5-cover-chip: #9383b1;
-  --palette-5-cover-rule: #61527c;
-  --palette-5-cover-text: #000000;
-  --palette-5-cover-muted: #08060c;
-  --palette-5-cover-marks: #180030;
+  --project-5-ink: #a797c6;
+  --project-5-cover: #8474a1;
+  --project-5-cover-chip: #9383b1;
+  --project-5-cover-rule: #61527c;
+  --project-5-cover-text: #000000;
+  --project-5-cover-muted: #08060c;
+  --project-5-cover-marks: #180030;
 
-  --palette-6-ink: #6ca5e0;
-  --palette-6-tile: #1c1c1c;
-  --palette-6-cover: #3b72aa;
-  --palette-6-cover-chip: #2c639a;
-  --palette-6-cover-rule: #5f96d1;
-  --palette-6-cover-text: #ffffff;
-  --palette-6-cover-muted: #f5f8fb;
-  --palette-6-cover-marks: #eff6ff;
+  --project-6-ink: #6ca5e0;
+  --project-6-cover: #3b72aa;
+  --project-6-cover-chip: #2c639a;
+  --project-6-cover-rule: #5f96d1;
+  --project-6-cover-text: #ffffff;
+  --project-6-cover-muted: #f5f8fb;
+  --project-6-cover-marks: #eff6ff;
 
-  --palette-7-ink: #7dab95;
-  --palette-7-tile: #1c1c1c;
-  --palette-7-cover: #154230;
-  --palette-7-cover-chip: #053524;
-  --palette-7-cover-rule: #376350;
-  --palette-7-cover-text: #eef8f3;
-  --palette-7-cover-muted: #93ab9f;
-  --palette-7-cover-marks: #4bb88c;
+  --project-7-ink: #7dab95;
+  --project-7-cover: #154230;
+  --project-7-cover-chip: #053524;
+  --project-7-cover-rule: #376350;
+  --project-7-cover-text: #eef8f3;
+  --project-7-cover-muted: #93ab9f;
+  --project-7-cover-marks: #4bb88c;
 
-  --palette-8-ink: #ffa586;
-  --palette-8-tile: #1c1c1c;
-  --palette-8-cover: #ffa586;
-  --palette-8-cover-chip: #ffbea7;
-  --palette-8-cover-rule: #d68062;
-  --palette-8-cover-text: #231814;
-  --palette-8-cover-muted: #593b31;
-  --palette-8-cover-marks: #802f0f;
+  --project-8-ink: #ffa586;
+  --project-8-cover: #ffa586;
+  --project-8-cover-chip: #ffbea7;
+  --project-8-cover-rule: #d68062;
+  --project-8-cover-text: #231814;
+  --project-8-cover-muted: #593b31;
+  --project-8-cover-marks: #802f0f;
 
-  --palette-9-ink: #8da0c3;
-  --palette-9-tile: #1c1c1c;
-  --palette-9-cover: #3f4f6e;
-  --palette-9-cover-chip: #324160;
-  --palette-9-cover-rule: #607192;
-  --palette-9-cover-text: #f1f5fe;
-  --palette-9-cover-muted: #bbc4d4;
-  --palette-9-cover-marks: #a5c4ff;
+  --project-9-ink: #8da0c3;
+  --project-9-cover: #3f4f6e;
+  --project-9-cover-chip: #324160;
+  --project-9-cover-rule: #607192;
+  --project-9-cover-text: #f1f5fe;
+  --project-9-cover-muted: #bbc4d4;
+  --project-9-cover-marks: #a5c4ff;
 
-  --palette-10-ink: #f27a67;
-  --palette-10-tile: #1c1c1c;
-  --palette-10-cover: #e66f5c;
-  --palette-10-cover-chip: #f87f6b;
-  --palette-10-cover-rule: #bc4939;
-  --palette-10-cover-text: #000000;
-  --palette-10-cover-muted: #401a14;
-  --palette-10-cover-marks: #5b0500;
+  --project-10-ink: #f27a67;
+  --project-10-cover: #e66f5c;
+  --project-10-cover-chip: #f87f6b;
+  --project-10-cover-rule: #bc4939;
+  --project-10-cover-text: #000000;
+  --project-10-cover-muted: #401a14;
+  --project-10-cover-marks: #5b0500;
 
-  --palette-11-ink: #fe9b62;
-  --palette-11-tile: #1c1c1c;
-  --palette-11-cover: #fe9b62;
-  --palette-11-cover-chip: #ffb38a;
-  --palette-11-cover-rule: #d5753c;
-  --palette-11-cover-text: #221812;
-  --palette-11-cover-muted: #583927;
-  --palette-11-cover-marks: #733200;
+  --project-11-ink: #fe9b62;
+  --project-11-cover: #fe9b62;
+  --project-11-cover-chip: #ffb38a;
+  --project-11-cover-rule: #d5753c;
+  --project-11-cover-text: #221812;
+  --project-11-cover-muted: #583927;
+  --project-11-cover-marks: #733200;
 
-  --palette-12-ink: #d68e63;
-  --palette-12-tile: #1c1c1c;
-  --palette-12-cover: #804012;
-  --palette-12-cover-chip: #703200;
-  --palette-12-cover-rule: #a66338;
-  --palette-12-cover-text: #fcf3ee;
-  --palette-12-cover-muted: #e1cabd;
-  --palette-12-cover-marks: #ffb68b;
+  --project-12-ink: #d68e63;
+  --project-12-cover: #804012;
+  --project-12-cover-chip: #703200;
+  --project-12-cover-rule: #a66338;
+  --project-12-cover-text: #fcf3ee;
+  --project-12-cover-muted: #e1cabd;
+  --project-12-cover-marks: #ffb68b;
 
   /* Post hues — every dark tile sits on the one dark tile ground, so only the ink differs */
   --post-short-ink: #d58a88;
   --post-howto-ink: #ffa586;
   --post-long-ink: #7dab95;
   --post-critique-ink: #6ca5e0;
-  --post-short-tint: #1c1c1c;
-  --post-howto-tint: #1c1c1c;
-  --post-long-tint: #1c1c1c;
-  --post-critique-tint: #1c1c1c;
 }
 
 /* ─────────────────────────────────────────────
-   Slot binding — an element wearing a palette colour carries its slot; the palette tokens switch per
+   Slot binding — an element wearing a project colour carries its slot; the project-colour tokens switch per
    theme, so these rules are theme-agnostic.
    ───────────────────────────────────────────── */
 
 [data-colour="1"] {
-  --c-ink: var(--palette-1-ink);
-  --c-tile: var(--palette-1-tile);
-  --c-cover: var(--palette-1-cover);
-  --c-cover-chip: var(--palette-1-cover-chip);
-  --c-cover-rule: var(--palette-1-cover-rule);
-  --c-cover-text: var(--palette-1-cover-text);
-  --c-cover-muted: var(--palette-1-cover-muted);
-  --c-cover-marks: var(--palette-1-cover-marks);
+  --c-ink: var(--project-1-ink);
+  --c-tile: var(--project-1-tile);
+  --c-cover: var(--project-1-cover);
+  --c-cover-chip: var(--project-1-cover-chip);
+  --c-cover-rule: var(--project-1-cover-rule);
+  --c-cover-text: var(--project-1-cover-text);
+  --c-cover-muted: var(--project-1-cover-muted);
+  --c-cover-marks: var(--project-1-cover-marks);
 }
 [data-colour="2"] {
-  --c-ink: var(--palette-2-ink);
-  --c-tile: var(--palette-2-tile);
-  --c-cover: var(--palette-2-cover);
-  --c-cover-chip: var(--palette-2-cover-chip);
-  --c-cover-rule: var(--palette-2-cover-rule);
-  --c-cover-text: var(--palette-2-cover-text);
-  --c-cover-muted: var(--palette-2-cover-muted);
-  --c-cover-marks: var(--palette-2-cover-marks);
+  --c-ink: var(--project-2-ink);
+  --c-tile: var(--project-2-tile);
+  --c-cover: var(--project-2-cover);
+  --c-cover-chip: var(--project-2-cover-chip);
+  --c-cover-rule: var(--project-2-cover-rule);
+  --c-cover-text: var(--project-2-cover-text);
+  --c-cover-muted: var(--project-2-cover-muted);
+  --c-cover-marks: var(--project-2-cover-marks);
 }
 [data-colour="3"] {
-  --c-ink: var(--palette-3-ink);
-  --c-tile: var(--palette-3-tile);
-  --c-cover: var(--palette-3-cover);
-  --c-cover-chip: var(--palette-3-cover-chip);
-  --c-cover-rule: var(--palette-3-cover-rule);
-  --c-cover-text: var(--palette-3-cover-text);
-  --c-cover-muted: var(--palette-3-cover-muted);
-  --c-cover-marks: var(--palette-3-cover-marks);
+  --c-ink: var(--project-3-ink);
+  --c-tile: var(--project-3-tile);
+  --c-cover: var(--project-3-cover);
+  --c-cover-chip: var(--project-3-cover-chip);
+  --c-cover-rule: var(--project-3-cover-rule);
+  --c-cover-text: var(--project-3-cover-text);
+  --c-cover-muted: var(--project-3-cover-muted);
+  --c-cover-marks: var(--project-3-cover-marks);
 }
 [data-colour="4"] {
-  --c-ink: var(--palette-4-ink);
-  --c-tile: var(--palette-4-tile);
-  --c-cover: var(--palette-4-cover);
-  --c-cover-chip: var(--palette-4-cover-chip);
-  --c-cover-rule: var(--palette-4-cover-rule);
-  --c-cover-text: var(--palette-4-cover-text);
-  --c-cover-muted: var(--palette-4-cover-muted);
-  --c-cover-marks: var(--palette-4-cover-marks);
+  --c-ink: var(--project-4-ink);
+  --c-tile: var(--project-4-tile);
+  --c-cover: var(--project-4-cover);
+  --c-cover-chip: var(--project-4-cover-chip);
+  --c-cover-rule: var(--project-4-cover-rule);
+  --c-cover-text: var(--project-4-cover-text);
+  --c-cover-muted: var(--project-4-cover-muted);
+  --c-cover-marks: var(--project-4-cover-marks);
 }
 [data-colour="5"] {
-  --c-ink: var(--palette-5-ink);
-  --c-tile: var(--palette-5-tile);
-  --c-cover: var(--palette-5-cover);
-  --c-cover-chip: var(--palette-5-cover-chip);
-  --c-cover-rule: var(--palette-5-cover-rule);
-  --c-cover-text: var(--palette-5-cover-text);
-  --c-cover-muted: var(--palette-5-cover-muted);
-  --c-cover-marks: var(--palette-5-cover-marks);
+  --c-ink: var(--project-5-ink);
+  --c-tile: var(--project-5-tile);
+  --c-cover: var(--project-5-cover);
+  --c-cover-chip: var(--project-5-cover-chip);
+  --c-cover-rule: var(--project-5-cover-rule);
+  --c-cover-text: var(--project-5-cover-text);
+  --c-cover-muted: var(--project-5-cover-muted);
+  --c-cover-marks: var(--project-5-cover-marks);
 }
 [data-colour="6"] {
-  --c-ink: var(--palette-6-ink);
-  --c-tile: var(--palette-6-tile);
-  --c-cover: var(--palette-6-cover);
-  --c-cover-chip: var(--palette-6-cover-chip);
-  --c-cover-rule: var(--palette-6-cover-rule);
-  --c-cover-text: var(--palette-6-cover-text);
-  --c-cover-muted: var(--palette-6-cover-muted);
-  --c-cover-marks: var(--palette-6-cover-marks);
+  --c-ink: var(--project-6-ink);
+  --c-tile: var(--project-6-tile);
+  --c-cover: var(--project-6-cover);
+  --c-cover-chip: var(--project-6-cover-chip);
+  --c-cover-rule: var(--project-6-cover-rule);
+  --c-cover-text: var(--project-6-cover-text);
+  --c-cover-muted: var(--project-6-cover-muted);
+  --c-cover-marks: var(--project-6-cover-marks);
 }
 [data-colour="7"] {
-  --c-ink: var(--palette-7-ink);
-  --c-tile: var(--palette-7-tile);
-  --c-cover: var(--palette-7-cover);
-  --c-cover-chip: var(--palette-7-cover-chip);
-  --c-cover-rule: var(--palette-7-cover-rule);
-  --c-cover-text: var(--palette-7-cover-text);
-  --c-cover-muted: var(--palette-7-cover-muted);
-  --c-cover-marks: var(--palette-7-cover-marks);
+  --c-ink: var(--project-7-ink);
+  --c-tile: var(--project-7-tile);
+  --c-cover: var(--project-7-cover);
+  --c-cover-chip: var(--project-7-cover-chip);
+  --c-cover-rule: var(--project-7-cover-rule);
+  --c-cover-text: var(--project-7-cover-text);
+  --c-cover-muted: var(--project-7-cover-muted);
+  --c-cover-marks: var(--project-7-cover-marks);
 }
 [data-colour="8"] {
-  --c-ink: var(--palette-8-ink);
-  --c-tile: var(--palette-8-tile);
-  --c-cover: var(--palette-8-cover);
-  --c-cover-chip: var(--palette-8-cover-chip);
-  --c-cover-rule: var(--palette-8-cover-rule);
-  --c-cover-text: var(--palette-8-cover-text);
-  --c-cover-muted: var(--palette-8-cover-muted);
-  --c-cover-marks: var(--palette-8-cover-marks);
+  --c-ink: var(--project-8-ink);
+  --c-tile: var(--project-8-tile);
+  --c-cover: var(--project-8-cover);
+  --c-cover-chip: var(--project-8-cover-chip);
+  --c-cover-rule: var(--project-8-cover-rule);
+  --c-cover-text: var(--project-8-cover-text);
+  --c-cover-muted: var(--project-8-cover-muted);
+  --c-cover-marks: var(--project-8-cover-marks);
 }
 [data-colour="9"] {
-  --c-ink: var(--palette-9-ink);
-  --c-tile: var(--palette-9-tile);
-  --c-cover: var(--palette-9-cover);
-  --c-cover-chip: var(--palette-9-cover-chip);
-  --c-cover-rule: var(--palette-9-cover-rule);
-  --c-cover-text: var(--palette-9-cover-text);
-  --c-cover-muted: var(--palette-9-cover-muted);
-  --c-cover-marks: var(--palette-9-cover-marks);
+  --c-ink: var(--project-9-ink);
+  --c-tile: var(--project-9-tile);
+  --c-cover: var(--project-9-cover);
+  --c-cover-chip: var(--project-9-cover-chip);
+  --c-cover-rule: var(--project-9-cover-rule);
+  --c-cover-text: var(--project-9-cover-text);
+  --c-cover-muted: var(--project-9-cover-muted);
+  --c-cover-marks: var(--project-9-cover-marks);
 }
 [data-colour="10"] {
-  --c-ink: var(--palette-10-ink);
-  --c-tile: var(--palette-10-tile);
-  --c-cover: var(--palette-10-cover);
-  --c-cover-chip: var(--palette-10-cover-chip);
-  --c-cover-rule: var(--palette-10-cover-rule);
-  --c-cover-text: var(--palette-10-cover-text);
-  --c-cover-muted: var(--palette-10-cover-muted);
-  --c-cover-marks: var(--palette-10-cover-marks);
+  --c-ink: var(--project-10-ink);
+  --c-tile: var(--project-10-tile);
+  --c-cover: var(--project-10-cover);
+  --c-cover-chip: var(--project-10-cover-chip);
+  --c-cover-rule: var(--project-10-cover-rule);
+  --c-cover-text: var(--project-10-cover-text);
+  --c-cover-muted: var(--project-10-cover-muted);
+  --c-cover-marks: var(--project-10-cover-marks);
 }
 [data-colour="11"] {
-  --c-ink: var(--palette-11-ink);
-  --c-tile: var(--palette-11-tile);
-  --c-cover: var(--palette-11-cover);
-  --c-cover-chip: var(--palette-11-cover-chip);
-  --c-cover-rule: var(--palette-11-cover-rule);
-  --c-cover-text: var(--palette-11-cover-text);
-  --c-cover-muted: var(--palette-11-cover-muted);
-  --c-cover-marks: var(--palette-11-cover-marks);
+  --c-ink: var(--project-11-ink);
+  --c-tile: var(--project-11-tile);
+  --c-cover: var(--project-11-cover);
+  --c-cover-chip: var(--project-11-cover-chip);
+  --c-cover-rule: var(--project-11-cover-rule);
+  --c-cover-text: var(--project-11-cover-text);
+  --c-cover-muted: var(--project-11-cover-muted);
+  --c-cover-marks: var(--project-11-cover-marks);
 }
 [data-colour="12"] {
-  --c-ink: var(--palette-12-ink);
-  --c-tile: var(--palette-12-tile);
-  --c-cover: var(--palette-12-cover);
-  --c-cover-chip: var(--palette-12-cover-chip);
-  --c-cover-rule: var(--palette-12-cover-rule);
-  --c-cover-text: var(--palette-12-cover-text);
-  --c-cover-muted: var(--palette-12-cover-muted);
-  --c-cover-marks: var(--palette-12-cover-marks);
+  --c-ink: var(--project-12-ink);
+  --c-tile: var(--project-12-tile);
+  --c-cover: var(--project-12-cover);
+  --c-cover-chip: var(--project-12-cover-chip);
+  --c-cover-rule: var(--project-12-cover-rule);
+  --c-cover-text: var(--project-12-cover-text);
+  --c-cover-muted: var(--project-12-cover-muted);
+  --c-cover-marks: var(--project-12-cover-marks);
 }
 
 [data-post-group="short"] {
@@ -439,82 +423,95 @@
   --g-tint: var(--post-critique-tint);
 }
 
+/* In dark every tile sits on one neutral ground, surface-tag, so no tile or tint token is defined per slot or group
+   there; the light values above are the only per-slot tints. */
+[data-theme="dark"] [data-colour] {
+  --c-tile: var(--surface-tag);
+}
+[data-theme="dark"] [data-post-group] {
+  --g-tint: var(--surface-tag);
+}
+[data-theme="dark"] [data-page-colour] {
+  --accent-tint: var(--surface-tag);
+  --surface-active: var(--surface-tag);
+}
+
 /* ─────────────────────────────────────────────
    Page colour — a detail page's root lifts its slot onto the accent family, content only: the nav,
    footer and text selection sit outside the root and keep the site accent.
    ───────────────────────────────────────────── */
 
 [data-page-colour="1"] {
-  --accent: var(--palette-1-ink);
-  --accent-tint: var(--palette-1-tile);
-  --surface-active: var(--palette-1-tile);
-  --focus-ring: var(--palette-1-ink);
+  --accent: var(--project-1-ink);
+  --accent-tint: var(--project-1-tile);
+  --surface-active: var(--project-1-tile);
+  --focus-ring: var(--project-1-ink);
 }
 [data-page-colour="2"] {
-  --accent: var(--palette-2-ink);
-  --accent-tint: var(--palette-2-tile);
-  --surface-active: var(--palette-2-tile);
-  --focus-ring: var(--palette-2-ink);
+  --accent: var(--project-2-ink);
+  --accent-tint: var(--project-2-tile);
+  --surface-active: var(--project-2-tile);
+  --focus-ring: var(--project-2-ink);
 }
 [data-page-colour="3"] {
-  --accent: var(--palette-3-ink);
-  --accent-tint: var(--palette-3-tile);
-  --surface-active: var(--palette-3-tile);
-  --focus-ring: var(--palette-3-ink);
+  --accent: var(--project-3-ink);
+  --accent-tint: var(--project-3-tile);
+  --surface-active: var(--project-3-tile);
+  --focus-ring: var(--project-3-ink);
 }
 [data-page-colour="4"] {
-  --accent: var(--palette-4-ink);
-  --accent-tint: var(--palette-4-tile);
-  --surface-active: var(--palette-4-tile);
-  --focus-ring: var(--palette-4-ink);
+  --accent: var(--project-4-ink);
+  --accent-tint: var(--project-4-tile);
+  --surface-active: var(--project-4-tile);
+  --focus-ring: var(--project-4-ink);
 }
 [data-page-colour="5"] {
-  --accent: var(--palette-5-ink);
-  --accent-tint: var(--palette-5-tile);
-  --surface-active: var(--palette-5-tile);
-  --focus-ring: var(--palette-5-ink);
+  --accent: var(--project-5-ink);
+  --accent-tint: var(--project-5-tile);
+  --surface-active: var(--project-5-tile);
+  --focus-ring: var(--project-5-ink);
 }
 [data-page-colour="6"] {
-  --accent: var(--palette-6-ink);
-  --accent-tint: var(--palette-6-tile);
-  --surface-active: var(--palette-6-tile);
-  --focus-ring: var(--palette-6-ink);
+  --accent: var(--project-6-ink);
+  --accent-tint: var(--project-6-tile);
+  --surface-active: var(--project-6-tile);
+  --focus-ring: var(--project-6-ink);
 }
 [data-page-colour="7"] {
-  --accent: var(--palette-7-ink);
-  --accent-tint: var(--palette-7-tile);
-  --surface-active: var(--palette-7-tile);
-  --focus-ring: var(--palette-7-ink);
+  --accent: var(--project-7-ink);
+  --accent-tint: var(--project-7-tile);
+  --surface-active: var(--project-7-tile);
+  --focus-ring: var(--project-7-ink);
 }
 [data-page-colour="8"] {
-  --accent: var(--palette-8-ink);
-  --accent-tint: var(--palette-8-tile);
-  --surface-active: var(--palette-8-tile);
-  --focus-ring: var(--palette-8-ink);
+  --accent: var(--project-8-ink);
+  --accent-tint: var(--project-8-tile);
+  --surface-active: var(--project-8-tile);
+  --focus-ring: var(--project-8-ink);
 }
 [data-page-colour="9"] {
-  --accent: var(--palette-9-ink);
-  --accent-tint: var(--palette-9-tile);
-  --surface-active: var(--palette-9-tile);
-  --focus-ring: var(--palette-9-ink);
+  --accent: var(--project-9-ink);
+  --accent-tint: var(--project-9-tile);
+  --surface-active: var(--project-9-tile);
+  --focus-ring: var(--project-9-ink);
 }
 [data-page-colour="10"] {
-  --accent: var(--palette-10-ink);
-  --accent-tint: var(--palette-10-tile);
-  --surface-active: var(--palette-10-tile);
-  --focus-ring: var(--palette-10-ink);
+  --accent: var(--project-10-ink);
+  --accent-tint: var(--project-10-tile);
+  --surface-active: var(--project-10-tile);
+  --focus-ring: var(--project-10-ink);
 }
 [data-page-colour="11"] {
-  --accent: var(--palette-11-ink);
-  --accent-tint: var(--palette-11-tile);
-  --surface-active: var(--palette-11-tile);
-  --focus-ring: var(--palette-11-ink);
+  --accent: var(--project-11-ink);
+  --accent-tint: var(--project-11-tile);
+  --surface-active: var(--project-11-tile);
+  --focus-ring: var(--project-11-ink);
 }
 [data-page-colour="12"] {
-  --accent: var(--palette-12-ink);
-  --accent-tint: var(--palette-12-tile);
-  --surface-active: var(--palette-12-tile);
-  --focus-ring: var(--palette-12-ink);
+  --accent: var(--project-12-ink);
+  --accent-tint: var(--project-12-tile);
+  --surface-active: var(--project-12-tile);
+  --focus-ring: var(--project-12-ink);
 }
 
 /* The ASCII glyph layer sits outside the page root, so the mark colour is lifted on <html>. */
@@ -522,40 +519,40 @@ html {
   --mark: var(--accent);
 }
 html:has([data-page-colour="1"]) {
-  --mark: var(--palette-1-ink);
+  --mark: var(--project-1-ink);
 }
 html:has([data-page-colour="2"]) {
-  --mark: var(--palette-2-ink);
+  --mark: var(--project-2-ink);
 }
 html:has([data-page-colour="3"]) {
-  --mark: var(--palette-3-ink);
+  --mark: var(--project-3-ink);
 }
 html:has([data-page-colour="4"]) {
-  --mark: var(--palette-4-ink);
+  --mark: var(--project-4-ink);
 }
 html:has([data-page-colour="5"]) {
-  --mark: var(--palette-5-ink);
+  --mark: var(--project-5-ink);
 }
 html:has([data-page-colour="6"]) {
-  --mark: var(--palette-6-ink);
+  --mark: var(--project-6-ink);
 }
 html:has([data-page-colour="7"]) {
-  --mark: var(--palette-7-ink);
+  --mark: var(--project-7-ink);
 }
 html:has([data-page-colour="8"]) {
-  --mark: var(--palette-8-ink);
+  --mark: var(--project-8-ink);
 }
 html:has([data-page-colour="9"]) {
-  --mark: var(--palette-9-ink);
+  --mark: var(--project-9-ink);
 }
 html:has([data-page-colour="10"]) {
-  --mark: var(--palette-10-ink);
+  --mark: var(--project-10-ink);
 }
 html:has([data-page-colour="11"]) {
-  --mark: var(--palette-11-ink);
+  --mark: var(--project-11-ink);
 }
 html:has([data-page-colour="12"]) {
-  --mark: var(--palette-12-ink);
+  --mark: var(--project-12-ink);
 }
 
 /* ─────────────────────────────────────────────
@@ -628,7 +625,6 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
   /* Radius */
   --radius-none: 0;
   --radius-xs: 3px;
-  --radius-sm: 4px;
   --radius-md: 8px;
   --radius-pill: 9999px;
 

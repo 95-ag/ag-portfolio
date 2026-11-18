@@ -1,5 +1,5 @@
 /* Covers — the frame, the artefact compositions and the play rules (DESIGN.md → Hero Cover). The frame carries its
-   palette slot and its filled / marker mode per theme as data attributes; theme.css remaps the roles, so everything
+   colour slot and its filled / marker mode per theme as data attributes; theme.css remaps the roles, so everything
    here paints in `ink`, `accent`, `surface-tag`, `hairline` and `--cover-ground` and follows the mode with no
    per-mode rule. */
 

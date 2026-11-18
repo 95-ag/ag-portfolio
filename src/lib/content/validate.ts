@@ -18,7 +18,7 @@ interface ProjectSetEntry {
   frontmatter: { colour: number; featured: boolean };
 }
 
-// Rules over the whole project set: the spotlight's cap and one palette slot per project.
+// Rules over the whole project set: the spotlight's cap and one colour slot per project.
 export function assertProjectSet(projects: ProjectSetEntry[]): void {
   const featured = projects.filter((p) => p.frontmatter.featured);
   if (featured.length > MAX_FEATURED) {
@@ -31,7 +31,7 @@ export function assertProjectSet(projects: ProjectSetEntry[]): void {
     const owner = slotOwner.get(frontmatter.colour);
     if (owner) {
       throw new Error(
-        `Projects "${owner}" and "${slug}" share colour ${frontmatter.colour}; each project takes its own palette slot.`,
+        `Projects "${owner}" and "${slug}" share colour ${frontmatter.colour}; each project takes its own colour slot.`,
       );
     }
     slotOwner.set(frontmatter.colour, slug);

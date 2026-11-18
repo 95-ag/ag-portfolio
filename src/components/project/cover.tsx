@@ -11,7 +11,7 @@ type CoverVariant = "card" | "spotlight" | "hero" | "tile" | "rail";
 
 interface CoverProps {
   project: Project;
-  // Overrides the project's palette slot — an art tile wears its post's colour in the project's modes.
+  // Overrides the project's colour slot — an art tile wears its post's colour in the project's modes.
   colour?: number;
   variant: CoverVariant;
   // An artefact cover's caption chip; the post rail leaves it out.

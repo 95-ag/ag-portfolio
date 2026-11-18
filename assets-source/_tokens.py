@@ -1,5 +1,5 @@
 """
-_tokens.py — the design system's neutrals and palette, read from its own token file.
+_tokens.py — the design system's neutrals and project colours, read from its own token file.
 
 Every generator takes its colours from here, so a diagram or chart can never carry a value the site does not.
 The source is src/styles/theme.css: each name declares its light value first and its dark value second.
@@ -36,13 +36,13 @@ NEUTRALS = {
     key: _pair(_css, f"--{key}")
     for key in ("surface", "surface-tag", "ink", "ink-muted", "hairline", "hairline-strong", "accent")
 }
-_INK = {n: _pair(_css, f"--palette-{n}-ink") for n in SLOTS}
-_TILE = {n: _pair(_css, f"--palette-{n}-tile") for n in SLOTS}
+_INK = {n: _pair(_css, f"--project-{n}-ink") for n in SLOTS}
+_TILE = {n: _pair(_css, f"--project-{n}-tile") for n in SLOTS}
 assert len(_INK) == 12 and len(_TILE) == 12
 
 
 def slot_ink(slot: int) -> tuple[str, str]:
-    """A project's page colour (light, dark) — Foundations → Colors → Palette."""
+    """A project's page colour (light, dark) — Foundations → Colors → Project Colours."""
     return _INK[slot]
 
 

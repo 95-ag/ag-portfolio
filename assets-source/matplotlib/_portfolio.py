@@ -3,7 +3,7 @@ _portfolio.py
 Shared palette constants and style loader for portfolio matplotlib scripts.
 
 Light-theme charts. The neutrals are the design system's, read from its token file (assets-source/_tokens.py);
-the accent is the page colour of the project the chart illustrates, so each script names its palette slot.
+the accent is the page colour of the project the chart illustrates, so each script names its colour slot.
 
 Usage:
     from pathlib import Path
@@ -37,7 +37,7 @@ def _mix(foreground: str, background: str, amount: float) -> str:
 
 
 def slot_colours(slot: int) -> tuple[str, str, str]:
-    """(accent, mid, muted) for a project's palette slot: its page colour, that colour half-strength on the
+    """(accent, mid, muted) for a project's colour slot: its page colour, that colour half-strength on the
     background, and its tile colour."""
     accent = slot_ink(slot)[0]
     return accent, _mix(accent, BACKGROUND, 0.5), slot_tile(slot)[0]
