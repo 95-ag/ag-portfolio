@@ -2,6 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 
 interface Section {
@@ -121,7 +122,9 @@ export function SectionProgressNav({
   // Shown at 2xl only: below that the left gutter is too narrow to clear the content column. The label
   // max-width is a 140px floor that grows with the gutter, so wide/ultrawide viewports show full labels
   // without truncation while the rail still clears the content column.
-  return (
+  // Outside the page's animated wrapper: a transformed ancestor would make this fixed rail position against the
+  // wrapper instead of the viewport while the page-enter animation runs (DESIGN.md → Page Transition).
+  const rail = (
     <nav
       aria-label="Page sections"
       className={cn(
@@ -173,4 +176,5 @@ export function SectionProgressNav({
       </div>
     </nav>
   );
+  return isDemo ? rail : createPortal(rail, document.body);
 }
