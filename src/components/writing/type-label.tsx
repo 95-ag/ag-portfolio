@@ -28,7 +28,7 @@ interface TypeLabelProps {
 
 const title = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
 
-// The post's type, its add-ons as "+ Free Template" markers, then its year, in Title Case (DESIGN.md → Writing Tile →
+// The post's type, its add-ons as "+ Free Template" markers, then its year, in Title Case (DESIGN.md → Post Tile →
 // Type label). Colours come from the context: the group's ink on a tile (`data-post-group`), the page colour on a post
 // page.
 export function TypeLabel({ type, addons, year, large }: TypeLabelProps) {

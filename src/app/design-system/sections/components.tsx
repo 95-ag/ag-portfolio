@@ -3,9 +3,8 @@ import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
-import { DownloadIcon } from "@/components/icons/material/download";
+import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
 import { MailIcon } from "@/components/icons/material/mail";
-import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Callout } from "@/components/mdx/callout";
 import { Clip } from "@/components/mdx/clip";
 import { Diagram } from "@/components/mdx/diagram";
@@ -22,6 +21,7 @@ import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/controls/button";
 import { CopyButton } from "@/components/ui/controls/copy-button";
+import { EmailButton } from "@/components/ui/controls/email-button";
 import {
   InlineThemeSelector,
   PillThemeSelector,
@@ -71,47 +71,21 @@ export function add(a: number, b: number) {
 
 const buttonVariants = [
   {
-    token: "ink",
+    token: "default",
     spec: "44px pill · 1px ink outline · ink label · hover fills ink, label surface",
-    render: <Button variant="ink">Ink</Button>,
+    render: <Button>Button</Button>,
   },
   {
-    token: "neutral",
-    spec: "1px hairline-strong outline · hover outline ink, fill surface-tag",
-    render: <Button variant="neutral">Neutral</Button>,
+    token: "leading icon",
+    spec: "one 18px icon, spacing-sm from the label (arrow, logomark, refresh)",
+    render: <Button icon={<MailIcon size={18} />}>Leading icon</Button>,
   },
   {
-    token: "ink + trailing icon",
-    spec: "one 18px icon, spacing-sm from the label; the email action's ↗",
+    token: "trailing icon",
+    spec: "the same icon after the label",
     render: (
-      <Button
-        variant="ink"
-        iconPosition="trailing"
-        icon={<OpenInNewIcon size={18} />}
-      >
-        Email me
-      </Button>
-    ),
-  },
-  {
-    token: "neutral + download mark",
-    spec: "the Resume link: opens the PDF, never a forced download",
-    render: (
-      <Button
-        variant="neutral"
-        iconPosition="trailing"
-        icon={<DownloadIcon size={18} />}
-      >
-        Resume
-      </Button>
-    ),
-  },
-  {
-    token: "cue: full",
-    spec: "outline draw, then the accent sheen twice, once the button is 60% in view; hover or focus stops it; nothing under reduced motion",
-    render: (
-      <Button variant="ink" cue="full" icon={<MailIcon size={18} />}>
-        Email me
+      <Button iconPosition="trailing" icon={<ArrowOutwardIcon size={18} />}>
+        Trailing icon
       </Button>
     ),
   },
@@ -119,10 +93,15 @@ const buttonVariants = [
     token: "cue: draw",
     spec: "the outline draw only: the primary 404 and error-page CTA",
     render: (
-      <Button variant="ink" cue="draw" href="#ui-button">
+      <Button cue="draw" href="#ui-button">
         Back home
       </Button>
     ),
+  },
+  {
+    token: "EmailButton (cue: full)",
+    spec: "the address as the label, the arrow_outward icon trailing, then the outline draw and the accent sheen twice once 60% in view; hover or focus stops it; nothing under reduced motion",
+    render: <EmailButton address="hello@example.com" />,
   },
 ];
 
@@ -221,7 +200,7 @@ export function ComponentsSections() {
             id="ui-button"
             name="Button"
             source="@/components/ui/controls/button"
-            description="Committed action control: a 44px outline pill in two variants, with an optional attention cue. Used for the email actions on Home and About, the Resume link and the 404 and error CTAs."
+            description="Committed action control: one look, a 44px outline pill, with an optional icon and attention cue. Used for the email actions on Home and About and the 404 and error CTAs. Links such as Resume are LinkPills."
             headingLevel={4}
           >
             <InertDemo>
@@ -390,7 +369,7 @@ export function ComponentsSections() {
             name="Popover"
             source="@/components/ui/display/popover"
             description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens below the mark, or above it when there is no room below, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
-            spec="surface-elevated · hairline · radius-sm · body-caption · z-popover (45) · 44×44 hit area"
+            spec="surface-elevated · hairline · radius-xs · body-caption · z-popover (45) · 44×44 hit area"
             headingLevel={4}
           >
             <div className="flex flex-col gap-[var(--spacing-md)]">

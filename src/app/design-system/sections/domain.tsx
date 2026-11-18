@@ -8,14 +8,10 @@ import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { PostRail } from "@/components/writing/post-rail";
+import { PostTile, PostTiles } from "@/components/writing/post-tile";
 import { TypeLabel } from "@/components/writing/type-label";
-import { WritingTile, WritingTiles } from "@/components/writing/writing-tile";
 import type { Post } from "@/lib/content/posts";
-import {
-  getAllProjects,
-  getFeaturedProjects,
-  type Project,
-} from "@/lib/content/projects";
+import { getFeaturedProjects, type Project } from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
@@ -23,7 +19,7 @@ import { InertDemo } from "../scaffold-kit/click-guards";
 // Placeholder data so the domain components read as schema demos. The cover reuses a real slug, since
 // HeroMedia dispatches by slug and images may be reused.
 const demoProject: Project = {
-  slug: "model-extraction-attacks",
+  slug: "self-building-portfolio",
   body: "",
   frontmatter: {
     title: "Project Title",
@@ -33,7 +29,7 @@ const demoProject: Project = {
     projectType: "personal",
     publishedAt: "2026-01-01",
     order: 0,
-    colour: 1,
+    colour: 2,
     heroAlt: "Project cover",
     heroVideoLoop: true,
     featured: false,
@@ -144,6 +140,30 @@ const demoContributors = [
   },
 ];
 
+// One project (this portfolio) shows every cover variety, so the gallery does not need a sample from each.
+const COVER_KINDS = ["live", "artefact"] as const;
+const COVER_MODES = [
+  ["filled", "filled", "filled"],
+  ["marker", "marker", "marker"],
+  ["filled in light, marker in dark", "filled", "marker"],
+] as const;
+const COVER_VARIANTS = [
+  ["tile", "w-full max-w-[240px]"],
+  ["rail", "w-full max-w-[280px]"],
+  ["hero", "w-full"],
+] as const;
+
+function coverDemo(
+  kind: "live" | "artefact",
+  light: "filled" | "marker",
+  dark: "filled" | "marker",
+): Project {
+  return {
+    ...demoProject,
+    frontmatter: { ...demoProject.frontmatter, cover: { kind, light, dark } },
+  };
+}
+
 // prose-content owns the list styling for these listed [inline] sections.
 function InlineList({ items }: { items: string[] }) {
   return (
@@ -165,7 +185,7 @@ export function DomainSections() {
         title="Domain · Home Page"
         mapsTo="Domain Components → Home Page"
         source="src/app/page.tsx · [inline]"
-        intro="Home's hero is built inline (listed, not previewed); the spotlight and the writing tiles are standalone components shown below."
+        intro="Home's hero is built inline (listed, not previewed); the spotlight and the post tiles are standalone components shown below."
       >
         <InlineList items={["Hero", "Latest Writing"]} />
 
@@ -181,13 +201,13 @@ export function DomainSections() {
         </Specimen>
 
         <Specimen
-          id="home-writing-tiles"
-          name="Writing tiles (small)"
-          source="@/components/writing/writing-tile"
+          id="home-post-tiles"
+          name="Post tiles (small)"
+          source="@/components/writing/post-tile"
           description="Latest Writing on Home: small quote tiles, four across from 1100px, three across above 860px, one below, two rows at most."
         >
           <InertDemo>
-            <WritingTiles
+            <PostTiles
               size="sm"
               posts={[
                 demoPosts.quote,
@@ -272,30 +292,33 @@ export function DomainSections() {
           id="project-covers"
           name="Cover"
           source="@/components/project/cover"
-          description="A project's cover in the frame its surface asks for (card, spotlight, hero, tile, rail), in the filled or marker mode it declares for each theme: a filled cover's ground is the project's palette colour, a marker cover sits on surface-elevated with the colour as its marks. Shown here as declared, then one cover in both modes."
+          description="A project's cover in the frame its surface asks for, in the filled or marker mode it declares for each theme: a filled cover's ground is the project's colour, a marker cover sits on surface-elevated with the colour as its marks. One project shows every variety: the live cover and the artefact, filled, marker, and filled in light with marker in dark (flip the theme to see it change)."
         >
           <div className="grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-3">
-            {getAllProjects().map((project) => (
-              <Card key={project.slug} label={project.slug}>
-                <Cover project={project} variant="card" />
-              </Card>
-            ))}
+            {COVER_KINDS.flatMap((kind) =>
+              COVER_MODES.map(([label, light, dark]) => (
+                <Card key={`${kind}-${label}`} label={`${kind} · ${label}`}>
+                  {/* A cover sizes itself from its container, so it needs a definite width. */}
+                  <div className="w-full">
+                    <Cover
+                      variant="card"
+                      project={coverDemo(kind, light, dark)}
+                    />
+                  </div>
+                </Card>
+              )),
+            )}
           </div>
-          <div className="mt-[var(--spacing-lg)] grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-2">
-            {(["filled", "marker"] as const).map((mode) => (
-              <Card key={mode} label={`masked-autoencoders · ${mode}`}>
-                <Cover
-                  variant="card"
-                  project={{
-                    ...demoProject,
-                    slug: "masked-autoencoders",
-                    frontmatter: {
-                      ...demoProject.frontmatter,
-                      colour: 4,
-                      cover: { kind: "live", light: mode, dark: mode },
-                    },
-                  }}
-                />
+          <div className="mt-[var(--spacing-lg)] grid grid-cols-1 items-start gap-[var(--spacing-lg)] md:grid-cols-[1fr_1fr_1.4fr]">
+            {COVER_VARIANTS.map(([variant, className]) => (
+              <Card key={variant} label={`variant · ${variant}`}>
+                <div className={className}>
+                  <Cover
+                    variant={variant}
+                    project={coverDemo("live", "filled", "filled")}
+                    caption={false}
+                  />
+                </div>
               </Card>
             ))}
           </div>
@@ -372,16 +395,16 @@ export function DomainSections() {
         intro="The post archive: a display H1 over a wall of square tiles, built inline in src/app/writing/page.tsx. The tile and its type label are standalone and shown with placeholder content."
       >
         <Specimen
-          id="writing-tile"
-          name="WritingTile"
-          source="@/components/writing/writing-tile"
+          id="post-tile"
+          name="PostTile"
+          source="@/components/writing/post-tile"
           description="One post as a tile, on the post group's tint in light and one dark ground in dark. A quote tile (no art) anchors its type line to the bottom; an art tile carries the related project's cover in the post's colour and, on hover or focus, slides it down until the title and type are revealed. Posts with no related project, and notes, take the dog-ear. Hover steps the ground toward the group's ink in light. Every index tile is square."
         >
           <InertDemo>
             <div className="grid grid-cols-1 gap-[var(--spacing-md)] md:grid-cols-3">
-              <WritingTile post={demoPosts.quote} size="art" />
-              <WritingTile post={demoPosts.art} size="art" colour={1} />
-              <WritingTile post={demoPosts.note} size="art" colour={3} />
+              <PostTile post={demoPosts.quote} size="art" />
+              <PostTile post={demoPosts.art} size="art" colour={1} />
+              <PostTile post={demoPosts.note} size="art" colour={3} />
             </div>
           </InertDemo>
         </Specimen>
@@ -445,7 +468,8 @@ export function DomainSections() {
           source="@/components/writing/post-rail"
           description="A post's facts beside its column: Updated, Published, Read, Tags and, when the post names a project, that project's own cover in its declared mode over its title, playing in view. A wrapping row below 1200px; sticky and right-aligned from 1200px."
         >
-          <div data-page-colour="4" className="max-w-[720px]">
+          {/* Not wrapped in data-page-colour: that attribute lifts the ASCII mark colour for the whole page, gallery included. */}
+          <div className="max-w-[720px]">
             <InertDemo>
               <PostRail post={demoPosts.art} />
             </InertDemo>

@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Spotlight } from "@/components/home/spotlight";
-import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Container } from "@/components/layout/container";
-import { Button } from "@/components/ui/controls/button";
+import { EmailButton } from "@/components/ui/controls/email-button";
 import { Heading } from "@/components/ui/display/heading";
-import { WritingTiles } from "@/components/writing/writing-tile";
+import { PostTiles } from "@/components/writing/post-tile";
 import { getAbout } from "@/lib/content/about";
 import { getAllPosts } from "@/lib/content/posts";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -59,15 +58,7 @@ export default function HomePage() {
                 users, real scale, and real operational pressure — that&rsquo;s
                 the harder part. That&rsquo;s what I do.
               </p>
-              <Button
-                variant="ink"
-                href="mailto:aishwarya.workbench@gmail.com"
-                cue="full"
-                iconPosition="trailing"
-                icon={<OpenInNewIcon size={18} />}
-              >
-                Get in Touch
-              </Button>
+              <EmailButton address={about.contactEmail} />
             </div>
           </header>
 
@@ -81,7 +72,7 @@ export default function HomePage() {
               >
                 Latest writing
               </h2>
-              <WritingTiles posts={latestPosts} size="sm" />
+              <PostTiles posts={latestPosts} size="sm" />
               <div className="mt-[var(--spacing-lg)] flex justify-end">
                 <Link
                   href="/writing"

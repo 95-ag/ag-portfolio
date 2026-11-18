@@ -2,7 +2,7 @@
 
 import { type ReactNode, type RefObject, useEffect, useRef } from "react";
 
-// Declared exception to the duration scale (Writing Tile → Art tile): the pause between plays.
+// Declared exception to the duration scale (Post Tile → Art tile): the pause between plays.
 const PAUSE_MS = 5000;
 const LONGEST_PLAY_MS = 14000;
 const SHORTEST_PLAY_MS = 1500;
@@ -28,8 +28,8 @@ function useHeadClearance(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const el = ref.current;
     const head = el
-      ?.closest(".wtile")
-      ?.querySelector<HTMLElement>(".wtile-art-head");
+      ?.closest(".ptile")
+      ?.querySelector<HTMLElement>(".ptile-art-head");
     if (!el || !head) return;
     const measure = () =>
       el.style.setProperty(
@@ -44,7 +44,7 @@ function useHeadClearance(ref: RefObject<HTMLElement | null>) {
 }
 
 // Plays the cover inside it while it is in view — one play, a pause, again — and neither hover nor focus changes
-// that (DESIGN.md → Writing Tile → Art tile). It marks itself `data-cover-active`, which cover.css plays. Under
+// that (DESIGN.md → Post Tile → Art tile). It marks itself `data-cover-active`, which cover.css plays. Under
 // reduced motion it never marks itself, so the cover stays on its static base.
 export function CoverLoop({ className, children }: CoverLoopProps) {
   const ref = useRef<HTMLSpanElement>(null);

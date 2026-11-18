@@ -1,4 +1,4 @@
-/* Writing — tiles, the type label and the post rail (DESIGN.md → Writing Index → Writing Tile, Post → Post Layout).
+/* Writing — tiles, the type label and the post rail (DESIGN.md → Writing Index → Post Tile, Post → Post Layout).
    A tile wears its post group (`data-post-group` sets --g-ink and --g-tint). */
 
 /* ───────── Type label ───────── */
@@ -38,129 +38,129 @@ html[data-theme="dark"] .type-label-name {
 
 /* ───────── Tiles ───────── */
 
-.wtiles {
+.ptiles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  /* Ragged bottoms: a tile ends where its text does, so tiles in a row align at the top. */
-  align-items: start;
   gap: var(--spacing-md);
 }
-.wtiles[data-size="sm"] {
+.ptiles[data-size="sm"] {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 @media (max-width: 1099px) {
-  .wtiles[data-size="sm"] {
+  .ptiles[data-size="sm"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 @media (max-width: 860px) {
-  .wtiles,
-  .wtiles[data-size="sm"] {
+  .ptiles,
+  .ptiles[data-size="sm"] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 /* Home shows two rows at most at every width: 8, 6 or 2 tiles. */
-.wtiles[data-size="sm"] > :nth-child(n + 9) {
+.ptiles[data-size="sm"] > :nth-child(n + 9) {
   display: none;
 }
 @media (max-width: 1099px) {
-  .wtiles[data-size="sm"] > :nth-child(n + 7) {
+  .ptiles[data-size="sm"] > :nth-child(n + 7) {
     display: none;
   }
 }
 @media (max-width: 860px) {
-  .wtiles[data-size="sm"] > :nth-child(n + 3) {
+  .ptiles[data-size="sm"] > :nth-child(n + 3) {
     display: none;
   }
 }
 
-.wtile {
-  --wtile-ground: var(--g-tint);
-  --wtile-ear: 56px;
+.ptile {
+  --ptile-ground: var(--g-tint);
+  --ptile-ear: 56px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
   border-radius: var(--radius-xs);
-  background: var(--wtile-ground);
+  background: var(--ptile-ground);
   color: var(--ink);
 }
-.wtile[data-size="sm"] {
-  --wtile-ear: 40px;
+.ptile[data-size="sm"] {
+  --ptile-ear: 40px;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
 }
-.wtile:is(:hover, :focus-visible) {
+.ptile:is(:hover, :focus-visible) {
   /* A more vivid hue: toward the group's ink in light, toward ink in dark. */
-  background: color-mix(in oklab, var(--wtile-ground), var(--g-ink) 10%);
+  background: color-mix(in oklab, var(--ptile-ground), var(--g-ink) 10%);
 }
-html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
-  background: color-mix(in oklab, var(--wtile-ground), var(--ink) 5%);
+html[data-theme="dark"] .ptile:is(:hover, :focus-visible) {
+  background: color-mix(in oklab, var(--ptile-ground), var(--ink) 5%);
 }
-.wtile:focus-visible {
+.ptile:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-.wtile-title {
+.ptile-title {
   color: var(--ink);
   text-wrap: balance;
 }
-.wtile-arrow {
+.ptile-arrow {
+  display: inline-flex;
+  vertical-align: text-bottom;
   color: var(--ink-muted);
 }
-.wtile:is(:hover, :focus-visible) .wtile-arrow {
+.ptile:is(:hover, :focus-visible) .ptile-arrow {
   color: var(--ink);
 }
-.wtile-quote {
+.ptile-quote {
   display: block;
 }
 /* The type line sits at the bottom of the tile, so a short quote leaves the space above it. */
-.wtile > .type-label {
+.ptile > .type-label {
   margin-top: auto;
 }
 
 /* Dog-ear: a folded bottom-right corner on a post with no related project, or a note. The folded face shades from the
    tile ground toward ink; the cut-away half is the page ground. */
-.wtile[data-ear="true"]::after {
+.ptile[data-ear="true"]::after {
   content: "";
   position: absolute;
   right: 0;
   bottom: 0;
   z-index: 2;
-  width: var(--wtile-ear);
-  height: var(--wtile-ear);
+  width: var(--ptile-ear);
+  height: var(--ptile-ear);
   border-top-left-radius: var(--radius-xs);
   background: linear-gradient(
     135deg,
-    color-mix(in oklab, var(--wtile-ground), var(--ink) 14%) 0%,
-    color-mix(in oklab, var(--wtile-ground), var(--ink) 6%) 50%,
+    color-mix(in oklab, var(--ptile-ground), var(--ink) 14%) 0%,
+    color-mix(in oklab, var(--ptile-ground), var(--ink) 6%) 50%,
     var(--surface) 50%
   );
   transform-origin: 100% 100%;
 }
-.wtile[data-ear="true"]:is(:hover, :focus-visible)::after {
+.ptile[data-ear="true"]:is(:hover, :focus-visible)::after {
   /* 40 → 52px on Home, 56 → 72px on the index. */
   transform: scale(1.3);
 }
-.wtile[data-size="art"][data-ear="true"]:is(:hover, :focus-visible)::after {
+.ptile[data-size="art"][data-ear="true"]:is(:hover, :focus-visible)::after {
   transform: scale(calc(72 / 56));
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .wtile {
+  .ptile {
     transition: background-color var(--duration-fast);
   }
-  .wtile-arrow {
+  .ptile-arrow {
     transition: color var(--duration-fast);
   }
-  .wtile[data-ear="true"]::after {
+  .ptile[data-ear="true"]::after {
     transition: transform var(--duration-fast);
   }
 }
 
-/* Every index tile is square, quote and art alike. */
-.wtile[data-size="art"] {
+/* Every post tile is square, on Home and on the index, quote and art alike. */
+.ptile {
   aspect-ratio: 1;
   overflow: hidden;
 }
@@ -168,54 +168,54 @@ html[data-theme="dark"] .wtile:is(:hover, :focus-visible) {
 /* Art tile: the project's cover fills the tile, and on hover or focus the whole cover slides down inside the square,
    narrowed to 90% of the width and centred, until the head is fully revealed (never higher than 34%); the tile's edge cuts its lower part. Touch screens
    start revealed. By transform and clip only. */
-.wtile-art-head {
+.ptile-art-head {
   display: grid;
   gap: var(--spacing-sm);
 }
-.wtile-art-media {
+.ptile-art-media {
   position: absolute;
   inset: 0;
   display: block;
   transform-origin: 50% 0;
 }
-.wtile-art-media .cover {
+.ptile-art-media .cover {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
   clip-path: inset(0 round var(--radius-xs));
 }
-.wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media {
+.ptile[data-art="true"]:is(:hover, :focus-visible) .ptile-art-media {
   transform: translateY(
       max(34%, calc(var(--art-bottom, 0px) + var(--spacing-md)))
     )
     scale(0.9);
 }
-.wtile[data-art="true"]:is(:hover, :focus-visible) .wtile-art-media .cover {
+.ptile[data-art="true"]:is(:hover, :focus-visible) .ptile-art-media .cover {
   clip-path: inset(0 round var(--radius-md));
 }
 @media (hover: none) {
-  .wtile[data-art="true"] .wtile-art-media {
+  .ptile[data-art="true"] .ptile-art-media {
     transform: translateY(
         max(34%, calc(var(--art-bottom, 0px) + var(--spacing-md)))
       )
       scale(0.9);
   }
-  .wtile[data-art="true"] .wtile-art-media .cover {
+  .ptile[data-art="true"] .ptile-art-media .cover {
     clip-path: inset(0 round var(--radius-md));
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  /* Declared exception to the duration scale (Writing Tile → Art tile). */
-  .wtile-art-media,
-  .wtile-art-media .cover {
+  /* Declared exception to the duration scale (Post Tile → Art tile). */
+  .ptile-art-media,
+  .ptile-art-media .cover {
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .wtile-art-media {
+  .ptile-art-media {
     transition-property: transform;
   }
-  .wtile-art-media .cover {
+  .ptile-art-media .cover {
     transition-property: clip-path;
   }
 }

@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
-      {/* The page wears its project's palette slot: links, tags, bullets and the focus ring take its colour. */}
+      {/* The page wears its project's colour slot: links, tags, bullets and the focus ring take its colour. */}
       <div data-page-colour={fm.colour}>
         <SectionProgressNav />
 

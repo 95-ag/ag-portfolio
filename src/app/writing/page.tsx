@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Heading } from "@/components/ui/display/heading";
-import { WritingTiles } from "@/components/writing/writing-tile";
+import { PostTiles } from "@/components/writing/post-tile";
 import { getAllPosts } from "@/lib/content/posts";
 import { AUTHOR_NAME } from "@/lib/site";
 
@@ -35,7 +35,7 @@ export default function WritingPage() {
               Writing
             </Heading>
           </header>
-          {posts.length > 0 && <WritingTiles posts={posts} size="art" />}
+          {posts.length > 0 && <PostTiles posts={posts} size="art" />}
         </Stack>
       </Container>
     </Section>

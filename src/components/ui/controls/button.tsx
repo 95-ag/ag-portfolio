@@ -6,7 +6,6 @@ import { useAttentionCue } from "./attention-cue";
 import "./button.css";
 
 type ButtonBaseProps = {
-  variant: "ink" | "neutral";
   icon?: React.ReactNode;
   iconPosition?: "leading" | "trailing";
   // `full`: the outline draws, then the sheen crosses twice. `draw`: the outline draw alone.
@@ -29,7 +28,6 @@ export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 export function Button(props: ButtonProps) {
   const {
-    variant,
     icon,
     iconPosition = "leading",
     cue,
@@ -67,7 +65,6 @@ export function Button(props: ButtonProps) {
         target={target}
         rel={target === "_blank" ? (rel ?? "noopener noreferrer") : rel}
         className={classes}
-        data-variant={variant}
         data-cue={cue}
         {...anchorRest}
       >
@@ -81,7 +78,6 @@ export function Button(props: ButtonProps) {
       ref={setRef}
       type="button"
       className={classes}
-      data-variant={variant}
       data-cue={cue}
       {...(rest as ButtonAsButton)}
     >

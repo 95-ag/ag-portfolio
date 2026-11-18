@@ -96,7 +96,7 @@ export default async function PostPage({ params }: Props) {
       />
       <Section>
         <Container>
-          {/* The page wears its post's palette slot; the rail sits beside the column from 1200px (three columns,
+          {/* The page wears its post's colour slot; the rail sits beside the column from 1200px (three columns,
               the post centred) and above the header below it. */}
           <div
             data-page="post"

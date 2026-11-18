@@ -28,7 +28,6 @@ export default function RouteError({
           </div>
           <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
             <Button
-              variant="ink"
               cue="draw"
               onClick={() => unstable_retry()}
               icon={<RefreshIcon size={18} />}
@@ -36,7 +35,6 @@ export default function RouteError({
               Try again
             </Button>
             <Button
-              variant="ink"
               href="/"
               icon={
                 <Image

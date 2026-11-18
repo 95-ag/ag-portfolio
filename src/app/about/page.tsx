@@ -4,12 +4,11 @@ import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { DownloadIcon } from "@/components/icons/material/download";
 import { MailIcon } from "@/components/icons/material/mail";
-import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
-import { Button } from "@/components/ui/controls/button";
 import { CopyButton } from "@/components/ui/controls/copy-button";
+import { EmailButton } from "@/components/ui/controls/email-button";
 import { Heading } from "@/components/ui/display/heading";
 import { Tag } from "@/components/ui/display/tag";
 import { LinkPill } from "@/components/ui/links/link-pill";
@@ -168,28 +167,17 @@ export default function AboutPage() {
               AI systems built like real engineering, let&apos;s talk.
             </p>
             <div className="flex flex-wrap items-center gap-x-[var(--spacing-md)] gap-y-[var(--spacing-sm)]">
-              <div className="flex items-center">
-                <Button
-                  variant="ink"
-                  href={`mailto:${about.contactEmail}`}
-                  cue="full"
-                  iconPosition="trailing"
-                  icon={<OpenInNewIcon size={18} />}
-                >
-                  Let&apos;s talk
-                </Button>
+              <div className="flex flex-wrap items-center">
+                <EmailButton address={about.contactEmail} />
                 <CopyButton value={about.contactEmail} label="email" />
               </div>
-              <Button
-                variant="neutral"
+              <LinkPill
                 href="/AishwaryaGanesan_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                iconPosition="trailing"
-                icon={<DownloadIcon size={18} />}
+                icon={<DownloadIcon size={16} />}
+                external
               >
                 Resume
-              </Button>
+              </LinkPill>
             </div>
           </div>
         </div>

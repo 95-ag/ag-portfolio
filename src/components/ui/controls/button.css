@@ -1,5 +1,5 @@
 /* Button — a 44px outline pill (DESIGN.md → Components → UI → Controls / Actions → Button). The `ink` outline is drawn
-   by ::after so the attention cue can reveal it; `neutral` carries a plain border. */
+   by ::after so the attention cue can reveal it. */
 
 .btn {
   position: relative;
@@ -13,7 +13,7 @@
   color: var(--ink);
   cursor: pointer;
 }
-.btn[data-variant="ink"]::after {
+.btn::after {
   content: "";
   position: absolute;
   inset: -1px;
@@ -21,16 +21,9 @@
   border-radius: inherit;
   pointer-events: none;
 }
-.btn[data-variant="ink"]:hover {
+.btn:hover {
   background-color: var(--ink);
   color: var(--surface);
-}
-.btn[data-variant="neutral"] {
-  border-color: var(--hairline-strong);
-}
-.btn[data-variant="neutral"]:hover {
-  border-color: var(--ink);
-  background-color: var(--surface-tag);
 }
 .btn-icon {
   display: inline-flex;

@@ -206,7 +206,7 @@
     color: var(--ink-muted);
   }
 
-  /* Writing tiles */
+  /* Post tiles */
   .tile-title-sm {
     font-family: var(--font-display), system-ui, sans-serif;
     font-size: 17px;

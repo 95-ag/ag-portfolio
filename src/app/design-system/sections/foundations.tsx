@@ -2,6 +2,7 @@ import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
 import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
+import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
 import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { CheckIcon } from "@/components/icons/material/check";
@@ -52,24 +53,26 @@ import {
 
 // Token data mirrors src/styles/theme.css + typography.css — keep in sync.
 
-const PALETTE_SLOTS = Array.from({ length: 12 }, (_, i) => i + 1);
+const PROJECT_COLOUR_SLOTS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 // Slots 1–12 as text (`ink`) and tint (`tile`); the cover roles derive from them (DESIGN.md → Colors → Covers).
-const PALETTE_GROUPS: SwatchGroup[] = [
+const PROJECT_COLOUR_GROUPS: SwatchGroup[] = [
   {
-    label: "Palette · ink",
-    tokens: PALETTE_SLOTS.map((n) => ({
-      token: `--palette-${n}-ink`,
+    label: "Project colours · ink",
+    tokens: PROJECT_COLOUR_SLOTS.map((n) => ({
+      token: `--project-${n}-ink`,
       name: `Slot ${n} Ink`,
       usage: "The colour as text: hover titles, tags, tab bars, page colour",
     })),
   },
   {
-    label: "Palette · tile",
-    tokens: PALETTE_SLOTS.map((n) => ({
-      token: `--palette-${n}-tile`,
+    label: "Project colours · tile",
+    tokens: PROJECT_COLOUR_SLOTS.map((n) => ({
+      token: `--project-${n}-tile`,
       name: `Slot ${n} Tile`,
-      usage: "The colour's tint: accent-tint and surface-active on its page",
+      usage:
+        "The colour's tint (light only): accent-tint and surface-active on its page. In dark every tile is surface-tag.",
+      swatchValue: `var(--project-${n}-tile, var(--surface-tag))`,
     })),
   },
 ];
@@ -77,7 +80,7 @@ const PALETTE_GROUPS: SwatchGroup[] = [
 const POST_HUE_GROUPS: SwatchGroup[] = [
   {
     label: "Post hues",
-    note: "Four hues for the twelve post types: short, how-to, long read, critique. Light tiles take the tint; dark tiles share one tile ground.",
+    note: "Four hues for the twelve post types: short, how-to, long read, critique. Light tiles take the tint; in dark every tile is surface-tag.",
     tokens: (["short", "howto", "long", "critique"] as const).flatMap((g) => [
       {
         token: `--post-${g}-ink`,
@@ -87,7 +90,8 @@ const POST_HUE_GROUPS: SwatchGroup[] = [
       {
         token: `--post-${g}-tint`,
         name: `Post ${g} Tint`,
-        usage: "Writing-tile ground",
+        usage: "Post-tile ground (light only; dark is surface-tag)",
+        swatchValue: `var(--post-${g}-tint, var(--surface-tag))`,
       },
     ]),
   },
@@ -182,7 +186,7 @@ const COLOR_GROUPS: SwatchGroup[] = [
       },
     ],
   },
-  ...PALETTE_GROUPS,
+  ...PROJECT_COLOUR_GROUPS,
   ...POST_HUE_GROUPS,
   {
     label: "Semantic",
@@ -393,7 +397,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 17,
     weight: 600,
     lh: 22,
-    sample: "The title on Home's small writing tiles.",
+    sample: "The title on Home's small post tiles.",
   },
   {
     token: "quote-text",
@@ -409,7 +413,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 15,
     weight: 400,
     lh: 22,
-    sample: "The quote on Home's small writing tiles, italic.",
+    sample: "The quote on Home's small post tiles, italic.",
   },
   {
     token: "mono-code",
@@ -451,13 +455,8 @@ const RADIUS_TOKENS: ShapeItem[] = [
     token: "xs",
     radius: "var(--radius-xs)",
     value: "3px",
-    usage: "Writing tiles and the dog-ear's fold",
-  },
-  {
-    token: "sm",
-    radius: "var(--radius-sm)",
-    value: "4px",
-    usage: "Copyable code chips",
+    usage:
+      "Post tiles, the dog-ear's fold, copyable code chips, the popover panel",
   },
   {
     token: "md",
@@ -515,9 +514,9 @@ const DEPTH_LEVELS: DepthLevel[] = [
   },
   {
     name: "Level 6 · Tinted tile",
-    spec: "palette tint fill, no border",
-    className: "bg-[var(--post-long-tint)]",
-    usage: "Writing tiles",
+    spec: "project-colour tint fill, no border",
+    className: "bg-[var(--post-long-tint,var(--surface-tag))]",
+    usage: "Post tiles",
   },
 ];
 
@@ -537,6 +536,7 @@ type IconEntry = { name: string; Icon: React.ComponentType<{ size?: number }> };
 const MATERIAL_ICONS: IconEntry[] = [
   { name: "ArrowDownward", Icon: ArrowDownwardIcon },
   { name: "ArrowForward", Icon: ArrowForwardIcon },
+  { name: "ArrowOutward", Icon: ArrowOutwardIcon },
   { name: "ArrowUpward", Icon: ArrowUpwardIcon },
   { name: "Article", Icon: ArticleIcon },
   { name: "Check", Icon: CheckIcon },
@@ -604,7 +604,7 @@ export function FoundationsSections() {
         title="Foundations · Colors"
         mapsTo="Foundations → Colors"
         source="src/styles/theme.css → :root / [data-theme]"
-        intro="Neutrals, one site accent, the twelve-colour palette and the four post hues, each resolving to the live theme. There is no second accent; a project or post page lifts its own palette slot into the accent family."
+        intro="Neutrals, one site accent, the twelve project colours and the four post hues, each resolving to the live theme. There is no second accent; a project or post page lifts its own colour slot into the accent family."
       >
         <SwatchGrid groups={COLOR_GROUPS} />
       </GallerySection>
@@ -689,7 +689,7 @@ export function FoundationsSections() {
         title="Foundations · Shapes"
         mapsTo="Foundations → Shapes"
         source="--radius-*"
-        intro="Five radius categories, from sharp structural containers through the writing tile and media surfaces to a full pill for floating and link controls."
+        intro="Four radius categories, from sharp structural containers through tiles and small chips and media surfaces to a full pill for floating and link controls."
       >
         <ShapeRow items={RADIUS_TOKENS} />
       </GallerySection>

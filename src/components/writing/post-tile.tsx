@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowOutwardIcon } from "@/components/icons/material/arrow-outward";
 import { Cover } from "@/components/project/cover";
 import { CoverLoop } from "@/components/project/cover-loop";
 import { TypeLabel } from "@/components/writing/type-label";
@@ -9,30 +10,30 @@ import "@/components/writing/writing.css";
 
 type TileSize = "sm" | "art";
 
-interface WritingTileProps {
+interface PostTileProps {
   post: Post;
   // `sm` is Home's small quote tile; `art` is the index's tile, which carries art when its project has a cover.
   size: TileSize;
-  // The palette slot an art tile wears; by default the post's own place in publish order.
+  // The project colours slot an art tile wears; by default the post's own place in publish order.
   colour?: number;
 }
 
-function TileTitle({ post, size }: WritingTileProps) {
+function TileTitle({ post, size }: PostTileProps) {
   return (
     <span
-      className={`wtile-title ${size === "sm" ? "tile-title-sm" : "heading-component"}`}
+      className={`ptile-title ${size === "sm" ? "tile-title-sm" : "heading-component"}`}
     >
       {post.frontmatter.title}{" "}
-      <span className="wtile-arrow" aria-hidden="true">
-        ↗
+      <span className="ptile-arrow" aria-hidden="true">
+        <ArrowOutwardIcon size={size === "sm" ? 16 : 20} />
       </span>
     </span>
   );
 }
 
 // One post as a tile: a quote tile on Home and wherever the post has no art, an art tile on the index when its related
-// project has a cover (DESIGN.md → Writing Index → Writing Tile). The whole tile is one link and its text is chrome.
-export function WritingTile({ post, size, colour }: WritingTileProps) {
+// project has a cover (DESIGN.md → Writing Index → Post Tile). The whole tile is one link and its text is chrome.
+export function PostTile({ post, size, colour }: PostTileProps) {
   const { frontmatter: fm, slug } = post;
   const project = fm.relatedProject
     ? getProjectBySlug(fm.relatedProject)
@@ -44,7 +45,7 @@ export function WritingTile({ post, size, colour }: WritingTileProps) {
   return (
     <Link
       href={`/writing/${slug}`}
-      className="wtile select-none"
+      className="ptile select-none"
       data-size={size}
       data-art={hasArt}
       data-ear={ear}
@@ -52,7 +53,7 @@ export function WritingTile({ post, size, colour }: WritingTileProps) {
     >
       {hasArt && project ? (
         <>
-          <span className="wtile-art-head">
+          <span className="ptile-art-head">
             <TileTitle post={post} size={size} />
             <TypeLabel
               type={fm.type}
@@ -61,7 +62,7 @@ export function WritingTile({ post, size, colour }: WritingTileProps) {
               large={size === "art"}
             />
           </span>
-          <CoverLoop className="wtile-art-media">
+          <CoverLoop className="ptile-art-media">
             <Cover
               project={project}
               colour={colour ?? postColour(slug)}
@@ -73,7 +74,7 @@ export function WritingTile({ post, size, colour }: WritingTileProps) {
         <>
           <TileTitle post={post} size={size} />
           <span
-            className={`wtile-quote ${size === "sm" ? "quote-text-sm" : "quote-text"}`}
+            className={`ptile-quote ${size === "sm" ? "quote-text-sm" : "quote-text"}`}
           >
             “{fm.summary}”
           </span>
@@ -89,17 +90,17 @@ export function WritingTile({ post, size, colour }: WritingTileProps) {
   );
 }
 
-interface WritingTilesProps {
+interface PostTilesProps {
   posts: Post[];
   size: TileSize;
 }
 
 // The tile grid: Home's small tiles (four, three, one across; two rows at most) or the index's (three, one across).
-export function WritingTiles({ posts, size }: WritingTilesProps) {
+export function PostTiles({ posts, size }: PostTilesProps) {
   return (
-    <div className="wtiles" data-size={size}>
+    <div className="ptiles" data-size={size}>
       {posts.map((post) => (
-        <WritingTile key={post.slug} post={post} size={size} />
+        <PostTile key={post.slug} post={post} size={size} />
       ))}
     </div>
   );
