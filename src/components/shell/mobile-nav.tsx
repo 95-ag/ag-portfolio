@@ -1,6 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  LazyMotion,
+  m,
+  useReducedMotion,
+} from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -14,6 +19,10 @@ import { LogoMark } from "@/components/shell/logo-mark";
 import { InlineThemeSelector } from "@/components/ui/controls/theme-selector";
 import { cn } from "@/lib/utils/cn";
 import { useFocusTrap } from "@/lib/utils/focus-trap";
+
+// Its own module so the bundler splits the animation features into an async chunk.
+const loadMotionFeatures = () =>
+  import("./motion-features").then((module) => module.default);
 
 type NavIconComponent = (props: IconProps) => React.ReactElement;
 
@@ -85,48 +94,50 @@ export function MobileNav() {
         <MenuIcon size={18} />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              key="overlay"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={overlayVariants}
-              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
-              onClick={() => setOpen(false)}
-              aria-hidden="true"
-              className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-[var(--ink)]/30"
-            />
-
-            {/* Panel — animated, fixed-positioned wrapper; visual content is MobileNavPanel. */}
-            <motion.div
-              key="panel"
-              ref={panelRef}
-              tabIndex={-1}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation menu"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={panelVariants}
-              transition={{
-                duration: shouldReduceMotion ? 0 : 0.3,
-                ease: [0.3, 0, 0, 1],
-              }}
-              className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] h-full w-[min(280px,80vw)]"
-            >
-              <MobileNavPanel
-                pathname={pathname}
-                onClose={() => setOpen(false)}
+      <LazyMotion features={loadMotionFeatures}>
+        <AnimatePresence>
+          {open && (
+            <>
+              {/* Overlay */}
+              <m.div
+                key="overlay"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={overlayVariants}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
+                onClick={() => setOpen(false)}
+                aria-hidden="true"
+                className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-[var(--ink)]/30"
               />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+
+              {/* Panel — animated, fixed-positioned wrapper; visual content is MobileNavPanel. */}
+              <m.div
+                key="panel"
+                ref={panelRef}
+                tabIndex={-1}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Navigation menu"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={panelVariants}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.3,
+                  ease: [0.3, 0, 0, 1],
+                }}
+                className="fixed top-0 right-0 z-[var(--z-mobile-menu-panel)] h-full w-[min(280px,80vw)]"
+              >
+                <MobileNavPanel
+                  pathname={pathname}
+                  onClose={() => setOpen(false)}
+                />
+              </m.div>
+            </>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
     </>
   );
 }
