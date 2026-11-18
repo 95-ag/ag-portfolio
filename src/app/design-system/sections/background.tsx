@@ -15,7 +15,7 @@ export function BackgroundSection() {
         id="ascii-field"
         name="AsciiField"
         source="@/components/background/ascii-field"
-        description="Seeded glyph field in the page gutters: three tonal tiers (accent, ink, mute), static, no animation. Also live behind this page; shown here as a static capture."
+        description="Seeded glyph field: three tonal tiers (accent, ink, mute), static, no animation. Full-bleed on every page except project and post pages, where it keeps to the outer gutters. Also live behind this page; shown here as a static capture."
       >
         <ThemeShot
           light={backgroundAsciiLight}
@@ -26,21 +26,18 @@ export function BackgroundSection() {
 
       <Specimen
         id="background-orchestration"
-        name="BackgroundLayer · SurfaceContext"
+        name="BackgroundLayer"
         source="@/components/background/background-layer"
         description="The orchestration around the field; listed, not previewed."
       >
         <div className="prose-content">
           <ul>
             <li>
-              BackgroundLayer: mounts the field behind page content. On desktop
-              and tablet it is masked to the gutters; on mobile it runs
-              full-bleed at the desktop density and 0.85 opacity on non-reading
-              pages, and is omitted on project-detail pages.
-            </li>
-            <li>
-              SurfaceContext: communicates the active surface tone so the
-              ambient layers stay subordinate to content.
+              BackgroundLayer: mounts the field behind page content. Every page
+              except the reading pages gets it full-bleed at every size, at 0.85
+              opacity. On project and post pages it is omitted on a phone and
+              sits in the outer gutters only on larger tiers, with the reading
+              column clear.
             </li>
           </ul>
         </div>

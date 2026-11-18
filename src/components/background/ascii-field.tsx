@@ -37,8 +37,8 @@ const CELL = 30;
 // Mobile/desktop divider — matches the site's `md` breakpoint and nav switch.
 const MIN_WIDTH = 768;
 const DENSITY = 0.2;
-// Mobile (non-reading pages) gets the full-bleed field at the desktop density.
-const MOBILE_OPACITY = 0.85;
+// Non-reading pages get the full-bleed field at every size.
+const FULL_BLEED_OPACITY = 0.85;
 // Desktop/tablet: clear a centered band sized to the content column (+buffer) so
 // glyphs sit only in the outer gutters/corners and never touch the reading column.
 const GUTTER_MASK =
@@ -67,14 +67,18 @@ export function AsciiField({ isReadingPage }: AsciiFieldProps) {
       const W = window.innerWidth;
       const isMobile = W < MIN_WIDTH;
 
-      // Mobile reading pages: no background at all (protect dense prose).
-      if (isMobile && isReadingPage) {
+      // Reading pages (Project Detail, Post): none on a phone, where dense prose leaves no room; on larger tiers the glyphs
+      // sit in the outer gutters only and the column is cleared. Every other page is full-bleed at every size.
+      if (isReadingPage) {
+        if (isMobile) {
+          setMask("none");
+          return;
+        }
+        setMask(GUTTER_MASK);
+      } else {
         setMask("none");
-        return;
+        host.style.opacity = String(FULL_BLEED_OPACITY);
       }
-
-      setMask(isMobile ? "none" : GUTTER_MASK);
-      if (isMobile) host.style.opacity = String(MOBILE_OPACITY);
 
       const H = Math.max(
         window.innerHeight,

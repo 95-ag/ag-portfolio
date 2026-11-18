@@ -7,7 +7,6 @@ import { BackgroundLayer } from "@/components/background/background-layer";
 import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
-import { SurfaceContext } from "@/components/shell/surface-context";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import {
   AUTHOR_NAME,
@@ -16,10 +15,6 @@ import {
   SITE_URL,
 } from "@/lib/site";
 import "./globals.css";
-
-// Set the reading-surface flag before first paint (no flash on direct loads of project and post
-// pages); SurfaceContext keeps it in sync across client navigation.
-const SURFACE_INIT = `try{document.documentElement.dataset.read=/^\\/(work|writing)\\/.+/.test(location.pathname)?'long':''}catch(e){}`;
 
 export const viewport: Viewport = {
   themeColor: [
@@ -79,9 +74,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }}
         />
-        <script dangerouslySetInnerHTML={{ __html: SURFACE_INIT }} />
         <Providers>
-          <SurfaceContext />
           <a
             href="#main"
             className="body-caption sr-only z-[var(--z-skip-link)] bg-[var(--surface)] text-[var(--ink)] focus:not-sr-only focus:fixed focus:top-[var(--spacing-md)] focus:left-[var(--spacing-md)] focus:border focus:border-[var(--hairline-strong)] focus:px-[var(--spacing-md)] focus:py-[var(--spacing-sm)]"
