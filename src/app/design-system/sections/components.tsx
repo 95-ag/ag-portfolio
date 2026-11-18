@@ -3,7 +3,9 @@ import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
+import { DownloadIcon } from "@/components/icons/material/download";
 import { MailIcon } from "@/components/icons/material/mail";
+import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Callout } from "@/components/mdx/callout";
 import { Clip } from "@/components/mdx/clip";
 import { Diagram } from "@/components/mdx/diagram";
@@ -19,6 +21,7 @@ import { MobileNavPanel } from "@/components/shell/mobile-nav";
 import { PillNav } from "@/components/shell/pill-nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/controls/button";
+import { CopyButton } from "@/components/ui/controls/copy-button";
 import {
   InlineThemeSelector,
   PillThemeSelector,
@@ -30,7 +33,6 @@ import { Popover, PopoverDescription } from "@/components/ui/display/popover";
 import { Related } from "@/components/ui/display/related";
 import { Tag } from "@/components/ui/display/tag";
 import { Breadcrumbs } from "@/components/ui/links/breadcrumbs";
-import { CopyLink } from "@/components/ui/links/copy-link";
 import { LinkPill } from "@/components/ui/links/link-pill";
 import {
   GallerySection,
@@ -69,30 +71,56 @@ export function add(a: number, b: number) {
 
 const buttonVariants = [
   {
-    token: "primary",
-    spec: "bg accent · text ink-on-accent · radius-sm · 56px tall",
-    render: <Button variant="ink">Primary</Button>,
+    token: "ink",
+    spec: "44px pill · 1px ink outline · ink label · hover fills ink, label surface",
+    render: <Button variant="ink">Ink</Button>,
   },
   {
-    token: "secondary",
-    spec: "1px hairline-strong · transparent · hover accent tint",
-    render: <Button variant="neutral">Secondary</Button>,
+    token: "neutral",
+    spec: "1px hairline-strong outline · hover outline ink, fill surface-tag",
+    render: <Button variant="neutral">Neutral</Button>,
   },
   {
-    token: "primary + icon",
-    spec: "leading icon (18px) + label",
+    token: "ink + trailing icon",
+    spec: "one 18px icon, spacing-sm from the label; the email action's ↗",
     render: (
-      <Button variant="ink" icon={<MailIcon size={18} />}>
+      <Button
+        variant="ink"
+        iconPosition="trailing"
+        icon={<OpenInNewIcon size={18} />}
+      >
         Email me
       </Button>
     ),
   },
   {
-    token: "as link",
-    spec: "renders an <a> when href is set",
+    token: "neutral + download mark",
+    spec: "the Resume link: opens the PDF, never a forced download",
     render: (
-      <Button href="#ui-button" variant="neutral">
-        As link
+      <Button
+        variant="neutral"
+        iconPosition="trailing"
+        icon={<DownloadIcon size={18} />}
+      >
+        Resume
+      </Button>
+    ),
+  },
+  {
+    token: "cue: full",
+    spec: "outline draw, then the accent sheen twice, once the button is 60% in view; hover or focus stops it; nothing under reduced motion",
+    render: (
+      <Button variant="ink" cue="full" icon={<MailIcon size={18} />}>
+        Email me
+      </Button>
+    ),
+  },
+  {
+    token: "cue: draw",
+    spec: "the outline draw only: the primary 404 and error-page CTA",
+    render: (
+      <Button variant="ink" cue="draw" href="#ui-button">
+        Back home
       </Button>
     ),
   },
@@ -193,7 +221,7 @@ export function ComponentsSections() {
             id="ui-button"
             name="Button"
             source="@/components/ui/controls/button"
-            description="Primary action and link control; used for CTAs and actions across the site."
+            description="Committed action control: a 44px outline pill in two variants, with an optional attention cue. Used for the email actions on Home and About, the Resume link and the 404 and error CTAs."
             headingLevel={4}
           >
             <InertDemo>
@@ -209,6 +237,19 @@ export function ComponentsSections() {
                   </div>
                 ))}
               </div>
+            </InertDemo>
+          </Specimen>
+
+          <Specimen
+            id="ui-copy-button"
+            name="CopyButton"
+            source="@/components/ui/controls/copy-button"
+            description="Icon-only control that copies a value: the email address beside the About email action. On copy the icon turns to a check in the accent for 1500ms, then reverts; its name reads Copy email, then Email copied."
+            spec="44×44 target · no border or fill · 18px icon ink-muted, hover accent · focus ring"
+            headingLevel={4}
+          >
+            <InertDemo>
+              <CopyButton value="hello@example.com" label="email" />
             </InertDemo>
           </Specimen>
 
@@ -259,19 +300,6 @@ export function ComponentsSections() {
           </Specimen>
 
           <Specimen
-            id="ui-copy-link"
-            name="CopyLink"
-            source="@/components/ui/links/copy-link"
-            description="Inline value with a copy-to-clipboard affordance; used for the contact email. The call site sets the tap area: at least 24px tall, never overlapping a neighbouring control."
-            headingLevel={4}
-          >
-            <CopyLink
-              value="hello@example.com"
-              className="-my-[var(--spacing-xs)] py-[var(--spacing-xs)]"
-            />
-          </Specimen>
-
-          <Specimen
             id="ui-breadcrumbs"
             name="Breadcrumbs"
             source="@/components/ui/links/breadcrumbs"
@@ -284,7 +312,7 @@ export function ComponentsSections() {
                 <span className="mono-anchor">Project trail</span>
                 <Breadcrumbs
                   trail={[
-                    { name: "Home", href: "#ui-breadcrumbs" },
+                    { name: "Home", href: "#shell" },
                     { name: "Work", href: "#ui-breadcrumbs" },
                     {
                       name: "Evaluating Masked Autoencoders for Computer Vision",
@@ -296,7 +324,7 @@ export function ComponentsSections() {
                 <span className="mono-anchor">Longest project title</span>
                 <Breadcrumbs
                   trail={[
-                    { name: "Home", href: "#ui-breadcrumbs" },
+                    { name: "Home", href: "#shell" },
                     { name: "Work", href: "#ui-breadcrumbs" },
                     {
                       name: "The agent that writes, illustrates, and ships this portfolio",
@@ -333,11 +361,11 @@ export function ComponentsSections() {
             id="ui-tag"
             name="Tag"
             source="@/components/ui/display/tag"
-            description="Mono uppercase metadata chip; labels stack and topic tags on cards and project pages."
-            spec="mono uppercase chip · surface-tag · radius-sm"
+            description="A plain mono uppercase label: no fill, no padding, no shape. It takes the colour of its context: a project's ink on cards and in the spotlight, the page colour on detail pages, the accent on About's capabilities."
+            spec="tag-label · currentColor"
             headingLevel={4}
           >
-            <div className="flex flex-wrap gap-[var(--spacing-xs)]">
+            <div className="flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">
               <Tag>PyTorch</Tag>
               <Tag>Next.js</Tag>
               <Tag>Computer Vision</Tag>

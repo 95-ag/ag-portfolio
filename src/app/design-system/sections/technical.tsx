@@ -17,7 +17,6 @@ const ZONES: SpanZone[] = [
       "1200px max content column",
       "12-column grid",
       "Section-progress rail",
-      "Meteor layer active",
       "Type at full scale",
     ],
   },
@@ -27,7 +26,6 @@ const ZONES: SpanZone[] = [
     changes: [
       "8-column grid",
       "Horizontal pill nav",
-      "Meteor: non-touch only",
       "Display / heading type steps down",
     ],
   },
@@ -37,7 +35,7 @@ const ZONES: SpanZone[] = [
     changes: [
       "Single reading column; 4-column grid",
       "Hamburger drawer nav",
-      "Full-bleed ascii field; no meteor (768px floor)",
+      "Full-bleed ascii field at the desktop density",
       "Type at smallest step",
     ],
   },
@@ -158,8 +156,8 @@ export function TechnicalSections() {
                   ≤768px.
                 </li>
                 <li>
-                  Background: meteor layer desktop-only; ascii field goes
-                  full-bleed on mobile.
+                  Background: the static ascii field is masked to the gutters on
+                  desktop and goes full-bleed on mobile.
                 </li>
               </ul>
             </div>

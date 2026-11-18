@@ -13,6 +13,8 @@ interface WritingTileProps {
   post: Post;
   // `sm` is Home's small quote tile; `art` is the index's tile, which carries art when its project has a cover.
   size: TileSize;
+  // The palette slot an art tile wears; by default the post's own place in publish order.
+  colour?: number;
 }
 
 function TileTitle({ post, size }: WritingTileProps) {
@@ -30,7 +32,7 @@ function TileTitle({ post, size }: WritingTileProps) {
 
 // One post as a tile: a quote tile on Home and wherever the post has no art, an art tile on the index when its related
 // project has a cover (DESIGN.md → Writing Index → Writing Tile). The whole tile is one link and its text is chrome.
-export function WritingTile({ post, size }: WritingTileProps) {
+export function WritingTile({ post, size, colour }: WritingTileProps) {
   const { frontmatter: fm, slug } = post;
   const project = fm.relatedProject
     ? getProjectBySlug(fm.relatedProject)
@@ -60,7 +62,11 @@ export function WritingTile({ post, size }: WritingTileProps) {
             />
           </span>
           <CoverLoop className="wtile-art-media">
-            <Cover project={project} colour={postColour(slug)} variant="tile" />
+            <Cover
+              project={project}
+              colour={colour ?? postColour(slug)}
+              variant="tile"
+            />
           </CoverLoop>
         </>
       ) : (

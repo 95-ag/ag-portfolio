@@ -1,5 +1,5 @@
-import { ViewDownloadButton } from "@/components/about/view-download-button";
-import { coverComponents } from "@/components/project/covers";
+import { Spotlight } from "@/components/home/spotlight";
+import { Cover } from "@/components/project/cover";
 import { HeroMedia } from "@/components/project/hero-media";
 import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectCard } from "@/components/project/project-card";
@@ -7,9 +7,15 @@ import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
-import { PostRow } from "@/components/writing/post-row";
+import { PostRail } from "@/components/writing/post-rail";
+import { TypeLabel } from "@/components/writing/type-label";
+import { WritingTile, WritingTiles } from "@/components/writing/writing-tile";
 import type { Post } from "@/lib/content/posts";
-import type { Project } from "@/lib/content/projects";
+import {
+  getAllProjects,
+  getFeaturedProjects,
+  type Project,
+} from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
@@ -48,44 +54,65 @@ const demoProject: Project = {
   },
 };
 
-// Two rows so the hairline rule between them shows; the second carries the maximum 8 tags to
-// exercise the tag row's wrap.
-const demoPosts: Post[] = [
-  {
-    slug: "post-one",
+// Sample posts. The art tile and the rail name a real project (its cover is real); a post with none, or a note,
+// takes the dog-ear. The art tile's colour slot is passed in, since a sample has no place in publish order.
+const demoPosts: Record<"quote" | "note" | "art" | "long", Post> = {
+  quote: {
+    slug: "sample-quote",
     body: "",
     frontmatter: {
-      title: "Post Title",
+      title: "A post with no related project",
       summary:
-        "A one-line summary of the post, shown under the title in the archive.",
+        "A short pull quote that stands in for a post's summary, long enough to wrap onto a second line.",
       publishedAt: "2026-02-01",
-      type: "note",
+      type: "teardown",
       tags: ["tag-one", "tag-two"],
     },
   },
-  {
-    slug: "post-two",
+  note: {
+    slug: "sample-note",
+    body: "",
+    frontmatter: {
+      title: "A note about something small",
+      summary: "Notes take the dog-ear even when they name a project.",
+      publishedAt: "2026-01-20",
+      type: "note",
+      tags: ["tag-one"],
+      relatedProject: "masked-autoencoders",
+    },
+  },
+  art: {
+    slug: "sample-art",
+    body: "A post body of a few words, long enough to read as one minute.",
+    frontmatter: {
+      title: "A post whose project has a cover",
+      summary:
+        "Its tile on the index carries the project's cover; hover a tile to slide it down.",
+      publishedAt: "2026-01-15",
+      updatedAt: "2026-01-20",
+      type: "essay",
+      addons: [
+        { kind: "template", price: "free" },
+        { kind: "guide", price: "paid" },
+      ],
+      tags: ["tag-one", "tag-two", "tag-three"],
+      relatedProject: "masked-autoencoders",
+    },
+  },
+  long: {
+    slug: "sample-long",
     body: "",
     frontmatter: {
       title:
-        "A Longer Post Title That Wraps Onto a Second Line at Narrow Widths",
+        "A longer post title that wraps onto a second line at narrow widths",
       summary:
-        "A longer summary that runs to two lines, to show how the secondary text wraps beneath a long title.",
-      publishedAt: "2026-01-15",
-      type: "essay",
-      tags: [
-        "tag-one",
-        "tag-two",
-        "tag-three",
-        "tag-four",
-        "tag-five",
-        "tag-six",
-        "tag-seven",
-        "tag-eight",
-      ],
+        "A longer summary that runs to a few lines, to show where the type line sits when the quote is long.",
+      publishedAt: "2026-01-10",
+      type: "deep-dive",
+      tags: ["tag-one"],
     },
   },
-];
+};
 
 // Dedicated logo/avatar samples (not the diagram/figure ones) — fixed colours, since logos sit on a
 // white badge and avatars are cover-cropped into a small circle.
@@ -138,11 +165,39 @@ export function DomainSections() {
         title="Domain · Home Page"
         mapsTo="Domain Components → Home Page"
         source="src/app/page.tsx · [inline]"
-        intro="Home-page compositions built inline; listed, not previewed. See them on the home page."
+        intro="Home's hero is built inline (listed, not previewed); the spotlight and the writing tiles are standalone components shown below."
       >
-        <InlineList
-          items={["Hero", "Featured Projects Grid", "Latest Writing"]}
-        />
+        <InlineList items={["Hero", "Latest Writing"]} />
+
+        <Specimen
+          id="home-spotlight"
+          name="Spotlight"
+          source="@/components/home/spotlight"
+          description="The featured projects one at a time: a cover beside frameless text, a 7s rotation with Play / Pause, one tab per project, and a link to the rest. The whole slide shrinks to 0.97 on hover. At 860px and below the slide stacks and the tabs become dashes."
+        >
+          <InertDemo>
+            <Spotlight projects={getFeaturedProjects()} />
+          </InertDemo>
+        </Specimen>
+
+        <Specimen
+          id="home-writing-tiles"
+          name="Writing tiles (small)"
+          source="@/components/writing/writing-tile"
+          description="Latest Writing on Home: small quote tiles, four across from 1100px, three across above 860px, one below, two rows at most."
+        >
+          <InertDemo>
+            <WritingTiles
+              size="sm"
+              posts={[
+                demoPosts.quote,
+                demoPosts.art,
+                demoPosts.note,
+                demoPosts.long,
+              ]}
+            />
+          </InertDemo>
+        </Specimen>
       </GallerySection>
 
       <GallerySection
@@ -165,7 +220,7 @@ export function DomainSections() {
           id="project-card"
           name="ProjectCard"
           source="@/components/project/project-card"
-          description="Card link to a project page: hero cover, title, summary, up to three tags."
+          description="Frameless entry to a project: its cover above its text, with no border or fill. Hover shifts the title to the project's ink, zooms the cover's content 1.03 inside its frame, scales the text block 1.03 from its left edge and plays the cover."
         >
           <div className="max-w-[420px]">
             <ProjectCard project={demoProject} />
@@ -212,16 +267,32 @@ export function DomainSections() {
 
         <Specimen
           id="project-covers"
-          name="Cover components"
-          source="@/components/project/covers"
-          description="One bespoke illustrated SVG cover per project, registered by slug. The registered covers are shown here as samples; each new project adds its own."
+          name="Cover"
+          source="@/components/project/cover"
+          description="A project's cover in the frame its surface asks for (card, spotlight, hero, tile, rail), in the filled or marker mode it declares for each theme: a filled cover's ground is the project's palette colour, a marker cover sits on surface-elevated with the colour as its marks. Shown here as declared, then one cover in both modes."
         >
           <div className="grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-3">
-            {Object.entries(coverComponents).map(([slug, Cover]) => (
-              <Card key={slug} label={slug} className="aspect-video p-0">
-                <div className="relative h-full w-full overflow-hidden">
-                  <Cover />
-                </div>
+            {getAllProjects().map((project) => (
+              <Card key={project.slug} label={project.slug}>
+                <Cover project={project} variant="card" />
+              </Card>
+            ))}
+          </div>
+          <div className="mt-[var(--spacing-lg)] grid grid-cols-1 gap-[var(--spacing-lg)] md:grid-cols-2">
+            {(["filled", "marker"] as const).map((mode) => (
+              <Card key={mode} label={`masked-autoencoders · ${mode}`}>
+                <Cover
+                  variant="card"
+                  project={{
+                    ...demoProject,
+                    slug: "masked-autoencoders",
+                    frontmatter: {
+                      ...demoProject.frontmatter,
+                      colour: 4,
+                      cover: { kind: "live", light: mode, dark: mode },
+                    },
+                  }}
+                />
               </Card>
             ))}
           </div>
@@ -295,19 +366,52 @@ export function DomainSections() {
         id="writing-index"
         title="Domain · Writing Index"
         mapsTo="Domain Components → Writing Index"
-        intro="The post archive: a display H1 over hairline-ruled rows, built inline in src/app/writing/page.tsx. Its one standalone part, the row, is shown with placeholder content."
+        intro="The post archive: a display H1 over a wall of square tiles, built inline in src/app/writing/page.tsx. The tile and its type label are standalone and shown with placeholder content."
       >
         <Specimen
-          id="post-row"
-          name="PostRow"
-          source="@/components/writing/post-row"
-          description="One archive entry: date, title, summary and tags, with no image. The whole row is the link; the title underlines on hover."
+          id="writing-tile"
+          name="WritingTile"
+          source="@/components/writing/writing-tile"
+          description="One post as a tile, on the post group's tint in light and one dark ground in dark. A quote tile (no art) anchors its type line to the bottom; an art tile carries the related project's cover in the post's colour and, on hover or focus, slides it down until the title and type are revealed. Posts with no related project, and notes, take the dog-ear. Hover steps the ground toward the group's ink in light. Every index tile is square."
         >
-          <div className="max-w-[960px] divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
-            {demoPosts.map((post) => (
-              // Sample posts have no page, so a prefetch would 404 in production.
-              <PostRow key={post.slug} post={post} prefetch={false} />
-            ))}
+          <InertDemo>
+            <div className="grid grid-cols-1 gap-[var(--spacing-md)] md:grid-cols-3">
+              <WritingTile post={demoPosts.quote} size="art" />
+              <WritingTile post={demoPosts.art} size="art" colour={1} />
+              <WritingTile post={demoPosts.note} size="art" colour={3} />
+            </div>
+          </InertDemo>
+        </Specimen>
+
+        <Specimen
+          id="writing-type-label"
+          name="TypeLabel"
+          source="@/components/writing/type-label"
+          description="The post's type, its add-ons as markers, then the year, in Title Case. One line when it fits; when it would wrap the add-ons take a line above. Its colours come from the context: the group's ink on a tile, the page colour on a post page."
+        >
+          <div className="flex flex-col gap-[var(--spacing-md)]">
+            <div data-post-group="howto" className="max-w-[420px]">
+              <TypeLabel type="guide" addons={undefined} year="2026" large />
+            </div>
+            <div data-post-group="short" className="max-w-[420px]">
+              <TypeLabel
+                type="note"
+                addons={[{ kind: "guide", price: "free" }]}
+                year="2026"
+                large
+              />
+            </div>
+            <div data-post-group="long" className="max-w-[260px]">
+              <TypeLabel
+                type="essay"
+                addons={[
+                  { kind: "template", price: "free" },
+                  { kind: "guide", price: "paid" },
+                ]}
+                year="2026"
+                large
+              />
+            </div>
           </div>
         </Specimen>
 
@@ -317,7 +421,9 @@ export function DomainSections() {
           source="src/app/writing/page.tsx · [inline]"
           description="Page-bound composition, not a standalone component; listed, not previewed. See it on /writing."
         >
-          <InlineList items={["Writing Index (display H1 over ruled rows)"]} />
+          <InlineList
+            items={["Writing Index (display H1 over square tiles)"]}
+          />
         </Specimen>
       </GallerySection>
 
@@ -326,9 +432,22 @@ export function DomainSections() {
         title="Domain · Post"
         mapsTo="Domain Components → Post"
         source="src/app/writing/[slug]/page.tsx · [inline]"
-        intro="The post page layout, built inline in src/app/writing/[slug]/page.tsx; listed, not previewed."
+        intro="The post page layout is built inline in src/app/writing/[slug]/page.tsx (listed, not previewed); its rail is a standalone component."
       >
         <InlineList items={["Post Layout"]} />
+
+        <Specimen
+          id="post-rail"
+          name="PostRail"
+          source="@/components/writing/post-rail"
+          description="A post's facts beside its column: Updated, Published, Read, Tags and, when the post names a project, that project's own cover in its declared mode over its title, playing in view. A wrapping row below 1200px; sticky and right-aligned from 1200px."
+        >
+          <div data-page-colour="4" className="max-w-[720px]">
+            <InertDemo>
+              <PostRail post={demoPosts.art} />
+            </InertDemo>
+          </div>
+        </Specimen>
       </GallerySection>
 
       <GallerySection
@@ -337,19 +456,6 @@ export function DomainSections() {
         mapsTo="Domain Components → About Layouts"
         intro="Page/route/schema-bound compositions for the About page."
       >
-        <Specimen
-          id="about-view-download"
-          name="ViewDownloadButton"
-          source="@/components/about/view-download-button"
-          description="The resume action on About: one click opens the PDF in a new tab and downloads it (view or save). A small client island; shown inert here."
-        >
-          <InertDemo className="flex">
-            <ViewDownloadButton href="/AishwaryaGanesan_Resume.pdf">
-              Resume
-            </ViewDownloadButton>
-          </InertDemo>
-        </Specimen>
-
         <Specimen
           id="about-inline"
           name="Inline sections"

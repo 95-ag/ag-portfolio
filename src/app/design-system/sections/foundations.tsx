@@ -52,6 +52,47 @@ import {
 
 // Token data mirrors src/styles/theme.css + typography.css — keep in sync.
 
+const PALETTE_SLOTS = Array.from({ length: 12 }, (_, i) => i + 1);
+
+// Slots 1–12 as text (`ink`) and tint (`tile`); the cover roles derive from them (DESIGN.md → Colors → Covers).
+const PALETTE_GROUPS: SwatchGroup[] = [
+  {
+    label: "Palette · ink",
+    tokens: PALETTE_SLOTS.map((n) => ({
+      token: `--palette-${n}-ink`,
+      name: `Slot ${n} Ink`,
+      usage: "The colour as text: hover titles, tags, tab bars, page colour",
+    })),
+  },
+  {
+    label: "Palette · tile",
+    tokens: PALETTE_SLOTS.map((n) => ({
+      token: `--palette-${n}-tile`,
+      name: `Slot ${n} Tile`,
+      usage: "The colour's tint: accent-tint and surface-active on its page",
+    })),
+  },
+];
+
+const POST_HUE_GROUPS: SwatchGroup[] = [
+  {
+    label: "Post hues",
+    note: "Four hues for the twelve post types: short, how-to, long read, critique. Light tiles take the tint; dark tiles share one tile ground.",
+    tokens: (["short", "howto", "long", "critique"] as const).flatMap((g) => [
+      {
+        token: `--post-${g}-ink`,
+        name: `Post ${g} Ink`,
+        usage: "Type label, add-on markers",
+      },
+      {
+        token: `--post-${g}-tint`,
+        name: `Post ${g} Tint`,
+        usage: "Writing-tile ground",
+      },
+    ]),
+  },
+];
+
 const COLOR_GROUPS: SwatchGroup[] = [
   {
     label: "Surfaces",
@@ -64,12 +105,13 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--surface-elevated",
         name: "Surface Elevated",
-        usage: "One step up: cards, callouts, highlights",
+        usage:
+          "Callouts, highlighted panels and marker covers; a gently lifted neutral",
       },
       {
         token: "--surface-deep",
         name: "Surface Deep",
-        usage: "Diagram regions, card media well, hero; brightest in light",
+        usage: "Diagram regions and the project detail hero; equals the ground",
       },
       {
         token: "--surface-floating",
@@ -84,46 +126,7 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--surface-tag",
         name: "Surface Tag",
-        usage: "Tag and chip background",
-      },
-    ],
-  },
-  {
-    // Reading-mode surfaces re-scoped to .ds-reading so the cards preview the data-read="long" override
-    // live and theme-adaptive (gallery.css mirrors the :root blocks).
-    label: "Surfaces · reading mode",
-    scopeClassName: "ds-reading",
-    darkOnlyClassName: "ds-reading-darkonly",
-    note: (
-      <>
-        Long-read pages (<span className="mono-code">/work/[slug]</span>,{" "}
-        <span className="mono-code">data-read=&quot;long&quot;</span>) soften
-        the surface values for easier reading. Only changed tokens are shown;
-        light keeps raised and sunken, so fewer cards appear.
-      </>
-    ),
-    tokens: [
-      {
-        token: "--surface",
-        name: "Surface",
-        usage: "Reading ground, softer than the showcase default",
-      },
-      {
-        token: "--surface-elevated",
-        name: "Surface Elevated",
-        usage: "Lighter than surface in dark reading",
-        darkOnly: true,
-      },
-      {
-        token: "--surface-deep",
-        name: "Surface Deep",
-        usage: "Darker than elevated in dark reading",
-        darkOnly: true,
-      },
-      {
-        token: "--surface-floating",
-        name: "Surface Floating",
-        usage: "Reading nav / menu blur surface",
+        usage: "Neutral control fill: the neutral Button's hover",
       },
     ],
   },
@@ -141,9 +144,9 @@ const COLOR_GROUPS: SwatchGroup[] = [
         usage: "Secondary text, metadata, captions",
       },
       {
-        token: "--ink-on-accent",
-        name: "Ink On Accent",
-        usage: "Text / icon on an accent fill",
+        token: "--ink-lead",
+        name: "Ink Lead",
+        usage: "The Home hero lead, a cool grey quieter than the headline",
       },
     ],
   },
@@ -153,12 +156,13 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--hairline-strong",
         name: "Hairline Strong",
-        usage: "Default borders and dividers (stronger than hairline)",
+        usage:
+          "Default borders, dividers, the neutral Button outline, the scrollbar thumb",
       },
       {
         token: "--hairline",
         name: "Hairline",
-        usage: "Hairline dividers and card borders",
+        usage: "Subtle borders and low-contrast dividers",
       },
     ],
   },
@@ -168,7 +172,8 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--accent",
         name: "Accent",
-        usage: "Links, primary action, active state",
+        usage:
+          "Links, marks, eyebrows on main pages, focus rings, the email cue's sheen",
       },
       {
         token: "--accent-tint",
@@ -177,6 +182,8 @@ const COLOR_GROUPS: SwatchGroup[] = [
       },
     ],
   },
+  ...PALETTE_GROUPS,
+  ...POST_HUE_GROUPS,
   {
     label: "Semantic",
     tokens: [
@@ -341,12 +348,68 @@ const TYPE_TOKENS: TypeToken[] = [
     sample: "Mono label that tags a key insight or pull-quote.",
   },
   {
-    token: "tag-chip",
+    token: "tag-label",
+    family: "JetBrains Mono",
+    size: 11.5,
+    weight: 500,
+    lh: 17,
+    sample: "Uppercase mono for tags, in the colour of their context.",
+  },
+  {
+    token: "meta-label",
     family: "JetBrains Mono",
     size: 12,
     weight: 500,
-    lh: 16,
-    sample: "Mono uppercase text inside tags and chips.",
+    lh: 17,
+    sample: "Rail and metadata labels such as Published and Tags.",
+  },
+  {
+    token: "artefact-label",
+    family: "JetBrains Mono",
+    size: 11,
+    weight: 500,
+    lh: 14,
+    sample: "The caption chip on an artefact cover.",
+  },
+  {
+    token: "button-label",
+    family: "Inter",
+    size: 14,
+    weight: 600,
+    lh: 20,
+    sample: "The label inside a Button.",
+  },
+  {
+    token: "tab-label",
+    family: "Inter",
+    size: 13,
+    weight: 500,
+    lh: 18,
+    sample: "Spotlight tabs and Play / Pause.",
+  },
+  {
+    token: "tile-title-sm",
+    family: "Manrope",
+    size: 17,
+    weight: 600,
+    lh: 22,
+    sample: "The title on Home's small writing tiles.",
+  },
+  {
+    token: "quote-text",
+    family: "Inter",
+    size: 17,
+    weight: 400,
+    lh: 26,
+    sample: "The post's summary as a pull quote, italic.",
+  },
+  {
+    token: "quote-text-sm",
+    family: "Inter",
+    size: 15,
+    weight: 400,
+    lh: 22,
+    sample: "The quote on Home's small writing tiles, italic.",
   },
   {
     token: "mono-code",
@@ -382,25 +445,32 @@ const RADIUS_TOKENS: ShapeItem[] = [
     token: "none",
     radius: "var(--radius-none)",
     value: "0px",
-    usage: "Cards, code blocks, inline code, callouts; sharp containers",
+    usage: "Code blocks, inline code, callouts; sharp containers",
+  },
+  {
+    token: "xs",
+    radius: "var(--radius-xs)",
+    value: "3px",
+    usage: "Writing tiles and the dog-ear's fold",
   },
   {
     token: "sm",
     radius: "var(--radius-sm)",
     value: "4px",
-    usage: "Tags, buttons, small fills",
+    usage: "Copyable code chips",
   },
   {
     token: "md",
     radius: "var(--radius-md)",
     value: "8px",
-    usage: "Figures, panels, hero media",
+    usage:
+      "Headshot, hero images, card and spotlight covers, figures, diagrams, highlights",
   },
   {
     token: "pill",
     radius: "var(--radius-pill)",
     value: "9999px",
-    usage: "Pill nav, link pills, scroll-to-top, theme selector",
+    usage: "Pill nav, link pills, scroll-to-top, theme selector, Button",
   },
 ];
 
@@ -409,7 +479,8 @@ const DEPTH_LEVELS: DepthLevel[] = [
     name: "Level 0 · Flat",
     spec: "no border, no fill",
     className: "bg-[var(--surface)]",
-    usage: "Page sections, hero regions, footer",
+    usage:
+      "Page sections, hero regions, project cards, the Home spotlight, footer",
   },
   {
     name: "Level 1 · Border only",
@@ -428,19 +499,25 @@ const DEPTH_LEVELS: DepthLevel[] = [
     name: "Level 3 · Border + raised",
     spec: "surface-elevated + 1px hairline",
     className: "bg-[var(--surface-elevated)] border border-[var(--hairline)]",
-    usage: "Project cards, <Highlight>",
+    usage: "<Highlight>",
   },
   {
     name: "Level 4 · Sunken inset",
     spec: "surface-deep + 1px hairline (borderless when nested)",
     className: "bg-[var(--surface-deep)] border border-[var(--hairline)]",
-    usage: "<Diagram> / <DiagramRow>, card media well",
+    usage: "<Diagram> / <DiagramRow>, the project detail hero",
   },
   {
     name: "Level 5 · Accent left + raised",
     spec: "2px accent (left) + surface-elevated",
     className: "bg-[var(--surface-elevated)] border-l-2 border-[var(--accent)]",
     usage: "<Callout>, prose blockquote",
+  },
+  {
+    name: "Level 6 · Tinted tile",
+    spec: "palette tint fill, no border",
+    className: "bg-[var(--post-long-tint)]",
+    usage: "Writing tiles",
   },
 ];
 
@@ -527,7 +604,7 @@ export function FoundationsSections() {
         title="Foundations · Colors"
         mapsTo="Foundations → Colors"
         source="src/styles/theme.css → :root / [data-theme]"
-        intro="Semantic color tokens for surfaces, text, borders, accent, and state, each resolving to the live theme. One accent only; accent-strong is intentionally absent, and interaction states derive from these tokens."
+        intro="Neutrals, one site accent, the twelve-colour palette and the four post hues, each resolving to the live theme. There is no second accent; a project or post page lifts its own palette slot into the accent family."
       >
         <SwatchGrid groups={COLOR_GROUPS} />
       </GallerySection>
@@ -537,7 +614,7 @@ export function FoundationsSections() {
         title="Foundations · Typography"
         mapsTo="Foundations → Typography"
         source="src/styles/typography.css"
-        intro="Nineteen semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
+        intro="Twenty-six semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
       >
         <TypeScaleList tokens={TYPE_TOKENS} />
       </GallerySection>
@@ -612,7 +689,7 @@ export function FoundationsSections() {
         title="Foundations · Shapes"
         mapsTo="Foundations → Shapes"
         source="--radius-*"
-        intro="Four radius categories, from sharp structural containers to a full pill for floating and link controls."
+        intro="Five radius categories, from sharp structural containers through the writing tile and media surfaces to a full pill for floating and link controls."
       >
         <ShapeRow items={RADIUS_TOKENS} />
       </GallerySection>
@@ -622,7 +699,7 @@ export function FoundationsSections() {
         title="Foundations · Elevation & Depth"
         mapsTo="Foundations → Elevation & Depth"
         source="DESIGN.md → Elevation & Depth"
-        intro="Depth without shadow. Six levels built from tonal surface layering and subtle borders."
+        intro="Depth without shadow. Seven levels built from tonal surface layering, subtle borders and a tinted tile fill."
       >
         <DepthGrid levels={DEPTH_LEVELS} />
       </GallerySection>

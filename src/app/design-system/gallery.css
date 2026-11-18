@@ -8,21 +8,3 @@
 [data-theme="light"] .ds-shot-dark {
   display: none;
 }
-
-/* Element-scoped mirror of the reading-mode surface overrides (the :root[data-read="long"] blocks in
-   globals.css) so the color cards can preview reading mode live and theme-adaptive. Keep in sync with
-   those blocks. Light leaves raised/sunken at showcase (unchanged). */
-.ds-reading {
-  --surface: #f8f8f9;
-  --surface-floating: #f8f8f9d9;
-}
-[data-theme="dark"] .ds-reading {
-  --surface: #1a1a1a;
-  --surface-elevated: #292929;
-  --surface-deep: #141414;
-  --surface-floating: #1f1f1fd9;
-}
-/* Reading cards that only differ from showcase in dark — hide them in light, where they hold. */
-[data-theme="light"] .ds-reading-darkonly {
-  display: none;
-}
