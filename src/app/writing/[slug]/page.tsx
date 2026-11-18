@@ -136,8 +136,8 @@ export default async function PostPage({ params }: Props) {
                           rehypeShiki,
                           {
                             themes: {
-                              light: "vitesse-light",
-                              dark: "vitesse-dark",
+                              light: "light-plus",
+                              dark: "dark-plus",
                             },
                             // No default color → Shiki emits only CSS vars (no inline
                             // token colors), so the dark-theme swap needs no !important.

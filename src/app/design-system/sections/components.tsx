@@ -687,7 +687,7 @@ export function ComponentsSections() {
             id="mdx-code-block"
             name="CodeBlock"
             source="@/components/mdx/code-block"
-            description="Build-time Shiki highlighting (dual-theme, vitesse) via the same MDX pipeline as content — the pre maps to CodeBlock."
+            description="Build-time Shiki highlighting (dual-theme, light-plus / dark-plus) via the same MDX pipeline as content — the pre maps to CodeBlock."
             headingLevel={4}
           >
             {/* Wrapped in prose-content: the Shiki dual-theme colouring CSS that maps the
@@ -704,8 +704,8 @@ export function ComponentsSections() {
                         rehypeShiki,
                         {
                           themes: {
-                            light: "vitesse-light",
-                            dark: "vitesse-dark",
+                            light: "light-plus",
+                            dark: "dark-plus",
                           },
                           defaultColor: false,
                         },
