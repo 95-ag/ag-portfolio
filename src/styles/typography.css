@@ -188,16 +188,6 @@
     text-transform: uppercase;
     user-select: none;
   }
-  .tag-chip {
-    font-family: var(--font-mono), monospace;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--ink);
-    user-select: none;
-  }
   .insight-label {
     font-family: var(--font-mono), monospace;
     font-size: 13px;

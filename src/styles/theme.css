@@ -17,7 +17,6 @@
   --ink: #1a1a1a;
   --ink-muted: #666666;
   --ink-lead: #66696f;
-  --ink-on-accent: #ffffff;
 
   /* Borders */
   --hairline-strong: #9a9a9a;
@@ -164,7 +163,6 @@
   --ink: #e9e9e9;
   --ink-muted: #b8b8b8;
   --ink-lead: #a1a1aa;
-  --ink-on-accent: #000000;
 
   /* Borders */
   --hairline-strong: #6a6a6a;
@@ -603,7 +601,6 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-ink-lead: var(--ink-lead);
-  --color-ink-on-accent: var(--ink-on-accent);
   --color-hairline-strong: var(--hairline-strong);
   --color-hairline: var(--hairline);
   --color-accent: var(--accent);
