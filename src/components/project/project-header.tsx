@@ -43,7 +43,7 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
   return (
     <header className="flex flex-col gap-[var(--spacing-lg)]">
       {fm.tags.length > 0 && (
-        <div className="flex flex-wrap gap-[var(--spacing-xs)]">
+        <div className="flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">
           {fm.tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}

@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
-import { MailIcon } from "@/components/icons/material/mail";
+import { Spotlight } from "@/components/home/spotlight";
+import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { ProjectCard } from "@/components/project/project-card";
 import { Button } from "@/components/ui/controls/button";
 import { Heading } from "@/components/ui/display/heading";
-import { PostRow } from "@/components/writing/post-row";
+import { WritingTiles } from "@/components/writing/writing-tile";
 import { getAbout } from "@/lib/content/about";
 import { getAllPosts } from "@/lib/content/posts";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -27,9 +25,12 @@ export const metadata: Metadata = {
   },
 };
 
+// Two rows of the smallest tile grid: four across, so eight (the grid hides the rest at narrower widths).
+const LATEST_WRITING_COUNT = 8;
+
 export default function HomePage() {
   const featured = getFeaturedProjects();
-  const latestPosts = getAllPosts().slice(0, 3);
+  const latestPosts = getAllPosts().slice(0, LATEST_WRITING_COUNT);
   const { frontmatter: about } = getAbout();
   const projectTags = featured.flatMap((p) => p.frontmatter.tags);
   const personSchema = buildPersonSchema(about, projectTags);
@@ -40,97 +41,59 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(personSchema) }}
       />
-      {/* Hero */}
-      <Section
-        as="header"
-        className="pb-[var(--spacing-4xl)] lg:pb-[var(--spacing-lg)] overflow-hidden"
-      >
-        <Container>
-          <div className="flex flex-col gap-[var(--spacing-2xl)] lg:flex-row lg:items-center">
-            {/* Content column - fixed width so headline stays 2 lines */}
-            <div className="flex flex-col gap-[var(--spacing-xl)] lg:flex-1">
-              <div className="flex flex-col gap-[var(--spacing-lg)]">
-                <p className="mono-anchor select-text">
-                  Aishwarya Ganesan — AI Engineer
-                </p>
-                <Heading level={1} type="display-primary">
-                  I build for production, not proof of concept.
-                </Heading>
-                <p className="body-lead">
-                  AI prototypes are easy. Building systems that survive real
-                  users, real scale, and real operational pressure —
-                  that&rsquo;s the harder part. That&rsquo;s what I do.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-[var(--spacing-md)]">
-                <Button
-                  variant="ink"
-                  href="#featured"
-                  icon={<ArrowDownwardIcon size={18} />}
-                >
-                  See Projects
-                </Button>
-                <Button
-                  variant="ink"
-                  href="mailto:aishwarya.workbench@gmail.com"
-                  icon={<MailIcon size={18} />}
-                >
-                  Get in Touch
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      {/* Featured projects */}
-      {featured.length > 0 && (
-        <Section id="featured" className="scroll-mt-[var(--spacing-3xl)] pt-0">
-          <Container>
-            <div className="flex flex-col gap-[var(--spacing-xl)]">
-              <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">
-                {featured.map((project) => (
-                  <ProjectCard key={project.slug} project={project} />
-                ))}
-              </div>
-              <div className="flex justify-end">
-                <Link
-                  href="/work"
-                  className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
-                >
-                  View all projects →
-                </Link>
-              </div>
-            </div>
-          </Container>
-        </Section>
-      )}
-
-      {/* Latest writing */}
-      {latestPosts.length > 0 && (
-        <Section className="pt-0">
-          <Container>
+      <Container>
+        <div className="flex flex-col gap-[var(--spacing-4xl)] pt-[var(--spacing-xl)] pb-[var(--spacing-4xl)] md:gap-[calc(var(--spacing-4xl)+var(--spacing-3xl))] md:pt-[var(--spacing-4xl)] lg:pt-[var(--spacing-5xl)]">
+          {/* Hero: the statement on the left, the lead and the email action on the right. */}
+          <header className="grid grid-cols-[1.3fr_1fr] items-end gap-[var(--spacing-2xl)] stack:grid-cols-1">
             <div className="flex flex-col gap-[var(--spacing-lg)]">
-              <h2 className="mono-anchor">Latest writing</h2>
-              <ul className="divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
-                {latestPosts.map((post) => (
-                  <li key={post.slug}>
-                    <PostRow post={post} />
-                  </li>
-                ))}
-              </ul>
-              <div className="flex justify-end">
+              <p className="mono-anchor select-text">
+                Aishwarya Ganesan — AI Engineer
+              </p>
+              <Heading level={1} type="display-primary">
+                I build for production, not proof of concept.
+              </Heading>
+            </div>
+            <div className="flex flex-col items-start gap-[var(--spacing-md)]">
+              <p className="body-lead text-[var(--ink-lead)]">
+                AI prototypes are easy. Building systems that survive real
+                users, real scale, and real operational pressure — that&rsquo;s
+                the harder part. That&rsquo;s what I do.
+              </p>
+              <Button
+                variant="ink"
+                href="mailto:aishwarya.workbench@gmail.com"
+                cue="full"
+                iconPosition="trailing"
+                icon={<OpenInNewIcon size={18} />}
+              >
+                Get in Touch
+              </Button>
+            </div>
+          </header>
+
+          {featured.length > 0 && <Spotlight projects={featured} />}
+
+          {latestPosts.length > 0 && (
+            <section aria-labelledby="latest-writing">
+              <h2
+                id="latest-writing"
+                className="mono-anchor mb-[var(--spacing-lg)] select-none"
+              >
+                Latest writing
+              </h2>
+              <WritingTiles posts={latestPosts} size="sm" />
+              <div className="mt-[var(--spacing-lg)] flex justify-end">
                 <Link
                   href="/writing"
-                  className="body-caption -my-[var(--spacing-md)] py-[var(--spacing-md)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
+                  className="body-caption flex min-h-[44px] items-center text-[var(--ink)] motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)]"
                 >
                   See all writing →
                 </Link>
               </div>
-            </div>
-          </Container>
-        </Section>
-      )}
+            </section>
+          )}
+        </div>
+      </Container>
     </>
   );
 }

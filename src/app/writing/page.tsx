@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Heading } from "@/components/ui/display/heading";
-import { PostRow } from "@/components/writing/post-row";
+import { WritingTiles } from "@/components/writing/writing-tile";
 import { getAllPosts } from "@/lib/content/posts";
 import { AUTHOR_NAME } from "@/lib/site";
 
@@ -29,21 +29,13 @@ export default function WritingPage() {
   return (
     <Section>
       <Container>
-        <Stack gap="xl" className="mx-auto max-w-[960px]">
+        <Stack gap="xl">
           <header>
             <Heading level={1} type="display-primary">
               Writing
             </Heading>
           </header>
-          {posts.length > 0 && (
-            <ul className="divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
-              {posts.map((post) => (
-                <li key={post.slug}>
-                  <PostRow post={post} />
-                </li>
-              ))}
-            </ul>
-          )}
+          {posts.length > 0 && <WritingTiles posts={posts} size="art" />}
         </Stack>
       </Container>
     </Section>

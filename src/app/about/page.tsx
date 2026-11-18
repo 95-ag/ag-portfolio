@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ViewDownloadButton } from "@/components/about/view-download-button";
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
+import { DownloadIcon } from "@/components/icons/material/download";
 import { MailIcon } from "@/components/icons/material/mail";
+import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
 import { Button } from "@/components/ui/controls/button";
+import { CopyButton } from "@/components/ui/controls/copy-button";
 import { Heading } from "@/components/ui/display/heading";
 import { Tag } from "@/components/ui/display/tag";
-import { CopyLink } from "@/components/ui/links/copy-link";
 import { LinkPill } from "@/components/ui/links/link-pill";
 import { getAbout } from "@/lib/content/about";
 import { getFeaturedProjects } from "@/lib/content/projects";
@@ -79,7 +80,7 @@ export default function AboutPage() {
           {/* Portrait + editorial intro */}
           <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-start md:gap-[var(--spacing-2xl)]">
             <div className="w-full shrink-0 md:w-[clamp(180px,20vw,280px)]">
-              <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] grayscale md:aspect-[3/4]">
+              <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] md:aspect-[3/4]">
                 <Image
                   src={about.headshot}
                   alt={about.headshotAlt}
@@ -126,7 +127,7 @@ export default function AboutPage() {
                     {cap.description && (
                       <p className="body-secondary">{cap.description}</p>
                     )}
-                    <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-[var(--spacing-xs)]">
+                    <div className="mt-[var(--spacing-xs)] flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">
                       {cap.tags.map((tag) => (
                         <Tag key={tag}>{tag}</Tag>
                       ))}
@@ -166,26 +167,29 @@ export default function AboutPage() {
               Available for freelance projects and full-time roles. If you want
               AI systems built like real engineering, let&apos;s talk.
             </p>
-            <div className="grid grid-cols-1 gap-[var(--spacing-md)] sm:w-fit sm:grid-cols-2">
-              <div className="flex flex-col gap-[var(--spacing-xs)]">
+            <div className="flex flex-wrap items-center gap-x-[var(--spacing-md)] gap-y-[var(--spacing-sm)]">
+              <div className="flex items-center">
                 <Button
                   variant="ink"
                   href={`mailto:${about.contactEmail}`}
-                  icon={<MailIcon size={18} />}
-                  className="justify-center"
+                  cue="full"
+                  iconPosition="trailing"
+                  icon={<OpenInNewIcon size={18} />}
                 >
                   Let&apos;s talk
                 </Button>
-                {/* A 28px tap area, above the 24px WCAG AA floor; the negative margin keeps it from
-                    moving or overlapping the buttons around it. */}
-                <CopyLink
-                  value={about.contactEmail}
-                  className="-my-[var(--spacing-xs)] py-[var(--spacing-xs)]"
-                />
+                <CopyButton value={about.contactEmail} label="email" />
               </div>
-              <ViewDownloadButton href="/AishwaryaGanesan_Resume.pdf">
+              <Button
+                variant="neutral"
+                href="/AishwaryaGanesan_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                iconPosition="trailing"
+                icon={<DownloadIcon size={18} />}
+              >
                 Resume
-              </ViewDownloadButton>
+              </Button>
             </div>
           </div>
         </div>

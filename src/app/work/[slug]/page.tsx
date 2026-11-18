@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
-import { HeroMedia } from "@/components/project/hero-media";
+import { Cover } from "@/components/project/cover";
 import { HeroMetaOverlay } from "@/components/project/hero-meta-overlay";
 import { ProjectHeader } from "@/components/project/project-header";
 import { ProjectOverview } from "@/components/project/project-overview";
@@ -97,87 +97,82 @@ export default async function ProjectPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
-      <SectionProgressNav />
+      {/* The page wears its project's palette slot: links, tags, bullets and the focus ring take its colour. */}
+      <div data-page-colour={fm.colour}>
+        <SectionProgressNav />
 
-      <Section>
-        <Container>
-          <div className="mx-auto max-w-[960px]">
-            <div className="mb-[var(--spacing-md)]">
-              <Breadcrumbs trail={trail} />
-            </div>
+        <Section>
+          <Container>
+            <div className="mx-auto max-w-[960px]">
+              <div className="mb-[var(--spacing-md)]">
+                <Breadcrumbs trail={trail} />
+              </div>
 
-            <article>
-              {/* Header: tags, title, subtitle, links */}
-              <ProjectHeader frontmatter={fm} />
+              <article>
+                {/* Header: tags, title, subtitle, links */}
+                <ProjectHeader frontmatter={fm} />
 
-              {/* Hero */}
-              <div className="relative mt-[var(--spacing-2xl)]">
-                <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
-                  <HeroMedia
-                    src={fm.heroImage}
-                    alt={fm.heroAlt}
-                    poster={fm.heroPoster}
-                    loop={fm.heroVideoLoop}
-                    slug={slug}
+                {/* Hero */}
+                <div className="relative mt-[var(--spacing-2xl)]">
+                  <Cover project={project} variant="hero" playing />
+                  <HeroMetaOverlay
+                    logos={fm.logos}
+                    contributors={fm.contributors}
                   />
                 </div>
-                <HeroMetaOverlay
-                  logos={fm.logos}
-                  contributors={fm.contributors}
-                />
-              </div>
 
-              <div className="prose-content mt-[var(--spacing-3xl)]">
-                <h2>Overview</h2>
-                <ProjectOverview overview={fm.overview} />
+                <div className="prose-content mt-[var(--spacing-3xl)]">
+                  <h2>Overview</h2>
+                  <ProjectOverview overview={fm.overview} />
 
-                <h2>Tech Stack</h2>
-                <TechStack stack={fm.stack} />
+                  <h2>Tech Stack</h2>
+                  <TechStack stack={fm.stack} />
 
-                <MDXRemote
-                  source={project.body}
-                  components={mdxComponents}
-                  options={{
-                    mdxOptions: {
-                      remarkPlugins: [remarkGfm],
-                      rehypePlugins: [
-                        [
-                          rehypeShiki,
-                          {
-                            themes: {
-                              light: "light-plus",
-                              dark: "dark-plus",
+                  <MDXRemote
+                    source={project.body}
+                    components={mdxComponents}
+                    options={{
+                      mdxOptions: {
+                        remarkPlugins: [remarkGfm],
+                        rehypePlugins: [
+                          [
+                            rehypeShiki,
+                            {
+                              themes: {
+                                light: "light-plus",
+                                dark: "dark-plus",
+                              },
+                              // No default color → Shiki emits only CSS vars (no inline
+                              // token colors), so the dark-theme swap needs no !important.
+                              defaultColor: false,
                             },
-                            // No default color → Shiki emits only CSS vars (no inline
-                            // token colors), so the dark-theme swap needs no !important.
-                            defaultColor: false,
-                          },
+                          ],
                         ],
-                      ],
-                    },
-                  }}
-                />
-              </div>
-            </article>
+                      },
+                    }}
+                  />
+                </div>
+              </article>
 
-            {related.length > 0 && (
-              <div className="mt-[var(--spacing-4xl)]">
-                <Related items={related} />
-              </div>
-            )}
+              {related.length > 0 && (
+                <div className="mt-[var(--spacing-4xl)]">
+                  <Related items={related} />
+                </div>
+              )}
 
-            {/* Back link */}
-            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
-              <Link
-                href="/work"
-                className="interactive-label text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-              >
-                ← Back to Work
-              </Link>
+              {/* Back link */}
+              <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
+                <Link
+                  href="/work"
+                  className="interactive-label text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                >
+                  ← Back to Work
+                </Link>
+              </div>
             </div>
-          </div>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
+      </div>
     </>
   );
 }

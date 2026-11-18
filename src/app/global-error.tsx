@@ -50,6 +50,7 @@ export default function GlobalError({
               <div>
                 <Button
                   variant="ink"
+                  cue="draw"
                   onClick={() => unstable_retry()}
                   icon={<RefreshIcon size={18} />}
                 >

@@ -243,10 +243,13 @@ export function DomainSections() {
           id="project-hero-media"
           name="HeroMedia"
           source="@/components/project/hero-media"
-          description="The 16:9 hero (DESIGN.md → Hero Cover). Dispatches to a live cover, video, or image by slug; a registered cover takes precedence over the image."
+          description="The image or video inside an image or video cover (DESIGN.md → Hero Cover): a muted looping video with its poster, or a next/image. Live and artefact covers are drawn by Cover."
         >
           <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
-            <HeroMedia slug={demoProject.slug} alt="Project cover" />
+            <HeroMedia
+              src="/design-system/samples/figure.svg"
+              alt="Neutral sample hero image"
+            />
           </div>
         </Specimen>
 

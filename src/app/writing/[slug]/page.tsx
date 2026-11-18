@@ -8,9 +8,10 @@ import { Section } from "@/components/layout/section";
 import { mdxComponents } from "@/components/mdx/mdx-components";
 import { Heading } from "@/components/ui/display/heading";
 import { Related } from "@/components/ui/display/related";
-import { Tag } from "@/components/ui/display/tag";
 import { Breadcrumbs, type Crumb } from "@/components/ui/links/breadcrumbs";
-import { getAllPosts, getPostBySlug } from "@/lib/content/posts";
+import { PostRail } from "@/components/writing/post-rail";
+import { TypeLabel } from "@/components/writing/type-label";
+import { getAllPosts, getPostBySlug, postColour } from "@/lib/content/posts";
 import { getRelatedForPost } from "@/lib/content/related";
 import {
   buildBlogPostingSchema,
@@ -18,7 +19,6 @@ import {
   serializeJsonLd,
 } from "@/lib/seo/jsonld";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/site";
-import { formatDate } from "@/lib/utils/format-date";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -80,6 +80,9 @@ export default async function PostPage({ params }: Props) {
   );
   const blogPostingSchema = buildBlogPostingSchema(slug, fm);
   const related = getRelatedForPost(slug);
+  // The post published before this one, newest-first like the index; the oldest post has none.
+  const posts = getAllPosts();
+  const nextPost = posts[posts.findIndex((p) => p.slug === slug) + 1];
 
   return (
     <>
@@ -93,35 +96,28 @@ export default async function PostPage({ params }: Props) {
       />
       <Section>
         <Container>
-          <div className="mx-auto max-w-[960px]">
-            <div className="mb-[var(--spacing-md)]">
+          {/* The page wears its post's palette slot; the rail sits beside the column from 1200px (three columns,
+              the post centred) and above the header below it. */}
+          <div
+            data-page="post"
+            data-page-colour={postColour(slug)}
+            className="mx-auto grid max-w-[680px] grid-cols-1 rail-side:max-w-none rail-side:grid-cols-[1fr_680px_1fr] rail-side:gap-x-[var(--spacing-2xl)]"
+          >
+            <div className="mb-[var(--spacing-md)] rail-side:col-start-2">
               <Breadcrumbs trail={trail} />
             </div>
 
-            <article>
+            <div className="mb-[var(--spacing-xl)] rail-side:col-start-1 rail-side:row-span-3 rail-side:row-start-2 rail-side:mb-0">
+              <PostRail post={post} />
+            </div>
+
+            <article className="rail-side:col-start-2">
               <header className="flex flex-col gap-[var(--spacing-lg)]">
                 <Heading level={1} type="display-title">
                   {fm.title}
                 </Heading>
                 {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
-                <p className="support-meta">
-                  <time dateTime={fm.publishedAt}>
-                    {formatDate(fm.publishedAt)}
-                  </time>
-                  {fm.updatedAt && (
-                    <>
-                      {" · Updated "}
-                      <time dateTime={fm.updatedAt}>
-                        {formatDate(fm.updatedAt)}
-                      </time>
-                    </>
-                  )}
-                </p>
-                <div className="flex flex-wrap gap-[var(--spacing-xs)]">
-                  {fm.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
-                </div>
+                <TypeLabel type={fm.type} addons={fm.addons} />
               </header>
 
               <div className="prose-content mt-[var(--spacing-3xl)]">
@@ -152,18 +148,26 @@ export default async function PostPage({ params }: Props) {
             </article>
 
             {related.length > 0 && (
-              <div className="mt-[var(--spacing-4xl)]">
+              <div className="mt-[var(--spacing-5xl)] rail-side:col-start-2">
                 <Related items={related} />
               </div>
             )}
 
-            <div className="mt-[var(--spacing-3xl)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)]">
+            <div className="mt-[var(--spacing-5xl)] flex items-center justify-between gap-[var(--spacing-md)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)] rail-side:col-start-2">
               <Link
                 href="/writing"
-                className="interactive-label text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label flex min-h-[44px] items-center text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 ← Back to Writing
               </Link>
+              {nextPost && (
+                <Link
+                  href={`/writing/${nextPost.slug}`}
+                  className="interactive-label flex min-h-[44px] items-center text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                >
+                  Next post →
+                </Link>
+              )}
             </div>
           </div>
         </Container>
