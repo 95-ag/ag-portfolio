@@ -6,7 +6,7 @@ import { useAttentionCue } from "./attention-cue";
 import "./button.css";
 
 type ButtonBaseProps = {
-  // `outline` (default) is the 44px outlined pill; `filled` is the 48px ink pill for a screen's one primary action.
+  // `outline` (default) is the 44px outlined pill; `filled` is the ink pill, the same 44px, for a screen's one primary action.
   variant?: "outline" | "filled";
   // A Button carries exactly one icon.
   icon?: React.ReactNode;
