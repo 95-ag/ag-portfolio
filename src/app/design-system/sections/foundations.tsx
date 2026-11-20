@@ -467,7 +467,7 @@ const DEPTH_LEVELS: DepthLevel[] = [
   },
   {
     name: "Level 6 · Tinted tile",
-    spec: "project-colour tint fill, no border",
+    spec: "the post group's tint in light, surface-tag in dark; no border",
     className: "bg-[var(--post-long-tint,var(--surface-tag))]",
     usage: "Post tiles",
   },
@@ -662,7 +662,7 @@ export function FoundationsSections() {
         title="Foundations · Elevation & Depth"
         mapsTo="Foundations → Elevation & Depth"
         source="DESIGN.md → Elevation & Depth"
-        intro="Depth without shadow. Seven levels built from tonal surface layering, subtle borders and a tinted tile fill."
+        intro="Depth without shadow. Seven levels built from tonal surface layering, subtle borders and a tinted tile fill in light."
       >
         <DepthGrid levels={DEPTH_LEVELS} />
       </GallerySection>

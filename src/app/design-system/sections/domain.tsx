@@ -207,7 +207,12 @@ export function DomainSections() {
           id="home-spotlight"
           name="Spotlight"
           source="@/components/home/spotlight"
-          description="The featured projects one at a time: a cover beside frameless text, the slides turning as a cube every 7s, the ‹ ⏸ › controls, one tab per project, an ink circle with an arrow on hover, and a link to the rest. The whole slide shrinks to 0.97 on hover. At 860px and below it is one full screen (resize the window): the cover's ground behind the controls, the cover centred, the text anchored up from a full-width View project button, the dashes after Play / Pause. Home adds the page snap and the scroll-linked card there; this specimen does not."
+          description="The featured projects one at a time: a cover beside frameless text, the slides turning as a cube every 7s, the ‹ ⏸ › controls, one tab per project, an ink circle with an arrow on hover, and a link to the rest."
+          points={[
+            "The whole slide shrinks to 0.97 on hover.",
+            "At 860px and below it is one full screen (resize the window): the cover's ground behind the controls, the cover centred, the text anchored up from a full-width View project button, the dashes after Play / Pause.",
+            "Home adds the page snap and the scroll-linked card there; this specimen does not.",
+          ]}
         >
           <InertDemo>
             <Spotlight projects={getFeaturedProjects()} snap={false} />
@@ -303,10 +308,19 @@ export function DomainSections() {
           id="project-hero-overlay"
           name="HeroMetaOverlay"
           source="@/components/project/hero-meta-overlay"
-          description="The provenance marks on the detail-page hero: logos bottom-left, contributor avatars bottom-right, over the hero from md and in a row under it below md, each a Popover trigger revealing a name with a location or role. Hover or focus a mark to see its reveal; the second logo and second contributor carry a url (link clicks are disabled on this page). Shown over a plain, theme-adapted surface-deep hero so the overlay is the focus."
+          description="The provenance marks on the detail-page hero: logos bottom-left, contributor avatars bottom-right, over the hero from md and in a row under it below md, each a Popover trigger revealing a name with a location or role."
+          points={[
+            "Hover or focus a mark to see its reveal; the second logo and second contributor carry a url (link clicks are disabled on this page).",
+            "Shown over a sample hero image, as it sits on a project page.",
+          ]}
         >
           <div className="relative">
-            <div className="aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]" />
+            <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-md)] bg-[var(--surface-deep)]">
+              <HeroMedia
+                src="/design-system/samples/figure.svg"
+                alt="Neutral sample hero image"
+              />
+            </div>
             <HeroMetaOverlay
               logos={demoLogos}
               contributors={demoContributors}
@@ -378,7 +392,12 @@ export function DomainSections() {
           id="project-section-progress"
           name="SectionProgressNav"
           source="@/components/project/section-progress-nav"
-          description="Fixed left-rail table of contents of the article's section headings; highlights the active section as you scroll. Shown at 2xl+ where the gutter clears it. Previewed live below with a long sample list so it caps and scrolls — hover the rail to reveal the scroll indicator. The production rail also runs on this page at 2xl+."
+          description="Fixed left-rail table of contents of the article's section headings; highlights the active section as you scroll."
+          points={[
+            "Shown at 2xl+ where the gutter clears it.",
+            "Previewed live below with a long sample list so it caps and scrolls — hover the rail to reveal the scroll indicator.",
+            "The production rail also runs on this page at 2xl+.",
+          ]}
         >
           <ChromeFrame height={260} inert>
             <SectionProgressNav
@@ -426,7 +445,15 @@ export function DomainSections() {
           id="post-tile"
           name="PostTile"
           source="@/components/writing/post-tile"
-          description="One post as a tile, on the post group's tint in light and one dark ground in dark. A quote tile (no art) anchors its type line to the bottom; an art tile carries the post's own cover (a project's stands in here) in the post's colour and, on hover or focus, slides it down until the title and type are revealed; on a touch screen it fills the tile with only the title over it. Posts with no cover of their own, and notes, take the dog-ear. Hover steps the ground toward the group's ink in light. Every index tile is square."
+          description="One post as a tile, on the post group's tint in light and one dark ground in dark."
+          points={[
+            "A quote tile (no art) anchors its type line to the bottom; its quote shows the whole lines that fit and never leaves the square.",
+            "An art tile carries the post's own cover (a project's stands in here) in the post's colour. With a pointer, hover or focus slides it down until the title and type are revealed.",
+            "On a touch screen (no hover) the cover fills the tile and only the title lies over it.",
+            "Posts with no cover of their own, and notes, take the dog-ear.",
+            "Hover steps the ground toward the group's ink in light.",
+            "Every index tile is square.",
+          ]}
         >
           <InertDemo>
             <div className="grid grid-cols-1 gap-[var(--spacing-md)] md:grid-cols-3">
@@ -453,7 +480,11 @@ export function DomainSections() {
           id="writing-type-label"
           name="TypeLabel"
           source="@/components/writing/type-label"
-          description="The post's type, its add-ons as markers, then the year, in Title Case. One line when it fits; when it would wrap the add-ons take a line above. Its colours come from the context: the group's ink on a tile, the page colour on a post page."
+          description="The post's type, its add-ons as markers, then the year, in Title Case."
+          points={[
+            "One line when it fits; when it would wrap the add-ons take a line above.",
+            "Its colours come from the context: the group's ink on a tile, the page colour on a post page.",
+          ]}
         >
           <div className="flex flex-col gap-[var(--spacing-md)]">
             <div data-post-group="howto" className="max-w-[420px]">
@@ -506,7 +537,10 @@ export function DomainSections() {
           id="post-rail"
           name="PostRail"
           source="@/components/writing/post-rail"
-          description="A post's facts beside its column: Updated, Published, Read, Tags and, when the post names a project, that project's own cover in its declared mode over its title, playing in view. A wrapping row below 1200px; sticky and right-aligned from 1200px."
+          description="A post's facts beside its column: Updated, Published, Read, Tags and, when the post names a project, that project's own cover in its declared mode over its title, playing in view."
+          points={[
+            "A wrapping row below 1200px; sticky and right-aligned from 1200px.",
+          ]}
         >
           {/* Not wrapped in data-page-colour: that attribute lifts the ASCII mark colour for the whole page, gallery included. */}
           <div className="max-w-[720px]">
@@ -569,7 +603,7 @@ export function DomainSections() {
         title="Domain · Credits"
         mapsTo="Domain Components → Credits"
         source="src/app/credits/page.tsx · src/lib/content/credits.ts · [inline]"
-        intro="The end credits at /credits, built inline from typed data: an opening line and a dedication each centred in 67% of the viewport, sections of role / name rows in two columns, and a frosted Play / Pause control that scrolls the page at 30px per second while the reader's input always takes over."
+        intro="The end credits at /credits, built inline from typed data: an opening line and a dedication each centred in 67% of the viewport, sections of role / name rows in two columns, and a frosted Play / Pause control that scrolls the page at 30px per second from the moment the page opens, while the reader's input always takes over."
       >
         <Specimen
           id="credits-rows"

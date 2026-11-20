@@ -31,7 +31,9 @@ export function GallerySection({
           <h2>{title}</h2>
         </div>
         <span className="mono-anchor">→ DESIGN.md → {mapsTo}</span>
-        {source && <span className="mono-code">{source}</span>}
+        {source && (
+          <span className="mono-code [overflow-wrap:anywhere]">{source}</span>
+        )}
         <div className="body-primary">{intro}</div>
       </div>
       <div className="flex flex-col gap-[var(--spacing-2xl)]">{children}</div>
@@ -61,6 +63,7 @@ export function Specimen({
   source,
   spec,
   description,
+  points,
   headingLevel = 3,
   children,
 }: {
@@ -68,7 +71,9 @@ export function Specimen({
   name: string;
   source?: string;
   spec?: string;
+  /** One intro line; the details follow as `points`. */
   description?: string;
+  points?: string[];
   /** 3 at section level, 4 when nested in a SpecimenGroup. */
   headingLevel?: 3 | 4;
   children: ReactNode;
@@ -81,8 +86,17 @@ export function Specimen({
       className="flex scroll-mt-[var(--spacing-4xl)] flex-col gap-[var(--spacing-md)]"
     >
       <Heading className="heading-component">{name}</Heading>
-      {source && <span className="mono-code">{source}</span>}
+      {source && (
+        <span className="mono-code [overflow-wrap:anywhere]">{source}</span>
+      )}
       {description && <span className="body-primary">{description}</span>}
+      {points && points.length > 0 && (
+        <ul className="body-primary flex list-disc flex-col gap-[var(--spacing-xs)] pl-[var(--spacing-lg)]">
+          {points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      )}
       {children}
       {spec && <div className="mono-anchor">{spec}</div>}
     </div>

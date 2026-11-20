@@ -126,7 +126,10 @@ export function ComponentsSections() {
           id="shell-nav"
           name="Nav"
           source="@/components/shell/nav"
-          description="One navigation surface in three states: a plain row from 861px, the frosted round button it collapses into after 80px of scroll (and the only form at 860px and below), and the card the button opens into. Shown here in bounded frames; the live nav is on this page."
+          description="One navigation surface in three states: a plain row from 861px, the frosted round button it collapses into after 80px of scroll (and the only form at 860px and below), and the card the button opens into."
+          points={[
+            "Shown here in bounded frames; the live nav is on this page.",
+          ]}
         >
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <ChromeFrame height={96} inert>
@@ -145,7 +148,10 @@ export function ComponentsSections() {
           id="shell-page-name"
           name="PageName"
           source="@/components/shell/page-name"
-          description="The site's name in the top-left corner of every page, level with the nav; it scrolls away and links Home. Shown here in a bounded frame; the live one is at the top of this page."
+          description="The site's name in the top-left corner of every page, level with the nav; it scrolls away and links Home."
+          points={[
+            "Shown here in a bounded frame; the live one is at the top of this page.",
+          ]}
         >
           <ChromeFrame height={96} inert>
             <PageName />
@@ -156,7 +162,11 @@ export function ComponentsSections() {
           id="shell-logomark"
           name="LogoMark"
           source="@/components/shell/logo-mark"
-          description="Route-aware cat logomark in the nav row and the menu card: sitting on Home, stretching everywhere else. Crossing the Home boundary zooms into the cat's face, cuts to the other pose's matching face and zooms out; hovering in the nav row shows the current pose's full body. Shown here static, one per pose."
+          description="Route-aware cat logomark in the nav row and the menu card: sitting on Home, stretching everywhere else."
+          points={[
+            "Crossing the Home boundary zooms into the cat's face, cuts to the other pose's matching face and zooms out; hovering in the nav row shows the current pose's full body.",
+            "Shown here static, one per pose.",
+          ]}
         >
           <div inert className="flex items-center gap-[var(--spacing-xl)]">
             <figure className="flex flex-col items-center gap-[var(--spacing-xs)]">
@@ -176,7 +186,12 @@ export function ComponentsSections() {
           id="shell-theme-toggle"
           name="ThemeToggle"
           source="@/components/shell/theme-toggle"
-          description="The floating Light / Dark toggle at the bottom-left corner — scroll-to-top's twin. Two modes, one tap flips, the icon shows the mode it switches to. Shown on the dev server and previews (site-wide) and on this page in production (page-only). Framed here at its resting position."
+          description="The floating Light / Dark toggle at the bottom-left corner — scroll-to-top's twin."
+          points={[
+            "Two modes, one tap flips, the icon shows the mode it switches to; flipping to the theme the system already has hands the choice back to the system.",
+            "Shown on the dev server and previews (site-wide) and on this page in production (page-only).",
+            "Framed here at its resting position.",
+          ]}
         >
           <ChromeFrame height={140} inert>
             <ThemeToggle mode="page" contained />
@@ -187,7 +202,11 @@ export function ComponentsSections() {
           id="shell-footer"
           name="Footer"
           source="@/components/shell/footer"
-          description="Site-wide footer on the 1440 box: © year and name, the social and feed icons, and Credits · Stylebook · Source. One row from md; stacked icons, links, © on phones. In document flow."
+          description="Site-wide footer on the 1440 box: © year and name, the social and feed icons, and Credits, Stylebook and Source."
+          points={[
+            "One row from md; stacked icons, links, © on phones.",
+            "In document flow.",
+          ]}
         >
           <ChromeFrame inert>
             <Footer />
@@ -198,7 +217,11 @@ export function ComponentsSections() {
           id="shell-scroll-to-top"
           name="ScrollToTop"
           source="@/components/shell/scroll-to-top"
-          description="Frosted circle at the bottom-right corner that appears after 400px of scroll on long pages and sits above the footer. Not shown on Home, About, 404 and error pages (they mark their root data-scroll-top=off). Mounted once in the root layout; the live instance is on this page."
+          description="Frosted circle at the bottom-right corner that appears after 400px of scroll on long pages and sits above the footer."
+          points={[
+            "Not shown on Home, About, 404 and error pages (they mark their root data-scroll-top=off).",
+            "Mounted once in the root layout; the live instance is on this page.",
+          ]}
         >
           <InertDemo>
             <ChromeFrame height={160}>
@@ -219,7 +242,12 @@ export function ComponentsSections() {
             id="ui-button"
             name="Button"
             source="@/components/ui/controls/button"
-            description="Committed action control: a 44px outline pill or a 48px filled ink pill, with exactly one optional icon and, on the outline, an attention cue. Used for the email actions on Home and About and the 404 and error actions. Links such as Resume are LinkPills."
+            description="Committed action control: an outline pill or a filled ink pill, both 44px, with exactly one optional icon."
+            points={[
+              "The outline carries the attention cue; the filled pill, the screen's one primary action, has none and takes the accent on hover.",
+              "Used for the email actions on Home and About and the 404 and error actions.",
+              "Links such as Resume are LinkPills.",
+            ]}
             headingLevel={4}
           >
             <InertDemo>
@@ -282,31 +310,35 @@ export function ComponentsSections() {
             id="ui-breadcrumbs"
             name="Breadcrumbs"
             source="@/components/ui/links/breadcrumbs"
-            description="Location trail above the page title on Project Detail and Post. Ancestors link; the trailing segment is the current page and is not a link. Selection is suppressed: it is chrome."
+            description="Location trail above the page title on a Post; a project page shows none."
+            points={[
+              "Ancestors link; the trailing segment is the current page and is not a link.",
+              "Selection is suppressed: it is chrome.",
+            ]}
             spec="support-meta · ink-muted, current page ink · / separator · accent on ancestor hover"
             headingLevel={4}
           >
             <div className="flex flex-col gap-[var(--spacing-xl)]">
               <div className="flex flex-col gap-[var(--spacing-sm)]">
-                <span className="mono-anchor">Project trail</span>
+                <span className="mono-anchor">Post trail</span>
                 <Breadcrumbs
                   trail={[
                     { name: "Home", href: "#shell" },
-                    { name: "Work", href: "#ui-breadcrumbs" },
+                    { name: "Writing", href: "#ui-breadcrumbs" },
                     {
-                      name: "Evaluating Masked Autoencoders for Computer Vision",
+                      name: "What TV Time got right",
                     },
                   ]}
                 />
               </div>
               <div className="flex flex-col gap-[var(--spacing-sm)]">
-                <span className="mono-anchor">Longest project title</span>
+                <span className="mono-anchor">Longest post title</span>
                 <Breadcrumbs
                   trail={[
                     { name: "Home", href: "#shell" },
-                    { name: "Work", href: "#ui-breadcrumbs" },
+                    { name: "Writing", href: "#ui-breadcrumbs" },
                     {
-                      name: "The agent that writes, illustrates, and ships this portfolio",
+                      name: "A long post title that has to wrap along the trail without breaking the page layout",
                     },
                   ]}
                 />
@@ -320,7 +352,11 @@ export function ComponentsSections() {
             id="ui-error-screen"
             name="ErrorScreen"
             source="@/components/ui/display/error-screen"
-            description="The 404 and the route-level error share one single-screen layout: eyebrow, display H1, lead, a filled primary action and Go Home (the cat after the label). On a window under 760px tall its spacing tightens so the screen still fits. Framed here at a fixed height."
+            description="The 404 and the route-level error share one single-screen layout: eyebrow, display H1, lead, a filled primary action and Go Home (the cat after the label)."
+            points={[
+              "On a window under 760px tall its spacing tightens so the screen still fits.",
+              "Framed here at a fixed height.",
+            ]}
             headingLevel={4}
           >
             <ChromeFrame height={520} inert>
@@ -397,7 +433,12 @@ export function ComponentsSections() {
             id="ui-popover"
             name="Popover"
             source="@/components/ui/display/popover"
-            description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two. Opens below the mark, or above it when there is no room below, aligned to its outer edge, and appears instantly. The panel is portaled, so it is never clipped by its container. The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only)."
+            description="Hover-, focus- and tap-revealed detail attached to a compact mark: name on line one, location or role on line two."
+            points={[
+              "Opens below the mark, or above it when there is no room below, aligned to its outer edge, and appears instantly.",
+              "The panel is portaled, so it is never clipped by its container.",
+              "The trigger is a real button, or a link when it has an href: hover or focus reveals, click follows, and on touch the first tap reveals and the second follows (this page cancels link clicks, so the link specimen reveals only).",
+            ]}
             spec="surface-elevated · hairline · radius-xs · body-caption · z-popover (45) · 44×44 hit area"
             headingLevel={4}
           >
@@ -454,7 +495,14 @@ export function ComponentsSections() {
             id="ui-lightbox"
             name="Lightbox"
             source="@/components/ui/display/lightbox"
-            description="Full-size view of a figure whose detail exceeds the reading column. The media box is the trigger: a button with a zoom-in cursor and the focus ring, no icon. Opens a modal over a surface backdrop with the caption beneath the image: a raster never renders larger than its natural size, while a vector diagram scales to fit. Traps focus, locks scroll, and closes on Esc, a backdrop click or the close button, returning focus to the trigger. The open transition is opacity-only and instant under reduced motion. Figure, Diagram and DiagramPanel carry it; cards and heroes do not."
+            description="Full-size view of a figure whose detail exceeds the reading column."
+            points={[
+              "The media box is the trigger: a button with a zoom-in cursor and the focus ring, no icon.",
+              "Opens a modal over a surface backdrop with the caption beneath the image: a raster never renders larger than its natural size, while a vector diagram scales to fit.",
+              "Traps focus, locks scroll, and closes on Esc, a backdrop click or the close button, returning focus to the trigger.",
+              "The open transition is opacity-only and instant under reduced motion.",
+              "Figure, Diagram and DiagramPanel carry it; cards and heroes do not.",
+            ]}
             spec="surface at 95% · 44×44 close button, 20px icon · z-lightbox (70) · opacity on duration-base"
             headingLevel={4}
           >
@@ -481,7 +529,11 @@ export function ComponentsSections() {
             id="ui-related"
             name="Related"
             source="@/components/ui/display/related"
-            description="Curated next reads at the end of a long-form page: up to 3 items mixing projects and posts, each a type label, title and one-line summary. Renders its own H2 and nothing at all when given no items. Stacked through tablet, three columns from lg."
+            description="Curated next reads at the end of a long-form page: up to 3 items mixing projects and posts, each a type label, title and one-line summary."
+            points={[
+              "Renders its own H2 and nothing at all when given no items.",
+              "Stacked through tablet, three columns from lg.",
+            ]}
             spec="mono-anchor H2 · full-width hairline above the list, and between stacked items below lg · title underlines on hover"
             headingLevel={4}
           >
@@ -589,7 +641,11 @@ export function ComponentsSections() {
             id="mdx-clip"
             name="Clip"
             source="@/components/mdx/clip"
-            description="Short screen recording in the Figure frame. Poster with native controls; muted, inline, no autoplay or loop, nothing loaded before play. Takes the figure width scale; no Lightbox."
+            description="Short screen recording in the Figure frame."
+            points={[
+              "Poster with native controls; muted, inline, no autoplay or loop, nothing loaded before play.",
+              "Takes the figure width scale; no Lightbox.",
+            ]}
             headingLevel={4}
           >
             <Clip
@@ -604,7 +660,12 @@ export function ComponentsSections() {
             id="mdx-screen-carousel"
             name="ScreenCarousel"
             source="@/components/mdx/screen-carousel"
-            description="App screens paired with the prose that explains them, one ScreenSlide per screen. From lg on a window at least 677px tall it pages: the frame grows from 220px to 280px with the window height, with chevrons and position dots. From lg on a shorter window the screens sit side by side; below lg they stack with the frame half the screen tall. Resize the window to see each."
+            description="App screens paired with the prose that explains them, one ScreenSlide per screen."
+            points={[
+              "From lg on a window at least 677px tall it pages: the frame grows from 220px to 280px with the window height, with chevrons and position dots.",
+              "From lg on a shorter window the screens sit side by side; below lg they stack with the frame half the screen tall.",
+              "Resize the window to see each.",
+            ]}
             spec={
               "<ScreenSlide image | video poster alt caption?>prose</ScreenSlide>"
             }

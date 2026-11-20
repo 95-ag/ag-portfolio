@@ -132,8 +132,8 @@ export function TechnicalSections() {
                   neighbouring target.
                 </li>
                 <li>
-                  Buttons stand 44px (outline) or 48px (filled) tall; LinkPill
-                  stands 44px tall, its visible height the touch target itself.
+                  Buttons stand 44px tall, outline and filled; LinkPill stands
+                  44px tall, its visible height the touch target itself.
                 </li>
                 <li>
                   Icon-only circles (theme toggle, scroll-to-top, menu, Play /
