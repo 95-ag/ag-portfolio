@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { GitHubIcon } from "@/components/icons/brands/github";
-import { LinkedInIcon } from "@/components/icons/brands/linkedin";
 import { DownloadIcon } from "@/components/icons/material/download";
-import { MailIcon } from "@/components/icons/material/mail";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
@@ -41,43 +38,16 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(personSchema) }}
       />
-      <Container>
-        <div className="flex flex-col gap-[var(--spacing-4xl)] xl:gap-[var(--spacing-5xl)]">
-          {/* Identity header */}
-          <header className="flex flex-col gap-[var(--spacing-lg)]">
-            <Heading level={1} type="display-primary">
-              {about.name}
-            </Heading>
-            <div className="flex flex-wrap items-center gap-[var(--spacing-sm)]">
-              {about.socials.github && (
-                <LinkPill
-                  href={about.socials.github}
-                  icon={<GitHubIcon size={16} />}
-                  external
-                >
-                  GitHub
-                </LinkPill>
-              )}
-              {about.socials.linkedin && (
-                <LinkPill
-                  href={about.socials.linkedin}
-                  icon={<LinkedInIcon size={16} />}
-                  external
-                >
-                  LinkedIn
-                </LinkPill>
-              )}
-              <LinkPill
-                href={`mailto:${about.contactEmail}`}
-                icon={<MailIcon size={16} />}
-              >
-                Email
-              </LinkPill>
-            </div>
-          </header>
-
+      {/* The page opens on the photo: the name lives in the page corner, so the H1 is heard but not shown. */}
+      <h1 className="display-primary sr-only">{about.name}</h1>
+      <Container width="cap">
+        {/* data-scroll-top="off": a short, fixed page carries no scroll-to-top (DESIGN.md → Shell → Scroll-to-top Button). */}
+        <div
+          data-scroll-top="off"
+          className="flex flex-col gap-[var(--spacing-4xl)] xl:gap-[var(--spacing-5xl)]"
+        >
           {/* Portrait + editorial intro */}
-          <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-start md:gap-[var(--spacing-2xl)]">
+          <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-center md:gap-[var(--spacing-2xl)]">
             <div className="w-full shrink-0 md:w-[clamp(180px,20vw,280px)]">
               <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] md:aspect-[3/4]">
                 <Image
@@ -93,7 +63,7 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-md)]">
-              <p className="heading-display text-balance">
+              <p className="heading-display mb-[var(--spacing-sm)] text-balance">
                 {about.positioning}
               </p>
               {about.detailedPositioning
