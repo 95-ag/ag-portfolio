@@ -51,7 +51,7 @@ export default function HomePage() {
           {/* Hero: the statement on the left, the lead and the email action on the right. */}
           <header
             data-snap="hero"
-            className="grid grid-cols-[1.3fr_1fr] items-center gap-[var(--spacing-2xl)] min-[1440px]:grid-cols-[1.4fr_1fr] stack:min-h-[62dvh] stack:grid-cols-1 stack:content-center stack:gap-[var(--spacing-lg)]"
+            className="grid grid-cols-[1.3fr_1fr] items-center gap-[var(--spacing-2xl)] min-[1440px]:grid-cols-[1.4fr_1fr] stack:min-h-[62dvh] stack:grid-cols-1 stack:content-start stack:gap-[var(--spacing-lg)]"
           >
             <Heading level={1} type="display-primary">
               I build for production, not proof of concept.
