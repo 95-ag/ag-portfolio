@@ -50,8 +50,15 @@ export function ThemeToggle({
   const next: Mode = current === "dark" ? "light" : "dark";
 
   const flip = () => {
-    if (mode === "page") setPageTheme(next);
-    else setTheme(next);
+    if (mode === "page") {
+      setPageTheme(next);
+      return;
+    }
+    // Flipping to the theme the system already has hands the choice back to the system, so the page follows it again.
+    const system = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+    setTheme(next === system ? "system" : next);
   };
 
   const button = (
