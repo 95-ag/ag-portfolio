@@ -246,6 +246,11 @@
   html:has([data-spot-snap]) [data-snap="hero"] {
     scroll-margin-top: calc(var(--spacing-3xl) + var(--spacing-xl));
   }
+  @media (min-width: 768px) {
+    html:has([data-spot-snap]) [data-snap="hero"] {
+      scroll-margin-top: calc(var(--spacing-3xl) + var(--spacing-4xl));
+    }
+  }
 
   /* The normal form before the snap: 96px above, the heading, 24px, then a card inset 32px a side. Scroll-linked (SnapProgress
      writes --sf-p, 0 → 1, and --sf-k, the card's starting scale) the card scales to the full screen by transform; the screen
