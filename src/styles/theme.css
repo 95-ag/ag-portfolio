@@ -617,7 +617,6 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
 @custom-variant stack (@media (max-width: 860px));
 @custom-variant tiles-four (@media (min-width: 1100px));
 @custom-variant rail-side (@media (min-width: 1200px));
-@custom-variant cap (@media (min-width: 1568px));
 
 @media (min-width: 768px) {
   :root {

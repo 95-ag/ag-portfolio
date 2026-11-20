@@ -86,9 +86,6 @@
   border-radius: calc(var(--nav-size) / 2);
   pointer-events: none;
 }
-.nav-box:hover {
-  border-color: var(--hairline-strong);
-}
 .nav[data-mode="row"] .nav-box {
   opacity: 0;
   transform: scale(0.82);

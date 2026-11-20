@@ -156,7 +156,7 @@ export function ComponentsSections() {
           id="shell-logomark"
           name="LogoMark"
           source="@/components/shell/logo-mark"
-          description="Route-aware cat logomark in the pill nav and mobile panel: sitting on Home, stretching everywhere else. Crossing the Home boundary zooms into the cat's face, cuts to the other pose's matching face and zooms out; hovering in the pill nav shows the current pose's full body. Shown here static, one per pose."
+          description="Route-aware cat logomark in the nav row and the menu card: sitting on Home, stretching everywhere else. Crossing the Home boundary zooms into the cat's face, cuts to the other pose's matching face and zooms out; hovering in the nav row shows the current pose's full body. Shown here static, one per pose."
         >
           <div inert className="flex items-center gap-[var(--spacing-xl)]">
             <figure className="flex flex-col items-center gap-[var(--spacing-xs)]">
@@ -179,7 +179,7 @@ export function ComponentsSections() {
           description="The floating Light / Dark toggle at the bottom-left corner — scroll-to-top's twin. Two modes, one tap flips, the icon shows the mode it switches to. Shown on the dev server and previews (site-wide) and on this page in production (page-only). Framed here at its resting position."
         >
           <ChromeFrame height={140} inert>
-            <ThemeToggle mode="page" />
+            <ThemeToggle mode="page" contained />
           </ChromeFrame>
         </Specimen>
 

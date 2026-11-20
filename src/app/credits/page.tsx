@@ -32,7 +32,9 @@ export default function CreditsPage() {
                 row.role ? (
                   <p key={`${row.role}-${row.name}`} className="credits-row">
                     <span className="credits-role">{row.role}</span>
-                    <span className="credits-name">{row.name}</span>
+                    <span className="credits-name">
+                      {row.href ? <a href={row.href}>{row.name}</a> : row.name}
+                    </span>
                   </p>
                 ) : (
                   <p

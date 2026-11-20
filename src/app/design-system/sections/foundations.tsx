@@ -340,7 +340,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 14,
     weight: 500,
     lh: 20,
-    sample: "Navigation links in the pill nav and mobile menu.",
+    sample: "Navigation links in the nav row and the menu card.",
   },
   {
     token: "support-meta",

@@ -241,6 +241,11 @@
   html:has([data-spot-snap]) footer {
     scroll-snap-align: end;
   }
+  /* The hero's snap point is the top of the page, not the hero's own top, so the page name above it stays in view at rest:
+     the margin is main's top padding plus the space above the hero. */
+  html:has([data-spot-snap]) [data-snap="hero"] {
+    scroll-margin-top: calc(var(--spacing-3xl) + var(--spacing-xl));
+  }
 
   /* The normal form before the snap: 96px above, the heading, 24px, then a card inset 32px a side. Scroll-linked (SnapProgress
      writes --sf-p, 0 → 1, and --sf-k, the card's starting scale) the card scales to the full screen by transform; the screen
@@ -293,6 +298,8 @@
     flex-direction: column;
     gap: 0;
     height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding-top: calc(var(--spacing-md) + 44px + var(--spacing-md));
   }
   .spot-ground {
@@ -318,10 +325,13 @@
     display: grid;
     flex: 1 1 0;
     place-items: center;
-    min-height: 0;
+    /* On a short window (a landscape phone) the slot keeps a floor and the face scrolls, so the cover never climbs under the
+       controls and the button stays reachable. */
+    min-height: 120px;
   }
   .spot-cover .cover {
     width: 100%;
+    max-height: 100%;
     border-radius: 0;
   }
   .spot-text {
@@ -354,9 +364,6 @@
 
   /* The row: Play / Pause at the left end, the dashes after it up to the page's menu button at the right. It stays still
      while the cube turns, and wears the current cover's mode over the ground (the carrier takes the tokens, not a fill). */
-  .spot-chrome[data-colour] {
-    background-color: transparent;
-  }
   .spot-controls {
     top: var(--spacing-md);
     right: auto;

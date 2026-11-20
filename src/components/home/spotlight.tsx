@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useId } from "react";
 import { SnapProgress } from "@/components/home/snap-progress";
 import {
   type SpotlightSlide,
@@ -24,6 +25,7 @@ function pad(n: number) {
 // The featured projects one at a time under "Selected work" (DESIGN.md → Home Page → Spotlight): a cover beside frameless
 // text with the link to the rest below on wide viewports, one snapped full screen at and below 860px.
 export function Spotlight({ projects, snap = true }: SpotlightProps) {
+  const headingId = useId();
   const slides: SpotlightSlide[] = projects.map((project, i) => {
     const { slug, frontmatter: fm } = project;
     const mode = {
@@ -89,13 +91,13 @@ export function Spotlight({ projects, snap = true }: SpotlightProps) {
 
   return (
     <section
-      aria-labelledby="selected-work"
+      aria-labelledby={headingId}
       data-spot-snap={snap || undefined}
       className="spot-section flex flex-col"
     >
       {snap && <SnapProgress />}
       <h2
-        id="selected-work"
+        id={headingId}
         className="mono-anchor spot-heading mb-[var(--spacing-lg)] select-none"
       >
         Selected work

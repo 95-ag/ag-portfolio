@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { IconProps } from "@/components/icons/icon-base";
 import { CloseIcon } from "@/components/icons/material/close";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
@@ -70,6 +70,7 @@ export function NavView({
   toggleRef,
 }: NavViewProps) {
   const rowRef = useRef<HTMLElement>(null);
+  const menuId = useId();
 
   // Each row item slides to the button's centre when the row collapses: measure how far, from layout (not from a
   // transformed rect), on mount, on resize and once the font has settled the widths.
@@ -145,9 +146,9 @@ export function NavView({
           ref={toggleRef}
           type="button"
           data-nav-toggle
-          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+          aria-label="Navigation menu"
           aria-expanded={open}
-          aria-controls="nav-menu"
+          aria-controls={menuId}
           inert={!showButton}
           onClick={onToggle}
           className="nav-toggle"
@@ -156,7 +157,7 @@ export function NavView({
           <CloseIcon size={20} className="nav-icon-close" />
         </button>
         <nav
-          id="nav-menu"
+          id={menuId}
           aria-label="Menu"
           data-nav-list
           className="nav-list"

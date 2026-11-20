@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Two rows of the smallest tile grid: four across, so eight (the grid hides the rest at narrower widths).
+// Two rows of the smallest tile grid at its widest: five across, so ten (the grid hides the rest at narrower widths).
 const LATEST_WRITING_COUNT = 10;
 
 export default function HomePage() {

@@ -1,4 +1,4 @@
-// Camera framings for the route-aware cat logomark (DESIGN.md → Components → Shell → Floating Pill Nav).
+// Camera framings for the route-aware cat logomark (DESIGN.md → Components → Shell → Nav).
 // A framing maps an image fraction p to a screen fraction s·p + t, with transform-origin at the top-left.
 // The head and face framings were fitted by pixel-matching the full-body images against the original head
 // crops and against each other's faces — re-fit them if either image changes.

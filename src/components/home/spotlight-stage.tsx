@@ -153,6 +153,7 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
       { duration: TURN_MS, easing: TURN_EASING, fill: "forwards" },
     );
     animation.onfinish = () => {
+      afterTurn.current = true;
       setSettled(turn.to);
       setTurn(null);
     };
@@ -173,17 +174,23 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
     return () => window.clearTimeout(timer);
   }, [settled]);
 
+  // The tab's fill restarts when a turn starts and the rotation timer when it ends, so the timer is shortened by the turn.
+  const afterTurn = useRef(false);
   useEffect(() => {
     if (!auto || turn) return;
-    const timer = window.setTimeout(() => step(1), ADVANCE_MS);
+    const timer = window.setTimeout(
+      () => step(1),
+      afterTurn.current ? ADVANCE_MS - TURN_MS : ADVANCE_MS,
+    );
     return () => window.clearTimeout(timer);
   }, [auto, turn, step]);
 
-  // Moving: horizontal trackpad scroll, one slide per gesture with a lock; touch swipe; arrow keys (below).
+  // Moving: horizontal trackpad scroll, one slide per gesture with a lock; touch swipe; arrow keys (below). The lock is a ref: the
+  // listener is re-attached whenever `step` changes, which a local would reset before the lock ran out.
+  const wheelLocked = useRef(false);
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
-    let locked = false;
     const onWheel = (event: WheelEvent) => {
       if (
         Math.abs(event.deltaX) <= Math.abs(event.deltaY) ||
@@ -191,10 +198,10 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
       )
         return;
       event.preventDefault();
-      if (locked) return;
-      locked = true;
+      if (wheelLocked.current) return;
+      wheelLocked.current = true;
       window.setTimeout(() => {
-        locked = false;
+        wheelLocked.current = false;
       }, WHEEL_LOCK_MS);
       step(event.deltaX > 0 ? 1 : -1);
     };
@@ -251,54 +258,59 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
       style={{ "--spot-count": count } as CSSProperties}
     >
       <div className="spot-chrome" {...chromeProps}>
-        <div className="spot-controls">
-          <button
-            type="button"
-            data-spot-prev
-            className="spot-ctl spot-ctl-step"
-            aria-label="Previous project"
-            onClick={() => step(-1)}
-          >
-            <ChevronLeftIcon size={24} />
-          </button>
-          <button
-            type="button"
-            data-spot-toggle
-            className="spot-ctl"
-            aria-label={paused ? "Play" : "Pause"}
-            onClick={() => setPaused((value) => !value)}
-          >
-            {paused ? <PlayArrowIcon size={20} /> : <PauseIcon size={20} />}
-          </button>
-          <button
-            type="button"
-            data-spot-next
-            className="spot-ctl spot-ctl-step"
-            aria-label="Next project"
-            onClick={() => step(1)}
-          >
-            <ChevronRightIcon size={24} />
-          </button>
-        </div>
-        <div className="spot-tabs" role="tablist" aria-label="Projects">
-          {slides.map((slide, i) => (
+        {/* One featured project: nothing to step through, so no controls or tabs that could not do anything. */}
+        {count > 1 && (
+          <div className="spot-controls">
             <button
-              key={`${slide.slug}-${shown}`}
               type="button"
-              role="tab"
-              className="spot-tab interactive-label"
-              data-colour={slide.colour}
-              aria-selected={i === shown}
-              aria-label={slide.tab}
-              onClick={() => go(i)}
+              data-spot-prev
+              className="spot-ctl spot-ctl-step"
+              aria-label="Previous project"
+              onClick={() => step(-1)}
             >
-              <span className="spot-bar">
-                <i />
-              </span>
-              <span className="spot-tab-name">{slide.tab}</span>
+              <ChevronLeftIcon size={24} />
             </button>
-          ))}
-        </div>
+            <button
+              type="button"
+              data-spot-toggle
+              className="spot-ctl"
+              aria-label={paused ? "Play" : "Pause"}
+              onClick={() => setPaused((value) => !value)}
+            >
+              {paused ? <PlayArrowIcon size={20} /> : <PauseIcon size={20} />}
+            </button>
+            <button
+              type="button"
+              data-spot-next
+              className="spot-ctl spot-ctl-step"
+              aria-label="Next project"
+              onClick={() => step(1)}
+            >
+              <ChevronRightIcon size={24} />
+            </button>
+          </div>
+        )}
+        {count > 1 && (
+          <div className="spot-tabs" role="tablist" aria-label="Projects">
+            {slides.map((slide, i) => (
+              <button
+                key={`${slide.slug}-${shown}`}
+                type="button"
+                role="tab"
+                className="spot-tab interactive-label"
+                data-colour={slide.colour}
+                aria-selected={i === shown}
+                aria-label={slide.tab}
+                onClick={() => go(i)}
+              >
+                <span className="spot-bar">
+                  <i />
+                </span>
+                <span className="spot-tab-name">{slide.tab}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {/* The stage is the tabs' panel and a focus stop: arrow keys move it. */}
       <div

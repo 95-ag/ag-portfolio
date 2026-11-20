@@ -2,6 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { PauseIcon } from "@/components/icons/material/pause";
 import { PlayArrowIcon } from "@/components/icons/material/play-arrow";
 import { useFooterLift } from "@/components/shell/use-footer-lift";
@@ -11,6 +12,7 @@ const SPEED_PX_PER_SECOND = 30;
 // A scroll the loop did not make: the page moved more than the rounding of its own last position.
 const OWN_SCROLL_TOLERANCE = 2;
 const INPUT_EVENTS = ["wheel", "touchstart", "keydown"] as const;
+const MAX_STEP_MS = 100;
 
 // Scrolls the credits like end credits. The reader's input always wins: a wheel, a touch, a key or a press anywhere pauses it, and
 // so does any scroll the loop did not make (a scrollbar drag, find in page). Reaching the end stops it. Not rendered under
@@ -28,14 +30,16 @@ export function CreditsPlayer() {
     if (!playing) return;
     let frame = 0;
     let position = window.scrollY;
-    let last = performance.now();
+    // The loop keeps to the frame clock: its first frame starts it, and a long gap (a tab that was hidden) moves it by one step.
+    let last: number | null = null;
     const pause = () => setPlaying(false);
     const tick = (now: number) => {
       if (Math.abs(window.scrollY - position) > OWN_SCROLL_TOLERANCE) {
         pause();
         return;
       }
-      position += (SPEED_PX_PER_SECOND * (now - last)) / 1000;
+      const elapsed = last === null ? 0 : Math.min(MAX_STEP_MS, now - last);
+      position += (SPEED_PX_PER_SECOND * elapsed) / 1000;
       last = now;
       window.scrollTo(0, position);
       const end = document.documentElement.scrollHeight - window.innerHeight;
@@ -45,22 +49,25 @@ export function CreditsPlayer() {
       }
       frame = requestAnimationFrame(tick);
     };
-    const onPress = (event: PointerEvent) => {
+    // The control's own touch, key or press is its click, which toggles; only the reader's other input pauses.
+    const onInput = (event: Event) => {
       if (!button.current?.contains(event.target as Node)) pause();
     };
-    for (const type of INPUT_EVENTS) window.addEventListener(type, pause);
-    window.addEventListener("pointerdown", onPress);
+    for (const type of INPUT_EVENTS) window.addEventListener(type, onInput);
+    window.addEventListener("pointerdown", onInput);
     frame = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(frame);
-      for (const type of INPUT_EVENTS) window.removeEventListener(type, pause);
-      window.removeEventListener("pointerdown", onPress);
+      for (const type of INPUT_EVENTS)
+        window.removeEventListener(type, onInput);
+      window.removeEventListener("pointerdown", onInput);
     };
   }, [playing]);
 
   if (!mounted || reduced) return null;
 
-  return (
+  // Outside the page content: the page enter's transform would otherwise be the control's containing block while it runs.
+  return createPortal(
     <button
       ref={button}
       type="button"
@@ -73,6 +80,7 @@ export function CreditsPlayer() {
       style={{ bottom: `${bottom}px` }}
     >
       {playing ? <PauseIcon size={20} /> : <PlayArrowIcon size={20} />}
-    </button>
+    </button>,
+    document.body,
   );
 }

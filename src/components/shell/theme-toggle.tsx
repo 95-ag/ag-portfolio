@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { DarkModeIcon } from "@/components/icons/material/dark-mode";
 import { LightModeIcon } from "@/components/icons/material/light-mode";
 import { useFooterLift } from "@/components/shell/use-footer-lift";
@@ -10,7 +11,15 @@ type Mode = "light" | "dark";
 
 // `site` saves the choice site-wide (the dev server and previews). `page` is the production gallery: it changes this page
 // only, writes nothing to storage, and gives the visitor their system preference back when they leave.
-export function ThemeToggle({ mode }: { mode: "site" | "page" }) {
+// `contained` keeps the page toggle where it is rendered (the gallery frames a specimen); otherwise the page toggle mounts on
+// the body, outside the page content, whose enter animation would re-base a fixed child for its 500ms.
+export function ThemeToggle({
+  mode,
+  contained = false,
+}: {
+  mode: "site" | "page";
+  contained?: boolean;
+}) {
   const { resolvedTheme, setTheme } = useTheme();
   const [pageTheme, setPageTheme] = useState<Mode | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -45,7 +54,7 @@ export function ThemeToggle({ mode }: { mode: "site" | "page" }) {
     else setTheme(next);
   };
 
-  return (
+  const button = (
     <button
       type="button"
       data-theme-toggle
@@ -59,4 +68,9 @@ export function ThemeToggle({ mode }: { mode: "site" | "page" }) {
       <LightModeIcon size={24} className="hidden [[data-theme=dark]_&]:block" />
     </button>
   );
+
+  if (mode === "page" && !contained) {
+    return mounted ? createPortal(button, document.body) : null;
+  }
+  return button;
 }

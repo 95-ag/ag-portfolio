@@ -163,7 +163,7 @@ export function LogoMark({
         {(["sit", "stretch"] as const).map((candidate) => (
           // The visible pose loads eagerly: the page enter starts the content at opacity 0, which makes this
           // logo the Largest Contentful Paint candidate, and Next warns when that is lazy. The hidden pose
-          // stays lazy, and on phones the pill nav is display:none so neither is fetched.
+          // stays lazy, and at 860px and below the nav row is display:none so neither is fetched.
           <Image
             key={candidate}
             ref={(image) => {

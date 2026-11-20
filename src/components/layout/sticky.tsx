@@ -5,7 +5,7 @@ interface StickyProps {
   className?: string;
   /**
    * Top offset as a CSS value. Defaults to `var(--spacing-4xl)` (96px),
-   * which clears the pill nav (top: 24px + height: 56px + gap: 16px).
+   * which clears the nav (its row or button sits between 16px and 70px from the top).
    */
   top?: string;
 }

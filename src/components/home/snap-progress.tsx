@@ -27,7 +27,11 @@ export function SnapProgress() {
     const pageTop = (el: Element) =>
       el.getBoundingClientRect().top + window.scrollY;
     const hero = document.querySelector("[data-snap='hero']");
-    const heroTop = hero ? pageTop(hero) : 0;
+    // The hero's snap point is its top less its scroll margin (the top of the page).
+    const heroTop = hero
+      ? pageTop(hero) -
+        (Number.parseFloat(getComputedStyle(hero).scrollMarginTop) || 0)
+      : 0;
     const distance = pageTop(section) - heroTop;
     const p =
       distance > 0 ? Math.min(1, Math.max(0, (y - heroTop) / distance)) : 1;
