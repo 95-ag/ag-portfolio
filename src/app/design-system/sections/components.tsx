@@ -81,7 +81,7 @@ const buttonVariants = [
   },
   {
     token: "filled",
-    spec: "48px pill · ink fill · surface label · hover fills ink-muted — the screen's one primary action",
+    spec: "44px pill · ink fill · surface label · hover fills accent — the screen's one primary action",
     render: <Button variant="filled">Filled</Button>,
   },
   {

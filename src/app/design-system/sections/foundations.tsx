@@ -468,7 +468,8 @@ const DEPTH_LEVELS: DepthLevel[] = [
   {
     name: "Level 6 · Tinted tile",
     spec: "the post group's tint in light, surface-tag in dark; no border",
-    className: "bg-[var(--post-long-tint,var(--surface-tag))]",
+    className: "bg-[var(--g-tint)]",
+    group: "long",
     usage: "Post tiles",
   },
 ];
