@@ -2,7 +2,8 @@ import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
 
 interface LinkPillProps {
   href: string;
-  icon: React.ReactNode;
+  // The kind icon before the label (Code, Paper, download); a pill may carry it, the new-tab icon, both or neither.
+  icon?: React.ReactNode;
   children: React.ReactNode;
   external?: boolean;
   // New-tab attributes without the trailing icon (the Resume PDF).

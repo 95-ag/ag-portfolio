@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { GitHubIcon } from "@/components/icons/brands/github";
+import { EastIcon } from "@/components/icons/material/east";
 import { MailIcon } from "@/components/icons/material/mail";
 import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { Callout } from "@/components/mdx/callout";
@@ -77,12 +78,30 @@ const buttonVariants = [
   },
   {
     token: "leading icon",
-    spec: "one 18px icon, spacing-sm from the label (arrow, logomark, refresh)",
+    spec: "one 18px icon, spacing-sm from the label — before it for back, action or kind (refresh, download)",
     render: <Button icon={<MailIcon size={18} />}>Leading icon</Button>,
   },
   {
+    token: "filled",
+    spec: "48px pill · ink fill · surface label · hover fills ink-muted — the screen's one primary action",
+    render: <Button variant="filled">Filled</Button>,
+  },
+  {
+    token: "filled, icon after",
+    spec: "navigation: the east arrow after the label (See Projects, View project)",
+    render: (
+      <Button
+        variant="filled"
+        iconPosition="trailing"
+        icon={<EastIcon size={18} />}
+      >
+        Filled with icon
+      </Button>
+    ),
+  },
+  {
     token: "trailing icon",
-    spec: "the same icon after the label",
+    spec: "after the label where the control navigates or opens a new tab or mail",
     render: (
       <Button iconPosition="trailing" icon={<NorthEastIcon size={18} />}>
         Trailing icon
@@ -200,7 +219,7 @@ export function ComponentsSections() {
             id="ui-button"
             name="Button"
             source="@/components/ui/controls/button"
-            description="Committed action control: one look, a 44px outline pill, with an optional icon and attention cue. Used for the email actions on Home and About and the 404 and error CTAs. Links such as Resume are LinkPills."
+            description="Committed action control: a 44px outline pill or a 48px filled ink pill, with exactly one optional icon and, on the outline, an attention cue. Used for the email actions on Home and About and the 404 and error actions. Links such as Resume are LinkPills."
             headingLevel={4}
           >
             <InertDemo>
@@ -224,7 +243,7 @@ export function ComponentsSections() {
             name="CopyButton"
             source="@/components/ui/controls/copy-button"
             description="Icon-only control that copies a value: the email address beside the About email action. On copy the icon turns to a check in the accent for 1500ms, then reverts; its name reads Copy email, then Email copied."
-            spec="44×44 target · no border or fill · 18px icon ink-muted, hover accent · focus ring"
+            spec="44×44 target (48×48 from xl) · no border or fill · 24px icon ink-muted, hover accent · focus ring"
             headingLevel={4}
           >
             <InertDemo>
@@ -261,7 +280,7 @@ export function ComponentsSections() {
             id="ui-link-pill"
             name="LinkPill"
             source="@/components/ui/links/link-pill"
-            description="Compact pill link with a leading icon; used for external and social links."
+            description="Compact pill link; carries a leading kind icon, a trailing new-tab icon, both or neither. Used for external and social links."
             headingLevel={4}
           >
             <div className="flex flex-wrap gap-[var(--spacing-sm)]">
@@ -274,6 +293,10 @@ export function ComponentsSections() {
               </LinkPill>
               <LinkPill href="#ui-link-pill" icon={<MailIcon size={16} />}>
                 Email
+              </LinkPill>
+              <LinkPill href="#ui-link-pill">Bare link</LinkPill>
+              <LinkPill href="#ui-link-pill" external>
+                Bare external
               </LinkPill>
             </div>
           </Specimen>

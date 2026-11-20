@@ -6,6 +6,9 @@ import { useAttentionCue } from "./attention-cue";
 import "./button.css";
 
 type ButtonBaseProps = {
+  // `outline` (default) is the 44px outlined pill; `filled` is the 48px ink pill for a screen's one primary action.
+  variant?: "outline" | "filled";
+  // A Button carries exactly one icon.
   icon?: React.ReactNode;
   iconPosition?: "leading" | "trailing";
   // `full`: the outline draws, then the sheen crosses twice. `draw`: the outline draw alone.
@@ -28,6 +31,7 @@ export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 export function Button(props: ButtonProps) {
   const {
+    variant = "outline",
     icon,
     iconPosition = "leading",
     cue,
@@ -41,7 +45,11 @@ export function Button(props: ButtonProps) {
   const setRef = (node: HTMLElement | null) => {
     ref.current = node;
   };
-  const classes = cn("btn interactive-label", className);
+  const classes = cn(
+    "btn interactive-label",
+    variant === "filled" && "btn-filled",
+    className,
+  );
   const iconMark = icon && (
     <span aria-hidden="true" className="btn-icon">
       {icon}

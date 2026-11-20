@@ -1,5 +1,5 @@
-/* Button — a 44px outline pill (DESIGN.md → Components → UI → Controls / Actions → Button). The `ink` outline is drawn
-   by ::after so the attention cue can reveal it. */
+/* Button — a 44px outline pill, or the 48px filled ink pill (DESIGN.md → Components → UI → Controls / Actions → Button).
+   The outline is drawn by ::after so the attention cue can reveal it. */
 
 .btn {
   position: relative;
@@ -27,6 +27,20 @@
 }
 .btn-icon {
   display: inline-flex;
+}
+
+/* Filled: the screen's one primary action. No outline to draw, so it carries no attention cue. */
+.btn-filled {
+  height: 48px;
+  background-color: var(--ink);
+  color: var(--surface);
+}
+.btn-filled::after {
+  display: none;
+}
+.btn-filled:hover {
+  background-color: var(--ink-muted);
+  color: var(--surface);
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn {

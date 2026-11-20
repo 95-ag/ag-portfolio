@@ -36,14 +36,14 @@ export function CopyButton({ value, label }: CopyButtonProps) {
       onClick={copy}
       aria-label={copied ? copiedLabel : `Copy ${label}`}
       className={cn(
-        "inline-flex h-11 w-11 cursor-pointer items-center justify-center",
+        "inline-flex h-11 w-11 cursor-pointer items-center justify-center xl:h-12 xl:w-12",
         "motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)]",
         copied
           ? "text-[var(--accent)]"
           : "text-[var(--ink-muted)] hover:text-[var(--accent)]",
       )}
     >
-      <Icon size={18} />
+      <Icon size={24} />
     </button>
   );
 }
