@@ -59,12 +59,14 @@ function useMedia(query: string) {
   return matches;
 }
 
-// One slide, a face of the cube: it loops its cover (one play, a pause, again) while `looping`.
+// One slide, a face of the cube: it loops its cover (one play, a pause, again) while `looping`, and holds the cover on its first
+// frame while it is `armed` (turning in, and the COVER_START_MS after it lands).
 function SlideFrame({
   colour,
   shown,
   current,
   looping,
+  armed,
   style,
   children,
 }: {
@@ -72,11 +74,12 @@ function SlideFrame({
   shown: boolean;
   current: boolean;
   looping: boolean;
+  armed: boolean;
   style?: CSSProperties;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  useCoverLoop(ref, looping);
+  useCoverLoop(ref, looping, armed);
   return (
     <div
       ref={ref}
@@ -342,6 +345,7 @@ export function SpotlightStage({ slides }: { slides: SpotlightSlide[] }) {
                 shown={i === settled || isTo}
                 current={i === shown}
                 looping={i === loopIndex}
+                armed={i === shown && i !== loopIndex}
                 style={face}
               >
                 {slide.node}

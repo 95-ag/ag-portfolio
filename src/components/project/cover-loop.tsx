@@ -23,7 +23,25 @@ function playLength(el: HTMLElement) {
 export function useCoverLoop(
   ref: RefObject<HTMLElement | null>,
   enabled = true,
+  armed = false,
 ) {
+  // Armed: the cover waits on its first frame (animations created and held at 0) so it does not show finished before it
+  // draws; the loop's first play releases them. The marker keeps the loop's setup and teardown from resetting it meanwhile.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (armed && !enabled) {
+      el.dataset.coverActive = "true";
+      el.dataset.coverArmed = "true";
+      for (const animation of el.getAnimations({ subtree: true })) {
+        animation.pause();
+      }
+    } else if (!enabled && el.dataset.coverArmed === "true") {
+      delete el.dataset.coverArmed;
+      el.dataset.coverActive = "false";
+    }
+  }, [ref, armed, enabled]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -37,6 +55,12 @@ export function useCoverLoop(
       const mine = ++run;
       while (run === mine) {
         el.dataset.coverActive = "true";
+        if (el.dataset.coverArmed === "true") {
+          delete el.dataset.coverArmed;
+          for (const animation of el.getAnimations({ subtree: true })) {
+            animation.play();
+          }
+        }
         await new Promise<void>((resolve) =>
           requestAnimationFrame(() => resolve()),
         );
@@ -49,6 +73,10 @@ export function useCoverLoop(
     // A callback also fires as a cover slides inside its tile and crosses the threshold; only entering or leaving the
     // view (or the slide becoming active or not) starts or stops the loop, so that never restarts a play.
     const sync = () => {
+      if (!(enabled && inView) && el.dataset.coverArmed === "true") {
+        delete el.dataset.coverArmed;
+        el.dataset.coverActive = "false";
+      }
       if (enabled && inView && !looping) {
         looping = true;
         play();
@@ -69,7 +97,7 @@ export function useCoverLoop(
     return () => {
       run++;
       observer.disconnect();
-      el.dataset.coverActive = "false";
+      if (el.dataset.coverArmed !== "true") el.dataset.coverActive = "false";
     };
   }, [ref, enabled]);
 }
