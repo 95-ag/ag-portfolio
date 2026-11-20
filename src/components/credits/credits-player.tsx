@@ -14,7 +14,7 @@ const OWN_SCROLL_TOLERANCE = 2;
 const INPUT_EVENTS = ["wheel", "touchstart", "keydown"] as const;
 const MAX_STEP_MS = 100;
 
-// Scrolls the credits like end credits. The reader's input always wins: a wheel, a touch, a key or a press anywhere pauses it, and
+// Scrolls the credits like end credits, starting when the page opens. The reader's input always wins: a wheel, a touch, a key or a press anywhere pauses it, and
 // so does any scroll the loop did not make (a scrollbar drag, find in page). Reaching the end stops it. Not rendered under
 // reduced motion; there is no audio.
 export function CreditsPlayer() {
@@ -24,7 +24,11 @@ export function CreditsPlayer() {
   const bottom = useFooterLift();
   const button = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setMounted(true), []);
+  // The credits play on open; a reader who prefers reduced motion gets the static page and no control.
+  useEffect(() => {
+    setMounted(true);
+    setPlaying(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
   useEffect(() => {
     if (!playing) return;

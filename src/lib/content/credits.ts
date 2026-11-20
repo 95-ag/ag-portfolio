@@ -24,13 +24,13 @@ export const CREDITS: Credits = {
       heading: "Cast",
       rows: [
         { role: "Design & content", name: "Aishwarya Ganesan" },
-        { role: "Lead development", name: "Claude (Claude Code)" },
+        { role: "Lead development", name: "Claude" },
         { role: "Development assistance", name: "ChatGPT" },
-        { role: "Application framework", name: "Next.js 16 (App Router)" },
+        { role: "Application framework", name: "Next.js 16" },
         { role: "Interface library", name: "React / React DOM" },
         {
           role: "Content",
-          name: "MDX — next-mdx-remote, remark-gfm, yaml",
+          name: "MDX, next-mdx-remote, remark-gfm, yaml",
         },
         { role: "Styling", name: "Tailwind CSS v4" },
         { role: "Language & runtime", name: "TypeScript / Node.js" },
@@ -59,10 +59,10 @@ export const CREDITS: Credits = {
       heading: "Interface & motion",
       rows: [
         { role: "Icons", name: "Material Symbols Outlined" },
-        { role: "Brand marks", name: "GitHub, LinkedIn — official SVGs" },
+        { role: "Brand marks", name: "GitHub, LinkedIn" },
         { role: "Motion", name: "Framer Motion" },
         { role: "Theme switching", name: "next-themes" },
-        { role: "Components", name: "Hand-built by Aishwarya Ganesan" },
+        { role: "Components", name: "Custom built" },
       ],
     },
     {
@@ -72,7 +72,7 @@ export const CREDITS: Credits = {
         { role: "Validation", name: "Zod" },
         {
           role: "Charts & asset generation",
-          name: "Python — matplotlib, Pillow, PyMuPDF, pypdf",
+          name: "Python, matplotlib, Pillow, PyMuPDF, pypdf",
         },
         { role: "Notes feed format", name: "RSS 2.0" },
       ],
@@ -83,7 +83,8 @@ export const CREDITS: Credits = {
         { role: "CSS processing", name: "PostCSS & @tailwindcss/postcss" },
         { role: "Lint & format", name: "Biome" },
         { role: "Browser testing", name: "Playwright" },
-        { role: "Version control & source hosting", name: "Git & GitHub" },
+        { role: "Version control", name: "Git" },
+        { role: "Source hosting", name: "GitHub" },
         { role: "Package management", name: "npm" },
         { role: "Type definitions", name: "DefinitelyTyped" },
       ],
