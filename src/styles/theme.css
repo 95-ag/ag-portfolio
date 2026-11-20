@@ -8,7 +8,8 @@
   --surface: #ffffff;
   --surface-elevated: #f7f7f7;
   --surface-deep: #ffffff;
-  --surface-floating: #ffffffd9;
+  --surface-floating: color-mix(in srgb, var(--surface) 55%, transparent);
+  --edge-floating: color-mix(in srgb, var(--ink) 10%, transparent);
   --surface-active: var(--accent-tint);
   --surface-tag: #f0f0f0;
 
@@ -142,7 +143,8 @@
   --surface: #000000;
   --surface-elevated: #111111;
   --surface-deep: #000000;
-  --surface-floating: #000000d9;
+  --surface-floating: color-mix(in srgb, var(--surface) 55%, transparent);
+  --edge-floating: color-mix(in srgb, var(--ink) 10%, transparent);
   --surface-active: var(--accent-tint);
   --surface-tag: #1c1c1c;
 
@@ -542,6 +544,7 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
   --color-surface-elevated: var(--surface-elevated);
   --color-surface-deep: var(--surface-deep);
   --color-surface-floating: var(--surface-floating);
+  --color-edge-floating: var(--edge-floating);
   --color-surface-active: var(--surface-active);
   --color-surface-tag: var(--surface-tag);
   --color-ink: var(--ink);
@@ -568,8 +571,18 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
   --spacing-4xl: 96px;
   --spacing-5xl: 128px;
   --spacing-gutter: 24px;
-  --spacing-margin-mobile: 16px;
+  --spacing-margin-mobile: 20px;
+  --spacing-margin-tablet: 24px;
   --spacing-margin-desktop: 64px;
+
+  /* The page margin steps with the viewport; the corner is where the name, nav, scroll-to-top and theme toggle stand:
+     the page margin, or the 1440 box's edge once the window is wider (DESIGN.md → Foundations → Layout → Corners). */
+  --layout-content-cap: 1440px;
+  --page-margin: var(--spacing-margin-mobile);
+  --corner: max(
+    var(--page-margin),
+    calc((100% - var(--layout-content-cap)) / 2)
+  );
 
   /* Radius */
   --radius-none: 0;
@@ -606,3 +619,15 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
 @custom-variant stack (@media (max-width: 860px));
 @custom-variant tiles-four (@media (min-width: 1100px));
 @custom-variant rail-side (@media (min-width: 1200px));
+@custom-variant cap (@media (min-width: 1568px));
+
+@media (min-width: 768px) {
+  :root {
+    --page-margin: var(--spacing-margin-tablet);
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --page-margin: var(--spacing-margin-desktop);
+  }
+}

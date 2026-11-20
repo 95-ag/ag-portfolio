@@ -61,6 +61,13 @@ body {
   color: var(--mark);
   opacity: 0.72;
 }
+/* Phones in the light theme step the accent tier down: the glyph field is denser than the screen can bear
+   (DESIGN.md → Background → Background Layer). */
+@media (max-width: 767px) {
+  .ascii-bg-glyph-accent {
+    opacity: 0.6;
+  }
+}
 .ascii-bg-glyph-ink {
   color: var(--ink);
   opacity: 0.45;
@@ -77,4 +84,12 @@ body {
 }
 [data-theme="dark"] .ascii-bg-glyph-mute {
   opacity: 0.2;
+}
+
+/* The frosted surface of the floating nav and utility UI — the one place its recipe lives
+   (DESIGN.md → Foundations → Elevation & Depth → Backdrop-Blur Carve-out). */
+@utility surface-glass {
+  background-color: var(--surface-floating);
+  backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid var(--edge-floating);
 }

@@ -20,6 +20,8 @@ import { MenuIcon } from "@/components/icons/material/menu";
 import { NorthIcon } from "@/components/icons/material/north";
 import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
+import { PauseIcon } from "@/components/icons/material/pause";
+import { PlayArrowIcon } from "@/components/icons/material/play-arrow";
 import { RefreshIcon } from "@/components/icons/material/refresh";
 import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
@@ -118,7 +120,13 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--surface-floating",
         name: "Surface Floating",
-        usage: "Floating nav and utility blur surfaces",
+        usage:
+          "The frosted fill of floating nav and utility surfaces (55% of the ground)",
+      },
+      {
+        token: "--edge-floating",
+        name: "Edge Floating",
+        usage: "The 1px edge of a frosted surface (ink at 10%)",
       },
       {
         token: "--surface-active",
@@ -209,9 +217,9 @@ const TYPE_TOKENS: TypeToken[] = [
   {
     token: "display-primary",
     family: "Manrope",
-    size: 64,
+    size: 76,
     weight: 600,
-    lh: 70,
+    lh: 84,
     sample: "The hero display line, the single largest statement on a page.",
     responsive: { tablet: 52, mobile: 40 },
   },
@@ -227,11 +235,20 @@ const TYPE_TOKENS: TypeToken[] = [
   {
     token: "heading-display",
     family: "Manrope",
-    size: 36,
+    size: 52,
     weight: 600,
-    lh: 44,
-    sample: "Major section headers across the home and work pages.",
+    lh: 58,
+    sample: "The About page's positioning line.",
     responsive: { tablet: 32, mobile: 32 },
+  },
+  {
+    token: "site-name",
+    family: "Manrope",
+    size: 24,
+    weight: 600,
+    lh: 34,
+    sample: "Aishwarya Ganesan",
+    responsive: { tablet: 20, mobile: 18 },
   },
   {
     token: "heading-section",
@@ -374,7 +391,8 @@ const SPACING_TOKENS: BarItem[] = [
 // Layout-specific spacing (gutter + responsive page margins) — not part of the geometric xs–5xl scale.
 const LAYOUT_SPACING_TOKENS: BarItem[] = [
   { token: "gutter", px: 24 },
-  { token: "margin-mobile", px: 16 },
+  { token: "margin-mobile", px: 20 },
+  { token: "margin-tablet", px: 24 },
   { token: "margin-desktop", px: 64 },
 ];
 
@@ -403,7 +421,8 @@ const RADIUS_TOKENS: ShapeItem[] = [
     token: "pill",
     radius: "var(--radius-pill)",
     value: "9999px",
-    usage: "Pill nav, link pills, scroll-to-top, theme selector, Button",
+    usage:
+      "Nav items and button, link pills, scroll-to-top, theme toggle, credits Play / Pause, Button",
   },
 ];
 
@@ -422,11 +441,11 @@ const DEPTH_LEVELS: DepthLevel[] = [
     usage: "Figure frame, prose hr, table cells",
   },
   {
-    name: "Level 2 · Border + blur",
-    spec: "backdrop-blur(12px) + surface-floating + 1px hairline (mobile panel borderless)",
-    className:
-      "bg-[var(--surface-floating)] border border-[var(--hairline)] [backdrop-filter:blur(12px)]",
-    usage: "Pill nav, mobile trigger, scroll-to-top",
+    name: "Level 2 · Frosted",
+    spec: "surface-glass: surface-floating (55%) + blur(20px) saturate(170%) + 1px edge-floating",
+    className: "surface-glass",
+    usage:
+      "Nav button and menu card, scroll-to-top, theme toggle, credits Play / Pause",
   },
   {
     name: "Level 3 · Border + raised",
@@ -491,6 +510,8 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "Menu", Icon: MenuIcon },
   { name: "OpenInNew", Icon: OpenInNewIcon },
   { name: "Refresh", Icon: RefreshIcon },
+  { name: "PlayArrow", Icon: PlayArrowIcon },
+  { name: "Pause", Icon: PauseIcon },
   { name: "RssFeed", Icon: RssFeedIcon },
   { name: "Slideshow", Icon: SlideshowIcon },
   { name: "StickyNote", Icon: StickyNoteIcon },
@@ -509,11 +530,17 @@ const ICON_SIZES = [
       "ScreenCarousel previous / next chevrons (the glyph draws about 36px tall)",
   },
   {
+    px: 24,
+    label: "24px",
+    context:
+      "Icon-only circles: scroll-to-top, theme toggle, the spotlight hover arrow, the copy button",
+  },
+  {
     px: 20,
     label: "20px",
-    context: "Standalone icon-only controls (footer social, scroll-to-top)",
+    context: "Play / Pause and the nav menu icon; footer social icons",
   },
-  { px: 18, label: "18px", context: "Buttons; mobile-nav trigger and close" },
+  { px: 18, label: "18px", context: "Buttons (outline and filled)" },
   {
     px: 16,
     label: "16px",
@@ -523,7 +550,7 @@ const ICON_SIZES = [
   {
     px: 12,
     label: "12–14px",
-    context: "Inline indicators (copy, external-link)",
+    context: "Inline indicators (the new-tab icon)",
   },
 ];
 
@@ -784,7 +811,10 @@ export function FoundationsSections() {
           <ul>
             <li>Icons communicate function, not decoration.</li>
             <li>Navigation pairs an icon with a text label.</li>
-            <li>Buttons use a leading icon.</li>
+            <li>
+              A Button carries exactly one icon, after the label to navigate or
+              open a new tab, before it to go back or name the action.
+            </li>
           </ul>
         </div>
 
@@ -830,7 +860,7 @@ export function FoundationsSections() {
           id="icons-sizes"
           name="Icon sizes"
           source="DESIGN.md → Iconography"
-          description="Four contextual sizes, each tied to a specific UI role; shown at actual size."
+          description="Contextual sizes, each tied to a specific UI role; shown at actual size."
         >
           <div className="grid grid-cols-1 gap-[var(--spacing-xl)] sm:grid-cols-2">
             {ICON_SIZES.map(({ px, label, context }) => (

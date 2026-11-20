@@ -14,9 +14,9 @@
   /* Display — page-title tier (home / about / work / 404) */
   .display-primary {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 64px;
+    font-size: 76px;
     font-weight: 600;
-    line-height: 70px;
+    line-height: 84px;
     letter-spacing: -0.025em;
     color: var(--ink);
   }
@@ -34,11 +34,20 @@
   /* Editorial display tier */
   .heading-display {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 36px;
+    font-size: 52px;
     font-weight: 600;
-    line-height: 44px;
+    line-height: 58px;
     letter-spacing: -0.015em;
     color: var(--ink);
+  }
+
+  /* The page name in the top-left corner; sizes follow body-lead (DESIGN.md → Typography → site-name). */
+  .site-name {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 34px;
+    color: var(--ink-muted);
   }
 
   /* Headings */
@@ -191,7 +200,8 @@
       font-size: 24px;
       line-height: 32px;
     }
-    .body-lead {
+    .body-lead,
+    .site-name {
       font-size: 20px;
       line-height: 30px;
     }
@@ -215,7 +225,8 @@
       font-size: 24px;
       line-height: 32px;
     }
-    .body-lead {
+    .body-lead,
+    .site-name {
       font-size: 18px;
       line-height: 28px;
     }
