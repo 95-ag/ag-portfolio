@@ -9,6 +9,8 @@ interface ErrorScreenProps {
   lead: string;
   // The screen's one primary action: a filled Button.
   primary: React.ReactNode;
+  // False where the screen is a specimen inside another page (the gallery), which must keep its own scroll-to-top.
+  isPage?: boolean;
 }
 
 // The 404 and the route-level error share one single-screen layout (DESIGN.md → Domain Components → 404 Not Found). On a short
@@ -18,11 +20,12 @@ export function ErrorScreen({
   title,
   lead,
   primary,
+  isPage = true,
 }: ErrorScreenProps) {
   return (
     // data-scroll-top="off": a short, fixed page carries no scroll-to-top (DESIGN.md → Shell → Scroll-to-top Button).
     <div
-      data-scroll-top="off"
+      data-scroll-top={isPage ? "off" : undefined}
       className="flex flex-1 items-center py-[var(--spacing-2xl)] [@media(max-height:760px)]:py-[var(--spacing-md)]"
     >
       <Container>

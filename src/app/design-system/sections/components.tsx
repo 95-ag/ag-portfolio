@@ -326,6 +326,7 @@ export function ComponentsSections() {
             <ChromeFrame height={520} inert>
               <div className="flex h-full flex-col">
                 <ErrorScreen
+                  isPage={false}
                   eyebrow="404"
                   title="This page doesn’t exist — but my work does."
                   lead="You might have followed a broken link or mistyped the URL. Either way, there’s nothing here."
