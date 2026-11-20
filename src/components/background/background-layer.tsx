@@ -6,7 +6,7 @@ import { AsciiField } from "./ascii-field";
 // Dense-reading pages — the ASCII field uses the quiet, gutter-masked treatment (dropped
 // entirely on mobile, see AsciiField). Covers project detail pages, writing posts AND the
 // /design-system gallery, which previews components against the work-page backdrop.
-const READING_PAGE_PATTERN = /^\/(work\/.+|writing\/.+|design-system)$/;
+const READING_PAGE_PATTERN = /^\/(work\/.+|writing\/.+|design-system|credits)$/;
 
 export function BackgroundLayer() {
   const pathname = usePathname();

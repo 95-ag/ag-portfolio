@@ -1,0 +1,76 @@
+/* Credits — end credits as a quiet list (DESIGN.md → Domain Components → Credits). The opening line and the dedication each sit centred
+   in a space of 67% of the viewport height — page top to the first heading, and the last row to the footer — so the layout's top
+   padding and the footer's top margin fall inside those spaces. */
+
+.credits-open,
+.credits-close {
+  display: grid;
+  place-items: center;
+  min-height: 67dvh;
+  padding-inline: var(--spacing-md);
+}
+.credits-open {
+  margin-top: calc(-1 * var(--spacing-3xl));
+}
+.credits-close {
+  margin-bottom: calc(-1 * var(--spacing-4xl));
+}
+@media (max-height: 760px) {
+  .credits-close {
+    margin-bottom: calc(-1 * var(--spacing-xl));
+  }
+}
+
+.credits-sections {
+  display: grid;
+  gap: var(--spacing-3xl);
+}
+.credits-heading {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  user-select: none;
+}
+.credits-rows {
+  display: grid;
+  gap: var(--spacing-xs);
+}
+
+/* Two columns on every tier: the role to the right of the centre gutter's left edge, the name to the left of its right. 14/20 up
+   to 639px, 18/28 from 640. */
+.credits-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--spacing-md);
+  font-size: 14px;
+  line-height: 20px;
+}
+.credits-role {
+  color: var(--ink-muted);
+  text-align: right;
+}
+.credits-name {
+  color: var(--ink);
+  text-align: left;
+}
+.credits-row-solo {
+  display: block;
+  color: var(--ink);
+  text-align: center;
+}
+@media (min-width: 640px) {
+  .credits-row {
+    column-gap: var(--spacing-lg);
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+/* On a preview the theme toggle stacks 12px above the Play control (same corner, same lift). */
+html:has([data-credits-player]) [data-theme-toggle] {
+  translate: 0 calc(-1 * (44px + var(--spacing-md) * 0.75));
+}
+@media (min-width: 1280px) {
+  html:has([data-credits-player]) [data-theme-toggle] {
+    translate: 0 calc(-1 * (48px + var(--spacing-md) * 0.75));
+  }
+}
