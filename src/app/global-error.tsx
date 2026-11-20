@@ -6,13 +6,15 @@ import { RefreshIcon } from "@/components/icons/material/refresh";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/controls/button";
 import { Heading } from "@/components/ui/display/heading";
+import { SHOW_PREVIEW_UI } from "@/lib/build-flags";
 import "./globals.css";
 
 // This boundary replaces the root layout, so next-themes never mounts and nothing sets data-theme.
 // Resolve the stored choice the way ThemeProvider would, or a dark-theme reader gets a light page.
 function resolveTheme(): "light" | "dark" {
+  // Production follows the system preference; a stored choice counts only where the preview toggle can have made one.
   try {
-    const stored = localStorage.getItem("theme");
+    const stored = SHOW_PREVIEW_UI ? localStorage.getItem("theme") : null;
     if (stored === "light" || stored === "dark") return stored;
   } catch {}
   return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -49,7 +51,7 @@ export default function GlobalError({
               </div>
               <div>
                 <Button
-                  cue="draw"
+                  variant="filled"
                   onClick={() => unstable_retry()}
                   icon={<RefreshIcon size={18} />}
                 >

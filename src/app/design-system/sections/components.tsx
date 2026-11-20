@@ -106,15 +106,6 @@ const buttonVariants = [
     ),
   },
   {
-    token: "cue: draw",
-    spec: "the outline draw only: the primary 404 and error-page CTA",
-    render: (
-      <Button cue="draw" href="#ui-button">
-        Back home
-      </Button>
-    ),
-  },
-  {
     token: "EmailButton (cue: full)",
     spec: "the address as the label, the north_east icon trailing, then the outline draw and the accent sheen twice once 60% in view; hover or focus stops it; nothing under reduced motion",
     render: <EmailButton address="hello@example.com" />,

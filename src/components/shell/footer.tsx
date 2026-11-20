@@ -20,7 +20,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-[var(--spacing-4xl)] pt-[var(--spacing-lg)] pb-[var(--spacing-xl)] md:py-[var(--spacing-lg)]">
+    <footer className="mt-[var(--spacing-4xl)] [@media(max-height:760px)]:mt-[var(--spacing-xl)] pt-[var(--spacing-lg)] pb-[var(--spacing-xl)] md:py-[var(--spacing-lg)]">
       <Container width="cap">
         <div className="flex flex-col items-center md:grid md:grid-cols-[1fr_auto_1fr] md:gap-[var(--spacing-md)]">
           <p

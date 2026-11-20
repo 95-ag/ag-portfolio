@@ -11,7 +11,9 @@ type ButtonBaseProps = {
   // A Button carries exactly one icon.
   icon?: React.ReactNode;
   iconPosition?: "leading" | "trailing";
-  // `full`: the outline draws, then the sheen crosses twice. `draw`: the outline draw alone.
+  // The attention cue, outline Buttons only (a filled one has no outline to draw). `full`: the outline draws, then the sheen
+  // crosses twice. `draw`: the outline draw alone — no page uses it since the 404 and error actions became filled; remove it with
+  // the untracked scratch routes that still pass it.
   cue?: "full" | "draw";
   children: React.ReactNode;
   className?: string;
