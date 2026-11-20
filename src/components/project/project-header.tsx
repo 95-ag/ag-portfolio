@@ -42,6 +42,10 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
 
   return (
     <header className="flex flex-col gap-[var(--spacing-lg)]">
+      <h1 className="display-title">{fm.title}</h1>
+
+      {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
+
       {fm.tags.length > 0 && (
         <div className="flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">
           {fm.tags.map((tag) => (
@@ -49,10 +53,6 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
           ))}
         </div>
       )}
-
-      <h1 className="display-title">{fm.title}</h1>
-
-      {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
 
       {links.length > 0 && (
         <nav aria-label="Project links">

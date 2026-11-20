@@ -15,7 +15,7 @@ import { ProjectOverview } from "@/components/project/project-overview";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { Related } from "@/components/ui/display/related";
-import { Breadcrumbs, type Crumb } from "@/components/ui/links/breadcrumbs";
+import type { Crumb } from "@/components/ui/links/breadcrumbs";
 import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
 import { getRelatedForProject } from "@/lib/content/related";
 import {
@@ -74,6 +74,7 @@ export default async function ProjectPage({ params }: Props) {
 
   const fm = project.frontmatter;
   const softwareSourceCodeSchema = buildSoftwareSourceCodeSchema(slug, fm);
+  // No visible trail on a project page; the structured data below still carries it.
   const trail: Crumb[] = [
     { name: "Home", href: "/" },
     { name: "Work", href: "/work" },
@@ -106,12 +107,8 @@ export default async function ProjectPage({ params }: Props) {
         <Section>
           <Container>
             <div className="mx-auto max-w-[960px]">
-              <div className="mb-[var(--spacing-md)]">
-                <Breadcrumbs trail={trail} />
-              </div>
-
               <article>
-                {/* Header: tags, title, subtitle, links */}
+                {/* Header: title, subtitle, tags, links */}
                 <ProjectHeader frontmatter={fm} />
 
                 {/* Hero */}
