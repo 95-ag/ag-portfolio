@@ -205,11 +205,23 @@ export function DomainSections() {
           id="home-spotlight"
           name="Spotlight"
           source="@/components/home/spotlight"
-          description="The featured projects one at a time: a cover beside frameless text, a 7s rotation with Play / Pause, one tab per project, and a link to the rest. The whole slide shrinks to 0.97 on hover. At 860px and below the slide stacks and the tabs become dashes."
+          description="The featured projects one at a time: a cover beside frameless text, the slides turning as a cube every 7s, the ‹ ⏸ › controls, one tab per project, an ink circle with an arrow on hover, and a link to the rest. The whole slide shrinks to 0.97 on hover. At 860px and below it is one full screen (resize the window): the cover's ground behind the controls, the cover centred, the text anchored up from a full-width View project button, the dashes after Play / Pause. Home adds the page snap and the scroll-linked card there; this specimen does not."
         >
           <InertDemo>
-            <Spotlight projects={getFeaturedProjects()} />
+            <Spotlight projects={getFeaturedProjects()} snap={false} />
           </InertDemo>
+        </Specimen>
+
+        <Specimen
+          id="home-spotlight-single"
+          name="Spotlight (one project)"
+          source="@/components/home/spotlight"
+          description="A single featured project: the stage renders one slide, and the arrows, controls and rotation do nothing."
+        >
+          <Spotlight
+            projects={getFeaturedProjects().slice(0, 1)}
+            snap={false}
+          />
         </Specimen>
 
         <Specimen
