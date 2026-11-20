@@ -158,6 +158,9 @@
 }
 .nav[data-open="true"] .nav-list {
   opacity: 1;
+}
+/* The list box spans the card and lies over the ×, so only its rows take pointer events: the box would eat every tap on the ×. */
+.nav[data-open="true"] .nav-list .nav-item {
   pointer-events: auto;
 }
 .nav-mark {
