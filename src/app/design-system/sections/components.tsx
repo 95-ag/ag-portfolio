@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/controls/button";
 import { CopyButton } from "@/components/ui/controls/copy-button";
 import { EmailButton } from "@/components/ui/controls/email-button";
 import { CopyableCode } from "@/components/ui/display/copyable-code";
+import { ErrorScreen } from "@/components/ui/display/error-screen";
 import { Heading } from "@/components/ui/display/heading";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
 import { Popover, PopoverDescription } from "@/components/ui/display/popover";
@@ -315,6 +316,34 @@ export function ComponentsSections() {
         </SpecimenGroup>
 
         <SpecimenGroup title="Display">
+          <Specimen
+            id="ui-error-screen"
+            name="ErrorScreen"
+            source="@/components/ui/display/error-screen"
+            description="The 404 and the route-level error share one single-screen layout: eyebrow, display H1, lead, a filled primary action and Go Home (the cat after the label). On a window under 760px tall its spacing tightens so the screen still fits. Framed here at a fixed height."
+            headingLevel={4}
+          >
+            <ChromeFrame height={520} inert>
+              <div className="flex h-full flex-col">
+                <ErrorScreen
+                  eyebrow="404"
+                  title="This page doesn’t exist — but my work does."
+                  lead="You might have followed a broken link or mistyped the URL. Either way, there’s nothing here."
+                  primary={
+                    <Button
+                      variant="filled"
+                      href="#ui-error-screen"
+                      iconPosition="trailing"
+                      icon={<EastIcon size={18} />}
+                    >
+                      See Projects
+                    </Button>
+                  }
+                />
+              </div>
+            </ChromeFrame>
+          </Specimen>
+
           <Specimen
             id="ui-heading"
             name="Heading"

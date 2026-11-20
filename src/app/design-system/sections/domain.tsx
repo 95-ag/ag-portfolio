@@ -10,6 +10,7 @@ import { TechStack } from "@/components/project/tech-stack";
 import { PostRail } from "@/components/writing/post-rail";
 import { PostTile, PostTiles } from "@/components/writing/post-tile";
 import { TypeLabel } from "@/components/writing/type-label";
+import { CREDITS } from "@/lib/content/credits";
 import type { Post } from "@/lib/content/posts";
 import {
   type CoverSubject,
@@ -17,6 +18,7 @@ import {
   getFeaturedProjects,
   type Project,
 } from "@/lib/content/projects";
+import "@/components/credits/credits.css";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
@@ -545,7 +547,11 @@ export function DomainSections() {
         source="src/app/not-found.tsx · [inline]"
         intro="The not-found page, built inline; listed, not previewed."
       >
-        <InlineList items={["404 Not Found"]} />
+        <InlineList
+          items={[
+            "404 Not Found (the ErrorScreen specimen, Components → UI → Display)",
+          ]}
+        />
       </GallerySection>
 
       <GallerySection
@@ -556,6 +562,53 @@ export function DomainSections() {
         intro="The route and root error boundaries, built inline in src/app/error.tsx and src/app/global-error.tsx; listed, not previewed."
       >
         <InlineList items={["Route error boundary", "Root error boundary"]} />
+      </GallerySection>
+
+      <GallerySection
+        id="credits"
+        title="Domain · Credits"
+        mapsTo="Domain Components → Credits"
+        source="src/app/credits/page.tsx · src/lib/content/credits.ts · [inline]"
+        intro="The end credits at /credits, built inline from typed data: an opening line and a dedication each centred in 67% of the viewport, sections of role / name rows in two columns, and a frosted Play / Pause control that scrolls the page at 30px per second while the reader's input always takes over."
+      >
+        <Specimen
+          id="credits-rows"
+          name="Credit rows"
+          source="src/components/credits/credits.css"
+          description="One section of role / name rows (role right, name left; 14/20 up to 639px, 18/28 from 640px) and the names-only Inspired-by rows, centred and plain text."
+        >
+          <InertDemo>
+            <div className="credits-sections">
+              {[
+                CREDITS.sections[2],
+                CREDITS.sections[CREDITS.sections.length - 1],
+              ].map((section) => (
+                <section key={section.heading} className="credits-section">
+                  <h3 className="mono-anchor credits-heading">
+                    {section.heading}
+                  </h3>
+                  <div className="credits-rows">
+                    {section.rows.map((row) =>
+                      row.role ? (
+                        <p key={row.name} className="credits-row">
+                          <span className="credits-role">{row.role}</span>
+                          <span className="credits-name">{row.name}</span>
+                        </p>
+                      ) : (
+                        <p
+                          key={row.name}
+                          className="credits-row credits-row-solo"
+                        >
+                          {row.name}
+                        </p>
+                      ),
+                    )}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </InertDemo>
+        </Specimen>
       </GallerySection>
     </>
   );
