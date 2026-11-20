@@ -1,10 +1,10 @@
 export type SpanZone = { name: string; width: string; changes: string[] };
 
 // Render inside a `.prose-content` wrapper for the editorial table styling. The scroll box
-// mirrors the MDX table wrapper, so the no-wrap name and width columns cannot widen the page at 375.
+// mirrors the MDX table wrapper; the name and width columns wrap, so on a phone the table fits without scrolling.
 export function SpanTable({ zones }: { zones: SpanZone[] }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto max-sm:[&_td]:px-[var(--spacing-sm)] max-sm:[&_th]:px-[var(--spacing-sm)]">
       <table>
         <thead>
           <tr>
@@ -21,13 +21,13 @@ export function SpanTable({ zones }: { zones: SpanZone[] }) {
                   <>
                     <td
                       rowSpan={z.changes.length}
-                      className="mono-anchor whitespace-nowrap align-top"
+                      className="mono-anchor align-top"
                     >
                       {z.name}
                     </td>
                     <td
                       rowSpan={z.changes.length}
-                      className="mono-anchor whitespace-nowrap align-top"
+                      className="mono-anchor align-top"
                     >
                       {z.width}
                     </td>

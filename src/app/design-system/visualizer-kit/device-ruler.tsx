@@ -11,7 +11,7 @@ export type RulerStop = {
 
 export function DeviceRuler({ stops }: { stops: RulerStop[] }) {
   return (
-    <div className="flex items-end gap-[var(--spacing-md)] overflow-x-auto pb-[var(--spacing-xs)]">
+    <div className="flex flex-wrap items-end gap-[var(--spacing-md)] pb-[var(--spacing-xs)]">
       {stops.map(({ px, device, token, used, boxW, boxH }) => (
         <div
           key={token}

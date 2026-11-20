@@ -14,14 +14,14 @@ function depthClass(value: string) {
 export function LayerStack({ items }: { items: LayerItem[] }) {
   const ordered = [...items].sort((a, b) => Number(a.value) - Number(b.value));
   const count = ordered.length;
-  const dx = 44;
   const dy = 104;
   const planeHeight = 150;
   return (
-    <div className="overflow-x-auto pb-[var(--spacing-xs)]">
+    // The sideways offset of each plane is 44px on a wide column and shrinks with a narrow one, so the stack fits a phone.
+    <div className="pb-[var(--spacing-xs)] [container-type:inline-size]">
       <div
-        className="relative"
-        style={{ height: planeHeight + (count - 1) * dy, minWidth: 480 }}
+        className="relative [--dx:clamp(10px,5cqw,44px)]"
+        style={{ height: planeHeight + (count - 1) * dy }}
       >
         {ordered.map((item, i) => (
           <div
@@ -29,8 +29,8 @@ export function LayerStack({ items }: { items: LayerItem[] }) {
             className={`absolute flex flex-col gap-[var(--spacing-xs)] overflow-hidden rounded-[var(--radius-none)] p-[var(--spacing-md)] ${depthClass(item.value)}`}
             style={{
               top: i * dy,
-              left: i * dx,
-              width: `calc(100% - ${(count - 1) * dx}px)`,
+              left: `calc(${i} * var(--dx))`,
+              width: `calc(100% - ${count - 1} * var(--dx))`,
               minHeight: planeHeight,
               zIndex: i,
             }}
