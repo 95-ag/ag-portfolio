@@ -298,8 +298,6 @@
     flex-direction: column;
     gap: 0;
     height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
     padding-top: calc(var(--spacing-md) + 44px + var(--spacing-md));
   }
   .spot-ground {
@@ -325,8 +323,7 @@
     display: grid;
     flex: 1 1 0;
     place-items: center;
-    /* On a short window (a landscape phone) the slot keeps a floor and the face scrolls, so the cover never climbs under the
-       controls and the button stays reachable. */
+    /* On a short window the slot keeps a floor so the cover never climbs under the controls. */
     min-height: 120px;
   }
   .spot-cover .cover {
