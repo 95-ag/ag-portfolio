@@ -16,6 +16,10 @@ export const coverComponents: Record<string, React.ComponentType> = {
   "self-building-portfolio": SelfBuildingPortfolioCover,
 };
 
+// Posts that carry their own cover, registered by post slug. Empty until a post has one; slugs are unique across projects
+// and posts, so Cover finds either registry by slug alone.
+export const postCoverComponents: Record<string, React.ComponentType> = {};
+
 // A project's real output on the cover ground, registered by slug alongside the live covers.
 export const artefactComponents: Record<
   string,

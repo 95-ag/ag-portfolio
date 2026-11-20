@@ -4,7 +4,7 @@ import { Cover } from "@/components/project/cover";
 import { CoverLoop } from "@/components/project/cover-loop";
 import { TypeLabel } from "@/components/writing/type-label";
 import { type Post, postColour } from "@/lib/content/posts";
-import { getProjectBySlug } from "@/lib/content/projects";
+import type { CoverSubject } from "@/lib/content/projects";
 import { POST_TYPE_GROUP } from "@/lib/schemas/post";
 import "@/components/writing/writing.css";
 
@@ -12,13 +12,17 @@ type TileSize = "sm" | "art";
 
 interface PostTileProps {
   post: Post;
-  // `sm` is Home's small quote tile; `art` is the index's tile, which carries art when its project has a cover.
+  // `sm` is Home's small quote tile; `art` is the index's tile, which carries art when the post has a cover of its own.
   size: TileSize;
   // The project colours slot an art tile wears; by default the post's own place in publish order.
   colour?: number;
+  // Draws this cover in place of the post's own — the design-system gallery borrows a project's.
+  coverStandIn?: CoverSubject;
+  // Forces the touch layout (no slide-down, only the title over the cover) — for the design-system gallery.
+  touch?: boolean;
 }
 
-function TileTitle({ post, size }: PostTileProps) {
+function TileTitle({ post, size }: Pick<PostTileProps, "post" | "size">) {
   return (
     <span
       className={`ptile-title ${size === "sm" ? "heading-narrative" : "heading-component"}`}
@@ -31,15 +35,26 @@ function TileTitle({ post, size }: PostTileProps) {
   );
 }
 
-// One post as a tile: a quote tile on Home and wherever the post has no art, an art tile on the index when its related
-// project has a cover (DESIGN.md → Writing Index → Post Tile). The whole tile is one link and its text is chrome.
-export function PostTile({ post, size, colour }: PostTileProps) {
+// One post as a tile: a quote tile on Home and wherever the post has no cover of its own, an art tile on the index when it
+// has one (DESIGN.md → Writing Index → Post Tile). The whole tile is one link and its text is chrome.
+export function PostTile({
+  post,
+  size,
+  colour,
+  coverStandIn,
+  touch = false,
+}: PostTileProps) {
   const { frontmatter: fm, slug } = post;
-  const project = fm.relatedProject
-    ? getProjectBySlug(fm.relatedProject)
-    : undefined;
-  const hasArt = size === "art" && project?.frontmatter.cover !== undefined;
-  const ear = !project || fm.type === "note";
+  // Only the index's tile draws a cover, so only it looks up the post's colour slot.
+  const subject: CoverSubject | undefined =
+    size !== "art"
+      ? undefined
+      : (coverStandIn ??
+        (fm.cover
+          ? { slug, colour: colour ?? postColour(slug), cover: fm.cover }
+          : undefined));
+  const hasArt = subject !== undefined;
+  const ear = !fm.cover || fm.type === "note";
   const year = fm.publishedAt.slice(0, 4);
 
   return (
@@ -49,9 +64,10 @@ export function PostTile({ post, size, colour }: PostTileProps) {
       data-size={size}
       data-art={hasArt}
       data-ear={ear}
+      data-touch={touch}
       data-post-group={POST_TYPE_GROUP[fm.type]}
     >
-      {hasArt && project ? (
+      {hasArt && subject ? (
         <>
           <span className="ptile-art-head">
             <TileTitle post={post} size={size} />
@@ -64,11 +80,22 @@ export function PostTile({ post, size, colour }: PostTileProps) {
           </span>
           <CoverLoop className="ptile-art-media">
             <Cover
-              project={project}
-              colour={colour ?? postColour(slug)}
+              subject={subject}
+              colour={colour ?? subject.colour}
               variant="tile"
             />
           </CoverLoop>
+          {/* On a touch screen only the title shows, over the cover; it carries the cover's own mode, so its ink is the
+              cover's. The head above stays in the page for assistive technology and is visually hidden there. */}
+          <span
+            aria-hidden="true"
+            className="ptile-art-over"
+            data-colour={colour ?? subject.colour}
+            data-cover-light={subject.cover?.light ?? "marker"}
+            data-cover-dark={subject.cover?.dark ?? "marker"}
+          >
+            <TileTitle post={post} size={size} />
+          </span>
         </>
       ) : (
         <>
@@ -95,7 +122,8 @@ interface PostTilesProps {
   size: TileSize;
 }
 
-// The tile grid: Home's small tiles (four, three, one across; two rows at most) or the index's (three, one across).
+// The tile grid: Home's small tiles (five, four, three, two or one across; two rows at most) or the index's (four, three or
+// one across).
 export function PostTiles({ posts, size }: PostTilesProps) {
   return (
     <div className="ptiles" data-size={size}>

@@ -11,7 +11,12 @@ import { PostRail } from "@/components/writing/post-rail";
 import { PostTile, PostTiles } from "@/components/writing/post-tile";
 import { TypeLabel } from "@/components/writing/type-label";
 import type { Post } from "@/lib/content/posts";
-import { getFeaturedProjects, type Project } from "@/lib/content/projects";
+import {
+  type CoverSubject,
+  coverSubject,
+  getFeaturedProjects,
+  type Project,
+} from "@/lib/content/projects";
 import { Card, GallerySection, Specimen } from "../scaffold-kit/catalog";
 import { ChromeFrame } from "../scaffold-kit/chrome-frame";
 import { InertDemo } from "../scaffold-kit/click-guards";
@@ -81,9 +86,9 @@ const demoPosts: Record<"quote" | "note" | "art" | "long", Post> = {
     slug: "sample-art",
     body: "A post body of a few words, long enough to read as one minute.",
     frontmatter: {
-      title: "A post whose project has a cover",
+      title: "A post with a cover of its own",
       summary:
-        "Its tile on the index carries the project's cover; hover a tile to slide it down.",
+        "Its tile on the index carries its own cover; hover a tile to slide it down.",
       publishedAt: "2026-01-15",
       updatedAt: "2026-01-20",
       type: "essay",
@@ -93,6 +98,7 @@ const demoPosts: Record<"quote" | "note" | "art" | "long", Post> = {
       ],
       tags: ["tag-one", "tag-two", "tag-three"],
       relatedProject: "masked-autoencoders",
+      cover: { kind: "live", light: "filled", dark: "marker" },
     },
   },
   long: {
@@ -164,6 +170,12 @@ function coverDemo(
   };
 }
 
+// A project's cover stands in for a post's own while no post has one; the specimens say so.
+const artStandIn: CoverSubject = {
+  ...coverSubject(coverDemo("live", "filled", "marker")),
+  colour: 1,
+};
+
 // prose-content owns the list styling for these listed [inline] sections.
 function InlineList({ items }: { items: string[] }) {
   return (
@@ -204,7 +216,7 @@ export function DomainSections() {
           id="home-post-tiles"
           name="Post tiles (small)"
           source="@/components/writing/post-tile"
-          description="Latest Writing on Home: small quote tiles, four across from 1100px, three across above 860px, one below, two rows at most."
+          description="Latest Writing on Home: small quote tiles — five across from 1568px, four from 1100px, three above 860px, two (square) from 640px, one below as a 3:2 tile — two rows at most, so 10, 8, 6, 4 or 4 tiles."
         >
           <InertDemo>
             <PostTiles
@@ -302,7 +314,7 @@ export function DomainSections() {
                   <div className="w-full">
                     <Cover
                       variant="card"
-                      project={coverDemo(kind, light, dark)}
+                      subject={coverSubject(coverDemo(kind, light, dark))}
                     />
                   </div>
                 </Card>
@@ -315,7 +327,9 @@ export function DomainSections() {
                 <div className={className}>
                   <Cover
                     variant={variant}
-                    project={coverDemo("live", "filled", "filled")}
+                    subject={coverSubject(
+                      coverDemo("live", "filled", "filled"),
+                    )}
                     caption={false}
                   />
                 </div>
@@ -398,13 +412,25 @@ export function DomainSections() {
           id="post-tile"
           name="PostTile"
           source="@/components/writing/post-tile"
-          description="One post as a tile, on the post group's tint in light and one dark ground in dark. A quote tile (no art) anchors its type line to the bottom; an art tile carries the related project's cover in the post's colour and, on hover or focus, slides it down until the title and type are revealed. Posts with no related project, and notes, take the dog-ear. Hover steps the ground toward the group's ink in light. Every index tile is square."
+          description="One post as a tile, on the post group's tint in light and one dark ground in dark. A quote tile (no art) anchors its type line to the bottom; an art tile carries the post's own cover (a project's stands in here) in the post's colour and, on hover or focus, slides it down until the title and type are revealed; on a touch screen it fills the tile with only the title over it. Posts with no cover of their own, and notes, take the dog-ear. Hover steps the ground toward the group's ink in light. Every index tile is square."
         >
           <InertDemo>
             <div className="grid grid-cols-1 gap-[var(--spacing-md)] md:grid-cols-3">
               <PostTile post={demoPosts.quote} size="art" />
-              <PostTile post={demoPosts.art} size="art" colour={1} />
+              <PostTile
+                post={demoPosts.art}
+                size="art"
+                colour={1}
+                coverStandIn={artStandIn}
+              />
               <PostTile post={demoPosts.note} size="art" colour={3} />
+              <PostTile
+                post={demoPosts.art}
+                size="art"
+                colour={7}
+                coverStandIn={{ ...artStandIn, colour: 7 }}
+                touch
+              />
             </div>
           </InertDemo>
         </Specimen>

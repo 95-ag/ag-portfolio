@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 // Two rows of the smallest tile grid: four across, so eight (the grid hides the rest at narrower widths).
-const LATEST_WRITING_COUNT = 8;
+const LATEST_WRITING_COUNT = 10;
 
 export default function HomePage() {
   const featured = getFeaturedProjects();

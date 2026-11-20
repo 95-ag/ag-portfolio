@@ -46,7 +46,7 @@ export const COVER_MODES = ["filled", "marker"] as const;
 
 // Where the cover comes from, and whether it is filled or marker in each theme
 // (DESIGN.md → Foundations → Colors → Covers).
-const CoverSchema = z.strictObject({
+export const CoverSchema = z.strictObject({
   kind: z.enum(COVER_KINDS),
   light: z.enum(COVER_MODES),
   dark: z.enum(COVER_MODES),

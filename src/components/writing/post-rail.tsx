@@ -3,7 +3,7 @@ import { Cover } from "@/components/project/cover";
 import { CoverLoop } from "@/components/project/cover-loop";
 import { Tag } from "@/components/ui/display/tag";
 import type { Post } from "@/lib/content/posts";
-import { getProjectBySlug } from "@/lib/content/projects";
+import { coverSubject, getProjectBySlug } from "@/lib/content/projects";
 import { formatDate } from "@/lib/utils/format-date";
 import { readingMinutes } from "@/lib/utils/reading-time";
 import "@/components/writing/writing.css";
@@ -54,7 +54,11 @@ export function PostRail({ post }: PostRailProps) {
         >
           <p className="insight-label">From the project</p>
           <CoverLoop className="post-rail-cover">
-            <Cover project={project} variant="rail" caption={false} />
+            <Cover
+              subject={coverSubject(project)}
+              variant="rail"
+              caption={false}
+            />
           </CoverLoop>
           <span className="heading-component">{project.frontmatter.title}</span>
         </Link>

@@ -16,7 +16,11 @@ import { SectionProgressNav } from "@/components/project/section-progress-nav";
 import { TechStack } from "@/components/project/tech-stack";
 import { Related } from "@/components/ui/display/related";
 import type { Crumb } from "@/components/ui/links/breadcrumbs";
-import { getAllProjects, getProjectBySlug } from "@/lib/content/projects";
+import {
+  coverSubject,
+  getAllProjects,
+  getProjectBySlug,
+} from "@/lib/content/projects";
 import { getRelatedForProject } from "@/lib/content/related";
 import {
   buildBreadcrumbSchema,
@@ -114,7 +118,7 @@ export default async function ProjectPage({ params }: Props) {
                 {/* Hero */}
                 <div className="relative mt-[var(--spacing-2xl)]">
                   <CoverLoop className="block">
-                    <Cover project={project} variant="hero" />
+                    <Cover subject={coverSubject(project)} variant="hero" />
                   </CoverLoop>
                   <HeroMetaOverlay
                     logos={fm.logos}

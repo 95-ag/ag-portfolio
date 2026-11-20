@@ -6,7 +6,7 @@ import {
 import { EastIcon } from "@/components/icons/material/east";
 import { Cover } from "@/components/project/cover";
 import { Tag } from "@/components/ui/display/tag";
-import type { Project } from "@/lib/content/projects";
+import { coverSubject, type Project } from "@/lib/content/projects";
 
 interface SpotlightProps {
   // Featured projects, already in their `order`.
@@ -28,7 +28,7 @@ export function Spotlight({ projects }: SpotlightProps) {
       tab: fm.shortTitle ?? fm.title,
       node: (
         <Link href={`/work/${slug}`} className="spot-link">
-          <Cover project={project} variant="spotlight" />
+          <Cover subject={coverSubject(project)} variant="spotlight" />
           <div className="spot-text select-none">
             <p className="insight-label">
               {pad(i + 1)} / {pad(projects.length)}

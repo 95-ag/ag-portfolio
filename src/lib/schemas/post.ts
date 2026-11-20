@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { IsoDate } from "@/lib/schemas/date";
+import { CoverSchema } from "@/lib/schemas/project";
 
 export const POST_MOTION = ["parallax", "reveal", "body-motion"] as const;
 
@@ -52,6 +53,8 @@ export const PostFrontmatterSchema = z
     updatedAt: IsoDate.optional(),
     tags: z.array(z.string()).min(1).max(8),
     relatedProject: z.string().optional(),
+    // The post's own cover, which makes its Writing-index tile an art tile — the same schema as a project's, never a copy.
+    cover: CoverSchema.optional(),
     related: z.array(z.string()).optional(),
     ogImage: z.string().startsWith("/").optional(),
     metaDescription: z.string().max(160).optional(),

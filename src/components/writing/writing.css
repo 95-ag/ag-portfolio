@@ -43,31 +43,52 @@ html[data-theme="dark"] .type-label-name {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--spacing-md);
 }
-.ptiles[data-size="sm"] {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-@media (max-width: 1099px) {
+/* Small tiles (Home): three across above 860px, four from 1100px, five from the cap, two from 640px to 860px, one below.
+   Two rows at most, so the count follows the columns: 6, 8, 10, 4, 4. Large tiles (the index): three across, four from the
+   cap, one at and below 860px. The thresholds are DESIGN.md → YAML Registry → layout-thresholds. */
+@media (min-width: 1100px) {
   .ptiles[data-size="sm"] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1568px) {
+  .ptiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .ptiles[data-size="sm"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 @media (max-width: 860px) {
-  .ptiles,
+  .ptiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ptiles[data-size="sm"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639px) {
   .ptiles[data-size="sm"] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-/* Home shows two rows at most at every width: 8, 6 or 2 tiles. */
-.ptiles[data-size="sm"] > :nth-child(n + 9) {
-  display: none;
+@media (min-width: 1568px) {
+  .ptiles[data-size="sm"] > :nth-child(n + 11) {
+    display: none;
+  }
 }
-@media (max-width: 1099px) {
+@media (min-width: 1100px) and (max-width: 1567px) {
+  .ptiles[data-size="sm"] > :nth-child(n + 9) {
+    display: none;
+  }
+}
+@media (min-width: 861px) and (max-width: 1099px) {
   .ptiles[data-size="sm"] > :nth-child(n + 7) {
     display: none;
   }
 }
 @media (max-width: 860px) {
-  .ptiles[data-size="sm"] > :nth-child(n + 3) {
+  .ptiles[data-size="sm"] > :nth-child(n + 5) {
     display: none;
   }
 }
@@ -165,9 +186,25 @@ html[data-theme="dark"] .ptile:is(:hover, :focus-visible) {
   overflow: hidden;
 }
 
+/* Phones, one across: the one exception to square — a 3:2 tile, a spacing-md inset from the page margin (318px at 390px). The
+   quote is clamped to the four lines that fit under a two-line title and a one-line type label, with an ellipsis. */
+@media (max-width: 639px) {
+  .ptiles[data-size="sm"] .ptile {
+    aspect-ratio: 3 / 2;
+    width: calc(100% - 2 * var(--spacing-md));
+    margin-inline: auto;
+  }
+  .ptiles[data-size="sm"] .ptile-quote {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+}
+
 /* Art tile: the project's cover fills the tile, and on hover or focus the whole cover slides down inside the square,
-   narrowed to 90% of the width and centred, until the head is fully revealed (never higher than 34%); the tile's edge cuts its lower part. Touch screens
-   start revealed. By transform and clip only. */
+   narrowed to 90% of the width and centred, until the head is fully revealed (never higher than 34%); the tile's edge cuts its lower part. Touch
+   screens skip it (below). By transform and clip only. */
 .ptile-art-head {
   display: grid;
   gap: var(--spacing-sm);
@@ -194,16 +231,59 @@ html[data-theme="dark"] .ptile:is(:hover, :focus-visible) {
 .ptile[data-art="true"]:is(:hover, :focus-visible) .ptile-art-media .cover {
   clip-path: inset(0 round var(--radius-md));
 }
+/* Touch (hover: none, whatever the width): no slide-down. The cover fills the square and only the title lies over it, top-left, in
+   the cover mode's own ink; the type label is not shown. The head stays in the page for assistive technology, visually hidden.
+   [data-touch] forces the same layout for the design-system gallery. The two blocks carry the same declarations. */
+.ptile-art-over {
+  display: none;
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  left: var(--spacing-lg);
+  z-index: 1;
+  pointer-events: none;
+}
+/* The cover mode puts a ground on whatever carries it; this carrier only borrows the ink. */
+html .ptile .ptile-art-over[data-colour] {
+  background-color: transparent;
+}
 @media (hover: none) {
-  .ptile[data-art="true"] .ptile-art-media {
-    transform: translateY(
-        max(34%, calc(var(--art-bottom, 0px) + var(--spacing-md)))
-      )
-      scale(0.9);
+  .ptile[data-art="true"] .ptile-art-media,
+  .ptile[data-art="true"]:is(:hover, :focus-visible) .ptile-art-media {
+    transform: none;
   }
-  .ptile[data-art="true"] .ptile-art-media .cover {
-    clip-path: inset(0 round var(--radius-md));
+  .ptile[data-art="true"] .ptile-art-media .cover,
+  .ptile[data-art="true"]:is(:hover, :focus-visible) .ptile-art-media .cover {
+    clip-path: inset(0 round var(--radius-xs));
   }
+  .ptile[data-art="true"] .ptile-art-head {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ptile[data-art="true"] .ptile-art-over {
+    display: block;
+  }
+}
+.ptile[data-art="true"][data-touch="true"] .ptile-art-media {
+  transform: none;
+}
+.ptile[data-art="true"][data-touch="true"] .ptile-art-media .cover {
+  clip-path: inset(0 round var(--radius-xs));
+}
+.ptile[data-art="true"][data-touch="true"] .ptile-art-head {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ptile[data-art="true"][data-touch="true"] .ptile-art-over {
+  display: block;
 }
 @media (prefers-reduced-motion: no-preference) {
   /* Declared exception to the duration scale (Post Tile → Art tile). */

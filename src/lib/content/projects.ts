@@ -24,6 +24,29 @@ export interface Project {
   body: string;
 }
 
+// What a cover needs to draw: a project, or a post carrying its own cover (DESIGN.md → Domain Components → Hero Cover).
+export interface CoverSubject {
+  slug: string;
+  colour: number;
+  cover?: ProjectFrontmatter["cover"];
+  heroImage?: string;
+  heroAlt?: string;
+  heroPoster?: string;
+  heroVideoLoop?: boolean;
+}
+
+export function coverSubject({ slug, frontmatter: fm }: Project): CoverSubject {
+  return {
+    slug,
+    colour: fm.colour,
+    cover: fm.cover,
+    heroImage: fm.heroImage,
+    heroAlt: fm.heroAlt,
+    heroPoster: fm.heroPoster,
+    heroVideoLoop: fm.heroVideoLoop,
+  };
+}
+
 function getProjectFiles(): string[] {
   return fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"));
 }

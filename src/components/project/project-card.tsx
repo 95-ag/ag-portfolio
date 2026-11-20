@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Cover } from "@/components/project/cover";
 import { Tag } from "@/components/ui/display/tag";
-import type { Project } from "@/lib/content/projects";
+import { coverSubject, type Project } from "@/lib/content/projects";
 
 interface ProjectCardProps {
   project: Project;
@@ -20,7 +20,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       data-colour={fm.colour}
       className="group flex select-none flex-col gap-[var(--spacing-md)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
     >
-      <Cover project={project} variant="card" />
+      <Cover subject={coverSubject(project)} variant="card" />
       <div className="flex origin-left flex-col gap-[var(--spacing-md)] motion-safe:transition-transform motion-safe:duration-[var(--duration-slow)] motion-safe:group-hover:scale-[1.03]">
         <p className="heading-component motion-safe:transition-colors motion-safe:duration-[var(--duration-fast)] group-hover:text-[var(--c-ink)]">
           {fm.title}

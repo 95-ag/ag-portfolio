@@ -28,7 +28,7 @@ export default function WritingPage() {
 
   return (
     <Section>
-      <Container>
+      <Container width="cap">
         <Stack gap="xl">
           <header>
             <Heading level={1} type="display-primary">
