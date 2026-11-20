@@ -48,7 +48,7 @@ export default function AboutPage() {
         >
           {/* Portrait + editorial intro */}
           <div className="flex flex-col gap-[var(--spacing-xl)] md:flex-row md:items-center md:gap-[var(--spacing-2xl)]">
-            <div className="w-full shrink-0 md:w-[clamp(180px,20vw,280px)]">
+            <div className="w-full shrink-0 md:w-[clamp(180px,20vw,280px)] md:self-start">
               <div className="relative aspect-square w-full overflow-hidden rounded-[var(--radius-md)] md:aspect-[3/4]">
                 <Image
                   src={about.headshot}

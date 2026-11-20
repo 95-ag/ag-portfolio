@@ -34,7 +34,8 @@
   /* Editorial display tier */
   .heading-display {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 52px;
+    /* 52px, a touch less from 1280 to 1333 so the About line stays on two lines in the narrowest desktop column. */
+    font-size: clamp(48px, 3.9vw, 52px);
     font-weight: 600;
     line-height: 58px;
     letter-spacing: -0.015em;
