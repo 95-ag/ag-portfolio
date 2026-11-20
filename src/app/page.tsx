@@ -46,7 +46,7 @@ export default function HomePage() {
         <div
           data-home-body
           data-scroll-top="off"
-          className="flex flex-col gap-[var(--spacing-4xl)] pt-[var(--spacing-xl)] pb-[var(--spacing-4xl)] min-[861px]:pt-[var(--spacing-4xl)] md:gap-[calc(var(--spacing-4xl)+var(--spacing-3xl))]"
+          className="flex flex-col gap-[var(--spacing-4xl)] pt-[var(--spacing-xl)] pb-[var(--spacing-xl)] min-[861px]:pt-[var(--spacing-4xl)] md:gap-[calc(var(--spacing-4xl)+var(--spacing-3xl))]"
         >
           {/* Hero: the statement on the left, the lead and the email action on the right. */}
           <header className="grid grid-cols-[1.3fr_1fr] items-center gap-[var(--spacing-2xl)] min-[1440px]:grid-cols-[1.4fr_1fr] stack:grid-cols-1 stack:gap-[var(--spacing-lg)]">

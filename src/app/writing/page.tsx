@@ -27,7 +27,7 @@ export default function WritingPage() {
   const posts = getAllPosts();
 
   return (
-    <Section>
+    <Section className="pb-[var(--spacing-md)] md:pb-[var(--spacing-md)]">
       <Container width="cap">
         <Stack gap="xl">
           <header>
