@@ -14,7 +14,7 @@ const TEXT_LINK =
 const FOOTER_TEXT =
   "support-meta [font-size:11px] [line-height:18px] md:[font-size:15px] md:[line-height:24px]";
 
-// On the 1440 box: © and the name at its left edge, the icons centred, Credits · Stylebook · Source ending at its right edge —
+// On the 1440 box: © and the name at its left edge, the icons centred, Credits, Stylebook and Source (24px apart, no separators) ending at its right edge —
 // level with the page name and the nav. Phones stack icons, links, then ©.
 export function Footer() {
   const year = new Date().getFullYear();
@@ -56,23 +56,27 @@ export function Footer() {
             >
               <MailIcon size={20} />
             </a>
-            <a href="/rss.xml" aria-label="RSS feed" className={ICON_LINK}>
+            <a
+              href="/rss.xml"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="RSS feed"
+              className={ICON_LINK}
+            >
               <RssFeedIcon size={20} />
             </a>
           </div>
 
           <nav
             aria-label="Site"
-            className={`${FOOTER_TEXT} order-2 flex items-center gap-[var(--spacing-sm)] uppercase md:order-none md:justify-self-end`}
+            className={`${FOOTER_TEXT} order-2 flex items-center gap-[var(--spacing-lg)] uppercase md:order-none md:justify-self-end`}
           >
             <Link href="/credits" className={TEXT_LINK}>
               Credits
             </Link>
-            <span aria-hidden="true">·</span>
             <Link href="/design-system" className={TEXT_LINK}>
               Stylebook
             </Link>
-            <span aria-hidden="true">·</span>
             <a
               href="https://github.com/95-ag/ag-portfolio"
               target="_blank"
