@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { Cover } from "@/components/project/cover";
 import { CoverLoop } from "@/components/project/cover-loop";
+import { FitQuote } from "@/components/writing/fit-quote";
 import { TypeLabel } from "@/components/writing/type-label";
 import { type Post, postColour } from "@/lib/content/posts";
 import type { CoverSubject } from "@/lib/content/projects";
@@ -100,11 +101,11 @@ export function PostTile({
       ) : (
         <>
           <TileTitle post={post} size={size} />
-          <span
+          <FitQuote
             className={`ptile-quote ${size === "sm" ? "body-caption italic" : "body-secondary italic"}`}
           >
             “{fm.summary}”
-          </span>
+          </FitQuote>
           <TypeLabel
             type={fm.type}
             addons={fm.addons}

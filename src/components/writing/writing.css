@@ -133,8 +133,15 @@ html[data-theme="dark"] .ptile:is(:hover, :focus-visible) {
 .ptile:is(:hover, :focus-visible) .ptile-arrow {
   color: var(--ink);
 }
+/* The quote fills what is left between the title and the type line and clamps to the whole lines that fit (FitQuote writes
+   --quote-lines; 3 until it has measured). */
 .ptile-quote {
-  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--quote-lines, 3);
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
 }
 /* The type line sits at the bottom of the tile, so a short quote leaves the space above it. */
 .ptile > .type-label {
@@ -186,19 +193,12 @@ html[data-theme="dark"] .ptile:is(:hover, :focus-visible) {
   overflow: hidden;
 }
 
-/* Phones, one across: the one exception to square — a 3:2 tile, a spacing-md inset from the page margin (318px at 390px). The
-   quote is clamped to the four lines that fit under a two-line title and a one-line type label, with an ellipsis. */
+/* Phones, one across: the one exception to square — a 3:2 tile, a spacing-md inset from the page margin (318px at 390px). */
 @media (max-width: 639px) {
   .ptiles[data-size="sm"] .ptile {
     aspect-ratio: 3 / 2;
     width: calc(100% - 2 * var(--spacing-md));
     margin-inline: auto;
-  }
-  .ptiles[data-size="sm"] .ptile-quote {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
   }
 }
 
