@@ -6,6 +6,7 @@ import { Providers } from "@/app/providers";
 import { BackgroundLayer } from "@/components/background/background-layer";
 import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
+import { PageName } from "@/components/shell/page-name";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { ThemeToggle } from "@/components/shell/theme-toggle";
 import { SHOW_PREVIEW_UI } from "@/lib/build-flags";
@@ -93,6 +94,7 @@ export default function RootLayout({
             Skip to content
           </a>
           <BackgroundLayer />
+          <PageName />
           <Nav />
           <main
             id="main"

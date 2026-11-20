@@ -18,6 +18,7 @@ import { ScreenCarousel, ScreenSlide } from "@/components/mdx/screen-carousel";
 import { Footer } from "@/components/shell/footer";
 import { LogoMark } from "@/components/shell/logo-mark";
 import { NavView } from "@/components/shell/nav";
+import { PageName } from "@/components/shell/page-name";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { ThemeToggle } from "@/components/shell/theme-toggle";
 import { Button } from "@/components/ui/controls/button";
@@ -149,6 +150,17 @@ export function ComponentsSections() {
         </Specimen>
 
         <Specimen
+          id="shell-page-name"
+          name="PageName"
+          source="@/components/shell/page-name"
+          description="The site's name in the top-left corner of every page, level with the nav; it scrolls away and links Home. Shown here in a bounded frame; the live one is at the top of this page."
+        >
+          <ChromeFrame height={96} inert>
+            <PageName />
+          </ChromeFrame>
+        </Specimen>
+
+        <Specimen
           id="shell-logomark"
           name="LogoMark"
           source="@/components/shell/logo-mark"
@@ -194,7 +206,7 @@ export function ComponentsSections() {
           id="shell-scroll-to-top"
           name="ScrollToTop"
           source="@/components/shell/scroll-to-top"
-          description="Floating button that appears after 400px of scroll and sits above the footer. Mounted once in the root layout. The live instance is on this page; scroll down to see it."
+          description="Frosted circle at the bottom-right corner that appears after 400px of scroll on long pages and sits above the footer. Not shown on Home, About, 404 and error pages (they mark their root data-scroll-top=off). Mounted once in the root layout; the live instance is on this page."
         >
           <InertDemo>
             <ChromeFrame height={160}>
