@@ -25,14 +25,14 @@ export default function WorkPage() {
 
   return (
     <Section>
-      <Container>
+      <Container width="cap">
         <Stack gap="xl">
           <header>
             <Heading level={1} type="display-primary">
               Work
             </Heading>
           </header>
-          <div className="grid grid-cols-1 gap-[var(--spacing-gutter)] md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-[var(--spacing-gutter)] gap-y-[var(--spacing-3xl)] md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}

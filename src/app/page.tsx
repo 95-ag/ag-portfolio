@@ -41,18 +41,18 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(personSchema) }}
       />
-      <Container>
-        <div className="flex flex-col gap-[var(--spacing-4xl)] pt-[var(--spacing-xl)] pb-[var(--spacing-4xl)] md:gap-[calc(var(--spacing-4xl)+var(--spacing-3xl))] md:pt-[var(--spacing-4xl)] lg:pt-[var(--spacing-5xl)]">
+      <Container width="cap">
+        {/* data-scroll-top="off": a short, fixed page carries no scroll-to-top (DESIGN.md → Shell → Scroll-to-top Button). */}
+        <div
+          data-home-body
+          data-scroll-top="off"
+          className="flex flex-col gap-[var(--spacing-4xl)] pt-[var(--spacing-xl)] pb-[var(--spacing-4xl)] min-[861px]:pt-[var(--spacing-4xl)] md:gap-[calc(var(--spacing-4xl)+var(--spacing-3xl))]"
+        >
           {/* Hero: the statement on the left, the lead and the email action on the right. */}
-          <header className="grid grid-cols-[1.3fr_1fr] items-end gap-[var(--spacing-2xl)] stack:grid-cols-1">
-            <div className="flex flex-col gap-[var(--spacing-lg)]">
-              <p className="mono-anchor select-text">
-                Aishwarya Ganesan — AI Engineer
-              </p>
-              <Heading level={1} type="display-primary">
-                I build for production, not proof of concept.
-              </Heading>
-            </div>
+          <header className="grid grid-cols-[1.3fr_1fr] items-center gap-[var(--spacing-2xl)] min-[1440px]:grid-cols-[1.4fr_1fr] stack:grid-cols-1 stack:gap-[var(--spacing-lg)]">
+            <Heading level={1} type="display-primary">
+              I build for production, not proof of concept.
+            </Heading>
             <div className="flex flex-col items-start gap-[var(--spacing-md)]">
               <p className="body-lead text-[var(--ink-lead)]">
                 AI prototypes are easy. Building systems that survive real
