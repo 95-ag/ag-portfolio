@@ -689,6 +689,56 @@ export function FoundationsSections() {
         intro="Structural and spacing primitives. Stack, Grid, and Divider render live; the page-shaping wrappers (Container, Section, Sticky) shape this page directly."
       >
         <Specimen
+          id="layout-container"
+          name="Container"
+          source="@/components/layout/container"
+          description="Two widths. default: a 1200px box. cap: the 1440px content box with the page margin each side — Home, About, Work and Writing. Padding is the page margin on both: 20px to 767px, 24px from 768px, 64px from 1280px. The corners (name, nav, scroll-to-top, theme toggle) stand on the 1440 box on every page."
+        >
+          <table className="body-caption w-full">
+            <thead>
+              <tr className="text-left">
+                <th>Window</th>
+                <th>Page margin</th>
+                <th>cap content width</th>
+                <th>Corner offset</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>390</td>
+                <td>20px</td>
+                <td>350px</td>
+                <td>20px</td>
+              </tr>
+              <tr>
+                <td>768</td>
+                <td>24px</td>
+                <td>720px</td>
+                <td>24px</td>
+              </tr>
+              <tr>
+                <td>1280</td>
+                <td>64px</td>
+                <td>1152px</td>
+                <td>64px</td>
+              </tr>
+              <tr>
+                <td>1568</td>
+                <td>64px</td>
+                <td>1440px</td>
+                <td>64px</td>
+              </tr>
+              <tr>
+                <td>1920</td>
+                <td>64px</td>
+                <td>1440px</td>
+                <td>235px</td>
+              </tr>
+            </tbody>
+          </table>
+        </Specimen>
+
+        <Specimen
           id="layout-stack"
           name="Stack"
           source="@/components/layout/stack"
