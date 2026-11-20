@@ -96,9 +96,7 @@ const Z_INDEX_LAYERS: LayerItem[] = [
     value: "45",
     role: "Provenance-mark reveals, below the nav",
   },
-  { token: "--z-pill-nav", value: "50", role: "Floating pill nav" },
-  { token: "--z-mobile-menu-overlay", value: "55", role: "Mobile menu scrim" },
-  { token: "--z-mobile-menu-panel", value: "60", role: "Mobile menu panel" },
+  { token: "--z-nav", value: "50", role: "The nav: row, button and card" },
   { token: "--z-lightbox", value: "70", role: "Figure inspection overlay" },
 ];
 
@@ -170,7 +168,7 @@ export function TechnicalSections() {
         title="Technical · Z-Index Scale"
         mapsTo="Technical Conventions → Z-Index Scale"
         source="--z-*"
-        intro="An ordered layering scale, from base content up through the sticky rail, scroll-to-top, anchored popovers, the floating pill nav, the mobile menu overlay and panel, and the figure lightbox."
+        intro="An ordered layering scale, from base content up through the sticky rail, scroll-to-top, anchored popovers, the nav (row, button and card) and the figure lightbox."
       >
         <LayerStack items={Z_INDEX_LAYERS} />
       </GallerySection>

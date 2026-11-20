@@ -595,9 +595,7 @@ html[data-theme="dark"] [data-cover-dark="marker"] {
   --z-sticky-content: 20;
   --z-scroll-to-top: 40;
   --z-popover: 45;
-  --z-pill-nav: 50;
-  --z-mobile-menu-overlay: 55;
-  --z-mobile-menu-panel: 60;
+  --z-nav: 50;
   --z-lightbox: 70;
   --z-skip-link: 80;
 

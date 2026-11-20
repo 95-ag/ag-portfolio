@@ -17,8 +17,7 @@ import { mdxComponents } from "@/components/mdx/mdx-components";
 import { ScreenCarousel, ScreenSlide } from "@/components/mdx/screen-carousel";
 import { Footer } from "@/components/shell/footer";
 import { LogoMark } from "@/components/shell/logo-mark";
-import { MobileNavPanel } from "@/components/shell/mobile-nav";
-import { PillNav } from "@/components/shell/pill-nav";
+import { NavView } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { Button } from "@/components/ui/controls/button";
 import { CopyButton } from "@/components/ui/controls/copy-button";
@@ -135,13 +134,21 @@ export function ComponentsSections() {
       >
         <Specimen
           id="shell-nav"
-          name="PillNav"
-          source="@/components/shell/pill-nav"
-          description="Floating pill nav (md+), with routing-aware active state."
+          name="Nav"
+          source="@/components/shell/nav"
+          description="One navigation surface in three states: a plain row from 861px, the frosted round button it collapses into after 80px of scroll (and the only form at 860px and below), and the card the button opens into. Shown here in bounded frames; the live nav is on this page."
         >
-          <ChromeFrame height={120} inert>
-            <PillNav />
-          </ChromeFrame>
+          <div className="flex flex-col gap-[var(--spacing-lg)]">
+            <ChromeFrame height={96} inert>
+              <NavView pathname="/work" collapsed={false} open={false} wide />
+            </ChromeFrame>
+            <ChromeFrame height={96} inert>
+              <NavView pathname="/work" collapsed open={false} wide />
+            </ChromeFrame>
+            <ChromeFrame height={260} inert>
+              <NavView pathname="/work" collapsed open wide={false} />
+            </ChromeFrame>
+          </div>
         </Specimen>
 
         <Specimen
@@ -162,25 +169,6 @@ export function ComponentsSections() {
               </figcaption>
             </figure>
           </div>
-        </Specimen>
-
-        <Specimen
-          id="shell-mobile-nav"
-          name="MobileNav"
-          source="@/components/shell/mobile-nav"
-          description="Mobile hamburger drawer (below md): logomark, nav links, and theme selector, sliding in from the right. The live drawer is on this page at mobile widths; resize below 768px and tap the menu."
-        >
-          <InertDemo>
-            <ChromeFrame height={420} inert>
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-[var(--ink)]/30"
-              />
-              <div className="absolute top-0 right-0 h-full w-[min(280px,80%)]">
-                <MobileNavPanel pathname="/about" />
-              </div>
-            </ChromeFrame>
-          </InertDemo>
         </Specimen>
 
         <Specimen
