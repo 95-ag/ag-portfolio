@@ -195,7 +195,7 @@ export function ComponentsSections() {
           id="shell-footer"
           name="Footer"
           source="@/components/shell/footer"
-          description="Site-wide footer: copyright, repo link, social and feed icons. Full-width, in document flow."
+          description="Site-wide footer on the 1440 box: © year and name, the social and feed icons, and Credits · Stylebook · Source. One row from md; stacked icons, links, © on phones. In document flow."
         >
           <ChromeFrame inert>
             <Footer />
