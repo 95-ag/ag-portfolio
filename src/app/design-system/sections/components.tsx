@@ -19,13 +19,10 @@ import { Footer } from "@/components/shell/footer";
 import { LogoMark } from "@/components/shell/logo-mark";
 import { NavView } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
+import { ThemeToggle } from "@/components/shell/theme-toggle";
 import { Button } from "@/components/ui/controls/button";
 import { CopyButton } from "@/components/ui/controls/copy-button";
 import { EmailButton } from "@/components/ui/controls/email-button";
-import {
-  InlineThemeSelector,
-  PillThemeSelector,
-} from "@/components/ui/controls/theme-selector";
 import { CopyableCode } from "@/components/ui/display/copyable-code";
 import { Heading } from "@/components/ui/display/heading";
 import { LightboxTrigger } from "@/components/ui/display/lightbox";
@@ -172,6 +169,17 @@ export function ComponentsSections() {
         </Specimen>
 
         <Specimen
+          id="shell-theme-toggle"
+          name="ThemeToggle"
+          source="@/components/shell/theme-toggle"
+          description="The floating Light / Dark toggle at the bottom-left corner — scroll-to-top's twin. Two modes, one tap flips, the icon shows the mode it switches to. Shown on the dev server and previews (site-wide) and on this page in production (page-only). Framed here at its resting position."
+        >
+          <ChromeFrame height={140} inert>
+            <ThemeToggle mode="page" />
+          </ChromeFrame>
+        </Specimen>
+
+        <Specimen
           id="shell-footer"
           name="Footer"
           source="@/components/shell/footer"
@@ -237,29 +245,6 @@ export function ComponentsSections() {
             <InertDemo>
               <CopyButton value="hello@example.com" label="email" />
             </InertDemo>
-          </Specimen>
-
-          <Specimen
-            id="ui-theme-selector"
-            name="ThemeSelector"
-            source="@/components/ui/controls/theme-selector"
-            description="The three-option theme control (system / light / dark). Two variants from one file: a collapsed pill that expands on hover or keyboard focus (pill nav) and an always-expanded inline row (mobile menu + this page's header)."
-            headingLevel={4}
-          >
-            <div className="flex flex-wrap items-start gap-[var(--spacing-2xl)]">
-              <div className="flex flex-col gap-[var(--spacing-sm)]">
-                <span className="mono-anchor">Pill (hover to expand)</span>
-                <InertDemo className="flex">
-                  <PillThemeSelector />
-                </InertDemo>
-              </div>
-              <div className="flex flex-col gap-[var(--spacing-sm)]">
-                <span className="mono-anchor">Inline</span>
-                <InertDemo className="flex">
-                  <InlineThemeSelector />
-                </InertDemo>
-              </div>
-            </div>
           </Specimen>
         </SpecimenGroup>
 

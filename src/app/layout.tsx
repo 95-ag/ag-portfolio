@@ -7,6 +7,8 @@ import { BackgroundLayer } from "@/components/background/background-layer";
 import { Footer } from "@/components/shell/footer";
 import { Nav } from "@/components/shell/nav";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
+import { ThemeToggle } from "@/components/shell/theme-toggle";
+import { SHOW_PREVIEW_UI } from "@/lib/build-flags";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import {
   AUTHOR_NAME,
@@ -74,6 +76,15 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }}
         />
+        {/* Production follows the system preference: a theme saved by the retired selector is cleared before the theme provider
+            reads it, so no visitor stays pinned to Light or Dark with no switch left to undo it. */}
+        {!SHOW_PREVIEW_UI && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: 'try{localStorage.removeItem("theme")}catch(e){}',
+            }}
+          />
+        )}
         <Providers>
           <a
             href="#main"
@@ -92,6 +103,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <ScrollToTop />
+          {SHOW_PREVIEW_UI && <ThemeToggle mode="site" />}
           <Analytics />
           <SpeedInsights />
         </Providers>

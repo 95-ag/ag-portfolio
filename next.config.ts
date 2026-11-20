@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 
 // SSG-safe Content-Security-Policy. A strict (hash/nonce) script-src is not possible
 // while keeping static generation: Next's App Router emits dynamic inline RSC bootstrap
@@ -42,10 +43,15 @@ const securityHeaders = [
   },
 ];
 
-const nextConfig: NextConfig = {
-  async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
-  },
-};
-
-export default nextConfig;
+// The preview-only UI shows on the dev server and Vercel previews. The phase or the deploy variable decides — never
+// NODE_ENV, which a production build keeps when it is already set.
+export default function config(phase: string): NextConfig {
+  const previewUi =
+    phase === PHASE_DEVELOPMENT_SERVER || process.env.VERCEL_ENV === "preview";
+  return {
+    env: { NEXT_PUBLIC_PREVIEW_UI: previewUi ? "1" : "" },
+    async headers() {
+      return [{ source: "/:path*", headers: securityHeaders }];
+    },
+  };
+}
