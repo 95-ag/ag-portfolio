@@ -42,6 +42,19 @@ git rm -rf --quiet . >/dev/null
 echo "Staging allowlisted paths from main..."
 git checkout main -- "${ALLOWLIST[@]}"
 
+# Unpublished content is committed on main under _drafts/ but must never ship: drop each draft
+# directory and the public/ folder named for every draft slug.
+echo "Stripping unpublished drafts..."
+for kind in projects writing; do
+  for draft in content/"$kind"/_drafts/*.mdx; do
+    [ -e "$draft" ] || continue
+    slug="$(basename "$draft" .mdx)"
+    echo "  draft: $kind/$slug"
+    git rm -rf --quiet --ignore-unmatch "public/$kind/$slug"
+  done
+  git rm -rf --quiet --ignore-unmatch "content/$kind/_drafts"
+done
+
 echo
 echo "Staged snapshot (production = curated main):"
 git status --short

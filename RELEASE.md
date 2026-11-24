@@ -35,6 +35,8 @@ tsconfig.json postcss.config.mjs biome.json .nvmrc .gitignore README.md
 
 Everything else is intentionally dropped (denylist): `.claude/` (including docs), `AGENTS.md`, `assets-source/`, `requirements.txt`, `playwright.config.ts`, `tmp/`. The release script holds the authoritative allowlist; this list describes it and must be updated to follow it, never the reverse.
 
+**Unpublished content is stripped from inside the allowlist.** A project or post still in `content/projects/_drafts/` or `content/writing/_drafts/` is committed on `main` but never released: after the checkout, `release.sh` removes each `_drafts/` directory and the `public/projects/<slug>` or `public/writing/<slug>` folder of every draft in it, and prints each draft it strips. Publishing is a file move out of `_drafts/` (PROJECT.md → Content Architecture).
+
 ## Why orphan-snapshot
 
 The public deploy surface is kept to exactly the build inputs, while the development branch retains the full workflow and planning history. This is deliberate: the "how I built this" story is presented in the portfolio's own case study, not carried as repository clutter in the deployed artifact.
@@ -94,10 +96,10 @@ A production snapshot must contain every `next build` input. Before pushing:
 2. **Prove zero leakage:** confirm none of the stripped paths slipped in:
 
    ```bash
-   git ls-files | grep -E '^\.claude/|^AGENTS\.md$|^assets-source/|^requirements\.txt$' && echo "LEAK" || echo "clean"
+   git ls-files | grep -E '^\.claude/|^AGENTS\.md$|^assets-source/|^requirements\.txt$|_drafts' && echo "LEAK" || echo "clean"
    ```
 
-   Expected: `clean`.
+   Expected: `clean`. Also check that no `public/projects/<slug>` or `public/writing/<slug>` folder exists for a draft slug listed in `main`'s `content/*/_drafts/` (the script prints each one it stripped).
 
 ## Branch autonomy
 
