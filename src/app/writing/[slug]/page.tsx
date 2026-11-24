@@ -158,7 +158,7 @@ export default async function PostPage({ params }: Props) {
             <div className="mt-[var(--spacing-5xl)] flex items-center justify-between gap-[var(--spacing-md)] border-t border-[var(--hairline)] pt-[var(--spacing-lg)] rail-side:col-start-2">
               <Link
                 href="/writing"
-                className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 <WestIcon size={16} />
                 Back to Writing
@@ -166,7 +166,7 @@ export default async function PostPage({ params }: Props) {
               {nextPost && (
                 <Link
                   href={`/writing/${nextPost.slug}`}
-                  className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+                  className="interactive-label flex min-h-[44px] items-center gap-[var(--spacing-xs)] text-[var(--ink)] motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
                 >
                   Next post
                   <EastIcon size={16} />
