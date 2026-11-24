@@ -13,7 +13,11 @@ function escapeXml(text: string): string {
 }
 
 export function GET() {
-  const items = getAllPosts().map((post) => {
+  const posts = getAllPosts();
+  // There is no feed to follow until the first post is published.
+  if (posts.length === 0) return new Response("Not found", { status: 404 });
+
+  const items = posts.map((post) => {
     const { frontmatter: fm } = post;
     const url = `${SITE_URL}/writing/${post.slug}`;
     return [

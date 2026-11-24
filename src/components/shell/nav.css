@@ -4,7 +4,6 @@
 
 .nav {
   --nav-size: 44px;
-  --nav-count: 4;
   --nav-slot: 44px;
   --nav-ease-collapse: cubic-bezier(0, 0, 0.2, 1);
   --nav-ease-card: cubic-bezier(0.32, 0.72, 0, 1);

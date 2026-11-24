@@ -16,7 +16,7 @@ const FOOTER_TEXT =
 
 // On the 1440 box: © and the name at its left edge, the icons centred, Credits, Stylebook and Source (24px apart, no separators) ending at its right edge —
 // level with the page name and the nav. Phones stack icons, links, then ©.
-export function Footer() {
+export function Footer({ showFeed }: { showFeed: boolean }) {
   const year = new Date().getFullYear();
 
   return (
@@ -56,15 +56,17 @@ export function Footer() {
             >
               <MailIcon size={20} />
             </a>
-            <a
-              href="/rss.xml"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="RSS feed"
-              className={ICON_LINK}
-            >
-              <RssFeedIcon size={20} />
-            </a>
+            {showFeed && (
+              <a
+                href="/rss.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="RSS feed"
+                className={ICON_LINK}
+              >
+                <RssFeedIcon size={20} />
+              </a>
+            )}
           </div>
 
           <nav

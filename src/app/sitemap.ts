@@ -23,11 +23,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${SITE_URL}/writing`,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+    ...(posts.length > 0
+      ? [
+          {
+            url: `${SITE_URL}/writing`,
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+          },
+        ]
+      : []),
     {
       url: `${SITE_URL}/credits`,
       changeFrequency: "yearly",

@@ -141,6 +141,12 @@ export function postColour(slug: string): number {
   return slot;
 }
 
+// The Writing surfaces (nav item, feed link, index, feed, sitemap and llms.txt lines) exist only once
+// there is a post to read. In development a draft counts, so they can be built against one.
+export function hasPublishedPosts(): boolean {
+  return getAllPosts().length > 0;
+}
+
 export function isDraft(slug: string): boolean {
   return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
 }

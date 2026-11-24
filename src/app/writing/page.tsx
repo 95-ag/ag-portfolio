@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Stack } from "@/components/layout/stack";
@@ -25,6 +26,8 @@ export const metadata: Metadata = {
 
 export default function WritingPage() {
   const posts = getAllPosts();
+  // No post, no index: the page stays out of the build until the first one is published.
+  if (posts.length === 0) notFound();
 
   return (
     <Section className="pb-[var(--spacing-md)] md:pb-[var(--spacing-md)]">
@@ -35,7 +38,7 @@ export default function WritingPage() {
               Writing
             </Heading>
           </header>
-          {posts.length > 0 && <PostTiles posts={posts} size="art" />}
+          <PostTiles posts={posts} size="art" />
         </Stack>
       </Container>
     </Section>

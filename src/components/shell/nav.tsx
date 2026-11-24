@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { IconProps } from "@/components/icons/icon-base";
 import { CloseIcon } from "@/components/icons/material/close";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
@@ -38,6 +45,12 @@ function currentOf(
   return undefined;
 }
 
+function navItems(showWriting: boolean) {
+  return showWriting
+    ? NAV_ITEMS
+    : NAV_ITEMS.filter(({ href }) => href !== "/writing");
+}
+
 function itemClasses(current: boolean) {
   return cn(
     "nav-link nav-item",
@@ -54,6 +67,8 @@ interface NavViewProps {
   open: boolean;
   // The row is on screen (861px and up); without it only the button and the card exist.
   wide: boolean;
+  // Writing is listed only once a post is published (PROJECT.md → Writing).
+  showWriting: boolean;
   onToggle?: () => void;
   cardRef?: React.RefObject<HTMLDivElement | null>;
   toggleRef?: React.RefObject<HTMLButtonElement | null>;
@@ -65,12 +80,14 @@ export function NavView({
   collapsed,
   open,
   wide,
+  showWriting,
   onToggle,
   cardRef,
   toggleRef,
 }: NavViewProps) {
   const rowRef = useRef<HTMLElement>(null);
   const menuId = useId();
+  const items = navItems(showWriting);
 
   // Each row item slides to the button's centre when the row collapses: measure how far, from layout (not from a
   // transformed rect), on mount, on resize and once the font has settled the widths.
@@ -99,6 +116,8 @@ export function NavView({
       className="nav"
       data-mode={showButton ? "button" : "row"}
       data-open={open}
+      // The card's height follows its rows: Home plus the items.
+      style={{ "--nav-count": items.length + 1 } as CSSProperties}
     >
       <nav
         ref={rowRef}
@@ -116,7 +135,7 @@ export function NavView({
         >
           <LogoMark />
         </Link>
-        {NAV_ITEMS.map(({ href, label, Icon }) => {
+        {items.map(({ href, label, Icon }) => {
           const current = currentOf(pathname, href);
           return (
             <Link
@@ -173,7 +192,7 @@ export function NavView({
             </span>
             Home
           </Link>
-          {NAV_ITEMS.map(({ href, label, Icon }) => {
+          {items.map(({ href, label, Icon }) => {
             const current = currentOf(pathname, href);
             return (
               <Link
@@ -196,7 +215,7 @@ export function NavView({
   );
 }
 
-export function Nav() {
+export function Nav({ showWriting }: { showWriting: boolean }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
@@ -261,6 +280,7 @@ export function Nav() {
         collapsed={collapsed}
         open={open}
         wide={wide}
+        showWriting={showWriting}
         onToggle={() => setOpen((was) => !was)}
         cardRef={cardRef}
         toggleRef={toggleRef}

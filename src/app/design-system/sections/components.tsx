@@ -133,13 +133,31 @@ export function ComponentsSections() {
         >
           <div className="flex flex-col gap-[var(--spacing-lg)]">
             <ChromeFrame height={96} inert>
-              <NavView pathname="/work" collapsed={false} open={false} wide />
+              <NavView
+                pathname="/work"
+                collapsed={false}
+                open={false}
+                wide
+                showWriting
+              />
             </ChromeFrame>
             <ChromeFrame height={96} inert>
-              <NavView pathname="/work" collapsed open={false} wide />
+              <NavView
+                pathname="/work"
+                collapsed
+                open={false}
+                wide
+                showWriting
+              />
             </ChromeFrame>
             <ChromeFrame height={260} inert>
-              <NavView pathname="/work" collapsed open wide={false} />
+              <NavView
+                pathname="/work"
+                collapsed
+                open
+                wide={false}
+                showWriting
+              />
             </ChromeFrame>
           </div>
         </Specimen>
@@ -209,7 +227,7 @@ export function ComponentsSections() {
           ]}
         >
           <ChromeFrame inert>
-            <Footer />
+            <Footer showFeed />
           </ChromeFrame>
         </Specimen>
 

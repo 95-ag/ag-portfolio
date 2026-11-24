@@ -10,6 +10,7 @@ import { PageName } from "@/components/shell/page-name";
 import { ScrollToTop } from "@/components/shell/scroll-to-top";
 import { ThemeToggle } from "@/components/shell/theme-toggle";
 import { SHOW_PREVIEW_UI } from "@/lib/build-flags";
+import { hasPublishedPosts } from "@/lib/content/posts";
 import { buildWebSiteSchema, serializeJsonLd } from "@/lib/seo/jsonld";
 import {
   AUTHOR_NAME,
@@ -57,6 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const websiteSchema = buildWebSiteSchema();
+  const hasWriting = hasPublishedPosts();
 
   return (
     <html
@@ -67,12 +69,14 @@ export default function RootLayout({
       <body className="flex min-h-dvh flex-col">
         {/* Not metadata.alternates.types: every page declares its own alternates.canonical, and a
             page's alternates replaces the layout's wholesale, so the feed link would vanish. */}
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={FEED_TITLE}
-          href="/rss.xml"
-        />
+        {hasWriting && (
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={FEED_TITLE}
+            href="/rss.xml"
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }}
@@ -95,7 +99,7 @@ export default function RootLayout({
           </a>
           <BackgroundLayer />
           <PageName />
-          <Nav />
+          <Nav showWriting={hasWriting} />
           <main
             id="main"
             tabIndex={-1}
@@ -103,7 +107,7 @@ export default function RootLayout({
           >
             {children}
           </main>
-          <Footer />
+          <Footer showFeed={hasWriting} />
           <ScrollToTop />
           {SHOW_PREVIEW_UI && <ThemeToggle mode="site" />}
           <Analytics />

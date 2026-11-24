@@ -43,7 +43,11 @@ export function GET() {
     "",
     `- [About](${SITE_URL}/about): Background, capabilities, and approach`,
     `- [Work](${SITE_URL}/work): All project case studies`,
-    `- [Writing](${SITE_URL}/writing): Writing on AI and software engineering`,
+    ...(posts.length > 0
+      ? [
+          `- [Writing](${SITE_URL}/writing): Writing on AI and software engineering`,
+        ]
+      : []),
     "",
     "## About",
     "",
