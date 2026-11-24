@@ -1,6 +1,6 @@
 import type { RelatedItem } from "@/components/ui/display/related";
 import { getAllPosts, isDraft } from "./posts";
-import { getAllProjects } from "./projects";
+import { getAllProjects, isDraftProject } from "./projects";
 
 function selfListed(slug: string): Error {
   return new Error(`related in "${slug}" lists "${slug}" itself.`);
@@ -53,9 +53,11 @@ export function getRelatedForProject(slug: string): RelatedItem[] {
         `related in "${slug}" references unknown slug: "${target}"`,
       );
     }
-    // A project is always published, so a related entry naming a draft would pass in
-    // development and fail at release.
-    if (item.kind === "post" && isDraft(target)) {
+    // A published project may only point at published items: drafts vanish from the
+    // production build, so a link to one would pass in development and fail at release.
+    const targetIsDraft =
+      item.kind === "post" ? isDraft(target) : isDraftProject(target);
+    if (targetIsDraft && !isDraftProject(slug)) {
       throw new Error(
         `related in "${slug}" references "${target}", which is still a draft — publish it first.`,
       );

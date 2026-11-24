@@ -47,13 +47,22 @@ export function coverSubject({ slug, frontmatter: fm }: Project): CoverSubject {
   };
 }
 
-function getProjectFiles(): string[] {
-  return fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"));
+// Drafts are committed but never released: they load in development only (so a local
+// production build matches what ships), and release.sh strips the directory from the snapshot.
+const DRAFTS_DIR = path.join(CONTENT_DIR, "_drafts");
+
+function listProjectFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith(".mdx"));
 }
 
-function parseProject(filename: string): Project {
+export function isDraftProject(slug: string): boolean {
+  return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
+}
+
+function parseProject(dir: string, filename: string): Project {
   const slug = filename.replace(/\.mdx$/, "");
-  const filepath = path.join(CONTENT_DIR, filename);
+  const filepath = path.join(dir, filename);
   const raw = fs.readFileSync(filepath, "utf-8");
   const { data, content } = parseFrontmatter(raw, filename);
 
@@ -86,9 +95,24 @@ function parseProject(filename: string): Project {
 }
 
 export function getAllProjects(): Project[] {
-  const files = getProjectFiles();
-  const projects = files.map(parseProject);
+  const published = listProjectFiles(CONTENT_DIR).map((f) =>
+    parseProject(CONTENT_DIR, f),
+  );
+  const drafts =
+    process.env.NODE_ENV === "development"
+      ? listProjectFiles(DRAFTS_DIR).map((f) => parseProject(DRAFTS_DIR, f))
+      : [];
 
+  const publishedSlugs = new Set(published.map((p) => p.slug));
+  for (const draft of drafts) {
+    if (publishedSlugs.has(draft.slug)) {
+      throw new Error(
+        `Draft "${draft.slug}" has the same slug as a published project.`,
+      );
+    }
+  }
+
+  const projects = [...published, ...drafts];
   assertProjectSet(projects);
 
   // Production release gate: a published project must declare a cover whose source exists
@@ -100,15 +124,15 @@ export function getAllProjects(): Project[] {
   // text for it would render nothing. Every check reports together so one blocker never
   // hides another.
   if (process.env.VERCEL_ENV === "production") {
-    const coverless = projects.filter((p) => !p.frontmatter.cover);
-    const sourceless = projects.filter((p) => {
+    const coverless = published.filter((p) => !p.frontmatter.cover);
+    const sourceless = published.filter((p) => {
       const kind = p.frontmatter.cover?.kind;
       if (kind === "live") return !coverComponents[p.slug];
       if (kind === "artefact") return !artefactComponents[p.slug];
       if (kind === "image" || kind === "video") return !p.frontmatter.heroImage;
       return false;
     });
-    const unlabelled = projects.filter(
+    const unlabelled = published.filter(
       (p) =>
         p.frontmatter.heroImage &&
         !coverComponents[p.slug] &&
@@ -156,10 +180,7 @@ export function getAllProjects(): Project[] {
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
-  const files = getProjectFiles();
-  const filename = files.find((f) => f.replace(/\.mdx$/, "") === slug);
-  if (!filename) return undefined;
-  return parseProject(filename);
+  return getAllProjects().find((p) => p.slug === slug);
 }
 
 export function getProjectsForWork(): Project[] {

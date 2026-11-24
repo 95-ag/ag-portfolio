@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getAllProjects } from "@/lib/content/projects";
+import { getAllProjects, isDraftProject } from "@/lib/content/projects";
 import {
   type PostFrontmatter,
   PostFrontmatterSchema,
@@ -68,6 +68,9 @@ export function getAllPosts(): Post[] {
 
   const posts = [...published, ...drafts];
   const projectSlugs = new Set(getAllProjects().map((p) => p.slug));
+  const draftProjectSlugs = new Set(
+    [...projectSlugs].filter((slug) => isDraftProject(slug)),
+  );
   const draftSlugs = new Set(drafts.map((p) => p.slug));
   const postSlugs = new Set(posts.map((p) => p.slug));
 
@@ -76,21 +79,37 @@ export function getAllPosts(): Post[] {
       throw new Error(`Post slug "${post.slug}" collides with a project slug.`);
     }
     const { relatedProject, related } = post.frontmatter;
+    const postIsDraft = draftSlugs.has(post.slug);
+    // A published post may only point at published items: drafts vanish from the production
+    // build, so a link to one would pass in development and fail at release.
+    const stillDraft = (target: string) =>
+      new Error(
+        `${target === relatedProject ? "relatedProject" : "related"} in "${post.slug}" references "${target}", which is still a draft — publish it first.`,
+      );
     if (relatedProject && !projectSlugs.has(relatedProject)) {
       throw new Error(
         `relatedProject in "${post.slug}" references unknown project slug: "${relatedProject}"`,
       );
     }
-    // A published post may only point at published posts: drafts vanish from the production
-    // build, so a link to one would pass in development and fail at release.
-    const linkable = draftSlugs.has(post.slug) ? postSlugs : publishedSlugs;
+    if (
+      relatedProject &&
+      draftProjectSlugs.has(relatedProject) &&
+      !postIsDraft
+    ) {
+      throw stillDraft(relatedProject);
+    }
+    const linkable = postIsDraft ? postSlugs : publishedSlugs;
     for (const slug of related ?? []) {
-      if (projectSlugs.has(slug) || linkable.has(slug)) continue;
-      throw new Error(
-        draftSlugs.has(slug)
-          ? `related in "${post.slug}" references "${slug}", which is still a draft — publish it first.`
-          : `related in "${post.slug}" references unknown slug: "${slug}"`,
-      );
+      if (projectSlugs.has(slug)) {
+        if (draftProjectSlugs.has(slug) && !postIsDraft) throw stillDraft(slug);
+        continue;
+      }
+      if (linkable.has(slug)) continue;
+      throw draftSlugs.has(slug)
+        ? stillDraft(slug)
+        : new Error(
+            `related in "${post.slug}" references unknown slug: "${slug}"`,
+          );
     }
   }
 
