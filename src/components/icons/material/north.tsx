@@ -1,0 +1,10 @@
+import { IconBase, type IconProps } from "@/components/icons/icon-base";
+
+export function NorthIcon(props: IconProps) {
+  return (
+    <IconBase
+      {...props}
+      path="M440-80v-647L256-544l-56-56 280-280 280 280-56 57-184-184v647h-80Z"
+    />
+  );
+}

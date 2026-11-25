@@ -2,6 +2,7 @@
 @import "../styles/theme.css";
 @import "../styles/typography.css";
 @import "../styles/prose.css";
+@import "../styles/page-enter.css";
 
 /* ─────────────────────────────────────────────
    Base styles
@@ -10,6 +11,14 @@
 html {
   background-color: var(--surface);
   color: var(--ink);
+  /* The Lightbox locks scroll with overflow: hidden; a reserved gutter keeps the page from shifting. */
+  scrollbar-gutter: stable;
+}
+
+/* Thin, quiet scrollbars on the page and on inner scroll areas (DESIGN.md → Technical Conventions → Root Layout Shell). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline-strong) transparent;
 }
 
 body {
@@ -27,15 +36,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Theme-aware hero portraits — show only the active theme's image. Both render in
-   the DOM for a flash-free, JS-free swap driven by data-theme; the inactive one
-   stays display:none so it is never fetched (lazy + never in viewport). The visible
-   one's mix-blend-mode (set in page.tsx) drops its baked bg over the meteor layer. */
-[data-theme="dark"] .hero-light,
-[data-theme="light"] .hero-dark {
-  display: none;
-}
-
 ::selection {
   background-color: var(--text-selection);
 }
@@ -43,6 +43,10 @@ body {
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+/* A control inside an overflow-hidden box would have its outside ring clipped, so it draws the ring within its own edge. */
+.focus-inset:focus-visible {
+  outline-offset: -2px;
 }
 
 /* Reduced-motion: Framer Motion components handle this individually via useReducedMotion().
@@ -54,8 +58,15 @@ body {
    ───────────────────────────────────────────── */
 
 .ascii-bg-glyph-accent {
-  color: var(--accent);
+  color: var(--mark);
   opacity: 0.72;
+}
+/* Phones in the light theme step the accent tier down: the glyph field is denser than the screen can bear
+   (DESIGN.md → Background → Background Layer). */
+@media (max-width: 767px) {
+  .ascii-bg-glyph-accent {
+    opacity: 0.6;
+  }
 }
 .ascii-bg-glyph-ink {
   color: var(--ink);
@@ -73,4 +84,12 @@ body {
 }
 [data-theme="dark"] .ascii-bg-glyph-mute {
   opacity: 0.2;
+}
+
+/* The frosted surface of the floating nav and utility UI — the one place its recipe lives
+   (DESIGN.md → Foundations → Elevation & Depth → Backdrop-Blur Carve-out). */
+@utility surface-glass {
+  background-color: var(--surface-floating);
+  backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid var(--edge-floating);
 }

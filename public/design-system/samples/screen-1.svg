@@ -1,0 +1,23 @@
+<svg viewBox="0 0 590 1278" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Neutral sample phone screen">
+  <style>
+    .bg { fill: #eef0f1; }
+    .block { fill: #dfe3e4; }
+    .line { fill: #cfd5d6; }
+    .accent { fill: #b24a35; opacity: 0.35; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #161616; }
+      .block { fill: #23262a; }
+      .line { fill: #2f3438; }
+      .accent { fill: #f35c5d; opacity: 0.4; }
+    }
+  </style>
+  <rect class="bg" width="590" height="1278"/>
+  <rect class="block" x="0" y="0" width="590" height="420"/>
+  <rect class="line" x="40" y="320" width="300" height="36" rx="8"/>
+  <rect class="accent" x="40" y="470" width="510" height="150" rx="16"/>
+  <rect class="line" x="40" y="680" width="420" height="28" rx="8"/>
+  <rect class="line" x="40" y="740" width="360" height="28" rx="8"/>
+  <rect class="block" x="40" y="830" width="510" height="110" rx="16"/>
+  <rect class="block" x="40" y="970" width="510" height="110" rx="16"/>
+  <rect class="block" x="40" y="1110" width="510" height="110" rx="16"/>
+</svg>

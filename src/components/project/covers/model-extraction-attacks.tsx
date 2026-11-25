@@ -1,4 +1,4 @@
-import { COVER_ANNOTATION, COVER_LABEL } from "./cover-styles";
+import { COVER_ANNOTATION, COVER_LABEL, draw } from "./cover-styles";
 
 export function ModelExtractionAttacksCover() {
   const labelStyle: React.CSSProperties = {
@@ -31,7 +31,7 @@ export function ModelExtractionAttacksCover() {
   return (
     <div className="relative w-full h-full" aria-hidden="true">
       <svg
-        viewBox="0 0 1200 675"
+        viewBox="0 -37.5 1200 750"
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
         aria-hidden="true"
@@ -54,6 +54,7 @@ export function ModelExtractionAttacksCover() {
 
         {/* ── ARROW 1 ── (90px) */}
         <line
+          {...draw(0)}
           x1="236"
           y1="337"
           x2="326"
@@ -62,6 +63,7 @@ export function ModelExtractionAttacksCover() {
           strokeWidth="2"
         />
         <polyline
+          {...draw(1)}
           points="318,329 326,337 318,345"
           fill="none"
           stroke="var(--ink)"
@@ -88,6 +90,7 @@ export function ModelExtractionAttacksCover() {
 
         {/* ── ARROW 2 ── (90px) */}
         <line
+          {...draw(2)}
           x1="586"
           y1="337"
           x2="676"
@@ -96,6 +99,7 @@ export function ModelExtractionAttacksCover() {
           strokeWidth="2"
         />
         <polyline
+          {...draw(3)}
           points="668,329 676,337 668,345"
           fill="none"
           stroke="var(--ink)"
@@ -138,6 +142,7 @@ export function ModelExtractionAttacksCover() {
 
         {/* ── ARROW 3 ── (90px) */}
         <line
+          {...draw(4)}
           x1="836"
           y1="337"
           x2="926"
@@ -146,6 +151,7 @@ export function ModelExtractionAttacksCover() {
           strokeWidth="2"
         />
         <polyline
+          {...draw(5)}
           points="918,329 926,337 918,345"
           fill="none"
           stroke="var(--ink)"
@@ -155,6 +161,7 @@ export function ModelExtractionAttacksCover() {
 
         {/* ── SURROGATE ── */}
         <rect
+          {...draw(6)}
           x="946"
           y="247"
           width="160"
@@ -175,6 +182,7 @@ export function ModelExtractionAttacksCover() {
         {/* 1. "entropy-ranked / selection" → QUERIES dot matrix as a whole
                Text is below the target; path starts from TOP of text block (closest edge to matrix). */}
         <text
+          data-note={0}
           x="225"
           y="490"
           textAnchor="middle"
@@ -183,6 +191,7 @@ export function ModelExtractionAttacksCover() {
           entropy-ranked
         </text>
         <text
+          data-note={1}
           x="225"
           y="522"
           textAnchor="middle"
@@ -192,6 +201,7 @@ export function ModelExtractionAttacksCover() {
         </text>
         {/* notebook gesture: tail at the matrix, convex sweep bowing LEFT, head into the note */}
         <path
+          {...draw(7)}
           d="M 115,388 C 88,435 97,469 129,476"
           fill="none"
           stroke="var(--accent)"
@@ -199,6 +209,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(8)}
           x1="137"
           y1="478"
           x2="129"
@@ -208,6 +219,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(9)}
           x1="137"
           y1="478"
           x2="127"
@@ -220,6 +232,7 @@ export function ModelExtractionAttacksCover() {
         {/* 2. "25K queries" → arrow 1 midpoint (281, 337)
                Path starts 10px below text baseline; tip stops 7px above the arrow line. */}
         <text
+          data-note={2}
           x="310"
           y="168"
           textAnchor="middle"
@@ -229,6 +242,7 @@ export function ModelExtractionAttacksCover() {
         </text>
         {/* notebook gesture: tail at arrow 1, tall convex sweep up (bows left), head at the note */}
         <path
+          {...draw(10)}
           d="M 305,330 C 289,288 302,225 309,192"
           fill="none"
           stroke="var(--accent)"
@@ -236,6 +250,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(11)}
           x1="311"
           y1="184"
           x2="305"
@@ -245,6 +260,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(12)}
           x1="311"
           y1="184"
           x2="314"
@@ -257,6 +273,7 @@ export function ModelExtractionAttacksCover() {
         {/* 3. "82.88% fidelity" → SURROGATE box bottom (y=427)
                Text is below the target; path starts from TOP of text (closest edge to box). */}
         <text
+          data-note={3}
           x="820"
           y="505"
           textAnchor="middle"
@@ -266,6 +283,7 @@ export function ModelExtractionAttacksCover() {
         </text>
         {/* notebook gesture: tail below the surrogate, hooks out right then sweeps left, head at the note */}
         <path
+          {...draw(13)}
           d="M 1000,450 C 1045,478 948,494 914,497"
           fill="none"
           stroke="var(--accent)"
@@ -273,6 +291,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(14)}
           x1="906"
           y1="498"
           x2="915"
@@ -282,6 +301,7 @@ export function ModelExtractionAttacksCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(15)}
           x1="906"
           y1="498"
           x2="914"

@@ -3,8 +3,8 @@ import { ArticleIcon } from "@/components/icons/material/article";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
-import { LinkPill } from "@/components/ui/link-pill";
-import { Tag } from "@/components/ui/tag";
+import { Tag } from "@/components/ui/display/tag";
+import { LinkPill } from "@/components/ui/links/link-pill";
 import type { ProjectFrontmatter } from "@/lib/schemas/project";
 
 interface ProjectHeaderProps {
@@ -42,17 +42,17 @@ export function ProjectHeader({ frontmatter: fm }: ProjectHeaderProps) {
 
   return (
     <header className="flex flex-col gap-[var(--spacing-lg)]">
+      <h1 className="display-title">{fm.title}</h1>
+
+      {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
+
       {fm.tags.length > 0 && (
-        <div className="flex flex-wrap gap-[var(--spacing-xs)]">
+        <div className="flex flex-wrap gap-x-[var(--spacing-md)] text-[var(--accent)]">
           {fm.tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
       )}
-
-      <h1 className="display-title">{fm.title}</h1>
-
-      {fm.subtitle && <p className="body-secondary">{fm.subtitle}</p>}
 
       {links.length > 0 && (
         <nav aria-label="Project links">

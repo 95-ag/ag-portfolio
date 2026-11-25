@@ -1,0 +1,225 @@
+/* Nav — a plain row that collapses into a frosted round button, which opens into a card (DESIGN.md → Components →
+   Shell → Nav). One element morphs: the frosted box is the button when closed and the card when open.
+   CSS owns the whole thing (two states, fixed durations); the timings are declared exceptions. */
+
+.nav {
+  --nav-size: 44px;
+  --nav-slot: 44px;
+  --nav-ease-collapse: cubic-bezier(0, 0, 0.2, 1);
+  --nav-ease-card: cubic-bezier(0.32, 0.72, 0, 1);
+  position: fixed;
+  /* The button's centre sits on the page name's centre line: 38px at 860px and below, 46px beside the row. */
+  top: calc(38px - var(--nav-size) / 2);
+  right: var(--corner);
+  z-index: var(--z-nav);
+  width: var(--nav-size);
+  height: var(--nav-size);
+}
+@media (min-width: 861px) {
+  .nav {
+    top: calc(46px - var(--nav-size) / 2);
+  }
+}
+@media (min-width: 1280px) {
+  .nav {
+    --nav-size: 48px;
+  }
+}
+
+/* ── Row (861px and up) ── */
+.nav-row {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  align-items: center;
+  gap: var(--spacing-xs);
+  height: var(--nav-size);
+}
+@media (min-width: 861px) {
+  .nav-row {
+    display: flex;
+  }
+}
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 32px;
+  padding: 0 var(--spacing-md);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transform-origin: center;
+}
+/* The 32px pill carries a 44px hit area. */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+}
+.nav-logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  transform-origin: center;
+}
+
+/* Collapsed: each item slides to the button's centre while shrinking and fading. */
+.nav[data-mode="button"] .nav-row [data-nav-item] {
+  transform: translateX(var(--dx, 0px)) scale(0.82);
+  opacity: 0;
+}
+
+/* ── The frosted box: the button, then the card ── */
+.nav-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--nav-size);
+  height: var(--nav-size);
+  border-radius: calc(var(--nav-size) / 2);
+  pointer-events: none;
+}
+.nav[data-mode="row"] .nav-box {
+  opacity: 0;
+  transform: scale(0.82);
+}
+/* The box is drawn 8px above and 8px beyond the button, so the × keeps the button's exact position and sits level
+   with the Home row: four 44px rows plus 8px padding each side; the extra height is the button's growth from 44px. */
+.nav[data-open="true"] .nav-box {
+  top: -8px;
+  right: -8px;
+  width: 164px;
+  height: calc(
+    var(--nav-count) *
+    var(--nav-slot) +
+    16px +
+    var(--nav-size) -
+    44px
+  );
+  border-radius: var(--radius-md);
+}
+
+.nav-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: var(--nav-size);
+  height: var(--nav-size);
+  border-radius: 9999px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.nav[data-mode="row"] .nav-toggle {
+  pointer-events: none;
+  opacity: 0;
+}
+.nav-toggle > svg {
+  grid-area: 1 / 1;
+}
+.nav-icon-close {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.75);
+}
+.nav[data-open="true"] .nav-icon-menu {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.75);
+}
+.nav[data-open="true"] .nav-icon-close {
+  opacity: 1;
+  transform: none;
+}
+.nav-box:has(~ .nav-toggle:hover),
+.nav-box:has(~ .nav-toggle:focus-visible) {
+  border-color: var(--hairline-strong);
+}
+
+.nav-list {
+  position: absolute;
+  top: calc((var(--nav-size) - 44px) / 2);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  width: 148px;
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-list .nav-item {
+  margin: 6px 0;
+  align-self: flex-start;
+}
+.nav[data-open="true"] .nav-list {
+  opacity: 1;
+}
+/* The list box spans the card and lies over the ×, so only its rows take pointer events: the box would eat every tap on the ×. */
+.nav[data-open="true"] .nav-list .nav-item {
+  pointer-events: auto;
+}
+.nav-mark {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+/* The 32px logomark scaled to the 16px icon slot's 20px. */
+.nav-mark > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.625);
+}
+
+/* ── Motion: a static base, the transitions are the addition ── */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-item,
+  .nav-logo {
+    transition-property: transform, opacity, color, background-color;
+    transition-duration:
+      200ms, 200ms, var(--duration-fast), var(--duration-fast);
+    transition-timing-function:
+      var(--nav-ease-collapse), var(--nav-ease-collapse), ease, ease;
+  }
+  .nav-box {
+    transition-property:
+      opacity, transform, top, right, width, height, border-radius, border-color;
+    transition-duration:
+      200ms, 200ms, 300ms, 300ms, 300ms, 300ms, 300ms, var(--duration-fast);
+    transition-timing-function:
+      var(--nav-ease-collapse), var(--nav-ease-collapse), var(--nav-ease-card),
+      var(--nav-ease-card), var(--nav-ease-card), var(--nav-ease-card),
+      var(--nav-ease-card), ease;
+  }
+  .nav-toggle {
+    transition: opacity 200ms var(--nav-ease-collapse);
+  }
+  .nav-toggle > svg {
+    transition-property: opacity, transform;
+    transition-duration: 300ms;
+    transition-timing-function: var(--nav-ease-card);
+  }
+  /* In: fades over 200ms after 75ms. Out (the base rule): 200ms, no delay. */
+  .nav-list {
+    transition: opacity 200ms ease 0ms;
+  }
+  .nav[data-open="true"] .nav-list {
+    transition: opacity 200ms ease 75ms;
+  }
+}
+
+/* ── 860px and below: the button and the card only ── */
+@media (max-width: 860px) {
+  .nav[data-mode="row"] .nav-box {
+    opacity: 1;
+    transform: none;
+  }
+  .nav[data-mode="row"] .nav-toggle {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}

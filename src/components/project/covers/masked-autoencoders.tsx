@@ -7,7 +7,7 @@
 // gap reads as the lightweight-decoder asymmetry). Right: a uniform soft grid — the
 // reconstruction, recovered but blurry at reduced scale.
 
-import { COVER_ANNOTATION, COVER_LABEL } from "./cover-styles";
+import { COVER_ANNOTATION, COVER_LABEL, draw } from "./cover-styles";
 
 const COLS = 6;
 const ROWS = 6;
@@ -62,6 +62,7 @@ export function MaskedAutoencodersCover() {
   const arrow = (x1: number, x2: number, key: string) => (
     <g key={key}>
       <line
+        {...draw(0)}
         x1={x1}
         y1={AXIS_Y}
         x2={x2}
@@ -70,6 +71,7 @@ export function MaskedAutoencodersCover() {
         strokeWidth="2"
       />
       <polyline
+        {...draw(1)}
         points={`${x2 - 8},${AXIS_Y - 8} ${x2},${AXIS_Y} ${x2 - 8},${AXIS_Y + 8}`}
         fill="none"
         stroke="var(--ink)"
@@ -82,7 +84,7 @@ export function MaskedAutoencodersCover() {
   return (
     <div className="relative w-full h-full" aria-hidden="true">
       <svg
-        viewBox="0 0 1200 675"
+        viewBox="0 -37.5 1200 750"
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
         aria-hidden="true"
@@ -112,6 +114,7 @@ export function MaskedAutoencodersCover() {
 
         {/* ── ENCODER (neutral funnel — narrows toward the latent) ── */}
         <polygon
+          {...draw(2)}
           points={ENCODER_POINTS}
           fill={ENCODER_FILL}
           stroke="var(--ink)"
@@ -166,13 +169,26 @@ export function MaskedAutoencodersCover() {
                so the arrowHEAD sits at the text. Fixed 8px gap at BOTH ends: tail (320,194)
                = 8px above the patch top (320,202); tip (393,101) = 8px left of the text
                block's left-middle (401,101). Final tangent u≈(0.64,-0.77); barbs ±28°. */}
-        <text x="468" y="96" textAnchor="middle" style={caveatStyle}>
+        <text
+          data-note={0}
+          x="468"
+          y="96"
+          textAnchor="middle"
+          style={caveatStyle}
+        >
           75% masking
         </text>
-        <text x="468" y="126" textAnchor="middle" style={caveatStyle}>
+        <text
+          data-note={1}
+          x="468"
+          y="126"
+          textAnchor="middle"
+          style={caveatStyle}
+        >
           sweet spot
         </text>
         <path
+          {...draw(3)}
           d="M 320,194 C 322,150 369,130 388,107"
           fill="none"
           stroke="var(--accent)"
@@ -180,6 +196,7 @@ export function MaskedAutoencodersCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(4)}
           x1="393"
           y1="101"
           x2="384"
@@ -189,6 +206,7 @@ export function MaskedAutoencodersCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(5)}
           x1="393"
           y1="101"
           x2="391"
@@ -205,13 +223,26 @@ export function MaskedAutoencodersCover() {
                bottom (467); tip (610,529) = 8px left of the text block's left-middle
                (618,529). Curve is convex-DOWN (controls below the chord, sagging); final
                tangent u≈(0.96,0.29) (down-right); barbs splay ±28°. */}
-        <text x="700" y="524" textAnchor="middle" style={caveatStyle}>
+        <text
+          data-note={2}
+          x="700"
+          y="524"
+          textAnchor="middle"
+          style={caveatStyle}
+        >
           66.85%
         </text>
-        <text x="700" y="554" textAnchor="middle" style={caveatStyle}>
+        <text
+          data-note={3}
+          x="700"
+          y="554"
+          textAnchor="middle"
+          style={caveatStyle}
+        >
           linear-probe acc
         </text>
         <path
+          {...draw(6)}
           d="M 516,475 C 540,498 569,517 602,527"
           fill="none"
           stroke="var(--accent)"
@@ -219,6 +250,7 @@ export function MaskedAutoencodersCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(7)}
           x1="610"
           y1="529"
           x2="603"
@@ -228,6 +260,7 @@ export function MaskedAutoencodersCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(8)}
           x1="610"
           y1="529"
           x2="600"

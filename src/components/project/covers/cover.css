@@ -1,0 +1,554 @@
+/* Covers — the frame, the artefact compositions and the play rules (DESIGN.md → Hero Cover). The frame carries its
+   colour slot and its filled / marker mode per theme as data attributes; theme.css remaps the roles, so everything
+   here paints in `ink`, `accent`, `surface-tag`, `hairline` and `--cover-ground` and follows the mode with no
+   per-mode rule. */
+
+.cover {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  container-type: inline-size;
+  /* Declared exceptions to the duration scale (Hero Cover → Artefact cover rules). */
+  --art-loop: 8s;
+  --art-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cover[data-variant="card"] {
+  aspect-ratio: 16 / 10;
+}
+.cover[data-variant="hero"] {
+  aspect-ratio: 16 / 10;
+}
+.cover[data-variant="tile"] {
+  aspect-ratio: 1;
+}
+.cover[data-variant="spotlight"] {
+  aspect-ratio: 16 / 10;
+}
+.cover-media {
+  position: absolute;
+  inset: 0;
+}
+
+/* ───────── Artefacts ───────── */
+
+.art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: inline-size;
+}
+.art-cap {
+  position: absolute;
+  left: var(--spacing-md);
+  bottom: var(--spacing-md);
+  z-index: 3;
+  max-width: calc(100% - 2 * var(--spacing-md));
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--surface-tag);
+  color: var(--accent);
+}
+.art-lbl {
+  position: absolute;
+  color: var(--accent);
+}
+.art-crop {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+}
+
+/* Components Radar — three listings resolving to one part. */
+.art-cr {
+  position: absolute;
+  inset: 9% 8% 18%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.2cqi;
+}
+.art-cr-l {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.9cqi 1.6cqi;
+  border-left: 2px solid var(--hairline);
+  background: var(--surface-tag);
+  color: var(--ink);
+  font:
+    400 clamp(10px, 2.9cqi, 15px) / 1.3 var(--font-jetbrains),
+    monospace;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.art-cr-out {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6cqi;
+  margin-top: 1.4cqi;
+}
+.art-cr-arrow {
+  color: var(--accent);
+  font:
+    400 clamp(12px, 3.4cqi, 18px) / 1 var(--font-inter),
+    sans-serif;
+}
+.art-cr-rec {
+  padding: 1.2cqi 2cqi;
+  background: var(--accent);
+  /* Text set on a marks-coloured fill takes the cover ground (the marks clear AA against it by construction). */
+  color: var(--cover-ground);
+  font:
+    500 clamp(12px, 3.6cqi, 20px) / 1 var(--font-jetbrains),
+    monospace;
+}
+.art-cr-rec.art-sib {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-weight: 400;
+}
+.art-cr-note {
+  color: var(--accent);
+}
+
+/* This portfolio — one figure source in both themes. */
+.art-sbp .art-fig {
+  position: absolute;
+  inset: 10% 9% 16%;
+  border: 1px solid var(--hairline);
+  background-color: var(--surface-deep);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.art-sbp .art-lbl {
+  right: var(--spacing-md);
+  top: var(--spacing-md);
+}
+.art-sbp .art-dk {
+  opacity: 0;
+}
+html[data-theme="dark"] .art-sbp .art-dk {
+  opacity: 1;
+}
+html[data-theme="dark"] .art-sbp .art-lt {
+  opacity: 0;
+}
+
+/* Model extraction — the same pixels, two verdicts. */
+.art-mea .art-pair {
+  position: absolute;
+  inset: 0 0 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqi;
+}
+.art-mea .art-pix {
+  position: relative;
+  width: 34cqi;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+}
+.art-mea .art-adv {
+  opacity: 0;
+}
+.art-mea .art-verdict {
+  display: grid;
+  gap: 1cqi;
+  min-width: 24cqi;
+}
+.art-mea .art-verdict .art-lbl {
+  position: static;
+  color: var(--ink-muted);
+}
+.art-mea .art-v {
+  display: grid;
+  color: var(--accent);
+  font:
+    500 clamp(16px, 6cqi, 40px) / 1 var(--font-manrope),
+    sans-serif;
+}
+.art-mea .art-v span {
+  grid-area: 1 / 1;
+}
+.art-mea .art-dog {
+  opacity: 0;
+}
+
+/* Lane localization — the reconstructed road. */
+.art-dqn .art-crop {
+  background-position: center;
+  background-size: cover;
+  transform-origin: 60% 55%;
+}
+
+/* Masked autoencoders — original, masked, reconstruction. */
+.art-mae .art-frame {
+  position: absolute;
+  inset: 8% 0 16%;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+.art-mae .art-m,
+.art-mae .art-r {
+  opacity: 0;
+}
+.art-mae .art-steps {
+  position: absolute;
+  right: var(--spacing-md);
+  top: var(--spacing-md);
+  display: grid;
+  justify-items: end;
+}
+.art-mae .art-steps .art-lbl {
+  position: static;
+  grid-area: 1 / 1;
+  opacity: 0;
+}
+.art-mae .art-steps .art-o {
+  opacity: 1;
+}
+
+/* ───────── Play ───────── */
+
+/* A cover plays where it has focus: the frame says so (`data-playing`), an ancestor marked active (the spotlight's current slide), or an ancestor marked as a cover host is
+   hovered or holds focus. The static base above is what shows otherwise, and what reduced motion keeps. */
+@media (prefers-reduced-motion: no-preference) {
+  :is(
+    .cover[data-playing="true"],
+    [data-cover-active="true"] .cover,
+    [data-cover-host]:is(:hover, :focus-within) .cover
+  ) {
+    /* Live SVG covers: solid strokes draw in, then the Caveat notes write on, 0.3s apart. */
+    & [data-draw] {
+      stroke-dasharray: 1;
+      animation: cover-draw 1.2s cubic-bezier(0.45, 0.05, 0.25, 1) var(--d, 0s)
+        both;
+    }
+    & [data-note] {
+      animation: cover-note 0.45s ease-out 1.4s both;
+    }
+    & [data-note="1"] {
+      animation-delay: 1.7s;
+    }
+    & [data-note="2"] {
+      animation-delay: 2s;
+    }
+    & [data-note="3"] {
+      animation-delay: 2.3s;
+    }
+    & [data-note="4"] {
+      animation-delay: 2.6s;
+    }
+
+    /* Artefacts: a loop of 8s or more, transform and opacity only. */
+    & .art * {
+      animation-duration: var(--art-loop);
+      animation-iteration-count: infinite;
+      animation-timing-function: var(--art-ease);
+      animation-fill-mode: both;
+    }
+    & .art-l1 {
+      animation-name: art-crl1;
+    }
+    & .art-l2 {
+      animation-name: art-crl2;
+    }
+    & .art-l3 {
+      animation-name: art-crl3;
+    }
+    & .art-cr-arrow {
+      animation-name: art-crarr;
+    }
+    & .art-cr-rec.art-main,
+    & .art-cr-note {
+      animation-name: art-crrec;
+    }
+    & .art-cr-rec.art-sib {
+      animation-name: art-crsib;
+    }
+    & .art-sbp .art-dk {
+      animation-name: art-fadein;
+    }
+    /* biome-ignore lint/style/noDescendingSpecificity: a different property from the static opacity above, so the order cannot change which rule wins */
+    & .art-sbp .art-lt {
+      animation-name: art-fadeout;
+    }
+    & .art-mea .art-adv,
+    & .art-mea .art-dog {
+      animation-name: art-fadein;
+    }
+    & .art-mea .art-cat {
+      animation-name: art-fadeout;
+    }
+    & .art-dqn .art-crop {
+      animation: art-drift 14s ease-in-out infinite alternate;
+    }
+    & .art-mae .art-m {
+      animation-name: art-maem;
+      animation-duration: 9s;
+    }
+    & .art-mae .art-r {
+      animation-name: art-maer;
+      animation-duration: 9s;
+    }
+    /* biome-ignore lint/style/noDescendingSpecificity: a different property from the static opacity above, so the order cannot change which rule wins */
+    & .art-mae .art-o {
+      animation-name: art-lo;
+      animation-duration: 9s;
+    }
+    & .art-mae .art-mk {
+      animation-name: art-lm;
+      animation-duration: 9s;
+    }
+    & .art-mae .art-rc {
+      animation-name: art-lr;
+      animation-duration: 9s;
+    }
+  }
+  /* In dark the screenshots swap the other way round. */
+  html[data-theme="dark"] :is(
+      .cover[data-playing="true"],
+      [data-cover-active="true"] .cover,
+      [data-cover-host]:is(:hover, :focus-within) .cover
+    )
+    .art-sbp {
+    & .art-lt {
+      animation-name: art-fadein;
+    }
+    & .art-dk {
+      animation-name: art-fadeout;
+    }
+  }
+}
+
+@keyframes cover-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes cover-note {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes art-crl1 {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  6%,
+  52% {
+    opacity: 1;
+    transform: none;
+  }
+  60%,
+  92% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-crl2 {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  14%,
+  52% {
+    opacity: 1;
+    transform: none;
+  }
+  60%,
+  92% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-crl3 {
+  0%,
+  16% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  22%,
+  52% {
+    opacity: 1;
+    transform: none;
+  }
+  60%,
+  92% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-crarr {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  36%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-crrec {
+  0%,
+  36% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  44%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-crsib {
+  0%,
+  58% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  66%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-fadein {
+  0%,
+  42% {
+    opacity: 0;
+  }
+  50%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-fadeout {
+  0%,
+  42% {
+    opacity: 1;
+  }
+  50%,
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes art-drift {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12) translate(-2%, 1.5%);
+  }
+}
+@keyframes art-maem {
+  0%,
+  26% {
+    opacity: 0;
+  }
+  32%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-maer {
+  0%,
+  59% {
+    opacity: 0;
+  }
+  65%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-lo {
+  0%,
+  26% {
+    opacity: 1;
+  }
+  32%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes art-lm {
+  0%,
+  26% {
+    opacity: 0;
+  }
+  32%,
+  59% {
+    opacity: 1;
+  }
+  65%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes art-lr {
+  0%,
+  59% {
+    opacity: 0;
+  }
+  65%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A project card zooms its cover's content inside the fixed frame (DESIGN.md → Project Card). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-cover-zoom] .cover-media {
+    transition: transform var(--duration-slow);
+  }
+  [data-cover-zoom]:hover .cover-media {
+    transform: scale(1.03);
+  }
+}

@@ -7,6 +7,12 @@ projectType: personal
 publishedAt: "2026-06-19"
 order: 30
 featured: true
+colour: 2
+shortTitle: "Portfolio Agent"
+cover:
+  kind: live
+  light: marker
+  dark: marker
 heroImage: "/projects/self-building-portfolio/cover.png"
 heroAlt: "Three source nodes — REPO, REPORT, SOURCES — fan into a four-stage pipeline (Content → Assets → Cover → Review), each stage a page gaining an element, held between two rails labeled DOCS · RULES · GATES, with accent gate checkmarks between stages and a finished page as output. Handwritten notes read: no source, no claim; the agent drafts, the human decides; two cold reviewers, no shared notes; reusable — not a one-off."
 tags:
@@ -62,7 +68,7 @@ The three ways to produce those write-ups line up on the two axes that decide wh
   alt="A quadrant map on two axes — grounded in the real source (vertical) and scales across projects (horizontal). Writing by hand is grounded but doesn't scale; handing a repo to a model scales but isn't grounded; this system is alone in the top-right quadrant, both grounded and scaling."
   caption="Writing by hand stays grounded but doesn't scale; handing a repo to a model scales but drifts from the truth. Only a system held to both lands in the top-right."
   aspect="388/292"
-  className="mx-auto max-w-[460px]"
+  width="sm"
 />
 
 The hard part is not getting an agent to generate text. It is keeping a few hundred edits' worth of output consistent, grounded, and trustworthy. Agents drift from intent, pad, and report success without evidence. A system that ships a public artifact under your own name has to hold a quality bar, keep the work reviewable, and make every claim verifiable. And it has to do all of that while staying faster than doing the work by hand.
@@ -94,7 +100,7 @@ The contract is a layered set of files the agent reads before it acts, and the w
   alt="Five stacked layers the agent reads before it acts — documentation, rules, skills, pipelines, gates — with an arrow from the stack down to a Website node, showing the layers together produce the site."
   caption="The spec-as-contract as layers, from specification down to enforcement; the website is what they produce."
   aspect="332/362"
-  className="mx-auto max-w-[380px]"
+  width="xs"
 />
 
 The separation is the point. What to build, how to build it, what the agent can do, in what order, and what is allowed to pass are five different concerns, each owned by one layer, so a change to any one of them touches one place, not the whole tree. The website those layers build is a statically generated Next.js site: every page is prerendered to HTML, its content lives in MDX, and its frontmatter is validated at build time, so a broken page cannot ship.
@@ -108,7 +114,7 @@ Architecture is the structure; the workflow is how a project page actually gets 
   alt="Four stages assembling a project page. Content fills a page with prose; Assets lands figures and tables in it; Cover adds a hero band at the top; Review marks it signed off with a check. A small human gate sits between each stage."
   caption="Each skill adds to the page in turn — prose, then figures, then the hero, then sign-off — with a human gate between every stage."
   aspect="512/198"
-  className="mx-auto max-w-[720px]"
+  width="xl"
 />
 
 **Content:** `project-content-extraction` reads the real repository and any report and drafts the deep-dive. The engineer sets the narrative direction and the writing style; the agent produces the structured prose and fills the schema; nothing absent from the source reaches the page. How much steering this takes varies, from roughly one to three hours of direction per project. This one needed more than most: no existing report to work from, and a specific voice to hit.
@@ -169,13 +175,13 @@ It holds up the same in either theme — and so does every asset the system gene
 <DiagramRow caption="Another project's live cover — the masked-autoencoders study — in light and dark, re-themed from the same design tokens, contrast held in both.">
   <DiagramPanel
     src="/projects/self-building-portfolio/theme-adaptive-light.webp"
-    alt="The masked-autoencoders project's live cover in the light theme: a masked-input grid with dark-green accent cells, an encoder and dashed decoder, a reconstruction grid, and handwritten annotations, on a light surface."
+    alt="The masked-autoencoders project's live cover in the light theme: a masked-input grid with dark accent cells, an encoder and dashed decoder, a reconstruction grid, and handwritten annotations, on a light surface."
     aspect="16/9"
     label="Light"
   />
   <DiagramPanel
     src="/projects/self-building-portfolio/theme-adaptive-dark.webp"
-    alt="The same masked-autoencoders cover in the dark theme: the grids, encoder, and decoder on a dark surface, the green accents brighter, contrast preserved."
+    alt="The same masked-autoencoders cover in the dark theme: the grids, encoder, and decoder on a dark surface, the accents brighter, contrast preserved."
     aspect="16/9"
     label="Dark"
   />

@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { coverComponents } from "./covers";
 
 interface HeroMediaProps {
   src?: string;
-  alt: string;
+  // Optional for the same reason src is: a project in the content stage has no cover yet. Defaults to "" so a hero
+  // that exists without alt text degrades to decorative rather than crashing; the production gate (getAllProjects)
+  // refuses to ship that state.
+  alt?: string;
   poster?: string;
   loop?: boolean;
-  slug?: string;
 }
 
 function isVideo(src: string) {
@@ -19,23 +20,11 @@ function isSvg(src: string) {
 
 export function HeroMedia({
   src,
-  alt,
+  alt = "",
   poster,
   loop = true,
-  slug,
 }: HeroMediaProps) {
-  if (slug && coverComponents[slug]) {
-    const CoverComponent = coverComponents[slug];
-    // Covers are decorative inline SVGs — their <text> must not be selectable.
-    // `contents` keeps zero layout box; user-select:none inherits into the SVG.
-    return (
-      <span className="contents select-none">
-        <CoverComponent />
-      </span>
-    );
-  }
-
-  // No live cover → render the heroImage; if absent (allowed in dev), render nothing.
+  // Render the heroImage; if absent (allowed in dev), render nothing.
   // The production release gate (getAllProjects, VERCEL_ENV=production) blocks shipping heroless.
   if (!src) return null;
 

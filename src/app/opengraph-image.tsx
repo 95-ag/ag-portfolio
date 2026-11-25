@@ -5,11 +5,13 @@ export const alt = "Aishwarya Ganesan — AI Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// ImageResponse cannot read CSS variables, so the dark neutrals and the dark accent (DESIGN.md → Foundations → Colors)
+// are written out here.
 export default function Image() {
   return new ImageResponse(
     <div
       style={{
-        background: "#0d0d0d",
+        background: "#000000",
         width: "100%",
         height: "100%",
         display: "flex",
@@ -24,7 +26,7 @@ export default function Image() {
           style={{
             width: 48,
             height: 4,
-            background: "#2aa566",
+            background: "#f35c5d",
             marginBottom: 40,
           }}
         />
@@ -32,7 +34,7 @@ export default function Image() {
           style={{
             fontSize: 68,
             fontWeight: 700,
-            color: "#f0f0f0",
+            color: "#e9e9e9",
             letterSpacing: "-2px",
             lineHeight: 1.1,
             marginBottom: 20,
@@ -43,7 +45,7 @@ export default function Image() {
         <div
           style={{
             fontSize: 34,
-            color: "#2aa566",
+            color: "#f35c5d",
             fontWeight: 600,
             marginBottom: 40,
           }}
@@ -53,14 +55,14 @@ export default function Image() {
         <div
           style={{
             fontSize: 22,
-            color: "#707070",
+            color: "#b8b8b8",
             letterSpacing: "0.5px",
           }}
         >
           AI Systems · Machine Learning · Computer Vision
         </div>
       </div>
-      <div style={{ fontSize: 18, color: "#444" }}>
+      <div style={{ fontSize: 18, color: "#6a6a6a" }}>
         {SITE_URL.replace(/^https?:\/\//, "")}
       </div>
     </div>,

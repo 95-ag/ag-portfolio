@@ -7,6 +7,12 @@ projectType: academic
 publishedAt: "2024-03-25"
 order: 50
 featured: true
+colour: 3
+shortTitle: "Lane Localization"
+cover:
+  kind: live
+  light: marker
+  dark: marker
 heroImage: "/projects/dqn-lane-localization/cover.png"
 heroAlt: "Two-stage lane localization pipeline showing a DQL agent iteratively adjusting detected lane points toward ground truth on a highway image from the TuSimple dataset."
 tags:
@@ -47,8 +53,10 @@ links:
 logos:
   - src: "/projects/dqn-lane-localization/kth-logo.svg"
     alt: "KTH Royal Institute of Technology"
+    name: "KTH Royal Institute of Technology"
   - src: "/projects/dqn-lane-localization/scania-logo.svg"
     alt: "Scania Group"
+    name: "Scania Group"
 ---
 
 ## Detailed Problem
@@ -86,7 +94,7 @@ The pipeline has three software modules operating in sequence.
   alt="Modified point-based localizer architecture: an inbuilt 5-layer CNN encoder feeds into FC1, which is concatenated with a location and action-history vector, then through FC2 and FC3 to produce action outputs."
   caption="Modified localizer architecture (Fig 4.1). The inbuilt CNN encoder (top) was later replaced with a frozen pretrained ResNet-50 in the best-performing configuration; the FC decision layer structure remained the same."
   aspect="1151/778"
-  width="narrow"
+  width="md"
 />
 
 **Lane Evaluator** — A TuSimple-compatible evaluation module adapted from the dataset's official evaluation code. Computes accuracy, FPR (false positive rate — detected lanes where there are none), and FNR (false negative rate — missed lanes) by comparing reconstructed full-image lane predictions against ground truth.
@@ -148,7 +156,7 @@ Rewards are distance-based: a regular move earns +1 if it reduced pixel distance
   alt="Two side-by-side lane crops showing DQL agent movement histories: yellow-green circles trace the sequence of positions the agent visited on each lane, with a green circle marking the goal threshold region."
   caption="DQL localization game in practice (Fig 5.4). Each circle marks a position the agent occupied; yellow-green traces earlier moves, green marks the goal threshold. The trajectories show the agent making multiple adjustment steps per point — with up to 50 points per lane, each wrong move compounds across the full lane reconstruction."
   aspect="818/400"
-  width="narrow"
+  width="md"
 />
 
 ### Curve localization game

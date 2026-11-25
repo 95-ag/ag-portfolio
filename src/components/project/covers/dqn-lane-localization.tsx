@@ -8,11 +8,12 @@
 // sequence); the DQL prediction is crooked ACCENT dots offset from truth with a faint
 // motion trail — never settling onto ground truth. Encodes the honest negative result.
 
-import { COVER_ANNOTATION } from "./cover-styles";
+import { COVER_ANNOTATION, draw } from "./cover-styles";
 
 const VP_X = 960; // vanishing point in the right third (offset camera, shifted right)
 const VP_Y = 150; // high horizon
-const BOTTOM_Y = 675; // road reaches the image bottom
+const BOTTOM_Y = 675; // the curves end here; the canvas runs on to CANVAS_H
+const CANVAS_H = 750; // 16:10 frame (1200 wide)
 const BOT_CX = 580; // road centerline x at the bottom (road shifted right)
 const CTRL_X = 620; // centerline control x — < straight midpoint bows it into a C
 const HALF_W = 440; // road half-width at the bottom (near the viewer)
@@ -37,8 +38,12 @@ const laneXAtY = (frac: number, y: number) => {
   const b = botX(frac);
   return (1 - t) * (1 - t) * a + 2 * (1 - t) * t * c + t * t * b;
 };
+// Past BOTTOM_Y a lane carries on along the curve's end tangent to the canvas bottom.
+const extendedX = (frac: number) =>
+  botX(frac) +
+  ((botX(frac) - ctrlX(frac)) / (BOTTOM_Y - CTRL_Y)) * (CANVAS_H - BOTTOM_Y);
 const lanePath = (frac: number) =>
-  `M ${topX(frac)} ${VP_Y} Q ${ctrlX(frac)} ${CTRL_Y} ${botX(frac)} ${BOTTOM_Y}`;
+  `M ${topX(frac)} ${VP_Y} Q ${ctrlX(frac)} ${CTRL_Y} ${botX(frac)} ${BOTTOM_Y} L ${extendedX(frac)} ${CANVAS_H}`;
 
 // Lane dividers at ±1/3 of the half-width; the road edges (±1) are the fill boundary.
 const DIVIDER_FRACS = [-1 / 3, 1 / 3];
@@ -49,6 +54,8 @@ const roadPath = () =>
   [
     `M ${topX(-1)} ${VP_Y}`,
     `Q ${ctrlX(-1)} ${CTRL_Y} ${botX(-1)} ${BOTTOM_Y}`,
+    `L ${extendedX(-1)} ${CANVAS_H}`,
+    `L ${extendedX(1)} ${CANVAS_H}`,
     `L ${botX(1)} ${BOTTOM_Y}`,
     `Q ${ctrlX(1)} ${CTRL_Y} ${topX(1)} ${VP_Y}`,
     "Z",
@@ -114,7 +121,7 @@ export function DqnLaneLocalizationCover() {
   return (
     <div className="relative w-full h-full" aria-hidden="true">
       <svg
-        viewBox="0 0 1200 675"
+        viewBox="0 0 1200 750"
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
         aria-hidden="true"
@@ -136,7 +143,7 @@ export function DqnLaneLocalizationCover() {
           x="0"
           y={VP_Y}
           width="1200"
-          height={675 - VP_Y}
+          height={CANVAS_H - VP_Y}
           fill="var(--surface-tag)"
         />
         {/* Road surface — borderless; the fill contrast carries the road edge */}
@@ -145,6 +152,7 @@ export function DqnLaneLocalizationCover() {
         {/* Lane dividers (solid grey, perspective) */}
         {DIVIDER_FRACS.map((frac) => (
           <path
+            {...draw(0)}
             key={`div-${frac}`}
             d={lanePath(frac)}
             fill="none"
@@ -156,6 +164,7 @@ export function DqnLaneLocalizationCover() {
         {/* Ground-truth points — uniform unfilled circles along the real (curved) lane */}
         {truth.map((p) => (
           <circle
+            {...draw(1)}
             key={`truth-${p.y}`}
             cx={p.x}
             cy={p.y}
@@ -180,6 +189,7 @@ export function DqnLaneLocalizationCover() {
         {/* Predicted lane — thin green line threading the predicted dots (thinner
             than the lane stroke), the straighter chord on the lane's right. */}
         <polyline
+          {...draw(2)}
           points={predLine}
           fill="none"
           stroke="var(--accent)"
@@ -202,6 +212,7 @@ export function DqnLaneLocalizationCover() {
               the open ground on the LEFT (vertical middle); a curved arrow sweeps to the
               gap between the truth lane and the predicted dots near the mid-bottom. ── */}
         <text
+          data-note={0}
           x={256}
           y={330}
           textAnchor="middle"
@@ -210,6 +221,7 @@ export function DqnLaneLocalizationCover() {
           localized acc 0.892
         </text>
         <text
+          data-note={1}
           x={256}
           y={360}
           textAnchor="middle"
@@ -223,6 +235,7 @@ export function DqnLaneLocalizationCover() {
         {/* notebook gesture: tail at the truth-vs-prediction gap (figure), head up-left
             at the note's bottom edge. Final tangent u≈(-0.6,-0.8); barbs splay ±28°. */}
         <path
+          {...draw(3)}
           d="M 472,556 C 405,548 291,423 261,383"
           fill="none"
           stroke="var(--accent)"
@@ -230,6 +243,7 @@ export function DqnLaneLocalizationCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(4)}
           x1="256"
           y1="377"
           x2="258"
@@ -239,6 +253,7 @@ export function DqnLaneLocalizationCover() {
           strokeLinecap="round"
         />
         <line
+          {...draw(5)}
           x1="256"
           y1="377"
           x2="265"

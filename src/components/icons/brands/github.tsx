@@ -1,3 +1,4 @@
+import { BRAND_VIEW_BOX } from "@/components/icons/brands/brand-view-box";
 import type { IconProps } from "@/components/icons/icon-base";
 
 export function GitHubIcon({ size = 18, className }: IconProps) {
@@ -5,7 +6,7 @@ export function GitHubIcon({ size = 18, className }: IconProps) {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox={BRAND_VIEW_BOX}
       fill="currentColor"
       aria-hidden="true"
       className={className}

@@ -1,50 +1,40 @@
 "use client";
 
 import { useReducedMotion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
+import { NorthIcon } from "@/components/icons/material/north";
+import { useFooterLift } from "@/components/shell/use-footer-lift";
 
-const REST_BOTTOM = 24; // px — resting offset from the viewport bottom
-const FOOTER_GAP = 16; // px — clearance kept above the footer
+const SHOW_AFTER = 400; // px of scroll
 
-// `forceVisible` pins the FAB visible at its resting position regardless of scroll — used by the
-// dev design-system gallery to preview it in a bounded frame. Production callers omit it.
+// A short, fixed page opts out by marking its root `data-scroll-top="off"` (Home, About, the 404 and error screens); the
+// button looks for the marker on each update, so there is no list of paths to keep in step with the routes.
+const OPT_OUT = '[data-scroll-top="off"]';
+
+// `forceVisible` pins the button visible at its resting position regardless of scroll — used by the design-system
+// gallery to preview it in a bounded frame. Site pages omit it.
 export function ScrollToTop({
   forceVisible = false,
 }: {
   forceVisible?: boolean;
 } = {}) {
   const [visible, setVisible] = useState(false);
-  const [bottom, setBottom] = useState(REST_BOTTOM);
+  const bottom = useFooterLift(!forceVisible);
   const prefersReduced = useReducedMotion();
+  const pathname = usePathname();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the pathname re-checks the new page's marker once it has committed
   useEffect(() => {
-    if (forceVisible) return; // demo: pinned visible at rest; skip scroll/footer tracking
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      setVisible(window.scrollY > 400);
-      // Lift the button so it never overlaps the footer once it scrolls in. Use the LAST footer:
-      // the page's real footer is always last in the DOM, so this stays correct even when another
-      // <footer> appears earlier (e.g. the dev design-system gallery rendering a Footer specimen).
-      const footers = document.querySelectorAll("footer");
-      const footer = footers[footers.length - 1];
-      const footerTop = footer?.getBoundingClientRect().top ?? Infinity;
-      const lift = window.innerHeight - footerTop + FOOTER_GAP;
-      setBottom(Math.max(REST_BOTTOM, lift));
-    };
-    const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
+    if (forceVisible) return;
+    const update = () =>
+      setVisible(
+        window.scrollY > SHOW_AFTER && !document.querySelector(OPT_OUT),
+      );
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [forceVisible]);
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [forceVisible, pathname]);
 
   if (!forceVisible && !visible) return null;
 
@@ -58,10 +48,10 @@ export function ScrollToTop({
           behavior: prefersReduced ? "auto" : "smooth",
         })
       }
-      className="fixed right-4 lg:right-[max(1rem,calc(50vw-36rem))] flex items-center justify-center h-11 w-11 xl:h-12 xl:w-12 rounded-full border border-[var(--hairline)] bg-[var(--surface-floating)] backdrop-blur-[12px] text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] hover:border-[var(--hairline-strong)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
-      style={{ zIndex: "var(--z-scroll-to-top)", bottom: `${bottom}px` }}
+      className="surface-glass fixed right-[var(--corner)] z-[var(--z-scroll-to-top)] flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-[var(--ink-muted)] motion-safe:transition-[color,border-color] motion-safe:duration-[var(--duration-fast)] hover:border-[var(--hairline-strong)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] xl:h-12 xl:w-12"
+      style={{ bottom: `${bottom}px` }}
     >
-      <ArrowUpwardIcon size={20} />
+      <NorthIcon size={24} />
     </button>
   );
 }
