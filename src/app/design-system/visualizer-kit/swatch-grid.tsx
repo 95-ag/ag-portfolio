@@ -10,12 +10,16 @@ export type SwatchToken = {
   swatchValue?: string;
   /** Marks a token shown only under a scope (e.g. dark reading mode); gets `darkOnlyClassName`. */
   darkOnly?: boolean;
+  /** Hidden in dark, where the token is not defined (gallery.css `.ds-light-only`). */
+  lightOnly?: boolean;
 };
 
 export type SwatchGroup = {
   label: string;
   tokens: SwatchToken[];
   note?: ReactNode;
+  /** Shown in dark only, standing in for the light-only tokens above it. */
+  darkNote?: ReactNode;
   /** Wraps the grid to re-scope tokens (e.g. a reading-mode override class). */
   scopeClassName?: string;
   /** Applied to `darkOnly` tokens within a scoped group. */
@@ -70,10 +74,16 @@ export function SwatchGrid({ groups }: { groups: SwatchGroup[] }) {
               <ColorCard
                 key={t.token}
                 {...t}
-                className={t.darkOnly ? group.darkOnlyClassName : undefined}
+                className={cn(
+                  t.darkOnly && group.darkOnlyClassName,
+                  t.lightOnly && "ds-light-only",
+                )}
               />
             ))}
           </div>
+          {group.darkNote && (
+            <div className="ds-dark-only body-caption">{group.darkNote}</div>
+          )}
         </div>
       ))}
     </div>

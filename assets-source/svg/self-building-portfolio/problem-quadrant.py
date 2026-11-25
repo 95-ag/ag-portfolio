@@ -13,7 +13,7 @@ import _theme  # noqa: E402
 
 # Crosshair at (230,150). X → scales, Y ↑ grounded. Good zone = top-right, tinted.
 BODY = """  <!-- good zone: grounded + scales (top-right), faint accent tint -->
-  <rect x="230" y="40" width="150" height="110" fill="#006e37" fill-opacity="0.07"/>
+  <rect class="zone" x="230" y="40" width="150" height="110"/>
 
   <!-- axes -->
   <line class="conn" x1="78" y1="150" x2="386" y2="150" marker-end="url(#arr)"/>
@@ -47,4 +47,5 @@ _theme.build(
     ),
     content_bbox=(40, 32, 396, 292),
     body=BODY,
+    slot=2,
 )

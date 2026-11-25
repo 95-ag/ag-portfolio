@@ -2,51 +2,42 @@ export type DurationToken = { token: string; ms: number };
 
 // Each bar is a full 0 → max track (so lengths are comparable); the duration sits at the fill tip and
 // the slowest token fills the track (the scale max).
-export function DurationScale({
-  items,
-  maxBarPx = 280,
-}: {
-  items: DurationToken[];
-  maxBarPx?: number;
-}) {
+export function DurationScale({ items }: { items: DurationToken[] }) {
   const maxMs = Math.max(...items.map((t) => t.ms));
   return (
-    <div className="overflow-x-auto">
-      {/* Padding contains the absolutely-positioned tip/axis labels so they don't overflow the
-          scroll box (which would show a scrollbar even when the bars fit). */}
-      <div className="flex w-fit flex-col gap-[var(--spacing-xl)] px-[var(--spacing-lg)] py-[var(--spacing-lg)]">
-        {items.map(({ token, ms }) => {
-          const barPx = Math.round((ms / maxMs) * maxBarPx);
-          return (
-            <div
-              key={token}
-              className="flex items-center gap-[var(--spacing-lg)]"
-            >
-              <span className="mono-code w-[160px] shrink-0">{token}</span>
-              <div className="relative shrink-0" style={{ width: maxBarPx }}>
-                <span
-                  className="mono-anchor absolute bottom-[calc(100%+4px)] -translate-x-1/2 whitespace-nowrap"
-                  style={{ left: barPx }}
-                >
-                  {ms}ms
-                </span>
-                <div className="h-[6px] w-full bg-[var(--hairline)]">
-                  <div
-                    className="h-full bg-[var(--accent)]"
-                    style={{ width: barPx }}
-                  />
-                </div>
-                <span className="mono-anchor absolute top-[calc(100%+4px)] left-0">
-                  0ms
-                </span>
-                <span className="mono-anchor absolute top-[calc(100%+4px)] right-0">
-                  {maxMs}ms
-                </span>
+    // Padding contains the absolutely-positioned tip and axis labels. The track is fluid, so the scale fits a phone.
+    <div className="flex flex-col gap-[var(--spacing-xl)] px-[var(--spacing-lg)] py-[var(--spacing-lg)]">
+      {items.map(({ token, ms }) => {
+        const share = (ms / maxMs) * 100;
+        return (
+          <div
+            key={token}
+            className="flex flex-col gap-[var(--spacing-sm)] sm:flex-row sm:items-center sm:gap-[var(--spacing-lg)]"
+          >
+            <span className="mono-code shrink-0 sm:w-[160px]">{token}</span>
+            <div className="relative w-full min-w-0 sm:max-w-[280px]">
+              <span
+                className="mono-anchor absolute bottom-[calc(100%+4px)] -translate-x-1/2 whitespace-nowrap"
+                style={{ left: `${share}%` }}
+              >
+                {ms}ms
+              </span>
+              <div className="h-[6px] w-full bg-[var(--hairline)]">
+                <div
+                  className="h-full bg-[var(--accent)]"
+                  style={{ width: `${share}%` }}
+                />
               </div>
+              <span className="mono-anchor absolute top-[calc(100%+4px)] left-0">
+                0ms
+              </span>
+              <span className="mono-anchor absolute top-[calc(100%+4px)] right-0">
+                {maxMs}ms
+              </span>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

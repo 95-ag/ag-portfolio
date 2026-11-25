@@ -2,6 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 
 interface Section {
@@ -38,7 +39,11 @@ export function SectionProgressNav({
     const article = document.querySelector("article");
     if (!article) return;
 
-    const headings = Array.from(article.querySelectorAll("h2"));
+    // A gallery specimen renders real components, some with their own H2 (Related); those are
+    // demos, not sections of the page, and would otherwise get dead rail entries.
+    const headings = Array.from(article.querySelectorAll("h2")).filter(
+      (h) => !h.closest('[data-progress-nav="exclude"]'),
+    );
     const parsed: Section[] = headings.map((h) => {
       const label = h.textContent ?? "";
       const id = slugify(label);
@@ -117,7 +122,9 @@ export function SectionProgressNav({
   // Shown at 2xl only: below that the left gutter is too narrow to clear the content column. The label
   // max-width is a 140px floor that grows with the gutter, so wide/ultrawide viewports show full labels
   // without truncation while the rail still clears the content column.
-  return (
+  // Outside the page's animated wrapper: a transformed ancestor would make this fixed rail position against the
+  // wrapper instead of the viewport while the page-enter animation runs (DESIGN.md → Page Transition).
+  const rail = (
     <nav
       aria-label="Page sections"
       className={cn(
@@ -130,7 +137,7 @@ export function SectionProgressNav({
       {thumb.show && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 w-[2px] rounded-full bg-[var(--hairline-strong)] opacity-0 transition-opacity duration-[var(--duration-fast)] group-hover:opacity-100"
+          className="pointer-events-none absolute left-0 w-[2px] rounded-full bg-[var(--hairline-strong)] opacity-0 motion-safe:transition-opacity motion-safe:duration-[var(--duration-fast)] group-hover:opacity-100"
           style={{ top: thumb.top, height: thumb.height }}
         />
       )}
@@ -156,7 +163,7 @@ export function SectionProgressNav({
                   block: "start",
                 });
               }}
-              className="support-meta select-none max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate transition-colors duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+              className="support-meta select-none max-w-[max(140px,calc((100vw_-_1200px)/2_-_56px))] shrink-0 truncate motion-safe:transition-[color] motion-safe:duration-[var(--duration-fast)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               style={{
                 color: isActive ? "var(--ink)" : "var(--ink-muted)",
                 fontWeight: isActive ? 600 : 400,
@@ -169,4 +176,5 @@ export function SectionProgressNav({
       </div>
     </nav>
   );
+  return isDemo ? rail : createPortal(rail, document.body);
 }

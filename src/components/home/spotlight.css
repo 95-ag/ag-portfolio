@@ -1,0 +1,407 @@
+/* Spotlight — one featured project at a time (DESIGN.md → Home Page → Spotlight). Each slide and tab wears its project's
+   slot (`data-colour` sets --c-ink). Wide: a cover beside frameless text, the slides turning as a cube. At and below 860px:
+   one snapped full screen. */
+
+.spot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+/* The controls and the tabs share one wrapper so the stacked screen can put the cover's mode on both at once. */
+.spot-chrome {
+  display: contents;
+}
+
+/* ───────── Stage and cube ───────── */
+
+.spot-stage {
+  /* Only across: a turning face passes the stage's side, but a focus ring may still show above and below. */
+  overflow-x: clip;
+  touch-action: pan-y;
+}
+.spot-stage:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.spot-cube {
+  display: grid;
+}
+/* Only while a turn runs: the faces stand in one 3D space. At rest the front face has no transform and no 3D context. */
+.spot-cube[data-turning="true"] {
+  transform-style: preserve-3d;
+}
+.spot-slide {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.spot-slide[data-on="true"] {
+  visibility: visible;
+}
+
+/* ───────── The slide, wide ───────── */
+
+.spot-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--spacing-2xl);
+}
+.spot-ground,
+.spot-body .spot-project-button {
+  display: none;
+}
+.spot-text {
+  display: grid;
+  align-content: space-between;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-sm) 0;
+}
+.spot-copy {
+  display: grid;
+  gap: var(--spacing-md);
+}
+.spot-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--spacing-md);
+  color: var(--c-ink);
+}
+/* The whole slide is the link: a stretched link over it, and an ink circle with an arrow on hover or focus. */
+.spot-cover-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--radius-md);
+}
+.spot-cover-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.spot-open {
+  position: absolute;
+  top: var(--spacing-2xl);
+  right: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--surface);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 1280px) {
+  .spot-open {
+    width: 48px;
+    height: 48px;
+  }
+}
+.spot-body:has(.spot-cover-link:focus-visible) .spot-open {
+  opacity: 1;
+}
+.spot-body:has(.spot-cover-link:focus-visible) .spot-title {
+  color: var(--c-ink);
+}
+@media (hover: hover) {
+  .spot-slide[data-current="true"]:hover .spot-open {
+    opacity: 1;
+  }
+  .spot-slide[data-current="true"]:hover .spot-title {
+    color: var(--c-ink);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .spot-body {
+    transition: transform var(--duration-slow);
+  }
+  .spot-open {
+    transition: opacity var(--duration-fast);
+  }
+}
+/* The whole slide shrinks as one from its centre, so cover and text do not move apart. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .spot-slide[data-current="true"]:hover .spot-body {
+    transform: scale(0.97);
+  }
+}
+
+/* ───────── Controls: ‹ ⏸ › ───────── */
+
+/* Three 44px targets at the top right, centred on the counter digits' ink centre (measured: the counter's line centre
+   sits spacing-sm + 8px under the stage top; the digits' ink 0.25px above it). */
+.spot-controls {
+  position: absolute;
+  top: calc(1px - var(--spacing-sm));
+  right: 0;
+  z-index: 4;
+  display: flex;
+}
+.spot-ctl {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 9999px;
+  background: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+.spot-ctl:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  color: var(--ink);
+}
+@media (hover: hover) {
+  .spot-ctl:hover {
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    color: var(--ink);
+  }
+}
+
+/* ───────── Tabs ───────── */
+
+.spot-tabs {
+  order: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--spot-count, 5), 1fr);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+.spot-tab {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-sm);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  text-align: left;
+  cursor: pointer;
+}
+.spot-tab[aria-selected="true"],
+.spot-tab:is(:hover, :focus-visible) {
+  color: var(--ink);
+}
+.spot-tab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.spot-bar {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--hairline);
+}
+.spot-tab:is(:hover, :focus-visible) .spot-bar {
+  background: var(--hairline-strong);
+}
+.spot-bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.spot-tab[aria-selected="true"] .spot-bar i {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* The 7s fill matches the rotation: a declared exception to the duration scale. */
+  .spot[data-auto="true"] .spot-tab[aria-selected="true"] .spot-bar i {
+    animation: spot-fill 7s linear both;
+  }
+}
+@keyframes spot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ───────── Stacked: 860px and below — one full screen the page snaps to ───────── */
+
+@media (max-width: 860px) {
+  /* Mandatory snap here and nowhere else: the hero, the spotlight and the next section are the snap points; the footer
+     snaps to the end so the foot of the page stays reachable, and a section taller than the screen scrolls freely. */
+  html:has([data-spot-snap]) {
+    scroll-snap-type: y mandatory;
+  }
+  html:has([data-spot-snap]) [data-snap],
+  html:has([data-spot-snap]) [data-spot-snap] {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  html:has([data-spot-snap]) footer {
+    scroll-snap-align: end;
+  }
+  /* The hero's snap point is the top of the page, not the hero's own top, so the page name above it stays in view at rest:
+     the margin is main's top padding plus the space above the hero. */
+  html:has([data-spot-snap]) [data-snap="hero"] {
+    scroll-margin-top: calc(var(--spacing-3xl) + var(--spacing-xl));
+  }
+  @media (min-width: 768px) {
+    html:has([data-spot-snap]) [data-snap="hero"] {
+      scroll-margin-top: calc(var(--spacing-3xl) + var(--spacing-4xl));
+    }
+  }
+
+  /* The normal form before the snap: 96px above, the heading, 24px, then a card inset 32px a side. Scroll-linked (SnapProgress
+     writes --sf-p, 0 → 1, and --sf-k, the card's starting scale) the card scales to the full screen by transform; the screen
+     is always laid out full-size, so nothing reflows. Absent the variables (reduced motion, no script) it is simply full. */
+  .spot-section {
+    --sf-s: calc(var(--sf-k, 1) + (1 - var(--sf-k, 1)) * var(--sf-p, 1));
+    position: relative;
+    height: 100dvh;
+    margin-inline: calc(-1 * var(--page-margin));
+    overflow: clip;
+    background: var(--surface);
+  }
+  .spot-heading {
+    position: absolute;
+    top: var(--spacing-4xl);
+    left: var(--spacing-xl);
+    margin: 0;
+    opacity: calc(1 - var(--sf-p, 1));
+  }
+  .spot-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--surface);
+    border-radius: calc(var(--radius-md) / var(--sf-s));
+    transform-origin: 50% 0;
+    /* 140px = 96px above + the heading + 24px under it. */
+    transform: translateY(calc((1 - var(--sf-p, 1)) * 140px)) scale(var(--sf-s));
+  }
+  .spot-all {
+    display: none;
+  }
+  .spot {
+    position: absolute;
+    inset: 0;
+  }
+  .spot-stage,
+  .spot-cube {
+    position: absolute;
+    inset: 0;
+  }
+  .spot-slide {
+    height: 100%;
+  }
+
+  /* One slide: the cover's ground behind everything, the cover centred between the controls and the text, the text
+     anchored up from the button, the button at the foot. */
+  .spot-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
+    padding-top: calc(var(--spacing-md) + 44px + var(--spacing-md));
+  }
+  .spot-ground {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* A CSS mask on a flat colour, not a backdrop blur: six eased steps from the cover's bottom edge to the top of the title. */
+    --sf-span: calc(var(--sf-end, 58%) - var(--sf-solid, 46%));
+    mask-image: linear-gradient(
+      to bottom,
+      #000 var(--sf-solid, 46%),
+      rgb(0 0 0 / 0.9) calc(var(--sf-solid, 46%) + var(--sf-span) * 0.2),
+      rgb(0 0 0 / 0.65) calc(var(--sf-solid, 46%) + var(--sf-span) * 0.4),
+      rgb(0 0 0 / 0.35) calc(var(--sf-solid, 46%) + var(--sf-span) * 0.6),
+      rgb(0 0 0 / 0.1) calc(var(--sf-solid, 46%) + var(--sf-span) * 0.8),
+      transparent var(--sf-end, 58%)
+    );
+  }
+  .spot-cover {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    flex: 1 1 0;
+    place-items: center;
+    /* On a short window the slot keeps a floor so the cover never climbs under the controls. */
+    min-height: 120px;
+  }
+  .spot-cover .cover {
+    width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+  .spot-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    min-height: var(--sf-text, 0px);
+    padding: 0 var(--page-margin);
+  }
+  .spot-counter,
+  .spot-cover-link,
+  .spot-open {
+    display: none;
+  }
+  .spot-body .spot-project-button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    width: auto;
+    margin: var(--spacing-md) var(--page-margin)
+      calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  }
+  .spot-body:has(.spot-cover-link:focus-visible) .spot-title {
+    color: inherit;
+  }
+
+  /* The row: Play / Pause at the left end, the dashes after it up to the page's menu button at the right. It stays still
+     while the cube turns, and wears the current cover's mode over the ground (the carrier takes the tokens, not a fill). */
+  .spot-controls {
+    top: var(--spacing-md);
+    right: auto;
+    left: var(--page-margin);
+  }
+  .spot-ctl-step {
+    display: none;
+  }
+  .spot-ctl {
+    color: var(--ink);
+  }
+  .spot-tabs {
+    position: absolute;
+    z-index: 4;
+    top: var(--spacing-md);
+    right: calc(var(--page-margin) + 44px + var(--spacing-md));
+    left: calc(var(--page-margin) + 44px);
+    gap: var(--spacing-sm);
+    margin: 0;
+  }
+  .spot-tab {
+    align-content: center;
+    color: var(--ink);
+  }
+  .spot-tab-name {
+    display: none;
+  }
+  .spot-bar {
+    height: 2.5px;
+  }
+  .spot-bar i {
+    background: var(--ink);
+  }
+}
+
+/* A turning face hides its back, so the face behind it never shows through. */
+.spot-cube[data-turning="true"] .spot-slide {
+  backface-visibility: hidden;
+}

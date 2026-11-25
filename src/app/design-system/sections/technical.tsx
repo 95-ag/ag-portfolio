@@ -8,16 +8,16 @@ import {
   type SpanZone,
 } from "../visualizer-kit";
 
-// Layout switches: md = 768px (pill nav ↔ hamburger; grid 4→8), xl = 1280px (grid 8→12).
+// Layout switches: 860px (the nav row ↔ the button and card; the spotlight's full screen), md = 768px (grid 4→8), xl = 1280px (grid 8→12).
 const ZONES: SpanZone[] = [
   {
     name: "Desktop (xl)",
     width: "1280px +",
     changes: [
-      "1200px max content column",
+      "1440px cap on Home, About, Work and Writing; 64px page margin",
       "12-column grid",
       "Section-progress rail",
-      "Meteor layer active",
+      "Nav row, collapsing into the menu button after 80px of scroll",
       "Type at full scale",
     ],
   },
@@ -26,8 +26,7 @@ const ZONES: SpanZone[] = [
     width: "768–1279px",
     changes: [
       "8-column grid",
-      "Horizontal pill nav",
-      "Meteor: non-touch only",
+      "24px page margin; the nav row from 861px, the button and card below",
       "Display / heading type steps down",
     ],
   },
@@ -36,8 +35,9 @@ const ZONES: SpanZone[] = [
     width: "≤ 767px",
     changes: [
       "Single reading column; 4-column grid",
-      "Hamburger drawer nav",
-      "Full-bleed ascii field; no meteor (768px floor)",
+      "20px page margin; the round menu button and card nav",
+      "The Home spotlight is one snapped full screen (860px and below)",
+      "Full-bleed ascii field, its accent tier stepped down in light",
       "Type at smallest step",
     ],
   },
@@ -93,9 +93,13 @@ const Z_INDEX_LAYERS: LayerItem[] = [
   { token: "--z-base", value: "0", role: "Base page content" },
   { token: "--z-sticky-content", value: "20", role: "Section-progress rail" },
   { token: "--z-scroll-to-top", value: "40", role: "Scroll-to-top button" },
-  { token: "--z-pill-nav", value: "50", role: "Floating pill nav" },
-  { token: "--z-mobile-menu-overlay", value: "55", role: "Mobile menu scrim" },
-  { token: "--z-mobile-menu-panel", value: "60", role: "Mobile menu panel" },
+  {
+    token: "--z-popover",
+    value: "45",
+    role: "Provenance-mark reveals, below the nav",
+  },
+  { token: "--z-nav", value: "50", role: "The nav: row, button and card" },
+  { token: "--z-lightbox", value: "70", role: "Figure inspection overlay" },
 ];
 
 export function TechnicalSections() {
@@ -122,12 +126,18 @@ export function TechnicalSections() {
                   devices.
                 </li>
                 <li>
-                  Buttons stand 56px tall; LinkPill is the one known exception
-                  at 36px (below the 44px minimum).
+                  A secondary text action beside a primary control that does the
+                  same job, such as copy email beside Let&apos;s talk, takes the
+                  WCAG 2.2 AA minimum of 24×24px instead, never overlapping a
+                  neighbouring target.
                 </li>
                 <li>
-                  Icon-only controls (theme, scroll-to-top, menu) sit in a ≥44px
-                  hit area.
+                  Buttons stand 44px tall, outline and filled; LinkPill stands
+                  44px tall, its visible height the touch target itself.
+                </li>
+                <li>
+                  Icon-only circles (theme toggle, scroll-to-top, menu, Play /
+                  Pause) are 44px, 48px from 1280px.
                 </li>
               </ul>
             </div>
@@ -135,8 +145,8 @@ export function TechnicalSections() {
               <p className="body-emphasis">Collapsing strategy</p>
               <ul>
                 <li>
-                  Primary nav: horizontal pill (md+) → mobile hamburger drawer
-                  (below md).
+                  Primary nav: a row (from 861px, collapsing into the button on
+                  scroll) → the round button and its card (860px and below).
                 </li>
                 <li>
                   Grids: multi-column (4 / 8 / 12) → single column on mobile.
@@ -146,8 +156,8 @@ export function TechnicalSections() {
                   ≤768px.
                 </li>
                 <li>
-                  Background: meteor layer desktop-only; ascii field goes
-                  full-bleed on mobile.
+                  Background: the static ascii field is masked to the gutters on
+                  desktop and goes full-bleed on mobile.
                 </li>
               </ul>
             </div>
@@ -160,7 +170,7 @@ export function TechnicalSections() {
         title="Technical · Z-Index Scale"
         mapsTo="Technical Conventions → Z-Index Scale"
         source="--z-*"
-        intro="An ordered layering scale, from base content up through the sticky rail, scroll-to-top, the floating pill nav, and the mobile menu overlay and panel."
+        intro="An ordered layering scale, from base content up through the sticky rail, scroll-to-top, anchored popovers, the nav (row, button and card) and the figure lightbox."
       >
         <LayerStack items={Z_INDEX_LAYERS} />
       </GallerySection>

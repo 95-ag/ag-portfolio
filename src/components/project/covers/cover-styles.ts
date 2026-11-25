@@ -25,3 +25,15 @@ export const COVER_ANNOTATION: CSSProperties = {
   fontFamily: "var(--font-caveat)",
   fontSize: 30,
 };
+
+// Draw-in tag for a solid stroke (Hero Cover → Live SVG cover rules): a unit path length so a
+// `stroke-dasharray: 1` spans the whole stroke, and a stagger (`--d`) that wraps so a long cover
+// still finishes inside the draw window. Dashed strokes are left untagged — a unit path length
+// would rescale their dashes.
+export function draw(order: number) {
+  return {
+    pathLength: 1,
+    "data-draw": "",
+    style: { "--d": `${(order % 24) * 0.04}s` } as CSSProperties,
+  };
+}

@@ -36,7 +36,10 @@ export function ThemeShot({
 }
 
 // Theme-swapped looping clip; loads only the ACTIVE theme's clip, never both. Falls back to the still
-// poster before hydration and under prefers-reduced-motion.
+// posters before hydration and under prefers-reduced-motion. The fallback renders both posters and lets
+// CSS reveal one, because the theme is unknown on the server: picking one there mismatches the client's
+// first render, and React does not patch an attribute mismatch, so a light-theme reader would keep the
+// dark poster.
 export function ThemeVideo({
   lightVideo,
   darkVideo,
@@ -62,7 +65,16 @@ export function ThemeVideo({
   if (!mounted || reduce) {
     return (
       <div className={FRAME}>
-        <Image src={poster} alt={alt} className="h-auto max-w-full" />
+        <Image
+          src={lightPoster}
+          alt={alt}
+          className="ds-shot-light h-auto max-w-full"
+        />
+        <Image
+          src={darkPoster}
+          alt={alt}
+          className="ds-shot-dark h-auto max-w-full"
+        />
       </div>
     );
   }

@@ -1,10 +1,9 @@
 import { GitHubIcon } from "@/components/icons/brands/github";
 import { LinkedInIcon } from "@/components/icons/brands/linkedin";
-import { ArrowDownwardIcon } from "@/components/icons/material/arrow-downward";
-import { ArrowForwardIcon } from "@/components/icons/material/arrow-forward";
-import { ArrowUpwardIcon } from "@/components/icons/material/arrow-upward";
 import { ArticleIcon } from "@/components/icons/material/article";
 import { CheckIcon } from "@/components/icons/material/check";
+import { ChevronLeftIcon } from "@/components/icons/material/chevron-left";
+import { ChevronRightIcon } from "@/components/icons/material/chevron-right";
 import { CloseIcon } from "@/components/icons/material/close";
 import { ComputerIcon } from "@/components/icons/material/computer";
 import { ContentCopyIcon } from "@/components/icons/material/content-copy";
@@ -12,13 +11,23 @@ import { DarkModeIcon } from "@/components/icons/material/dark-mode";
 import { DeployedCodeIcon } from "@/components/icons/material/deployed-code";
 import { DescriptionIcon } from "@/components/icons/material/description";
 import { DownloadIcon } from "@/components/icons/material/download";
+import { EastIcon } from "@/components/icons/material/east";
 import { FingerprintIcon } from "@/components/icons/material/fingerprint";
 import { FolderCodeIcon } from "@/components/icons/material/folder-code";
 import { LightModeIcon } from "@/components/icons/material/light-mode";
 import { MailIcon } from "@/components/icons/material/mail";
 import { MenuIcon } from "@/components/icons/material/menu";
+import { NorthIcon } from "@/components/icons/material/north";
+import { NorthEastIcon } from "@/components/icons/material/north-east";
 import { OpenInNewIcon } from "@/components/icons/material/open-in-new";
+import { PauseIcon } from "@/components/icons/material/pause";
+import { PlayArrowIcon } from "@/components/icons/material/play-arrow";
+import { RefreshIcon } from "@/components/icons/material/refresh";
+import { RssFeedIcon } from "@/components/icons/material/rss-feed";
 import { SlideshowIcon } from "@/components/icons/material/slideshow";
+import { SouthIcon } from "@/components/icons/material/south";
+import { StickyNoteIcon } from "@/components/icons/material/sticky-note";
+import { WestIcon } from "@/components/icons/material/west";
 import { Divider } from "@/components/layout/divider";
 import { Grid } from "@/components/layout/grid";
 import { Stack } from "@/components/layout/stack";
@@ -47,6 +56,47 @@ import {
 
 // Token data mirrors src/styles/theme.css + typography.css — keep in sync.
 
+const PROJECT_COLOUR_SLOTS = Array.from({ length: 12 }, (_, i) => i + 1);
+
+// Slots 1–12 as text (`ink`); the cover roles derive from them (DESIGN.md → Colors → Covers).
+const PROJECT_COLOUR_GROUPS: SwatchGroup[] = [
+  {
+    label: "Project colours · ink",
+    tokens: PROJECT_COLOUR_SLOTS.map((n) => ({
+      token: `--project-${n}-ink`,
+      name: `Slot ${n} Ink`,
+      usage: "The colour as text: hover titles, tags, tab bars, page colour",
+    })),
+  },
+];
+
+const POST_HUE_GROUPS: SwatchGroup[] = [
+  {
+    label: "Post hues",
+    note: "Four hues for the twelve post types: short, how-to, long read, critique. Light tiles take the tint; in dark every tile is surface-tag.",
+    tokens: (["short", "howto", "long", "critique"] as const).flatMap((g) => [
+      {
+        token: `--post-${g}-ink`,
+        name: `Post ${g} Ink`,
+        usage: "Type label, add-on markers",
+      },
+      {
+        token: `--post-${g}-tint`,
+        name: `Post ${g} Tint`,
+        usage: "Post-tile ground",
+        lightOnly: true,
+      },
+    ]),
+    darkNote: (
+      <>
+        In dark every post tile is{" "}
+        <span className="mono-code">surface-tag</span>; only the four inks above
+        are defined for dark.
+      </>
+    ),
+  },
+];
+
 const COLOR_GROUPS: SwatchGroup[] = [
   {
     label: "Surfaces",
@@ -59,17 +109,24 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--surface-elevated",
         name: "Surface Elevated",
-        usage: "One step up: cards, callouts, highlights",
+        usage:
+          "Callouts, highlighted panels and marker covers; a gently lifted neutral",
       },
       {
         token: "--surface-deep",
         name: "Surface Deep",
-        usage: "Diagram regions, card media well, hero; brightest in light",
+        usage: "Diagram regions and the project detail hero; equals the ground",
       },
       {
         token: "--surface-floating",
         name: "Surface Floating",
-        usage: "Floating nav and utility blur surfaces",
+        usage:
+          "The frosted fill of floating nav and utility surfaces (55% of the ground)",
+      },
+      {
+        token: "--edge-floating",
+        name: "Edge Floating",
+        usage: "The 1px edge of a frosted surface (ink at 10%)",
       },
       {
         token: "--surface-active",
@@ -79,46 +136,7 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--surface-tag",
         name: "Surface Tag",
-        usage: "Tag and chip background",
-      },
-    ],
-  },
-  {
-    // Reading-mode surfaces re-scoped to .ds-reading so the cards preview the data-read="long" override
-    // live and theme-adaptive (gallery.css mirrors the :root blocks).
-    label: "Surfaces · reading mode",
-    scopeClassName: "ds-reading",
-    darkOnlyClassName: "ds-reading-darkonly",
-    note: (
-      <>
-        Long-read pages (<span className="mono-code">/work/[slug]</span>,{" "}
-        <span className="mono-code">data-read=&quot;long&quot;</span>) soften
-        the surface values for easier reading. Only changed tokens are shown;
-        light keeps raised and sunken, so fewer cards appear.
-      </>
-    ),
-    tokens: [
-      {
-        token: "--surface",
-        name: "Surface",
-        usage: "Reading ground, softer than the showcase default",
-      },
-      {
-        token: "--surface-elevated",
-        name: "Surface Elevated",
-        usage: "Lighter than surface in dark reading",
-        darkOnly: true,
-      },
-      {
-        token: "--surface-deep",
-        name: "Surface Deep",
-        usage: "Darker than elevated in dark reading",
-        darkOnly: true,
-      },
-      {
-        token: "--surface-floating",
-        name: "Surface Floating",
-        usage: "Reading nav / menu blur surface",
+        usage: "Neutral control fill: the neutral Button's hover",
       },
     ],
   },
@@ -136,9 +154,9 @@ const COLOR_GROUPS: SwatchGroup[] = [
         usage: "Secondary text, metadata, captions",
       },
       {
-        token: "--ink-on-accent",
-        name: "Ink On Accent",
-        usage: "Text / icon on an accent fill",
+        token: "--ink-lead",
+        name: "Ink Lead",
+        usage: "The Home hero lead, a cool grey quieter than the headline",
       },
     ],
   },
@@ -148,12 +166,13 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--hairline-strong",
         name: "Hairline Strong",
-        usage: "Default borders and dividers (stronger than hairline)",
+        usage:
+          "Default borders, dividers, the neutral Button outline, the scrollbar thumb",
       },
       {
         token: "--hairline",
         name: "Hairline",
-        usage: "Hairline dividers and card borders",
+        usage: "Subtle borders and low-contrast dividers",
       },
     ],
   },
@@ -163,7 +182,8 @@ const COLOR_GROUPS: SwatchGroup[] = [
       {
         token: "--accent",
         name: "Accent",
-        usage: "Links, primary action, active state",
+        usage:
+          "Links, marks, eyebrows on main pages, focus rings, the email cue's sheen",
       },
       {
         token: "--accent-tint",
@@ -172,6 +192,8 @@ const COLOR_GROUPS: SwatchGroup[] = [
       },
     ],
   },
+  ...PROJECT_COLOUR_GROUPS,
+  ...POST_HUE_GROUPS,
   {
     label: "Semantic",
     tokens: [
@@ -195,9 +217,9 @@ const TYPE_TOKENS: TypeToken[] = [
   {
     token: "display-primary",
     family: "Manrope",
-    size: 64,
+    size: 76,
     weight: 600,
-    lh: 70,
+    lh: 84,
     sample: "The hero display line, the single largest statement on a page.",
     responsive: { tablet: 52, mobile: 40 },
   },
@@ -213,11 +235,20 @@ const TYPE_TOKENS: TypeToken[] = [
   {
     token: "heading-display",
     family: "Manrope",
-    size: 36,
+    size: 52,
     weight: 600,
-    lh: 44,
-    sample: "Major section headers across the home and work pages.",
+    lh: 58,
+    sample: "The About page's positioning line.",
     responsive: { tablet: 32, mobile: 32 },
+  },
+  {
+    token: "site-name",
+    family: "Manrope",
+    size: 24,
+    weight: 600,
+    lh: 34,
+    sample: "Aishwarya Ganesan",
+    responsive: { tablet: 20, mobile: 18 },
   },
   {
     token: "heading-section",
@@ -309,7 +340,7 @@ const TYPE_TOKENS: TypeToken[] = [
     size: 14,
     weight: 500,
     lh: 20,
-    sample: "Navigation links in the pill nav and mobile menu.",
+    sample: "Navigation links in the nav row and the menu card.",
   },
   {
     token: "support-meta",
@@ -336,20 +367,12 @@ const TYPE_TOKENS: TypeToken[] = [
     sample: "Mono label that tags a key insight or pull-quote.",
   },
   {
-    token: "tag-chip",
-    family: "JetBrains Mono",
-    size: 12,
-    weight: 500,
-    lh: 16,
-    sample: "Mono uppercase text inside tags and chips.",
-  },
-  {
     token: "mono-code",
     family: "JetBrains Mono",
     size: 16,
     weight: 400,
     lh: 24,
-    sample: "Monospaced code for inline snippets and code blocks.",
+    sample: "Token names, measurements, and scale readouts.",
   },
 ];
 
@@ -368,7 +391,8 @@ const SPACING_TOKENS: BarItem[] = [
 // Layout-specific spacing (gutter + responsive page margins) — not part of the geometric xs–5xl scale.
 const LAYOUT_SPACING_TOKENS: BarItem[] = [
   { token: "gutter", px: 24 },
-  { token: "margin-mobile", px: 16 },
+  { token: "margin-mobile", px: 20 },
+  { token: "margin-tablet", px: 24 },
   { token: "margin-desktop", px: 64 },
 ];
 
@@ -377,25 +401,28 @@ const RADIUS_TOKENS: ShapeItem[] = [
     token: "none",
     radius: "var(--radius-none)",
     value: "0px",
-    usage: "Cards, code blocks, callouts; sharp containers",
+    usage: "Code blocks, inline code, callouts; sharp containers",
   },
   {
-    token: "sm",
-    radius: "var(--radius-sm)",
-    value: "4px",
-    usage: "Tags, buttons, small fills",
+    token: "xs",
+    radius: "var(--radius-xs)",
+    value: "3px",
+    usage:
+      "Post tiles, the dog-ear's fold, copyable code chips, the popover panel",
   },
   {
     token: "md",
     radius: "var(--radius-md)",
     value: "8px",
-    usage: "Figures, panels, hero media",
+    usage:
+      "Headshot, hero images, card and spotlight covers, figures, diagrams, highlights",
   },
   {
     token: "pill",
     radius: "var(--radius-pill)",
     value: "9999px",
-    usage: "Pill nav, link pills, scroll-to-top, theme selector",
+    usage:
+      "Nav items and button, link pills, scroll-to-top, theme toggle, credits Play / Pause, Button",
   },
 ];
 
@@ -404,7 +431,8 @@ const DEPTH_LEVELS: DepthLevel[] = [
     name: "Level 0 · Flat",
     spec: "no border, no fill",
     className: "bg-[var(--surface)]",
-    usage: "Page sections, hero regions, footer",
+    usage:
+      "Page sections, hero regions, project cards, the Home spotlight, footer",
   },
   {
     name: "Level 1 · Border only",
@@ -413,29 +441,36 @@ const DEPTH_LEVELS: DepthLevel[] = [
     usage: "Figure frame, prose hr, table cells",
   },
   {
-    name: "Level 2 · Border + blur",
-    spec: "backdrop-blur(12px) + surface-floating + 1px hairline (mobile panel borderless)",
-    className:
-      "bg-[var(--surface-floating)] border border-[var(--hairline)] [backdrop-filter:blur(12px)]",
-    usage: "Pill nav, mobile trigger, scroll-to-top",
+    name: "Level 2 · Frosted",
+    spec: "surface-glass: surface-floating (55%) + blur(20px) saturate(170%) + 1px edge-floating",
+    className: "surface-glass",
+    usage:
+      "Nav button and menu card, scroll-to-top, theme toggle, credits Play / Pause",
   },
   {
     name: "Level 3 · Border + raised",
     spec: "surface-elevated + 1px hairline",
     className: "bg-[var(--surface-elevated)] border border-[var(--hairline)]",
-    usage: "Project cards, <Highlight>",
+    usage: "<Highlight>",
   },
   {
     name: "Level 4 · Sunken inset",
     spec: "surface-deep + 1px hairline (borderless when nested)",
     className: "bg-[var(--surface-deep)] border border-[var(--hairline)]",
-    usage: "<Diagram> / <DiagramRow>, card media well",
+    usage: "<Diagram> / <DiagramRow>, the project detail hero",
   },
   {
     name: "Level 5 · Accent left + raised",
     spec: "2px accent (left) + surface-elevated",
     className: "bg-[var(--surface-elevated)] border-l-2 border-[var(--accent)]",
     usage: "<Callout>, prose blockquote",
+  },
+  {
+    name: "Level 6 · Tinted tile",
+    spec: "the post group's tint in light, surface-tag in dark; no border",
+    className: "bg-[var(--g-tint)]",
+    group: "long",
+    usage: "Post tiles",
   },
 ];
 
@@ -453,11 +488,15 @@ const EASING_TOKENS: EasingToken[] = [
 type IconEntry = { name: string; Icon: React.ComponentType<{ size?: number }> };
 
 const MATERIAL_ICONS: IconEntry[] = [
-  { name: "ArrowDownward", Icon: ArrowDownwardIcon },
-  { name: "ArrowForward", Icon: ArrowForwardIcon },
-  { name: "ArrowUpward", Icon: ArrowUpwardIcon },
+  { name: "West", Icon: WestIcon },
+  { name: "South", Icon: SouthIcon },
+  { name: "East", Icon: EastIcon },
+  { name: "NorthEast", Icon: NorthEastIcon },
+  { name: "North", Icon: NorthIcon },
   { name: "Article", Icon: ArticleIcon },
   { name: "Check", Icon: CheckIcon },
+  { name: "ChevronLeft", Icon: ChevronLeftIcon },
+  { name: "ChevronRight", Icon: ChevronRightIcon },
   { name: "Close", Icon: CloseIcon },
   { name: "Computer", Icon: ComputerIcon },
   { name: "ContentCopy", Icon: ContentCopyIcon },
@@ -471,7 +510,12 @@ const MATERIAL_ICONS: IconEntry[] = [
   { name: "Mail", Icon: MailIcon },
   { name: "Menu", Icon: MenuIcon },
   { name: "OpenInNew", Icon: OpenInNewIcon },
+  { name: "Refresh", Icon: RefreshIcon },
+  { name: "PlayArrow", Icon: PlayArrowIcon },
+  { name: "Pause", Icon: PauseIcon },
+  { name: "RssFeed", Icon: RssFeedIcon },
   { name: "Slideshow", Icon: SlideshowIcon },
+  { name: "StickyNote", Icon: StickyNoteIcon },
 ];
 
 const BRAND_ICONS: IconEntry[] = [
@@ -481,24 +525,37 @@ const BRAND_ICONS: IconEntry[] = [
 
 const ICON_SIZES = [
   {
+    px: 72,
+    label: "72px",
+    context:
+      "ScreenCarousel previous / next chevrons (the glyph draws about 36px tall)",
+  },
+  {
+    px: 24,
+    label: "24px",
+    context:
+      "Icon-only circles: scroll-to-top, theme toggle, the spotlight hover arrow, the copy button",
+  },
+  {
     px: 20,
     label: "20px",
-    context: "Standalone icon-only controls (footer social, scroll-to-top)",
+    context: "Play / Pause and the nav menu icon; footer social icons",
   },
-  { px: 18, label: "18px", context: "Buttons; mobile-nav trigger and close" },
+  { px: 18, label: "18px", context: "Buttons (outline and filled)" },
   {
     px: 16,
     label: "16px",
-    context: "Nav items, LinkPill icons, project-card chevron",
+    context:
+      "Nav items, LinkPill icons, link arrows, the small post tile arrow",
   },
   {
     px: 12,
     label: "12–14px",
-    context: "Inline indicators (copy, external-link)",
+    context: "Inline indicators (the new-tab icon)",
   },
 ];
 
-// Largest size in the scale; used for the catalog grids (icons not in a button/nav context).
+// The standalone-control size; used for the catalog grids (icons not in a button/nav context).
 const ICON_GRID_SIZE = 20;
 
 const GRID_CELLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -511,7 +568,7 @@ export function FoundationsSections() {
         title="Foundations · Colors"
         mapsTo="Foundations → Colors"
         source="src/styles/theme.css → :root / [data-theme]"
-        intro="Semantic color tokens for surfaces, text, borders, accent, and state, each resolving to the live theme. One accent only; accent-strong is intentionally absent, and interaction states derive from these tokens."
+        intro="Neutrals, one site accent, the twelve project colours and the four post hues, each resolving to the live theme. There is no second accent; a project or post page lifts its own colour slot into the accent family."
       >
         <SwatchGrid groups={COLOR_GROUPS} />
       </GallerySection>
@@ -521,7 +578,7 @@ export function FoundationsSections() {
         title="Foundations · Typography"
         mapsTo="Foundations → Typography"
         source="src/styles/typography.css"
-        intro="Nineteen semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
+        intro="Eighteen semantic type tokens, each fixing a family, size, weight, and line-height for one role. Dark theme applies grayscale font-smoothing so weight hierarchy holds."
       >
         <TypeScaleList tokens={TYPE_TOKENS} />
       </GallerySection>
@@ -596,7 +653,7 @@ export function FoundationsSections() {
         title="Foundations · Shapes"
         mapsTo="Foundations → Shapes"
         source="--radius-*"
-        intro="Four radius categories, from sharp structural containers to a full pill for floating and link controls."
+        intro="Four radius categories, from sharp structural containers through tiles and small chips and media surfaces to a full pill for floating and link controls."
       >
         <ShapeRow items={RADIUS_TOKENS} />
       </GallerySection>
@@ -606,7 +663,7 @@ export function FoundationsSections() {
         title="Foundations · Elevation & Depth"
         mapsTo="Foundations → Elevation & Depth"
         source="DESIGN.md → Elevation & Depth"
-        intro="Depth without shadow. Six levels built from tonal surface layering and subtle borders."
+        intro="Depth without shadow. Seven levels built from tonal surface layering, subtle borders and a tinted tile fill in light."
       >
         <DepthGrid levels={DEPTH_LEVELS} />
       </GallerySection>
@@ -632,6 +689,56 @@ export function FoundationsSections() {
         mapsTo="Foundations → Layout"
         intro="Structural and spacing primitives. Stack, Grid, and Divider render live; the page-shaping wrappers (Container, Section, Sticky) shape this page directly."
       >
+        <Specimen
+          id="layout-container"
+          name="Container"
+          source="@/components/layout/container"
+          description="Two widths. default: a 1200px box. cap: the 1440px content box with the page margin each side — Home, About, Work and Writing. Padding is the page margin on both: 20px to 767px, 24px from 768px, 64px from 1280px. The corners (name, nav, scroll-to-top, theme toggle) stand on the 1440 box on every page."
+        >
+          <table className="body-caption w-full">
+            <thead>
+              <tr className="text-left">
+                <th>Window</th>
+                <th>Page margin</th>
+                <th>cap content width</th>
+                <th>Corner offset</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>390</td>
+                <td>20px</td>
+                <td>350px</td>
+                <td>20px</td>
+              </tr>
+              <tr>
+                <td>768</td>
+                <td>24px</td>
+                <td>720px</td>
+                <td>24px</td>
+              </tr>
+              <tr>
+                <td>1280</td>
+                <td>64px</td>
+                <td>1152px</td>
+                <td>64px</td>
+              </tr>
+              <tr>
+                <td>1568</td>
+                <td>64px</td>
+                <td>1440px</td>
+                <td>64px</td>
+              </tr>
+              <tr>
+                <td>1920</td>
+                <td>64px</td>
+                <td>1440px</td>
+                <td>235px</td>
+              </tr>
+            </tbody>
+          </table>
+        </Specimen>
+
         <Specimen
           id="layout-stack"
           name="Stack"
@@ -755,7 +862,10 @@ export function FoundationsSections() {
           <ul>
             <li>Icons communicate function, not decoration.</li>
             <li>Navigation pairs an icon with a text label.</li>
-            <li>Buttons use a leading icon.</li>
+            <li>
+              A Button carries exactly one icon, after the label to navigate or
+              open a new tab, before it to go back or name the action.
+            </li>
           </ul>
         </div>
 
@@ -801,7 +911,7 @@ export function FoundationsSections() {
           id="icons-sizes"
           name="Icon sizes"
           source="DESIGN.md → Iconography"
-          description="Four contextual sizes, each tied to a specific UI role; shown at actual size."
+          description="Contextual sizes, each tied to a specific UI role; shown at actual size."
         >
           <div className="grid grid-cols-1 gap-[var(--spacing-xl)] sm:grid-cols-2">
             {ICON_SIZES.map(({ px, label, context }) => (
@@ -810,7 +920,7 @@ export function FoundationsSections() {
                 className="flex flex-col items-start gap-[var(--spacing-sm)]"
               >
                 <div className="flex h-8 items-center text-[var(--ink)]">
-                  <ArrowForwardIcon size={px} />
+                  <EastIcon size={px} />
                 </div>
                 <span className="mono-anchor">icon · {label}</span>
                 <span className="body-caption">{context}</span>

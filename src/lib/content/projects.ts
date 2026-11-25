@@ -1,11 +1,20 @@
 import fs from "node:fs";
 import path from "node:path";
-import { coverComponents } from "@/components/project/covers";
+import {
+  artefactComponents,
+  coverComponents,
+} from "@/components/project/covers";
 import {
   type ProjectFrontmatter,
   ProjectFrontmatterSchema,
 } from "@/lib/schemas/project";
 import { parseFrontmatter } from "./frontmatter";
+import {
+  assertKebabSlug,
+  assertNoClassName,
+  assertProjectSet,
+  assertPublicFiles,
+} from "./validate";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "projects");
 
@@ -15,17 +24,47 @@ export interface Project {
   body: string;
 }
 
-function getProjectFiles(): string[] {
-  return fs
-    .readdirSync(CONTENT_DIR)
-    .filter((f) => f.endsWith(".mdx") && !f.startsWith("_"));
+// What a cover needs to draw: a project, or a post carrying its own cover (DESIGN.md → Domain Components → Hero Cover).
+export interface CoverSubject {
+  slug: string;
+  colour: number;
+  cover?: ProjectFrontmatter["cover"];
+  heroImage?: string;
+  heroAlt?: string;
+  heroPoster?: string;
+  heroVideoLoop?: boolean;
 }
 
-function parseProject(filename: string): Project {
+export function coverSubject({ slug, frontmatter: fm }: Project): CoverSubject {
+  return {
+    slug,
+    colour: fm.colour,
+    cover: fm.cover,
+    heroImage: fm.heroImage,
+    heroAlt: fm.heroAlt,
+    heroPoster: fm.heroPoster,
+    heroVideoLoop: fm.heroVideoLoop,
+  };
+}
+
+// Drafts are committed but never released: they load in development only (so a local
+// production build matches what ships), and release.sh strips the directory from the snapshot.
+const DRAFTS_DIR = path.join(CONTENT_DIR, "_drafts");
+
+function listProjectFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith(".mdx"));
+}
+
+export function isDraftProject(slug: string): boolean {
+  return fs.existsSync(path.join(DRAFTS_DIR, `${slug}.mdx`));
+}
+
+function parseProject(dir: string, filename: string): Project {
   const slug = filename.replace(/\.mdx$/, "");
-  const filepath = path.join(CONTENT_DIR, filename);
+  const filepath = path.join(dir, filename);
   const raw = fs.readFileSync(filepath, "utf-8");
-  const { data, content } = parseFrontmatter(raw);
+  const { data, content } = parseFrontmatter(raw, filename);
 
   const result = ProjectFrontmatterSchema.safeParse(data);
   if (!result.success) {
@@ -34,48 +73,97 @@ function parseProject(filename: string): Project {
       .join("\n");
     throw new Error(`Invalid frontmatter in ${filename}:\n${issues}`);
   }
+  assertKebabSlug(slug, filename);
+  assertNoClassName(content, filename);
+  const fm = result.data;
+  assertPublicFiles(filename, {
+    heroImage: fm.heroImage,
+    heroPoster: fm.heroPoster,
+    ogImage: fm.ogImage,
+    ...Object.fromEntries(
+      (fm.logos ?? []).map((logo, i) => [`logos.${i}.src`, logo.src]),
+    ),
+    ...Object.fromEntries(
+      (fm.contributors ?? []).map((c, i) => [
+        `contributors.${i}.avatar`,
+        c.avatar,
+      ]),
+    ),
+  });
 
-  return { slug, frontmatter: result.data, body: content };
+  return { slug, frontmatter: fm, body: content };
 }
 
 export function getAllProjects(): Project[] {
-  const files = getProjectFiles();
-  const projects = files.map(parseProject);
+  const published = listProjectFiles(CONTENT_DIR).map((f) =>
+    parseProject(CONTENT_DIR, f),
+  );
+  const drafts =
+    process.env.NODE_ENV === "development"
+      ? listProjectFiles(DRAFTS_DIR).map((f) => parseProject(DRAFTS_DIR, f))
+      : [];
 
-  // Cross-file validation
-  const featured = projects.filter((p) => p.frontmatter.featured);
-  if (featured.length > 3) {
-    throw new Error(
-      `Too many featured projects (${featured.length}). Maximum is 3.`,
-    );
-  }
-
-  const allSlugs = new Set(projects.map((p) => p.slug));
-  for (const project of projects) {
-    for (const related of project.frontmatter.relatedProjects ?? []) {
-      if (!allSlugs.has(related)) {
-        throw new Error(
-          `relatedProjects in "${project.slug}" references unknown slug: "${related}"`,
-        );
-      }
+  const publishedSlugs = new Set(published.map((p) => p.slug));
+  for (const draft of drafts) {
+    if (publishedSlugs.has(draft.slug)) {
+      throw new Error(
+        `Draft "${draft.slug}" has the same slug as a published project.`,
+      );
     }
   }
 
-  // Production release gate: a published project must have a hero — a registered live
-  // cover OR a heroImage. Dev/preview builds stay permissive (the hero may be empty until
-  // the cover stage); only the live production build (VERCEL_ENV=production) fails, so a
-  // heroless project can never reach production.
+  const projects = [...published, ...drafts];
+  assertProjectSet(projects);
+
+  // Production release gate: a published project must declare a cover whose source exists
+  // (a registered live cover, or a heroImage for the image and video kinds), and a static
+  // hero must carry alt text. Dev/preview builds stay permissive (the hero may be empty
+  // until the cover stage); only the live production build (VERCEL_ENV=production) fails.
+  // heroAlt is required only where a heroImage is the visible hero: live-cover projects also
+  // set heroImage as their OG raster, but the cover is aria-hidden and decorative, so alt
+  // text for it would render nothing. Every check reports together so one blocker never
+  // hides another.
   if (process.env.VERCEL_ENV === "production") {
-    const heroless = projects.filter(
-      (p) => !coverComponents[p.slug] && !p.frontmatter.heroImage,
+    const coverless = published.filter((p) => !p.frontmatter.cover);
+    const sourceless = published.filter((p) => {
+      const kind = p.frontmatter.cover?.kind;
+      if (kind === "live") return !coverComponents[p.slug];
+      if (kind === "artefact") return !artefactComponents[p.slug];
+      if (kind === "image" || kind === "video") return !p.frontmatter.heroImage;
+      return false;
+    });
+    const unlabelled = published.filter(
+      (p) =>
+        p.frontmatter.heroImage &&
+        !coverComponents[p.slug] &&
+        !p.frontmatter.heroAlt,
     );
-    if (heroless.length > 0) {
-      throw new Error(
-        `Production release: project(s) have no hero (no live cover and no heroImage): ${heroless
+
+    const problems: string[] = [];
+    if (coverless.length > 0) {
+      problems.push(
+        `no cover declared: ${coverless
           .map((p) => p.slug)
-          .join(
-            ", ",
-          )}. Add a heroImage or register a live cover before releasing.`,
+          .join(", ")}. Add a cover (kind, light, dark) to the frontmatter.`,
+      );
+    }
+    if (sourceless.length > 0) {
+      problems.push(
+        `a cover with no source (a live cover or artefact is not registered, or an image or video cover has no heroImage): ${sourceless
+          .map((p) => p.slug)
+          .join(", ")}.`,
+      );
+    }
+    if (unlabelled.length > 0) {
+      problems.push(
+        `a static heroImage with no heroAlt: ${unlabelled
+          .map((p) => p.slug)
+          .join(", ")}. Add heroAlt describing the hero image.`,
+      );
+    }
+    if (problems.length > 0) {
+      throw new Error(
+        `Production release blocked — project(s) have ${problems.join("\n  Project(s) have ")}`,
       );
     }
   }
@@ -92,10 +180,7 @@ export function getAllProjects(): Project[] {
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
-  const files = getProjectFiles();
-  const filename = files.find((f) => f.replace(/\.mdx$/, "") === slug);
-  if (!filename) return undefined;
-  return parseProject(filename);
+  return getAllProjects().find((p) => p.slug === slug);
 }
 
 export function getProjectsForWork(): Project[] {

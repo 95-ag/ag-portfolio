@@ -1,6 +1,7 @@
 import type { AboutFrontmatter } from "@/lib/schemas/about";
-import type { ProjectFrontmatter } from "@/lib/schemas/project";
-import { SITE_URL } from "@/lib/site";
+import type { PostFrontmatter } from "@/lib/schemas/post";
+import { isVideo, type ProjectFrontmatter } from "@/lib/schemas/project";
+import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 // Serialize a JSON-LD object for embedding in a <script> tag. JSON.stringify does
 // not escape `<`, so a value containing `</script>` would break out of the tag.
@@ -17,13 +18,12 @@ export function buildWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Aishwarya Ganesan",
+    name: AUTHOR_NAME,
     url: SITE_URL,
-    description:
-      "AI engineer building AI systems like real software — applied ML, retrieval, and computer vision.",
+    description: SITE_DESCRIPTION,
     creator: {
       "@type": "Person",
-      name: "Aishwarya Ganesan",
+      name: AUTHOR_NAME,
     },
   };
 }
@@ -54,23 +54,58 @@ export function buildPersonSchema(
   };
 }
 
-export function buildCreativeWorkSchema(slug: string, fm: ProjectFrontmatter) {
+// Matches the page's OG image (ogImage, else heroImage), but a video hero is not an image.
+function projectImage(fm: ProjectFrontmatter): string | undefined {
+  if (fm.ogImage) return fm.ogImage;
+  return fm.heroImage && !isVideo(fm.heroImage) ? fm.heroImage : undefined;
+}
+
+export function buildSoftwareSourceCodeSchema(
+  slug: string,
+  fm: ProjectFrontmatter,
+) {
   return {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
+    "@type": "SoftwareSourceCode",
     name: fm.title,
     description: fm.metaDescription ?? fm.summary,
     url: `${SITE_URL}/work/${slug}`,
     datePublished: new Date(fm.publishedAt).toISOString(),
+    // publishedAt is the project's own date, not the page's, so it is no stand-in for a modified date.
+    ...(fm.updatedAt
+      ? { dateModified: new Date(fm.updatedAt).toISOString() }
+      : {}),
     inLanguage: "en",
     author: {
       "@type": "Person",
-      name: "Aishwarya Ganesan",
+      name: AUTHOR_NAME,
       url: SITE_URL,
     },
     keywords: fm.tags.join(", "),
-    ...(fm.heroImage ? { image: `${SITE_URL}${fm.heroImage}` } : {}),
+    ...(projectImage(fm) ? { image: `${SITE_URL}${projectImage(fm)}` } : {}),
     ...(fm.links?.github ? { codeRepository: fm.links.github } : {}),
+  };
+}
+
+export function buildBlogPostingSchema(slug: string, fm: PostFrontmatter) {
+  const url = `${SITE_URL}/writing/${slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: fm.title,
+    description: fm.metaDescription ?? fm.summary,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: "en",
+    datePublished: new Date(fm.publishedAt).toISOString(),
+    dateModified: new Date(fm.updatedAt ?? fm.publishedAt).toISOString(),
+    author: {
+      "@type": "Person",
+      name: AUTHOR_NAME,
+      url: SITE_URL,
+    },
+    keywords: fm.tags.join(", "),
+    image: `${SITE_URL}${fm.ogImage ?? "/opengraph-image"}`,
   };
 }
 

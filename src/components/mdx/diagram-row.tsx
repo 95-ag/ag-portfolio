@@ -1,6 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import { cn } from "@/lib/utils/cn";
+import {
+  type FigureWidth,
+  figureWidthClass,
+} from "@/components/mdx/figure-width";
+import { LightboxTrigger } from "@/components/ui/display/lightbox";
 
 interface DiagramPanelProps {
   src: string;
@@ -17,17 +21,19 @@ export function DiagramPanel({
   label,
 }: DiagramPanelProps) {
   const box = (
-    <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
-      <div style={{ aspectRatio: aspect }} className="relative w-full">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 380px"
-        />
-      </div>
-    </div>
+    <LightboxTrigger src={src} alt={alt} caption={label}>
+      <span className="block overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-deep)]">
+        <span style={{ aspectRatio: aspect }} className="relative block w-full">
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 380px"
+          />
+        </span>
+      </span>
+    </LightboxTrigger>
   );
 
   if (!label) return <div className="min-w-0">{box}</div>;
@@ -46,14 +52,14 @@ type DiagramRowLayout = "2col" | "2+1";
 
 interface DiagramRowProps {
   caption?: string;
-  className?: string;
+  width?: FigureWidth;
   children: React.ReactNode;
   layout?: DiagramRowLayout;
 }
 
 export function DiagramRow({
   caption,
-  className,
+  width = "default",
   children,
   layout = "2col",
 }: DiagramRowProps) {
@@ -61,7 +67,9 @@ export function DiagramRow({
   const isTwoPlusOne = layout === "2+1" && childArray.length === 3;
 
   return (
-    <figure className={cn("my-[var(--spacing-2xl)] mx-auto w-full", className)}>
+    <figure
+      className={`my-[var(--spacing-2xl)] mx-auto ${figureWidthClass[width]}`}
+    >
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:items-start">
         {isTwoPlusOne
           ? childArray.map((child, i) => {

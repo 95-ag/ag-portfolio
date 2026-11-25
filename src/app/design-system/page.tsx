@@ -3,8 +3,9 @@ import "./gallery.css";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { SectionProgressNav } from "@/components/project/section-progress-nav";
-import { Heading } from "@/components/ui/heading";
-import { InlineThemeSelector } from "@/components/ui/theme-selector";
+import { ThemeToggle } from "@/components/shell/theme-toggle";
+import { Heading } from "@/components/ui/display/heading";
+import { SHOW_PREVIEW_UI } from "@/lib/build-flags";
 import { DemoViewOnly } from "./scaffold-kit/click-guards";
 import { BackgroundSection } from "./sections/background";
 import { ComponentsSections } from "./sections/components";
@@ -22,6 +23,8 @@ export default function DesignSystemPage() {
   return (
     <Section>
       <Container>
+        {/* Previews already carry the site-wide toggle in the layout; production shows this page-only one. */}
+        {!SHOW_PREVIEW_UI && <ThemeToggle mode="page" />}
         <SectionProgressNav />
         <header className="mb-[var(--spacing-3xl)] flex flex-col gap-[var(--spacing-lg)]">
           <Heading level={1} type="display-title">
@@ -30,17 +33,11 @@ export default function DesignSystemPage() {
           <p className="body-lead">
             Components and tokens rendered live, mirroring the DESIGN.md
             structure. Inline page sections are listed, not previewed;
-            background layers are static captures. Switch themes with the Theme
-            control below.
+            background layers are static captures. Switch themes with the toggle
+            at the bottom-left.
           </p>
-          {/* The real InlineThemeSelector sits outside the view-only article below so it stays
-              interactive; the UI catalog points here rather than duplicating it. */}
-          <div className="flex items-center gap-[var(--spacing-sm)]">
-            <span className="mono-anchor">Theme</span>
-            <InlineThemeSelector />
-          </div>
           <div className="body-caption">
-            Dev-only reference, excluded from the production build. Components
+            The component reference this site is built against. Components
             render on the page background; fixed and route-aware chrome render
             live in bounded frames.
           </div>

@@ -33,7 +33,7 @@ function SuppressionTip({ tip }: { tip: { x: number; y: number } | null }) {
   return createPortal(
     <div
       role="status"
-      className="body-caption pointer-events-none fixed z-[var(--z-mobile-menu-panel)] max-w-[240px] rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-sm)] py-[var(--spacing-xs)]"
+      className="body-caption pointer-events-none fixed z-[var(--z-lightbox)] max-w-[240px] rounded-[var(--radius-xs)] border border-[var(--hairline)] bg-[var(--surface-elevated)] px-[var(--spacing-sm)] py-[var(--spacing-xs)]"
       style={{ left: tip.x + 12, top: tip.y + 12 }}
     >
       {SUPPRESSED_MESSAGE}

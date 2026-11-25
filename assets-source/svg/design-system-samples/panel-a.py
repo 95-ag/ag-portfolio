@@ -24,4 +24,5 @@ _theme.build(
     aria_label="Neutral sample panel A: two stacked layers.",
     content_bbox=(20, 20, 160, 142),
     body=BODY,
+    slot=1,
 )

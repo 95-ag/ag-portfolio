@@ -3,12 +3,12 @@
     .bg { fill: #eef0f1; }
     .sun { fill: #cfd5d6; }
     .hill { fill: #dfe3e4; }
-    .area { fill: #006e37; opacity: 0.35; }
+    .area { fill: #b24a35; opacity: 0.35; }
     @media (prefers-color-scheme: dark) {
       .bg { fill: #161616; }
       .sun { fill: #2f3438; }
       .hill { fill: #23262a; }
-      .area { fill: #2aa566; opacity: 0.4; }
+      .area { fill: #f35c5d; opacity: 0.4; }
     }
   </style>
   <rect class="bg" width="320" height="180"/>

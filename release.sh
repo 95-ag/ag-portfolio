@@ -42,12 +42,18 @@ git rm -rf --quiet . >/dev/null
 echo "Staging allowlisted paths from main..."
 git checkout main -- "${ALLOWLIST[@]}"
 
-# Prune dev-only paths that ship inside allowlisted dirs (src/, public/) but must
-# not reach production. The design-system component gallery (/design-system) and its
-# screenshot assets are a local reference only; drop them from both the index and the
-# worktree so the snapshot never includes them. Promote by deleting these lines when
-# the route is intentionally made public.
-git rm -rf --quiet src/app/design-system public/design-system >/dev/null
+# Unpublished content is committed on main under _drafts/ but must never ship: drop each draft
+# directory and the public/ folder named for every draft slug.
+echo "Stripping unpublished drafts..."
+for kind in projects writing; do
+  for draft in content/"$kind"/_drafts/*.mdx; do
+    [ -e "$draft" ] || continue
+    slug="$(basename "$draft" .mdx)"
+    echo "  draft: $kind/$slug"
+    git rm -rf --quiet --ignore-unmatch "public/$kind/$slug"
+  done
+  git rm -rf --quiet --ignore-unmatch "content/$kind/_drafts"
+done
 
 echo
 echo "Staged snapshot (production = curated main):"

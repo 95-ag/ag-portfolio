@@ -19,6 +19,29 @@
   .prose-content > h2:first-child {
     margin-top: 0;
   }
+  /* A post's h2 is a section heading, not the project page's ruled mono label (DESIGN.md → Prose). The post page
+     root carries data-page="post"; heading-section tiers mirror typography.css. */
+  [data-page="post"] .prose-content h2 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-size: 26px;
+    line-height: 34px;
+    letter-spacing: -0.015em;
+    text-transform: none;
+    color: var(--ink);
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: var(--spacing-4xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  [data-page="post"] .prose-content > h2:first-child {
+    margin-top: 0;
+  }
+  @media (max-width: 1279px) {
+    [data-page="post"] .prose-content h2 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
   .prose-content h3 {
     /* heading-component values */
     font-family: var(--font-display), system-ui, sans-serif;
@@ -81,9 +104,13 @@
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-color: var(--hairline);
-    transition:
-      color var(--duration-fast),
-      text-decoration-color var(--duration-fast);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .prose-content a[href^="#"] {
+      transition:
+        color var(--duration-fast),
+        text-decoration-color var(--duration-fast);
+    }
   }
   .prose-content a[href^="#"]:hover {
     color: var(--accent);
@@ -132,15 +159,19 @@
     border-bottom: 2px solid var(--accent);
   }
   .prose-content code:not(pre code) {
-    /* inline code — mono-code metrics, accent text on a faint accent tint */
-    font-family: var(--font-mono), monospace;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
+    /* inline code — mono-code metrics come from the --mono-code-* properties in
+       typography.css. Accent text carries the distinction; the hairline supplies containment. No fill:
+       a background creates a luminance step across the glyphs, which fragments the
+       reading line at the 20-plus-spans-per-page density these pages run. Sharp corners
+       because this is a structural container, not a control. */
+    font-family: var(--mono-code-font-family);
+    font-size: var(--mono-code-font-size);
+    font-weight: var(--mono-code-font-weight);
+    line-height: var(--mono-code-line-height);
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-none);
     padding: 2px 6px;
   }
   /* Shiki dual-theme. defaultColor:false emits only CSS vars (no inline token
