@@ -10,25 +10,31 @@ const FRAME =
 
 // Theme-swapped static screenshot pair for full-viewport background layers that can't render live in
 // the gallery. .ds-shot-* reveals only the active theme.
+// `width` is the capture's size in CSS pixels, for a capture taken at device-pixel ratio 2 or 3; without it the image
+// shows at its intrinsic pixel size.
 export function ThemeShot({
   light,
   dark,
   alt,
+  width,
 }: {
   light: StaticImageData;
   dark: StaticImageData;
   alt: string;
+  width?: number;
 }) {
   return (
     <div className={FRAME}>
       <Image
         src={light}
         alt={`${alt} (light theme)`}
+        style={{ width }}
         className="ds-shot-light h-auto max-w-full"
       />
       <Image
         src={dark}
         alt={`${alt} (dark theme)`}
+        style={{ width }}
         className="ds-shot-dark h-auto max-w-full"
       />
     </div>

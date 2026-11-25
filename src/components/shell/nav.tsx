@@ -69,6 +69,8 @@ interface NavViewProps {
   wide: boolean;
   // Writing is listed only once a post is published (PROJECT.md → Writing).
   showWriting: boolean;
+  // The gallery's frames only: keeps the row visible below 861px so a phone can see it.
+  specimen?: boolean;
   onToggle?: () => void;
   cardRef?: React.RefObject<HTMLDivElement | null>;
   toggleRef?: React.RefObject<HTMLButtonElement | null>;
@@ -81,6 +83,7 @@ export function NavView({
   open,
   wide,
   showWriting,
+  specimen,
   onToggle,
   cardRef,
   toggleRef,
@@ -116,6 +119,7 @@ export function NavView({
       className="nav"
       data-mode={showButton ? "button" : "row"}
       data-open={open}
+      data-specimen={specimen || undefined}
       // The card's height follows its rows: Home plus the items.
       style={{ "--nav-count": items.length + 1 } as CSSProperties}
     >
