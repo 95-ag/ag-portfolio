@@ -129,6 +129,7 @@ export function ComponentsSections() {
           description="One navigation surface in three states: a plain row from 861px, the frosted round button it collapses into after 80px of scroll (and the only form at 860px and below), and the card the button opens into."
           points={[
             "Shown here in bounded frames; the live nav is on this page.",
+            "On a phone the row frame is pinned open; the live nav shows only the button at 860px and below.",
           ]}
         >
           <div className="flex flex-col gap-[var(--spacing-lg)]">
@@ -139,6 +140,7 @@ export function ComponentsSections() {
                 open={false}
                 wide
                 showWriting
+                specimen
               />
             </ChromeFrame>
             <ChromeFrame height={96} inert>
